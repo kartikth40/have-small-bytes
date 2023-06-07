@@ -25,12 +25,13 @@ body {
 }
 
 body {
-  background: linear-gradient(45deg, #000, #111111);
+  // background: linear-gradient(45deg, #000, #111111);
+  background: linear-gradient(45deg, #fff, #fff);
   background-attachment: fixed;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+// @media (prefers-color-scheme: dark) {
+//   html {
+//     color-scheme: dark;
+//   }
+// }
