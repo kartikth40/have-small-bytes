@@ -1,5 +1,5 @@
 .main {
-  margin: 1rem;
+  margin: 0.7rem 1rem;
 }
 
 @mixin flex-center-horizontal() {
@@ -59,5 +59,21 @@
   & .categoriesContainer {
     padding: 1rem;
     border: 2px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.header {
+  margin-bottom: 0.5rem;
+  @include flex-center-horizontal();
+  justify-content: space-between;
+}
+
+.logo {
+  display: inline-block;
+}
+
+.nav {
+  & .navLink {
+    margin-inline-start: 1rem;
   }
 }

@@ -2,6 +2,7 @@ import PostCard from '@/components/PostCard'
 import styles from './page.module.scss'
 import RecentPosts from '@/components/RecentPosts'
 import Categories from '@/components/Categories'
+import Header from '@/components/Header'
 
 const posts = [
   { title: 'React Testing', summary: 'Learn React Testing' },
@@ -15,11 +16,10 @@ export default function Home() {
     contentContainer,
     postsContainer,
     aside,
-    recentPostsContainer,
-    categoriesContainer,
   } = styles
   return (
     <main className={main}>
+      <Header />
       <section className={featuredPostsContainer}>
         {posts.map((post) => (
           <PostCard post={post} key={post.title} />
