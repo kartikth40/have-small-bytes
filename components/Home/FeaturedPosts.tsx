@@ -1,6 +1,6 @@
 import { getPosts } from '@/services'
 import styles from '../../app/page.module.scss'
-import PostCard from './PostCard'
+import FeaturedPostCard from './FeaturedPostCard'
 
 type Props = {}
 
@@ -11,7 +11,7 @@ async function FeaturedPosts({}: Props) {
   return (
     <section className={featuredPostsContainer}>
       {posts.map((post) => (
-        <PostCard post={post} key={post.title}></PostCard>
+        <FeaturedPostCard post={post} key={post.title}></FeaturedPostCard>
       ))}
     </section>
   )

@@ -1,13 +1,15 @@
+import { post } from '@/services'
 import styles from '../../app/page.module.scss'
 
-type Props = { post: { title: string; summary: string } }
+type Props = { post: post }
 
 function PostCard({ post }: Props) {
-  const { featuredPost } = styles
+  const { postCard } = styles
   return (
-    <div className={featuredPost}>
+    <div className={postCard}>
       <div>{post.title}</div>
       <div>{post.summary}</div>
+      <div>{post.author.name}</div>
     </div>
   )
 }

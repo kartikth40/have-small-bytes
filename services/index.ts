@@ -29,35 +29,58 @@ export const getPosts = async () => {
     }
   `
 
-  interface postResult {
-    posts: [
-      {
-        author: {
-          bio: string
-          id: string
-          name: string
-          photo: {
-            url: string
-          }
-        }
-        createdAt: string
-        slug: string
-        title: string
-        summary: string
-        featuredImage: {
+  const result: postsResult = await request(graphqlAPI, query)
+  return result.posts
+}
+
+export interface postsResult {
+  posts: [
+    {
+      author: {
+        bio: string
+        id: string
+        name: string
+        photo: {
           url: string
         }
-        categories: [
-          {
-            name: string
-            slug: string
-          }
-        ]
       }
-    ]
-  }
+      createdAt: string
+      slug: string
+      title: string
+      summary: string
+      featuredImage: {
+        url: string
+      }
+      categories: [
+        {
+          name: string
+          slug: string
+        }
+      ]
+    }
+  ]
+}
 
-  const result: postResult = await request(graphqlAPI, query)
-  console.log(result)
-  return result.posts
+export interface post {
+  author: {
+    bio: string
+    id: string
+    name: string
+    photo: {
+      url: string
+    }
+  }
+  createdAt: string
+  slug: string
+  title: string
+  summary: string
+  featuredImage: {
+    url: string
+  }
+  categories: [
+    {
+      name: string
+      slug: string
+    }
+  ]
 }

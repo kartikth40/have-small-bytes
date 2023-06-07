@@ -8,6 +8,7 @@ export default function Home() {
   return (
     <main className={main}>
       <Header />
+      {/* @ts-expect-error Server Component */}
       <FeaturedPosts />
       <PageContent />
     </main>

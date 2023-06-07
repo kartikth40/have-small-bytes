@@ -25,6 +25,7 @@
     "typescript": "5.1.3"
   },
   "devDependencies": {
+    "encoding": "^0.1.13",
     "sass": "^1.62.1"
   }
 }

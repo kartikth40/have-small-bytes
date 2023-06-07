@@ -9,6 +9,7 @@ function PageContent({}: Props) {
 
   return (
     <section className={contentContainer}>
+      {/* @ts-expect-error Server Component */}
       <HomePagePosts />
       <Aside />
     </section>
