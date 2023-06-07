@@ -1,15 +1,12 @@
-import styles from '../app/page.module.scss'
+import { getPosts } from '@/services'
+import styles from '../../app/page.module.scss'
 import PostCard from './PostCard'
-
-const posts = [
-  { title: 'React Testing', summary: 'Learn React Testing' },
-  { title: 'React Tailwind', summary: 'Learn React with Tailwind' },
-]
 
 type Props = {}
 
-function FeaturedPosts({}: Props) {
+async function FeaturedPosts({}: Props) {
   const { featuredPostsContainer } = styles
+  const posts = (await getPosts()) || []
 
   return (
     <section className={featuredPostsContainer}>

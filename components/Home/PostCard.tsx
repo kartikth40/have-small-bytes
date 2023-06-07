@@ -1,4 +1,4 @@
-import styles from '../app/page.module.scss'
+import styles from '../../app/page.module.scss'
 
 type Props = { post: { title: string; summary: string } }
 
