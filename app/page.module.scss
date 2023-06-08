@@ -23,6 +23,7 @@
 
 .logo {
   display: inline-block;
+  font-weight: bolder;
 }
 
 .nav {
@@ -164,9 +165,19 @@
     margin-bottom: 1rem;
   }
 
-  & .recentPostsContainer {
-    & .recentPostCard {
+  & .postWidgetsContainer {
+    & .postWidgetCard {
       padding: 0.5em 0;
+      display: flex;
+      align-items: center;
+      & img {
+        margin-right: 1em;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      & div p:first-child {
+        color: rgba(0, 0, 0, 0.3);
+        font-size: 0.8em;
+      }
     }
   }
   & .categoriesContainer {
