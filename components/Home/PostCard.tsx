@@ -16,6 +16,8 @@ function PostCard({ post }: Props) {
     authorInfo,
     authorInfoContainer,
     authorImage,
+    date,
+    icon,
   } = styles
   return (
     <div className={postCard}>
@@ -35,6 +37,17 @@ function PostCard({ post }: Props) {
       </h1>
       <div className={summary}>{post.summary}</div>
       <div className={authorInfoContainer}>
+        <div className={date}>
+          <div className={icon}>
+            <img
+              width="48"
+              height="48"
+              src="https://img.icons8.com/fluency-systems-regular/48/calendar--v1.png"
+              alt="calendar--v1"
+            />
+          </div>
+          <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
+        </div>
         <Link href={`author/${post.author.id}`} className={authorInfo}>
           <div className={authorImage}>
             <Image
@@ -45,7 +58,7 @@ function PostCard({ post }: Props) {
               alt={post.author.name}
             />
           </div>
-          <div className={authorName}>{post.author.name}</div>
+          <p className={authorName}>{post.author.name}</p>
         </Link>
       </div>
     </div>

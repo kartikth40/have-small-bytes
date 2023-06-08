@@ -88,9 +88,30 @@
 
     & .authorInfoContainer {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       margin-top: 1em;
+
+      & .date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & .icon {
+          margin-right: 0.1em;
+          height: 24px;
+          aspect-ratio: 1/1;
+          & img {
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+          }
+        }
+        & p {
+          display: inline-block;
+          font-size: 0.9em;
+        }
+      }
+
       & .authorInfo {
         display: flex;
         justify-content: center;
