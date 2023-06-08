@@ -1,5 +1,5 @@
 import styles from '../app/page.module.scss'
-import RecentPosts from './RecentPosts'
+import PostWidget from './PostWidget'
 import Categories from './Categories'
 
 type Props = {}
@@ -11,7 +11,7 @@ function Aside({}: Props) {
     <aside className={aside}>
       {/* <div className={fixedAside}> */}
       {/* @ts-expect-error Server Component */}
-      <RecentPosts />
+      <PostWidget />
       <Categories />
       {/* </div> */}
     </aside>

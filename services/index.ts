@@ -36,7 +36,7 @@ export const getPosts = async () => {
 export const getRecentPosts = async () => {
   const query = gql`
     query GetPostDetails() {
-      posts(orderBy: createdAt_ASC, last: 3){
+      posts(orderBy: createdAt_DESC, first: 3){
         title
         featuredImage{
           url
@@ -44,7 +44,27 @@ export const getRecentPosts = async () => {
         createdAt
         slug
       }
-      
+    }
+  `
+
+  const result: recentPosts = await request(graphqlAPI, query)
+  return result.posts
+}
+
+export const getSimilarPosts = async () => {
+  const query = gql`
+    query GetPostDetails($slug: String!, $categories: [String!]) {
+      posts(
+        where: {slug_not: $slug, AND: {categories_some: {slug_in: $categories}}, first: 3}
+      ) {
+        title
+        featuredImage{
+          url
+        }
+        createdAt
+        slug
+      }
+      }
     }
   `
 
@@ -115,4 +135,13 @@ export interface recentPosts {
       }
     }
   ]
+}
+
+export interface widgetPost {
+  title: string
+  createdAt: string
+  slug: string
+  featuredImage: {
+    url: string
+  }
 }
