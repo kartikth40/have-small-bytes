@@ -17,6 +17,9 @@ a:active {
   text-decoration: none;
   color: inherit;
 }
+a:hover {
+  text-decoration: underline;
+}
 
 html,
 body {
@@ -26,8 +29,9 @@ body {
 
 body {
   // background: linear-gradient(45deg, #000, #111111);
-  background: linear-gradient(45deg, #fff, #fff);
-  background-attachment: fixed;
+  // background-attachment: fixed;
+  background: #fff;
+  color: #495464;
 }
 
 // @media (prefers-color-scheme: dark) {

@@ -79,6 +79,53 @@
       border-radius: 0.5rem;
       overflow: hidden;
     }
+
+    & .title {
+      display: inline-block;
+      font-size: 2.5rem;
+      margin: 0.1em 0 0.1em 0;
+    }
+
+    & .authorInfoContainer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1em;
+      & .authorInfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5em 1.5em;
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.1);
+        transition: 0.15s all;
+
+        &:hover {
+          // background-color: rgba(0, 0, 0, 0.05);
+          box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+        }
+        &:active {
+          box-shadow: none;
+        }
+
+        & > :first-child {
+          margin-right: 0.5em;
+        }
+
+        & .authorName {
+          font-weight: 500;
+        }
+        & .authorImage {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          position: relative;
+        }
+      }
+    }
+
+    & .summary {
+    }
   }
 }
 .aside {
