@@ -33,6 +33,25 @@ export const getPosts = async () => {
   return result.posts
 }
 
+export const getRecentPosts = async () => {
+  const query = gql`
+    query GetPostDetails() {
+      posts(orderBy: createdAt_ASC, last: 3){
+        title
+        featuredImage{
+          url
+        }
+        createdAt
+        slug
+      }
+      
+    }
+  `
+
+  const result: recentPosts = await request(graphqlAPI, query)
+  return result.posts
+}
+
 export interface postsResult {
   posts: [
     {
@@ -81,6 +100,19 @@ export interface post {
     {
       name: string
       slug: string
+    }
+  ]
+}
+
+export interface recentPosts {
+  posts: [
+    {
+      title: string
+      createdAt: string
+      slug: string
+      featuredImage: {
+        url: string
+      }
     }
   ]
 }

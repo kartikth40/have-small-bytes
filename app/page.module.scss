@@ -151,6 +151,7 @@
 }
 .aside {
   flex-basis: 20vw;
+  position: relative;
   & > * {
     border-radius: 0.2rem;
     border: 2px solid rgba(0, 0, 0, 0.1);
@@ -164,6 +165,9 @@
   }
 
   & .recentPostsContainer {
+    & .recentPostCard {
+      padding: 0.5em 0;
+    }
   }
   & .categoriesContainer {
   }
