@@ -78,6 +78,7 @@ export const getCategories = async () => {
       categories {
         name
         slug
+        shortName
       }
     }
   `
@@ -166,6 +167,7 @@ export interface categories {
     {
       name: string
       slug: string
+      shortName: string
     }
   ]
 }

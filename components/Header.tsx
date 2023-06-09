@@ -1,16 +1,12 @@
 import Link from 'next/link'
 import styles from '../app/page.module.scss'
-
-const categories = [
-  { name: 'Web Dev', slug: 'web-dev' },
-  { name: 'DSA', slug: 'dsa' },
-  { name: 'Pers Dev', slug: 'per-dev' },
-]
+import { getCategories } from '@/services'
 
 type Props = {}
 
-function Header({}: Props) {
+async function Header({}: Props) {
   const { header, nav, logo, navLink } = styles
+  const categories = await getCategories()
 
   return (
     <header className={header}>
