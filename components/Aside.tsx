@@ -10,8 +10,8 @@ function Aside({}: Props) {
   return (
     <aside className={aside}>
       {/* <div className={fixedAside}> */}
-      {/* @ts-expect-error Server Component */}
       <PostWidget />
+      {/* @ts-expect-error Server Component */}
       <Categories />
       {/* </div> */}
     </aside>

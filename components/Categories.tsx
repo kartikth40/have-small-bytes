@@ -1,10 +1,20 @@
+import Link from 'next/link'
 import styles from '../app/page.module.scss'
+import { getCategories } from '@/services'
 
 type Props = {}
 
-function Categories({}: Props) {
+async function Categories({}: Props) {
   const { categoriesContainer } = styles
-  return <div className={categoriesContainer}>Categories</div>
+  const categories = await getCategories()
+
+  return (
+    <div className={categoriesContainer}>
+      {categories.map((cat) => (
+        <Link href={`category/${cat.slug}`}>{cat.name}</Link>
+      ))}
+    </div>
+  )
 }
 
 export default Categories

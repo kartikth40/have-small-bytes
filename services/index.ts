@@ -72,6 +72,21 @@ export const getSimilarPosts = async () => {
   return result.posts
 }
 
+export const getCategories = async () => {
+  const query = gql`
+    query GetCategories() {
+      categories {
+        name
+        slug
+      }
+    }
+  `
+
+  const result: categories = await request(graphqlAPI, query)
+  return result.categories
+}
+
+// interfaces
 export interface postsResult {
   posts: [
     {
@@ -144,4 +159,13 @@ export interface widgetPost {
   featuredImage: {
     url: string
   }
+}
+
+export interface categories {
+  categories: [
+    {
+      name: string
+      slug: string
+    }
+  ]
 }
