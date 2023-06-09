@@ -1,8 +1,5 @@
 import styles from './page.module.scss'
 import Aside from '@/components/Aside'
-import HomePagePosts from '@/components/Home/HomePagePosts'
-
-type Props = {}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { contentContainer, postContainer } = styles

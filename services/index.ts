@@ -87,6 +87,40 @@ export const getCategories = async () => {
   return result.categories
 }
 
+export const getPostDetails = async (slug: string) => {
+  const query = gql`
+    query GetPostDetails($slug: String!) {
+      post(where: { slug: $slug }) {
+        author {
+          bio
+          id
+          name
+          photo {
+            url
+          }
+        }
+        createdAt
+        slug
+        title
+        summary
+        featuredImage {
+          url
+        }
+        categories {
+          name
+          slug
+        }
+        content {
+          raw
+        }
+      }
+    }
+  `
+
+  const result: postDetailsResult = await request(graphqlAPI, query, { slug })
+  return result.post
+}
+
 // interfaces
 export interface postsResult {
   posts: [
@@ -114,6 +148,34 @@ export interface postsResult {
       ]
     }
   ]
+}
+export interface postDetailsResult {
+  post: {
+    author: {
+      bio: string
+      id: string
+      name: string
+      photo: {
+        url: string
+      }
+    }
+    createdAt: string
+    slug: string
+    title: string
+    summary: string
+    featuredImage: {
+      url: string
+    }
+    categories: [
+      {
+        name: string
+        slug: string
+      }
+    ]
+    content: {
+      raw: any
+    }
+  }
 }
 
 export interface post {
