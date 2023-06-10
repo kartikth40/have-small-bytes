@@ -11,7 +11,9 @@ async function Categories({}: Props) {
   return (
     <div className={categoriesContainer}>
       {categories.map((cat) => (
-        <Link href={`category/${cat.slug}`}>{cat.name}</Link>
+        <Link key={cat.name} href={`category/${cat.slug}`}>
+          {cat.name}
+        </Link>
       ))}
     </div>
   )
