@@ -73,16 +73,20 @@ export default async function BlogPost({ slug }: { slug: string }) {
                         alt={alt}
                         width={width}
                         height={height!}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 70vw"
+                        style={{ objectFit: 'cover' }}
                       />
                     </span>
                   )
                 }
+
                 return (
                   <span className={postImg}>
                     <Image
                       src={props.src!}
                       alt={alt}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 70vw"
                       style={{ objectFit: 'cover' }}
                     />
                   </span>
