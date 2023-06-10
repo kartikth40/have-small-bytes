@@ -6,6 +6,7 @@ type Props = {}
 
 async function Header({}: Props) {
   const { header, nav, logo, navLink } = styles
+  console.log('CALL ------------->')
   const categories = await getCategories()
 
   return (

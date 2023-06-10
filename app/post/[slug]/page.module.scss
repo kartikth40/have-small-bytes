@@ -15,4 +15,60 @@
 .blogPostContainer {
   border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
+  padding: 1rem;
+
+  h1 {
+    font-size: 2.5rem;
+  }
+}
+
+.authorInfoContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1em;
+
+  & .date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & .icon {
+      margin-right: 0.1em;
+      height: 24px;
+      aspect-ratio: 1/1;
+      & img {
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+      }
+    }
+    & p {
+      display: inline-block;
+      font-size: 0.9em;
+    }
+  }
+
+  & .authorInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em 1.5em;
+
+    & > :first-child {
+      margin-right: 0.5em;
+    }
+
+    & .authorName {
+      font-weight: 500;
+    }
+    & .authorImage {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: relative;
+    }
+  }
+}
+
+.postContent {
 }

@@ -83,8 +83,13 @@ export const getCategories = async () => {
     }
   `
 
-  const result: categories = await request(graphqlAPI, query)
-  return result.categories
+  try {
+    const result: categories = await request(graphqlAPI, query)
+    return result.categories
+  } catch (err) {
+    console.log('ERROR Extracting Categories ----> ' + err)
+  }
+  return []
 }
 
 export const getPostDetails = async (slug: string) => {
