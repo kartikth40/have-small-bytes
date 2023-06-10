@@ -91,7 +91,7 @@ export default async function BlogPost({ slug }: { slug: string }) {
             },
           }}
         >
-          {post.markdown}
+          {post.content}
         </ReactMarkdown>
       </div>
     </div>

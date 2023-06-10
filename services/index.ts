@@ -129,10 +129,7 @@ export const getPostDetails = async (slug: string) => {
           name
           slug
         }
-        content {
-          text
-        }
-        markdown
+        content
       }
     }
   `
@@ -198,10 +195,7 @@ export interface postDetailsResult {
         slug: string
       }
     ]
-    content: {
-      text: string
-    }
-    markdown: string
+    content: string
   }
 }
 
