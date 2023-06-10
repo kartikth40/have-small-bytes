@@ -1,4 +1,5 @@
 import { getPostDetails } from '@/services'
+import { notFound } from 'next/navigation'
 import styles from '../../app/post/[slug]/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
@@ -15,9 +16,11 @@ export default async function BlogPost({ slug }: { slug: string }) {
     authorInfo,
     authorName,
     authorImage,
+    postImg,
   } = styles
 
   const post = await getPostDetails(slug)
+  if (!post) return notFound()
 
   return (
     <div className={blogPostContainer}>
@@ -48,7 +51,48 @@ export default async function BlogPost({ slug }: { slug: string }) {
         </div>
       </div>
       <div className={postContent}>
-        <ReactMarkdown>{post.content.markdown}</ReactMarkdown>
+        <ReactMarkdown
+          components={{
+            img: function ({ ...props }) {
+              if (props.alt) {
+                const substrings: string[] = props.alt?.split('{{')
+                const alt: string = substrings[0].trim()
+
+                if (substrings[1]) {
+                  const width = Number(
+                    substrings[1].match(/(?<=w:\s?)\d+/g)![0]
+                  )
+                  const height = Number(
+                    substrings[1].match(/(?<=h:\s?)\d+/g)![0]
+                  )
+
+                  return (
+                    <span className={postImg}>
+                      <Image
+                        src={props.src!}
+                        alt={alt}
+                        width={width}
+                        height={height!}
+                      />
+                    </span>
+                  )
+                }
+                return (
+                  <span className={postImg}>
+                    <Image
+                      src={props.src!}
+                      alt={alt}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </span>
+                )
+              }
+            },
+          }}
+        >
+          {post.markdown}
+        </ReactMarkdown>
       </div>
     </div>
   )

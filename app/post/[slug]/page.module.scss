@@ -73,8 +73,18 @@
 
 .postContent {
   margin-top: 2em;
-  & h1 {
+  & h2 {
     font-size: 2em;
     font-weight: 500;
+    padding: 1em 0 0.5em 0;
+  }
+
+  p {
+    padding: 0.5em 0;
+  }
+  & .postImg {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
   }
 }

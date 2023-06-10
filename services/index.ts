@@ -130,19 +130,21 @@ export const getPostDetails = async (slug: string) => {
           slug
         }
         content {
-          markdown
+          text
         }
+        markdown
       }
     }
   `
 
   try {
-    const result: postDetailsResult = await request(graphqlAPI, query, { slug })
-    return result.post
+    const result: postDetailsResult = await request(graphqlAPI, query, {
+      slug,
+    })
+    return result?.post
   } catch (err) {
     console.log('ERROR Extracting Post Details ----> ' + err)
   }
-  return []
 }
 
 // interfaces
@@ -197,8 +199,9 @@ export interface postDetailsResult {
       }
     ]
     content: {
-      markdown: string
+      text: string
     }
+    markdown: string
   }
 }
 
