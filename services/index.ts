@@ -28,9 +28,13 @@ export const getPosts = async () => {
       }
     }
   `
-
-  const result: postsResult = await request(graphqlAPI, query)
-  return result.posts
+  try {
+    const result: postsResult = await request(graphqlAPI, query)
+    return result.posts
+  } catch (err) {
+    console.log('ERROR Extracting Posts ----> ' + err)
+  }
+  return []
 }
 
 export const getRecentPosts = async () => {
@@ -47,8 +51,13 @@ export const getRecentPosts = async () => {
     }
   `
 
-  const result: recentPosts = await request(graphqlAPI, query)
-  return result.posts
+  try {
+    const result: recentPosts = await request(graphqlAPI, query)
+    return result.posts
+  } catch (err) {
+    console.log('ERROR Extracting Recent Posts ----> ' + err)
+  }
+  return []
 }
 
 export const getSimilarPosts = async () => {
@@ -68,8 +77,13 @@ export const getSimilarPosts = async () => {
     }
   `
 
-  const result: recentPosts = await request(graphqlAPI, query)
-  return result.posts
+  try {
+    const result: recentPosts = await request(graphqlAPI, query)
+    return result.posts
+  } catch (err) {
+    console.log('ERROR Extracting Similar Posts ----> ' + err)
+  }
+  return []
 }
 
 export const getCategories = async () => {
@@ -116,14 +130,19 @@ export const getPostDetails = async (slug: string) => {
           slug
         }
         content {
-          raw
+          markdown
         }
       }
     }
   `
 
-  const result: postDetailsResult = await request(graphqlAPI, query, { slug })
-  return result.post
+  try {
+    const result: postDetailsResult = await request(graphqlAPI, query, { slug })
+    return result.post
+  } catch (err) {
+    console.log('ERROR Extracting Post Details ----> ' + err)
+  }
+  return []
 }
 
 // interfaces
@@ -178,7 +197,7 @@ export interface postDetailsResult {
       }
     ]
     content: {
-      raw: any
+      markdown: string
     }
   }
 }

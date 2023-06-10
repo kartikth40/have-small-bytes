@@ -3,6 +3,7 @@ import styles from '../../app/post/[slug]/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
 export default async function BlogPost({ slug }: { slug: string }) {
   const {
@@ -46,7 +47,9 @@ export default async function BlogPost({ slug }: { slug: string }) {
           <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
         </div>
       </div>
-      <div className={postContent}></div>
+      <div className={postContent}>
+        <ReactMarkdown>{post.content.markdown}</ReactMarkdown>
+      </div>
     </div>
   )
 }
