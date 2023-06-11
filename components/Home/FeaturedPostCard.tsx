@@ -6,8 +6,12 @@ export default function FeaturedPostCard({ post }: Props) {
   const { featuredPostCard } = styles
   return (
     <div className={featuredPostCard}>
-      <div>{post.title}</div>
-      <div>{post.summary}</div>
+      <h3>{post.title}</h3>
+      <p>
+        {post.summary.length < 150
+          ? post.summary
+          : post.summary.slice(0, 150) + '.....'}
+      </p>
     </div>
   )
 }
