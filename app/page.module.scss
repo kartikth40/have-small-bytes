@@ -57,11 +57,12 @@
 
       &::after {
         content: 'Read More';
+        text-decoration: underline;
         position: absolute;
         left: 50%;
         bottom: 0.5em;
         transition: 0.25s transform;
-        transform: translateY(100%) translateX(-50%);
+        transform: translateY(150%) translateX(-50%);
         text-align: center;
         font-size: 1em;
         margin: auto;
@@ -204,9 +205,6 @@
           position: relative;
         }
       }
-    }
-
-    & .summary {
     }
   }
 }
