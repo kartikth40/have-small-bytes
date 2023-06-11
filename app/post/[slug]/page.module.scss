@@ -94,7 +94,11 @@
     display: inline-block;
     position: relative;
     width: 100%;
-    aspect-ratio: 16/9;
+    height: auto;
+
+    &.strict {
+      aspect-ratio: 16/9;
+    }
   }
   ul,
   ol {

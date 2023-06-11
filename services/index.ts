@@ -98,6 +98,7 @@ export const getCategories = async () => {
   `
 
   try {
+    console.log('CALL -------->')
     const result: categories = await request(graphqlAPI, query)
     return result.categories
   } catch (err) {

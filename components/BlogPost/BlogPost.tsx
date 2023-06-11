@@ -17,6 +17,7 @@ export default async function BlogPost({ slug }: { slug: string }) {
     authorName,
     authorImage,
     postImg,
+    strict,
   } = styles
 
   const post = await getPostDetails(slug)
@@ -74,20 +75,20 @@ export default async function BlogPost({ slug }: { slug: string }) {
                         width={width}
                         height={height!}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 70vw"
-                        style={{ objectFit: 'cover' }}
+                        style={{ objectFit: 'cover', borderRadius: '5px' }}
                       />
                     </span>
                   )
                 }
 
                 return (
-                  <span className={postImg}>
+                  <span className={`${postImg} ${strict}`}>
                     <Image
                       src={props.src!}
                       alt={alt}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 70vw"
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: 'cover', borderRadius: '5px' }}
                     />
                   </span>
                 )
