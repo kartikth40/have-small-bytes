@@ -15,13 +15,10 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4/1;
-  // border-top-left-radius: 0.5rem;
-  // border-top-right-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 5px 10px black;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 .blogPostContainer {
-  // border: 2px solid rgba(0, 0, 0, 0.1);
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   padding: 3rem;
