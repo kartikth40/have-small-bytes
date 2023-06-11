@@ -210,10 +210,11 @@
 }
 .aside {
   flex-basis: 20vw;
-  position: relative;
+  position: sticky;
+  top: 2rem;
   & > * {
     border-radius: 0.2rem;
-    border: 2px solid rgba(0, 0, 0, 0.1);
+    // border: 2px solid rgba(0, 0, 0, 0.1);
 
     // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     // background-color: rgba(0, 0, 0, 0.01);
@@ -224,8 +225,9 @@
   }
 
   & .postWidgetsContainer {
+    padding-top: 0;
     & .postWidgetCard {
-      padding: 0.5em 0;
+      padding: 0.5rem;
       display: flex;
       align-items: center;
       & img {
@@ -241,9 +243,14 @@
   & .categoriesContainer {
     display: flex;
     flex-direction: column;
+    & h2 {
+      margin-bottom: 0.5rem;
+    }
+
     & a {
-      margin: 1em 0;
-      font-weight: 500;
+      margin: 0.5rem;
+      position: relative;
+      font-weight: 400;
     }
   }
 }

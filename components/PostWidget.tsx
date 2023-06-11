@@ -6,9 +6,9 @@ import Image from 'next/image'
 import moment from 'moment'
 import Link from 'next/link'
 
-type Props = {}
+type Props = { slug: string }
 
-function PostWidget({ categories, slug }: Props) {
+function PostWidget({ slug }: Props) {
   const { postWidgetsContainer, postWidgetCard } = styles
   const [relatedPosts, setRelatedPosts] = useState<widgetPost[]>()
   useEffect(() => {
@@ -26,7 +26,7 @@ function PostWidget({ categories, slug }: Props) {
 
   return (
     <div className={postWidgetsContainer}>
-      <h3>{slug ? 'Related Posts' : 'Recent Posts'}</h3>
+      <h2>{slug ? 'Related Posts' : 'Recent Posts'}</h2>
       {relatedPosts?.map((post) => (
         <div key={post.title} className={postWidgetCard}>
           <Image

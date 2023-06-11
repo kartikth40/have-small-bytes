@@ -11,10 +11,19 @@
 .postContainer {
   flex-basis: 70vw;
 }
-
+.postHeroImg {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/1;
+  // border-top-left-radius: 0.5rem;
+  // border-top-right-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 5px 10px black;
+}
 .blogPostContainer {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
+  // border: 2px solid rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
   padding: 3rem;
 
   & > h1 {

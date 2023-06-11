@@ -11,7 +11,6 @@ function Aside({}: Props) {
     <aside className={aside}>
       {/* <div className={fixedAside}> */}
       <PostWidget />
-      {/* @ts-expect-error Server Component */}
       <Categories />
       {/* </div> */}
     </aside>
