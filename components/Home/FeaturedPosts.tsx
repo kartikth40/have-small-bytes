@@ -13,7 +13,7 @@ async function FeaturedPosts({}: Props) {
       <h1>Featured Posts</h1>
       <div className={featuredPosts}>
         {posts.map((post) => (
-          <FeaturedPostCard post={post} key={post.title}></FeaturedPostCard>
+          <FeaturedPostCard post={post} key={post.title} />
         ))}
       </div>
     </section>
