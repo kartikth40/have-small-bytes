@@ -1,6 +1,6 @@
 import styles from '../../app/page.module.scss'
 import HomePagePosts from './HomePagePosts'
-import Aside from '../Aside'
+import Aside from '../AsideMain'
 
 type Props = {}
 

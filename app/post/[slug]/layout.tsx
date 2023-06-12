@@ -1,12 +1,18 @@
 import styles from './page.module.scss'
-import Aside from '@/components/Aside'
+import Aside from '@/components/AsidePost'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: { slug: string }
+}) {
   const { contentContainer, postContainer } = styles
   return (
     <section className={contentContainer}>
       <div className={postContainer}>{children}</div>
-      <Aside />
+      <Aside slug={params.slug} />
     </section>
   )
 }

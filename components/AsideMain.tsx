@@ -1,6 +1,6 @@
 import styles from '../app/page.module.scss'
-import PostWidget from './PostWidget'
 import Categories from './Categories'
+import RecentWidget from './RecentWidget'
 
 type Props = {}
 
@@ -10,7 +10,7 @@ function Aside({}: Props) {
   return (
     <aside className={aside}>
       {/* <div className={fixedAside}> */}
-      <PostWidget />
+      <RecentWidget />
       <Categories />
       {/* </div> */}
     </aside>

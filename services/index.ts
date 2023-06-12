@@ -60,25 +60,31 @@ export const getRecentPosts = async () => {
   return []
 }
 
-export const getSimilarPosts = async () => {
+export const getSimilarPosts = async (categories: string[], slug: string) => {
   const query = gql`
     query GetPostDetails($slug: String!, $categories: [String!]) {
       posts(
-        where: {slug_not: $slug, AND: {categories_some: {slug_in: $categories}}, first: 3}
+        where: {
+          slug_not: $slug
+          AND: { categories_some: { slug_in: $categories } }
+        }
+        first: 3
       ) {
         title
-        featuredImage{
+        featuredImage {
           url
         }
         createdAt
         slug
       }
-      }
     }
   `
 
   try {
-    const result: recentPosts = await request(graphqlAPI, query)
+    const result: recentPosts = await request(graphqlAPI, query, {
+      categories,
+      slug,
+    })
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Similar Posts ----> ' + err)
