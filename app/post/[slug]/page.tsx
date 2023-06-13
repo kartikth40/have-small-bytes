@@ -20,7 +20,7 @@ export default async function Blog({ params }: Props) {
   return (
     <div>
       <BlogPost post={post} />
-      <Author />
+      <Author author={post.author} />
     </div>
   )
 }
