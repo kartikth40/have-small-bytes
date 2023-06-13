@@ -1,28 +1,19 @@
-'use client'
 import { getSimilarPosts, widgetPost } from '@/services'
 import styles from '../app/page.module.scss'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import moment from 'moment'
 import Link from 'next/link'
 
 type Props = { categories: string[]; slug: string }
 
-function SimilarWidget({ categories, slug }: Props) {
+async function SimilarWidget({ categories, slug }: Props) {
   const { postWidgetsContainer, postWidgetCard } = styles
-  const [relatedPosts, setRelatedPosts] = useState<widgetPost[]>()
-  useEffect(() => {
-    async function run() {
-      const posts = await getSimilarPosts(categories, slug)
-      setRelatedPosts(posts)
-    }
-    run()
-  }, [])
+  const posts = await getSimilarPosts(categories, slug)
 
   return (
     <div className={postWidgetsContainer}>
       <h2>{'Related Posts'}</h2>
-      {relatedPosts?.map((post) => (
+      {posts?.map((post) => (
         <div key={post.title} className={postWidgetCard}>
           <Image
             src={post.featuredImage.url}

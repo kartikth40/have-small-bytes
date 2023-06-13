@@ -1,26 +1,17 @@
-'use client'
-import { getRecentPosts, widgetPost } from '@/services'
+import { getRecentPosts } from '@/services'
 import styles from '../app/page.module.scss'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import moment from 'moment'
 import Link from 'next/link'
 
-function RecentWidget() {
+async function RecentWidget() {
   const { postWidgetsContainer, postWidgetCard } = styles
-  const [relatedPosts, setRelatedPosts] = useState<widgetPost[]>()
-  useEffect(() => {
-    async function run() {
-      const posts = await getRecentPosts()
-      setRelatedPosts(posts)
-    }
-    run()
-  }, [])
+  const posts = await getRecentPosts()
 
   return (
     <div className={postWidgetsContainer}>
       <h2>{'Recent Posts'}</h2>
-      {relatedPosts?.map((post) => (
+      {posts?.map((post) => (
         <div key={post.title} className={postWidgetCard}>
           <Image
             src={post.featuredImage.url}

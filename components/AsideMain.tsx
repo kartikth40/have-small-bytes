@@ -5,14 +5,12 @@ import RecentWidget from './RecentWidget'
 type Props = {}
 
 function Aside({}: Props) {
-  const { aside, fixedAside } = styles
+  const { aside } = styles
 
   return (
     <aside className={aside}>
-      {/* <div className={fixedAside}> */}
       <RecentWidget />
       <Categories />
-      {/* </div> */}
     </aside>
   )
 }

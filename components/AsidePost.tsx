@@ -4,18 +4,16 @@ import { getPostDetails } from '@/services'
 import SimilarWidget from './SimilarWidget'
 
 async function Aside({ slug }: { slug: string }) {
-  const { aside, fixedAside } = styles
+  const { aside } = styles
   const post = await getPostDetails(slug)
 
   return (
     <aside className={aside}>
-      {/* <div className={fixedAside}> */}
       <SimilarWidget
         slug={post!.slug}
         categories={post!.categories.map((category) => category.slug)}
       />
       <Categories />
-      {/* </div> */}
     </aside>
   )
 }
