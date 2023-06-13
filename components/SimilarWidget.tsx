@@ -1,4 +1,4 @@
-import { getSimilarPosts, widgetPost } from '@/services'
+import { getSimilarPosts } from '@/services'
 import styles from '../app/page.module.scss'
 import Image from 'next/image'
 import moment from 'moment'

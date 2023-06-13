@@ -1,6 +1,7 @@
-import { getPosts, post } from '@/services'
+import { getPosts } from '@/services'
 import styles from '../../app/page.module.scss'
 import PostCard from './PostCard'
+import { post } from '@/utils/types'
 
 type Props = {}
 
