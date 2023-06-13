@@ -4,7 +4,9 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
   --font-m: 'Inter';
 }
-
+html {
+  // font-family: var(--font-m);
+}
 * {
   box-sizing: border-box;
   padding: 0;
@@ -25,11 +27,6 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   margin: 0.7rem 1rem;
-}
-
-body {
-  // background: linear-gradient(45deg, #000, #111111);
-  // background-attachment: fixed;
   background: #fff;
   color: #495464;
 }

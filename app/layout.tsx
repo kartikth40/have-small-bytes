@@ -2,7 +2,10 @@ import './globals.scss'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'Have Small Byte',
@@ -15,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={inter.className}>
+      <body>
         <Header />
         {children}
       </body>
