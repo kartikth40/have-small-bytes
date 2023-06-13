@@ -1,8 +1,9 @@
 import { request, gql } from 'graphql-request'
+import { cache } from 'react'
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
 
-export const getPosts = async () => {
+export const getPosts = cache(async () => {
   const query = gql`
     query GetPosts {
       posts {
@@ -35,9 +36,9 @@ export const getPosts = async () => {
     console.log('ERROR Extracting Posts ----> ' + err)
   }
   return []
-}
+})
 
-export const getRecentPosts = async () => {
+export const getRecentPosts = cache(async () => {
   const query = gql`
     query GetPostDetails() {
       posts(orderBy: createdAt_DESC, first: 3){
@@ -58,41 +59,43 @@ export const getRecentPosts = async () => {
     console.log('ERROR Extracting Recent Posts ----> ' + err)
   }
   return []
-}
+})
 
-export const getSimilarPosts = async (categories: string[], slug: string) => {
-  const query = gql`
-    query GetPostDetails($slug: String!, $categories: [String!]) {
-      posts(
-        where: {
-          slug_not: $slug
-          AND: { categories_some: { slug_in: $categories } }
+export const getSimilarPosts = cache(
+  async (categories: string[], slug: string) => {
+    const query = gql`
+      query GetPostDetails($slug: String!, $categories: [String!]) {
+        posts(
+          where: {
+            slug_not: $slug
+            AND: { categories_some: { slug_in: $categories } }
+          }
+          first: 3
+        ) {
+          title
+          featuredImage {
+            url
+          }
+          createdAt
+          slug
         }
-        first: 3
-      ) {
-        title
-        featuredImage {
-          url
-        }
-        createdAt
-        slug
       }
+    `
+
+    try {
+      const result: recentPosts = await request(graphqlAPI, query, {
+        categories,
+        slug,
+      })
+      return result.posts
+    } catch (err) {
+      console.log('ERROR Extracting Similar Posts ----> ' + err)
     }
-  `
-
-  try {
-    const result: recentPosts = await request(graphqlAPI, query, {
-      categories,
-      slug,
-    })
-    return result.posts
-  } catch (err) {
-    console.log('ERROR Extracting Similar Posts ----> ' + err)
+    return []
   }
-  return []
-}
+)
 
-export const getCategories = async () => {
+export const getCategories = cache(async () => {
   const query = gql`
     query GetCategories() {
       categories {
@@ -104,16 +107,15 @@ export const getCategories = async () => {
   `
 
   try {
-    console.log('CALL -------->')
     const result: categories = await request(graphqlAPI, query)
     return result.categories
   } catch (err) {
     console.log('ERROR Extracting Categories ----> ' + err)
   }
   return []
-}
+})
 
-export const getPostDetails = async (slug: string) => {
+export const getPostDetails = cache(async (slug: string) => {
   const query = gql`
     query GetPostDetails($slug: String!) {
       post(where: { slug: $slug }) {
@@ -149,7 +151,7 @@ export const getPostDetails = async (slug: string) => {
   } catch (err) {
     console.log('ERROR Extracting Post Details ----> ' + err)
   }
-}
+})
 
 // interfaces
 export interface postsResult {
