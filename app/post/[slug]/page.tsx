@@ -1,7 +1,8 @@
 export const revalidate = 60
+import { notFound } from 'next/navigation'
 import Author from '@/components/BlogPost/Author'
 import BlogPost from '@/components/BlogPost/BlogPost'
-import { getPosts } from '@/services'
+import { getPostDetails, getPosts } from '@/services'
 
 export async function generateStaticParams() {
   const posts = await getPosts()
@@ -13,10 +14,12 @@ export async function generateStaticParams() {
 
 type Props = { params: { slug: string } }
 
-export default function Blog({ params }: Props) {
+export default async function Blog({ params }: Props) {
+  const post = await getPostDetails(params.slug)
+  if (!post) return notFound()
   return (
     <div>
-      <BlogPost slug={params.slug} />
+      <BlogPost post={post} />
       <Author />
     </div>
   )

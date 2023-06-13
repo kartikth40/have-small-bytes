@@ -1,8 +1,8 @@
 import {
-  categories,
-  postDetailsResult,
-  postsResult,
-  recentPosts,
+  categoriesType,
+  postDetailsType,
+  postsType,
+  recentPostsType,
 } from '@/utils/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -12,13 +12,13 @@ import {
   PostsQuery,
   RecentPostsQuery,
   SimilarPostsQuery,
-} from './graphqlQueries'
+} from '../utils/graphqlQueries'
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
 
 export const getPosts = cache(async () => {
   try {
-    const result: postsResult = await request(graphqlAPI, PostsQuery)
+    const result: postsType = await request(graphqlAPI, PostsQuery)
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Posts ----> ' + err)
@@ -28,7 +28,7 @@ export const getPosts = cache(async () => {
 
 export const getPostDetails = cache(async (slug: string) => {
   try {
-    const result: postDetailsResult = await request(
+    const result: postDetailsType = await request(
       graphqlAPI,
       PostDetailsQuery,
       {
@@ -43,7 +43,7 @@ export const getPostDetails = cache(async (slug: string) => {
 
 export const getRecentPosts = cache(async () => {
   try {
-    const result: recentPosts = await request(graphqlAPI, RecentPostsQuery)
+    const result: recentPostsType = await request(graphqlAPI, RecentPostsQuery)
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Recent Posts ----> ' + err)
@@ -54,10 +54,14 @@ export const getRecentPosts = cache(async () => {
 export const getSimilarPosts = cache(
   async (categories: string[], slug: string) => {
     try {
-      const result: recentPosts = await request(graphqlAPI, SimilarPostsQuery, {
-        categories,
-        slug,
-      })
+      const result: recentPostsType = await request(
+        graphqlAPI,
+        SimilarPostsQuery,
+        {
+          categories,
+          slug,
+        }
+      )
       return result.posts
     } catch (err) {
       console.log('ERROR Extracting Similar Posts ----> ' + err)
@@ -68,7 +72,7 @@ export const getSimilarPosts = cache(
 
 export const getCategories = cache(async () => {
   try {
-    const result: categories = await request(graphqlAPI, CategoriesQuery)
+    const result: categoriesType = await request(graphqlAPI, CategoriesQuery)
     return result.categories
   } catch (err) {
     console.log('ERROR Extracting Categories ----> ' + err)

@@ -1,13 +1,13 @@
 import { getPosts } from '@/services'
 import styles from '../../app/page.module.scss'
 import PostCard from './PostCard'
-import { post } from '@/utils/types'
+import { postType } from '@/utils/types'
 
 type Props = {}
 
 async function HomePagePosts({}: Props) {
   const { postsContainer } = styles
-  const posts: post[] = (await getPosts()) || []
+  const posts: postType[] = (await getPosts()) || []
 
   return (
     <section className={postsContainer}>

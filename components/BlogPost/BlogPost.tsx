@@ -1,12 +1,11 @@
-import { getPostDetails } from '@/services'
-import { notFound } from 'next/navigation'
 import styles from '../../app/post/[slug]/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
+import { postType } from '@/utils/types'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
-export default async function BlogPost({ slug }: { slug: string }) {
+export default async function BlogPost({ post }: { post: postType }) {
   const {
     blogPostContainer,
     postContent,
@@ -20,9 +19,6 @@ export default async function BlogPost({ slug }: { slug: string }) {
     postImg,
     strict,
   } = styles
-
-  const post = await getPostDetails(slug)
-  if (!post) return notFound()
 
   return (
     <>

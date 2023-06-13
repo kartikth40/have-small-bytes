@@ -1,5 +1,5 @@
 // interfaces
-export interface postsResult {
+export interface postsType {
   posts: [
     {
       author: {
@@ -26,7 +26,7 @@ export interface postsResult {
     }
   ]
 }
-export interface postDetailsResult {
+export interface postDetailsType {
   post: {
     author: {
       bio: string
@@ -53,7 +53,7 @@ export interface postDetailsResult {
   }
 }
 
-export interface post {
+export interface postType {
   author: {
     bio: string
     id: string
@@ -75,9 +75,10 @@ export interface post {
       slug: string
     }
   ]
+  content: string
 }
 
-export interface recentPosts {
+export interface recentPostsType {
   posts: [
     {
       title: string
@@ -90,16 +91,7 @@ export interface recentPosts {
   ]
 }
 
-export interface widgetPost {
-  title: string
-  createdAt: string
-  slug: string
-  featuredImage: {
-    url: string
-  }
-}
-
-export interface categories {
+export interface categoriesType {
   categories: [
     {
       name: string
