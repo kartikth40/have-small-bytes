@@ -11,6 +11,7 @@ export default function Author({ author }: Props) {
     authorPhotoContainer,
     authorNameContainer,
     authorBioContainer,
+    authorInfoContainer,
   } = styles
   return (
     <div className={authorContainer}>
@@ -20,15 +21,17 @@ export default function Author({ author }: Props) {
           style={{
             objectFit: 'cover',
             borderRadius: '50%',
-            boxShadow: '0 0 10px rgba(0, 0, 0, 1)',
+            boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
           }}
           width={100}
           height={100}
           alt={author.name}
         />
       </div>
-      <div className={authorNameContainer}>{author.name}</div>
-      <div className={authorBioContainer}>{author.bio}</div>
+      <div className={authorInfoContainer}>
+        <div className={authorNameContainer}>{author.name}</div>
+        <div className={authorBioContainer}>{author.bio}</div>
+      </div>
     </div>
   )
 }

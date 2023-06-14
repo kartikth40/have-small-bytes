@@ -10,7 +10,7 @@ export default async function BlogPost({ post }: { post: postType }) {
     blogPostContainer,
     postContent,
     postHeroImg,
-    authorInfoContainer,
+    authorInfoContainerStart,
     date,
     icon,
     authorInfo,
@@ -32,7 +32,7 @@ export default async function BlogPost({ post }: { post: postType }) {
       </div>
       <div className={blogPostContainer}>
         <h1>{post.title}</h1>
-        <div className={authorInfoContainer}>
+        <div className={authorInfoContainerStart}>
           <Link href={`author/${post.author.id}`} className={authorInfo}>
             <div className={authorImage}>
               <Image
