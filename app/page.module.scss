@@ -1,4 +1,8 @@
+.main {
+  margin: 0.7rem 1rem;
+}
 .header {
+  margin: 0.7rem 1rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -258,4 +262,27 @@
       font-weight: 400;
     }
   }
+}
+
+.footerContainer {
+  padding: 2rem 3rem;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+}
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.logo {
+  font-size: 1.5rem;
+  // margin-bottom: 1em;
+}
+.tagLine {
+  font-size: 1rem;
+  margin-bottom: 1em;
+}
+.copyrights {
+  font-size: 0.6rem;
 }

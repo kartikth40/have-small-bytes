@@ -5,7 +5,7 @@
   --font-m: 'Inter';
   --color-dark: #495464;
   --color-dark-2: #919191;
-  --color-background: #fff;
+  --color-light: #fff;
 }
 
 * {
@@ -27,8 +27,7 @@ a:hover {
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  margin: 0.7rem 1rem;
-  background: var(--color-background);
+  background: var(--color-light);
   color: var(--color-dark);
 }
 
