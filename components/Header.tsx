@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import styles from '../app/page.module.scss'
 import { getCategories } from '@/services'
+import Image from 'next/image'
 
 type Props = {}
 
@@ -12,7 +13,16 @@ async function Header({}: Props) {
   return (
     <header className={header}>
       <div className={logo}>
-        <Link href="/">HSB</Link>
+        <Link href="/">
+          <Image
+            src="/icons/hsb-icon.png"
+            style={{ objectFit: 'cover' }}
+            // sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
+            width={40}
+            height={40}
+            alt={'Logo'}
+          />
+        </Link>
       </div>
       <nav className={nav}>
         {categories.map((category) => (
