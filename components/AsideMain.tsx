@@ -10,7 +10,6 @@ function Aside({}: Props) {
   return (
     <aside className={aside}>
       <RecentWidget />
-      <Categories />
     </aside>
   )
 }
