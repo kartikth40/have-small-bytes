@@ -4,7 +4,7 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
   --font-m: 'Inter';
   --color-primary-blue: #8c52ff;
-  --color-primary-pink: #5ce1e6;
+  --color-primary-sky: #5ce1e6;
   --color-primary-black: #111111;
   --color-dark: #495464;
   --color-dark-2: #919191;
@@ -39,3 +39,23 @@ body {
 //     color-scheme: dark;
 //   }
 // }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 15px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-black);
+  /* border-radius: 5px; */
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dark);
+}
+
+::selection {
+  color: var(--color-primary-black);
+  background: var(--color-primary-blue);
+}
+main {
+  margin: 5rem 1rem 0.7rem;
+}

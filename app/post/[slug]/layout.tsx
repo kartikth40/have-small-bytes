@@ -10,9 +10,9 @@ export default function Layout({
 }) {
   const { contentContainer, postContainer } = styles
   return (
-    <section className={contentContainer}>
+    <main className={contentContainer}>
       <div className={postContainer}>{children}</div>
       <Aside slug={params.slug} />
-    </section>
+    </main>
   )
 }
