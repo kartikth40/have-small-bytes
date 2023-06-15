@@ -129,11 +129,43 @@
   margin-top: 2em;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
   padding: 1em;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background: linear-gradient(to right, var(--color-dark), var(--color-dark-2));
+  color: var(--color-light);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    left: -100px;
+    top: 0;
+    // background-color: black;
+    transform: skewX(-20deg);
+    background-color: rgba(255, 255, 255, 0.2);
+
+    animation: slide 5.5s ease-in-out infinite 2s;
+
+    @keyframes slide {
+      0% {
+        left: -100px;
+      }
+      30% {
+        left: calc(100% + 50px);
+      }
+      31% {
+        left: calc(100% + 50px);
+      }
+      100% {
+        left: calc(100% + 50px);
+      }
+    }
+  }
 }
 .authorInfoContainer {
   display: flex;
@@ -150,4 +182,7 @@
 }
 .authorBioContainer {
   font-size: 1rem;
+}
+.authorText {
+  opacity: 0.5;
 }
