@@ -8,11 +8,24 @@
   align-items: center;
   justify-content: center;
   justify-content: space-between;
+  font-weight: bolder;
 }
 
 .logo {
-  display: inline-block;
-  font-weight: bolder;
+  & a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3em;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  & span {
+    font-size: 0.7rem;
+    font-weight: bolder;
+  }
 }
 
 .nav {
@@ -247,6 +260,7 @@
 }
 .logo {
   font-size: 1.5rem;
+  margin-bottom: 0.3em;
 }
 .tagLine {
   font-size: 0.8rem;
@@ -254,4 +268,5 @@
 }
 .copyrights {
   font-size: 0.7rem;
+  font-weight: 100;
 }

@@ -22,6 +22,7 @@ async function Header({}: Props) {
             height={40}
             alt={'Logo'}
           />
+          <span>Have Small Bytes</span>
         </Link>
       </div>
       <nav className={nav}>
