@@ -1,10 +1,10 @@
-import { postType } from '@/utils/types'
+import { postsType } from '@/utils/types'
 import styles from '../../app/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
 
-type Props = { post: postType }
+type Props = { post: postsType }
 
 function PostCard({ post }: Props) {
   const {

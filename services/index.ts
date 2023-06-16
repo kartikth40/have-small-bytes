@@ -1,7 +1,7 @@
 import {
   categoriesType,
   postDetailsType,
-  postsType,
+  posts,
   recentPostsType,
 } from '@/utils/types'
 import { request } from 'graphql-request'
@@ -18,7 +18,7 @@ const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
 
 export const getPosts = cache(async () => {
   try {
-    const result: postsType = await request(graphqlAPI, PostsQuery)
+    const result: posts = await request(graphqlAPI, PostsQuery)
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Posts ----> ' + err)
