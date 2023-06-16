@@ -145,14 +145,8 @@
   &:hover {
     text-decoration: none;
     color: var(--color-light);
-    // transform: scale(1.01);
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    & .authorInfoContainer {
-      text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    }
-    & img {
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    }
+    transform: translate(-5px, -5px);
+    box-shadow: 5px 5px 10px var(--color-primary-blue);
   }
 
   &::after {
@@ -196,6 +190,7 @@
   margin-right: 2em;
 }
 .authorNameContainer {
+  font-weight: 500;
   font-size: 1.5rem;
 }
 .authorBioContainer {

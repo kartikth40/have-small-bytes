@@ -16,7 +16,12 @@ export default function Author({ author }: Props) {
     authorInfoContainer,
   } = styles
   return (
-    <Link href="https://kartik-thakur.tech/" className={authorContainer}>
+    <Link
+      href="https://kartik-thakur.tech/"
+      rel="noopener noreferrer"
+      target="_blank"
+      className={authorContainer}
+    >
       <div className={authorPhotoContainer}>
         <Image
           src={author.photo.url}
