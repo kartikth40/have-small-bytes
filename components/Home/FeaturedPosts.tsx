@@ -2,9 +2,9 @@ import { getPosts } from '@/services'
 import styles from '../../app/page.module.scss'
 import FeaturedPostCard from './FeaturedPostCard'
 
-type Props = {}
+type Props = { category: string }
 
-async function FeaturedPosts({}: Props) {
+async function FeaturedPosts({ category }: Props) {
   const { featuredPostsContainer, featuredPosts } = styles
   const posts = (await getPosts()) || []
 

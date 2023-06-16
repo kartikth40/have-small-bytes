@@ -26,6 +26,80 @@ export const PostsQuery = gql`
   }
 `
 
+export const FeaturedPostsQuery = gql`
+  query GetPosts {
+    posts(where: { featuredPost: true }) {
+      author {
+        bio
+        id
+        name
+        photo {
+          url
+        }
+      }
+      createdAt
+      slug
+      title
+      summary
+      featuredImage {
+        url
+      }
+      categories {
+        name
+        slug
+      }
+    }
+  }
+`
+
+export const FeaturedCategoryPostsQuery = gql`
+  query GetPosts($slug: String!, $category: String!) {
+    posts(where: { featuredPost: true, categories_some: { slug: $category } }) {
+      author {
+        bio
+        id
+        name
+        photo {
+          url
+        }
+      }
+      createdAt
+      slug
+      title
+      summary
+      featuredImage {
+        url
+      }
+    }
+  }
+`
+
+export const CategoryPostsQuery = gql`
+  query GetPosts {
+    posts(where: { categories_some: { slug: $category } }) {
+      author {
+        bio
+        id
+        name
+        photo {
+          url
+        }
+      }
+      createdAt
+      slug
+      title
+      summary
+      featuredImage {
+        url
+      }
+      categories {
+        name
+        slug
+      }
+    }
+  }
+`
+
 export const PostDetailsQuery = gql`
   query GetPostDetails($slug: String!) {
     post(where: { slug: $slug }) {
