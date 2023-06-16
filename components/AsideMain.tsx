@@ -1,5 +1,4 @@
 import styles from '../app/page.module.scss'
-import Categories from './Categories'
 import RecentWidget from './RecentWidget'
 
 type Props = {}
