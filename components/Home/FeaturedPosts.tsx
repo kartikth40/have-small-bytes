@@ -1,12 +1,17 @@
-import { getPosts } from '@/services'
+import { getCategoryPosts, getPosts } from '@/services'
 import styles from '../../app/page.module.scss'
 import FeaturedPostCard from './FeaturedPostCard'
 
-type Props = { category: string }
+type Props = { categorySlug?: string }
 
-async function FeaturedPosts({ category }: Props) {
+async function FeaturedPosts({ categorySlug = '' }: Props) {
   const { featuredPostsContainer, featuredPosts } = styles
-  const posts = (await getPosts()) || []
+  let posts = []
+  if (!categorySlug) {
+    posts = (await getPosts()) || []
+  } else {
+    posts = (await getCategoryPosts(categorySlug)) || []
+  }
 
   return (
     <section className={featuredPostsContainer}>

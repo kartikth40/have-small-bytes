@@ -53,7 +53,7 @@ export const FeaturedPostsQuery = gql`
 `
 
 export const FeaturedCategoryPostsQuery = gql`
-  query GetPosts($slug: String!, $category: String!) {
+  query GetPosts($category: String!) {
     posts(where: { featuredPost: true, categories_some: { slug: $category } }) {
       author {
         bio
@@ -75,7 +75,7 @@ export const FeaturedCategoryPostsQuery = gql`
 `
 
 export const CategoryPostsQuery = gql`
-  query GetPosts {
+  query GetPosts($category: String!) {
     posts(where: { categories_some: { slug: $category } }) {
       author {
         bio

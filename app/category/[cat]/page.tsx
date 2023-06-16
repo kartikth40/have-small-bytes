@@ -9,13 +9,15 @@ import { notFound } from 'next/navigation'
 export default async function Blog({ params }: { params: { cat: string } }) {
   const categories = await getCategories()
 
-  const cat = categories.find((cat) => cat.slug === params.cat)?.name
-  if (!cat) return notFound()
+  const category = categories.find((cat) => cat.slug === params.cat)
+  if (!category) return notFound()
+  const categoryName = category.name
+  const categorySlug = category.slug
 
   return (
     <main>
-      <HeroText cat={cat} />
-      <FeaturedPosts />
+      <HeroText categoryName={categoryName} />
+      <FeaturedPosts categorySlug={categorySlug} />
       <PageContent />
     </main>
   )
