@@ -1,13 +1,18 @@
-import { getPosts } from '@/services'
+import { getCategoryPosts, getPosts } from '@/services'
 import styles from '../../app/page.module.scss'
 import PostCard from './PostCard'
-import { postsType } from '@/utils/types'
 
-type Props = {}
+type Props = { categorySlug?: string }
 
-async function HomePagePosts({}: Props) {
+async function HomePagePosts({ categorySlug = '' }: Props) {
   const { postsContainer } = styles
-  const posts: postsType[] = await getPosts()
+  let posts
+  if (!categorySlug) {
+    posts = await getPosts()
+    console.log(categorySlug)
+  } else {
+    posts = await getCategoryPosts(categorySlug)
+  }
 
   return (
     <section className={postsContainer}>

@@ -2,14 +2,14 @@ import styles from '../../app/page.module.scss'
 import HomePagePosts from './HomePagePosts'
 import Aside from '../AsideMain'
 
-type Props = {}
+type Props = { categorySlug?: string }
 
-function PageContent({}: Props) {
+function PageContent({ categorySlug = '' }: Props) {
   const { contentContainer } = styles
 
   return (
     <section className={contentContainer}>
-      <HomePagePosts />
+      <HomePagePosts categorySlug={categorySlug ?? ''} />
       <Aside />
     </section>
   )

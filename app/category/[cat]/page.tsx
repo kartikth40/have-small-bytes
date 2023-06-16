@@ -18,7 +18,7 @@ export default async function Blog({ params }: { params: { cat: string } }) {
     <main>
       <HeroText categoryName={categoryName} />
       <FeaturedPosts categorySlug={categorySlug} />
-      <PageContent />
+      <PageContent categorySlug={categorySlug} />
     </main>
   )
 }
