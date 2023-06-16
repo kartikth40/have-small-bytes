@@ -21,14 +21,16 @@ function PostCard({ post }: Props) {
   } = styles
   return (
     <div className={postCard}>
-      <div className={postImage}>
-        <Image
-          src={post.featuredImage.url}
-          style={{ objectFit: 'cover', borderRadius: '.5rem' }}
-          fill={true}
-          alt={post.title}
-        />
-      </div>
+      <Link href={`/post/${post.slug}`}>
+        <div className={postImage}>
+          <Image
+            src={post.featuredImage.url}
+            style={{ objectFit: 'cover', borderRadius: '.5rem' }}
+            fill={true}
+            alt={post.title}
+          />
+        </div>
+      </Link>
 
       <h1>
         <Link href={`/post/${post.slug}`} className={title}>

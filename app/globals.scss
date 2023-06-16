@@ -10,6 +10,9 @@
   --color-dark-2: #919191;
   --color-light: #fff;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 * {
   box-sizing: border-box;

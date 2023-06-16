@@ -11,7 +11,7 @@ export default function FeaturedPostCard({ post }: Props) {
       <p>
         {post.summary.length < 150
           ? post.summary
-          : post.summary.slice(0, 150) + '.....'}
+          : post.summary.slice(0, 150) + '...'}
       </p>
     </Link>
   )

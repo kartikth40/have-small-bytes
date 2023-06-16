@@ -124,22 +124,36 @@
 
 .authorContainer {
   width: 40vw;
-  margin: auto;
-  margin-top: 2em;
+  margin: 2em auto;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   position: relative;
   padding: 1em;
   border-radius: 5px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
   background: linear-gradient(
     to right,
     var(--color-primary-blue),
-    var(--color-primary-pink)
+    var(--color-primary-sky)
   );
   color: var(--color-light);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  transition: 0.2s all;
+
+  &:hover {
+    text-decoration: none;
+    color: var(--color-light);
+    // transform: scale(1.01);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    & .authorInfoContainer {
+      text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+    & img {
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+  }
 
   &::after {
     content: '';
@@ -175,6 +189,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  transition: 0.2s all;
 }
 .authorPhotoContainer {
   border-radius: 50%;
