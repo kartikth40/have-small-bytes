@@ -1,5 +1,4 @@
 export const revalidate = 60
-import Categories from '@/components/Categories'
 import FeaturedPosts from '@/components/Home/FeaturedPosts'
 import PageContent from '@/components/Home/PageContent'
 import HeroText from '@/components/categories/HeroText'

@@ -1,11 +1,18 @@
 import './globals.scss'
-import { Inter } from 'next/font/google'
+import { Inter, Nabla } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-inter',
+})
+
+export const nabla = Nabla({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-nabla',
 })
 
 export const metadata = {
