@@ -5,6 +5,9 @@
   justify-content: center;
   margin-bottom: 1rem;
   & h1 {
-    font-size: 7rem;
+    font-family: var(--font-nabla);
+    font-size: 10rem;
+    text-align: center;
+    line-height: 12rem;
   }
 }
