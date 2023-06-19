@@ -1,5 +1,13 @@
 import { gql } from 'graphql-request'
 
+export const authorUrlQuery = gql`
+  query GetauthorUrl($authorId: ID!) {
+    author(where: { id: $authorId }) {
+      websiteUrl
+    }
+  }
+`
+
 export const PostsQuery = gql`
   query GetPosts {
     posts {

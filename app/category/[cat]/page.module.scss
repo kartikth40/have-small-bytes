@@ -9,9 +9,10 @@
   overflow: hidden;
   cursor: pointer;
   border: 15px solid var(--color-dark);
-  box-shadow: inset 0 0 20px var(--color-primary-blue),
-    inset 0 0 10px var(--color-primary-sky);
+  box-shadow: inset 0 0 5px var(--color-primary-black);
   padding: 5rem;
+  border-radius: 10px;
+
   &:hover::after {
     right: -100%;
     transform: translate(0, -50%) skewX(-30deg);
@@ -32,27 +33,29 @@
       var(--color-primary-sky),
       var(--color-primary-blue)
     );
+
     width: 100%;
     height: 100%;
     transition: 0.5s all;
-    opacity: 0.6;
+    opacity: 0.4;
   }
 
   &:after {
     right: -50%;
     transform: translate(0, -50%) skewX(30deg);
     z-index: -1;
+    background: var(--color-primary-blue);
   }
   &:before {
     left: -50%;
     transform: translate(0, -50%) skewX(30deg);
     z-index: -1;
+    background: var(--color-primary-sky);
   }
   & h1 {
     padding: 1rem auto;
     font-family: var(--font-nabla);
     font-size: 5rem;
     text-align: center;
-    // line-height: 13rem;
   }
 }

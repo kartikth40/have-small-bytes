@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import styles from '../../app/post/[slug]/page.module.scss'
 import Link from 'next/link'
+import { myPortfolioURL } from '@/services'
 
 type Props = {
   author: { id: string; name: string; bio: string; photo: { url: string } }
 }
 
-export default function Author({ author }: Props) {
+export default async function Author({ author }: Props) {
   const {
     authorContainer,
     authorPhotoContainer,
@@ -15,9 +16,10 @@ export default function Author({ author }: Props) {
     authorText,
     authorInfoContainer,
   } = styles
+  const authorId = (await myPortfolioURL(author.id)) || '/'
   return (
     <Link
-      href="https://kartik-thakur.tech/"
+      href={authorId}
       rel="noopener noreferrer"
       target="_blank"
       className={authorContainer}

@@ -1,4 +1,10 @@
 // interfaces
+
+export interface authorURL {
+  author: {
+    websiteUrl: string
+  }
+}
 export interface posts {
   posts: [
     {

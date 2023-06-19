@@ -3,10 +3,11 @@ import styles from '../../app/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
+import { myPortfolioURL } from '@/services'
 
 type Props = { post: postsType }
 
-function PostCard({ post }: Props) {
+async function PostCard({ post }: Props) {
   const {
     postCard,
     postImage,
@@ -19,6 +20,7 @@ function PostCard({ post }: Props) {
     date,
     icon,
   } = styles
+  const authorId: string = (await myPortfolioURL(post.author.id)) || '/'
   return (
     <div className={postCard}>
       <Link href={`/post/${post.slug}`}>
@@ -50,7 +52,12 @@ function PostCard({ post }: Props) {
           </div>
           <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
         </div>
-        <Link href={`author/${post.author.id}`} className={authorInfo}>
+        <Link
+          href={authorId}
+          className={authorInfo}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <div className={authorImage}>
             <Image
               src={post.author.photo.url}

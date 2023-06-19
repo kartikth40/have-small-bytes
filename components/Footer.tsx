@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import styles from '../app/page.module.scss'
 import Image from 'next/image'
+import { myPortfolioURL } from '@/services'
 
 type Props = {}
 
-export default function Footer({}: Props) {
+export default async function Footer({}: Props) {
   const { footerContainer, footer, logo, tagLine, copyrights } = styles
   const currentDate = new Date().getFullYear()
+  const authorId = (await myPortfolioURL('clik9bnov38ao0bpm3isjt91v')) || '/'
   return (
     <div className={footerContainer}>
       <div className={footer}>
@@ -25,11 +27,7 @@ export default function Footer({}: Props) {
         </div>
         <div className={tagLine}>Have Small Bytes</div>
         <div className={copyrights}>
-          <Link
-            href="https://kartik-thakur.tech/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <Link href={authorId} rel="noopener noreferrer" target="_blank">
             © Kartik Thakur {currentDate}
           </Link>
         </div>

@@ -1,4 +1,5 @@
 import {
+  authorURL,
   categoriesType,
   postDetailsType,
   posts,
@@ -15,9 +16,21 @@ import {
   PostsQuery,
   RecentPostsQuery,
   SimilarPostsQuery,
+  authorUrlQuery,
 } from '../utils/graphqlQueries'
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
+
+export const myPortfolioURL = cache(async (authorId: string) => {
+  try {
+    const result: authorURL = await request(graphqlAPI, authorUrlQuery, {
+      authorId,
+    })
+    return result.author.websiteUrl
+  } catch (err) {
+    console.log('ERROR Extracting authorURL ----> ' + err)
+  }
+})
 
 export const getPosts = cache(async () => {
   try {
