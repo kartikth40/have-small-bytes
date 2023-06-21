@@ -15,6 +15,25 @@
   font-weight: bolder;
 }
 
+.signInBtn,
+.signOutBtn {
+  border: 2px solid var(--color-dark);
+  padding: 0.2em 0.5em;
+  margin-left: 1em;
+  font-family: var(--font-inter);
+  border-radius: 10px;
+  color: var(--color-dark);
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+.signInBtn:hover {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+}
+.profileBtn {
+}
+
 .logo {
   & a {
     display: flex;

@@ -6,7 +6,7 @@ import {
   posts,
   recentPostsType,
   userAddedType,
-} from '@/utils/types'
+} from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
 import {

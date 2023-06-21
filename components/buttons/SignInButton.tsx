@@ -1,14 +1,19 @@
 'use client'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import styles from '@/app/page.module.scss'
+import ProfileButton from './ProfileButton'
 
 type Props = {}
 
 export default function SignInButton({}: Props) {
   const { data: session } = useSession()
-  const { signInBtn, signOutBtn } = styles
+  const { signInBtn } = styles
   if (session && session.user) {
-    return <button className={signInBtn}>Sign In</button>
+    return <ProfileButton />
   }
-  return <button className={signOutBtn}>Sign Out</button>
+  return (
+    <button className={signInBtn} onClick={() => signIn()}>
+      Sign in
+    </button>
+  )
 }

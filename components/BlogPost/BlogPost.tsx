@@ -2,7 +2,7 @@ import styles from '../../app/post/[slug]/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
-import { postType } from '@/utils/types'
+import { postType } from '@/utils/types/types'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
 export default async function BlogPost({ post }: { post: postType }) {

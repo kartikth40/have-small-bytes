@@ -1,4 +1,4 @@
-import { postsType } from '@/utils/types'
+import { postsType } from '@/utils/types/types'
 import styles from '../../app/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
