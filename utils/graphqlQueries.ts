@@ -188,6 +188,11 @@ export const loginQuery = gql`
 
 export const newUserQuery = gql`
   mutation NewUser($username: String!, $password: String!) {
-    createReader(data: { username: $username, password: $password })
+    createReader(data: { username: $username, password: $password }) {
+      username
+    }
+    publishReader(where: { username: $username }) {
+      username
+    }
   }
 `

@@ -14,7 +14,10 @@ export const authOptions = {
         const res = await fetch('/api/login', {
           method: 'POST',
           body: JSON.stringify(credentials),
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
+          },
         })
         const user = await res.json()
 
