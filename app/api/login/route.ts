@@ -15,6 +15,10 @@ export async function POST(request: Request) {
     const { password, ...userWithoutPassword } = user
     return new Response(JSON.stringify(userWithoutPassword))
   } else {
-    new Response(JSON.stringify(null))
+    const myOptions = {
+      status: 400,
+      statusText: 'Incorrect Username or Password!',
+    }
+    return new Response(JSON.stringify(null), myOptions)
   }
 }

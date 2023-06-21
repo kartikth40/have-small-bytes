@@ -2,6 +2,7 @@ import Link from 'next/link'
 import styles from '../app/page.module.scss'
 import { getCategories } from '@/services'
 import Image from 'next/image'
+import SignInButton from './buttons/SignInButton'
 
 type Props = {}
 
@@ -35,6 +36,7 @@ async function Header({}: Props) {
             {category.name}
           </Link>
         ))}
+        <SignInButton />
       </nav>
     </header>
   )
