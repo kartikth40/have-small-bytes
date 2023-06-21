@@ -130,3 +130,16 @@ export interface categoriesType {
     }
   ]
 }
+
+export interface loginType {
+  reader: {
+    username: string
+    password: string
+  }
+}
+
+export interface userAddedType {
+  reader: {
+    username: string
+  }
+}

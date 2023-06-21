@@ -176,3 +176,18 @@ query GetCategories() {
   }
 }
 `
+
+export const loginQuery = gql`
+  query Login($username: String!) {
+    reader(where: { username: $username }) {
+      username
+      password
+    }
+  }
+`
+
+export const newUserQuery = gql`
+  mutation NewUser($username: String!, $password: String!) {
+    createReader(data: { username: $username, password: $password })
+  }
+`

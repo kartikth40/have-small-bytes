@@ -1,9 +1,11 @@
 import {
   authorURL,
   categoriesType,
+  loginType,
   postDetailsType,
   posts,
   recentPostsType,
+  userAddedType,
 } from '@/utils/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -17,6 +19,8 @@ import {
   RecentPostsQuery,
   SimilarPostsQuery,
   authorUrlQuery,
+  loginQuery,
+  newUserQuery,
 } from '../utils/graphqlQueries'
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
@@ -130,4 +134,27 @@ export const getCategories = cache(async () => {
     console.log('ERROR Extracting Categories ----> ' + err)
   }
   return []
+})
+
+export const checkLogin = cache(async (username: string) => {
+  try {
+    const result: loginType = await request(graphqlAPI, loginQuery, {
+      username,
+    })
+    return result.reader
+  } catch (err) {
+    console.log('ERROR Logging you in ----> ' + err)
+  }
+})
+
+export const addUser = cache(async (username: string, password: string) => {
+  try {
+    const result: userAddedType = await request(graphqlAPI, newUserQuery, {
+      username,
+      password,
+    })
+    return result.reader
+  } catch (err) {
+    console.log('ERROR Registering new user ----> ' + err)
+  }
 })
