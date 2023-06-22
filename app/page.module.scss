@@ -26,12 +26,22 @@
   font-weight: 600;
   font-size: 0.9em;
   cursor: pointer;
+  &:hover {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+  }
 }
-.signInBtn:hover {
-  background-color: var(--color-dark);
-  color: var(--color-light);
-}
+
 .profileBtn {
+  border: none;
+  padding: 0.2em 0.5em;
+  margin-left: 1em;
+  font-family: var(--font-inter);
+  border-radius: 5px;
+  color: var(--color-dark);
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 .logo {

@@ -8,22 +8,14 @@ type Props = {}
 
 export default function SignInButton({}: Props) {
   const { data: session } = useSession()
-  console.log(session)
+
   const { signInBtn } = styles
   if (session && session.user) {
-    return (
-      <>
-        <ProfileButton />
-        <SignOutButton />
-      </>
-    )
+    return <ProfileButton />
   }
   return (
-    <>
-      <button className={signInBtn} onClick={() => signIn()}>
-        Sign in
-      </button>
-      <SignOutButton />
-    </>
+    <button className={signInBtn} onClick={() => signIn()}>
+      Sign in
+    </button>
   )
 }

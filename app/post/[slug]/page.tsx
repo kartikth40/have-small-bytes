@@ -19,10 +19,10 @@ type Props = { params: { slug: string } }
 
 export default async function Blog({ params }: Props) {
   const session = await getServerSession(authOptions)
-  // console.log(session)
-  // if (!session) {
-  //   redirect(`/signin?callbackUrl=/post/${params.slug}`)
-  // }
+
+  if (!session) {
+    redirect(`/signin?callbackUrl=/post/${params.slug}`)
+  }
   const post = await getPostDetails(params.slug)
   if (!post) return notFound()
   return (
