@@ -35,9 +35,16 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  // pages:{
-  //   signIn:'/signin'
-  // },
+  callbacks: {
+    async jwt({ token, user }: { token: any; user: any }) {
+      return { ...token, ...user }
+    },
+
+    async session({ session, token }: { session: any; token: any }) {
+      session.user = token
+      return session
+    },
+  },
 }
 
 const handler = NextAuth(authOptions)

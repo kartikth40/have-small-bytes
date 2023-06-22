@@ -9,7 +9,6 @@ async function HomePagePosts({ categorySlug = '' }: Props) {
   let posts
   if (!categorySlug) {
     posts = await getPosts()
-    console.log(categorySlug)
   } else {
     posts = await getCategoryPosts(categorySlug)
   }
