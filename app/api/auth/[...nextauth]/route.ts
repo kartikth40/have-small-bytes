@@ -11,12 +11,12 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        const res = await fetch('/api/login', {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
           method: 'POST',
           body: JSON.stringify(credentials),
           headers: {
             'Content-Type': 'application/json',
-            authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
+            // authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
           },
         })
         const user = await res.json()
@@ -37,7 +37,7 @@ export const authOptions = {
   ],
   // pages:{
   //   signIn:'/signin'
-  // }
+  // },
 }
 
 const handler = NextAuth(authOptions)

@@ -10,7 +10,7 @@ export default function SignOutButton({}: Props) {
   if (session && session.user) {
     return (
       <button className={signOutBtn} onClick={() => signOut()}>
-        Sign in
+        Sign out
       </button>
     )
   }
