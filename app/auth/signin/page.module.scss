@@ -19,6 +19,10 @@
   background-color: var(--color-primary-black);
   color: var(--color-light);
   border-radius: 10px;
+  & button {
+    text-transform: uppercase;
+    cursor: pointer;
+  }
   & input {
     background-color: var(--color-primary-black);
     color: var(--color-light);
@@ -37,8 +41,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     & button {
-      font-size: 1.5em;
+      font-size: 1.2em;
       padding: 0.5em 1em;
       border: none;
       background-color: rgba(255, 255, 255, 0.1);
@@ -48,6 +53,51 @@
       &:hover {
         background-color: rgba(255, 255, 255, 0.2);
       }
+    }
+  }
+}
+.thirdPartyLoginContainer {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  &::after {
+    content: 'or';
+    position: absolute;
+    text-align: center;
+    top: -0.7em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2em;
+    padding-inline: 0.5em;
+    background-color: var(--color-primary-black);
+  }
+
+  & button {
+    padding: 0.5em 1em;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--color-primary-black);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    font-weight: 900;
+    transition: 0.15s all;
+    &:hover {
+      transform: scale(0.97);
     }
   }
 }
