@@ -14,7 +14,7 @@ export default async function ProfilePage({}: Props) {
   }
   return (
     <div>
-      Profile Page.{' '}
+      Profile Page.
       <div>
         <SignOutButton />
       </div>

@@ -45,6 +45,9 @@ export const authOptions = {
       return session
     },
   },
+  pages: {
+    signIn: '/auth/signin',
+  },
 }
 
 const handler = NextAuth(authOptions)
