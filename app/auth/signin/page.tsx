@@ -1,19 +1,36 @@
 'use client'
 
-import { useRef } from 'react'
+import { FormEvent, useRef } from 'react'
 import styles from './page.module.scss'
+import { getSession, signIn } from 'next-auth/react'
+import { redirect, useSearchParams } from 'next/navigation'
 
 type Props = {}
 
-export default function LoginPage({}: Props) {
+export default async function LoginPage({}: Props) {
+  const session = await getSession()
+
+  if (session && session.user) {
+    redirect('/reader/profile')
+  }
   const username = useRef('')
   const password = useRef('')
   const { headingsContainer, mainContainer, register, loginBtnContainer } =
     styles
+  const callbakUrl = useSearchParams().get('callbackUrl')
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const result = await signIn('credentials', {
+      username: username.current,
+      password: password.current,
+      redirect: true,
+      callbackUrl: `${callbakUrl}`,
+    })
+  }
   return (
-    <form action="">
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className={headingsContainer}>
-        <h3>Sign in</h3>
+        {/* <h3>Sign in</h3> */}
         <p>Sign in with your username and password</p>
       </div>
 
@@ -38,7 +55,7 @@ export default function LoginPage({}: Props) {
           placeholder="Enter Password"
           name="pswrd"
           onChange={(e) => {
-            username.current = e.target.value
+            password.current = e.target.value
           }}
           required
         />
@@ -51,7 +68,7 @@ export default function LoginPage({}: Props) {
         </div>
         <br />
         <div className={loginBtnContainer}>
-          <button>Login</button>
+          <button type="submit">Sign in</button>
         </div>
 
         <p className={register}>

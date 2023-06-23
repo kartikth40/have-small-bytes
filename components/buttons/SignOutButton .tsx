@@ -9,7 +9,10 @@ export default function SignOutButton({}: Props) {
   const { signOutBtn } = styles
   if (session && session.user) {
     return (
-      <button className={signOutBtn} onClick={() => signOut()}>
+      <button
+        className={signOutBtn}
+        onClick={() => signOut({ callbackUrl: '/' })}
+      >
         Sign out
       </button>
     )
