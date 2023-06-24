@@ -70,6 +70,7 @@ export default function LoginPage({}: Props) {
             onChange={(e) => {
               username.current = e.target.value
             }}
+            autoFocus
             required
           />
 

@@ -85,6 +85,7 @@ export default function SignUpPage({}: Props) {
             onChange={(e) => {
               username.current = e.target.value
             }}
+            autoFocus
             required
           />
 
