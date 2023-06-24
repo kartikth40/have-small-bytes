@@ -47,7 +47,7 @@ async function PostCard({ post }: Props) {
               src="https://img.icons8.com/fluency-systems-regular/48/calendar--v1.png"
               width={48}
               height={48}
-              alt="calendar--v1"
+              alt="cal"
             />
           </div>
           <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>

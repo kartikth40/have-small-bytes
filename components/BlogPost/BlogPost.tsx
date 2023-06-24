@@ -51,7 +51,7 @@ export default async function BlogPost({ post }: { post: postType }) {
                 width={48}
                 height={48}
                 src="https://img.icons8.com/fluency-systems-regular/48/calendar--v1.png"
-                alt="calendar--v1"
+                alt="cal"
               />
             </div>
             <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
