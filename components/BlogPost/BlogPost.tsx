@@ -47,9 +47,9 @@ export default async function BlogPost({ post }: { post: postType }) {
           </Link>
           <div className={date}>
             <div className={icon}>
-              <img
-                width="48"
-                height="48"
+              <Image
+                width={48}
+                height={48}
                 src="https://img.icons8.com/fluency-systems-regular/48/calendar--v1.png"
                 alt="calendar--v1"
               />

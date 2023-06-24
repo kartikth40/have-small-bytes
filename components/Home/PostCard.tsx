@@ -43,10 +43,10 @@ async function PostCard({ post }: Props) {
       <div className={authorInfoContainer}>
         <div className={date}>
           <div className={icon}>
-            <img
-              width="48"
-              height="48"
+            <Image
               src="https://img.icons8.com/fluency-systems-regular/48/calendar--v1.png"
+              width={48}
+              height={48}
               alt="calendar--v1"
             />
           </div>

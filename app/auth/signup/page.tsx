@@ -11,6 +11,7 @@ import {
 } from 'next-auth/react'
 import { redirect, useRouter } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
+import Image from 'next/image'
 
 type Props = {}
 
@@ -114,12 +115,11 @@ export default function SignUpPage({}: Props) {
                   provider.name !== 'Credentials' ? (
                     <div key={provider.name}>
                       <button onClick={() => signIn(provider.id)}>
-                        <img
-                          loading="lazy"
-                          id="provider-logo-dark"
+                        <Image
                           src={`https://authjs.dev/img/providers/${provider.id}-dark.svg`}
-                          width="24"
-                          height="24"
+                          width={24}
+                          height={24}
+                          alt={`${provider.name} logo`}
                         />
                         Continue with {provider.name}
                       </button>
