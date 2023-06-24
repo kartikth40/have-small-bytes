@@ -9,13 +9,12 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useSearchParams } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
-import Link from 'next/link'
 
 type Props = {}
 
-export default function LoginPage({}: Props) {
+export default function SignUpPage({}: Props) {
   const { data: session } = useSession()
   if (session) {
     redirect('/')
@@ -44,22 +43,16 @@ export default function LoginPage({}: Props) {
     loginBtnContainer,
     thirdPartyLoginContainer,
   } = styles
-  const callbakUrl = useSearchParams().get('callbackUrl')
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const result = await signIn('credentials', {
-      username: username.current,
-      password: password.current,
-      redirect: true,
-      callbackUrl: `${callbakUrl}`,
-    })
   }
   return (
     <>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className={headingsContainer}>
           {/* <h3>Sign in</h3> */}
-          <p>Sign in with your username and password</p>
+          <p>Sign up with username and password</p>
         </div>
 
         <div className={mainContainer}>
@@ -89,19 +82,9 @@ export default function LoginPage({}: Props) {
           />
           <br />
           <br />
-          <div>
-            <p>
-              <a href="#">Forgot Password?</a>
-            </p>
-          </div>
-          <br />
           <div className={loginBtnContainer}>
-            <button type="submit">Sign in</button>
+            <button type="submit">Sign up</button>
           </div>
-
-          <p className={register}>
-            Not registered? <Link href="/auth/signup">Register here!</Link>
-          </p>
 
           <div className={thirdPartyLoginContainer}>
             {providers
