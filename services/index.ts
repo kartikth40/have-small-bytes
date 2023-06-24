@@ -153,7 +153,7 @@ export const addUser = cache(async (username: string, password: string) => {
       username,
       password,
     })
-    return result.reader
+    return result
   } catch (err) {
     console.log('ERROR Registering new user ----> ' + err)
   }

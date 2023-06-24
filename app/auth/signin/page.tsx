@@ -29,7 +29,6 @@ export default function LoginPage({}: Props) {
   useEffect(() => {
     async function setP() {
       const res = await getProviders()
-      console.log(res)
       setProviders(res)
     }
     setP()
@@ -63,7 +62,7 @@ export default function LoginPage({}: Props) {
         </div>
 
         <div className={mainContainer}>
-          <label htmlFor="username">Your username</label>
+          {/* <label htmlFor="username">Your username</label> */}
           <input
             type="text"
             placeholder="Enter Username"
@@ -77,7 +76,7 @@ export default function LoginPage({}: Props) {
           <br />
           <br />
 
-          <label htmlFor="pswrd">Your password</label>
+          {/* <label htmlFor="pswrd">Your password</label> */}
           <input
             type="password"
             placeholder="Enter Password"
@@ -116,7 +115,7 @@ export default function LoginPage({}: Props) {
                           width="24"
                           height="24"
                         />
-                        Sign in with {provider.name}
+                        Continue with {provider.name}
                       </button>
                     </div>
                   ) : null

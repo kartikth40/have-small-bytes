@@ -8,13 +8,11 @@ interface requestBody {
 
 export async function POST(request: Request) {
   const body: requestBody = await request.json()
-
   const user = await addUser(
     body.username,
     await bcrypt.hash(body.password, 10)
   )
   if (user) {
-    console.log(user)
     return new Response(JSON.stringify(user))
   }
   const myOptions = { status: 400, statusText: 'Username Already Exists!' }

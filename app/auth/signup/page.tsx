@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 
 type Props = {}
@@ -28,7 +28,6 @@ export default function SignUpPage({}: Props) {
   useEffect(() => {
     async function setP() {
       const res = await getProviders()
-      console.log(res)
       setProviders(res)
     }
     setP()
@@ -39,13 +38,35 @@ export default function SignUpPage({}: Props) {
   const {
     headingsContainer,
     mainContainer,
-    register,
     loginBtnContainer,
     thirdPartyLoginContainer,
   } = styles
+  const router = useRouter()
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const credentials = {
+      username: username.current,
+      password: password.current,
+    }
+    const res = await fetch('/api/user', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+      headers: {
+        'Content-Type': 'application/json',
+        // authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
+      },
+    })
+    const user = await res.json()
+    if (res.ok && user) {
+      await signIn('credentials', {
+        username: username.current,
+        password: password.current,
+      })
+      router.replace('/')
+    } else {
+      alert(res.statusText)
+    }
   }
   return (
     <>
@@ -56,7 +77,7 @@ export default function SignUpPage({}: Props) {
         </div>
 
         <div className={mainContainer}>
-          <label htmlFor="username">Your username</label>
+          {/* <label htmlFor="username">Your username</label> */}
           <input
             type="text"
             placeholder="Enter Username"
@@ -70,7 +91,7 @@ export default function SignUpPage({}: Props) {
           <br />
           <br />
 
-          <label htmlFor="pswrd">Your password</label>
+          {/* <label htmlFor="pswrd">Your password</label> */}
           <input
             type="password"
             placeholder="Enter Password"
@@ -99,7 +120,7 @@ export default function SignUpPage({}: Props) {
                           width="24"
                           height="24"
                         />
-                        Sign in with {provider.name}
+                        Continue with {provider.name}
                       </button>
                     </div>
                   ) : null

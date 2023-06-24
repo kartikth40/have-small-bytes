@@ -20,7 +20,6 @@
   color: var(--color-light);
   border-radius: 10px;
   & button {
-    text-transform: uppercase;
     cursor: pointer;
   }
   & input {
@@ -49,6 +48,8 @@
       background-color: rgba(255, 255, 255, 0.1);
       color: var(--color-light);
       border-radius: 5px;
+      text-transform: uppercase;
+
       cursor: pointer;
       &:hover {
         background-color: rgba(255, 255, 255, 0.2);
@@ -94,7 +95,7 @@
     align-items: center;
     justify-content: center;
     gap: 1em;
-    font-weight: 900;
+    font-weight: 500;
     transition: 0.15s all;
     &:hover {
       transform: scale(0.97);
