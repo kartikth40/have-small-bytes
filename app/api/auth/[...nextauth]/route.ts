@@ -30,8 +30,14 @@ export const authOptions = {
       },
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+      clientId:
+        process.env.APP_ENV === 'development'
+          ? process.env.GITHUB_TEST_ID!
+          : process.env.GITHUB_ID!,
+      clientSecret:
+        process.env.APP_ENV === 'development'
+          ? process.env.GITHUB_TEST_SECRET!
+          : process.env.GITHUB_SECRET!,
     }),
     // ...add more providers here
   ],
