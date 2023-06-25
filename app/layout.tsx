@@ -18,7 +18,7 @@ export const nabla = Nabla({
 })
 
 export const metadata = {
-  title: 'Have Small Byte',
+  title: 'Have Small Bytes',
   description: 'Byte size blogs',
 }
 

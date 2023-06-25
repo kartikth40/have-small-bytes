@@ -51,6 +51,7 @@ export default function SignUpPage({}: Props) {
       username: username.current,
       password: password.current,
     }
+    const createId = toast.loading('Creating your account...')
     const res = await fetch('/api/user', {
       method: 'POST',
       body: JSON.stringify(credentials),
@@ -61,15 +62,33 @@ export default function SignUpPage({}: Props) {
     })
     const user = await res.json()
     if (res.ok && user) {
+      toast.update(createId, {
+        render: '🦄 Account Created!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 3000,
+      })
+      const loginId = toast.loading('Logging you in, please wait...')
+
       await signIn('credentials', {
         username: username.current,
         password: password.current,
       })
-      router.replace('/')
-      toast.success('🦄 Account Created!', {})
+      toast.update(loginId, {
+        render: '🦄 Logged In',
+        type: 'success',
+        isLoading: false,
+        autoClose: 3000,
+      })
+      router.push('/')
     } else {
       console.log(user, res)
-      toast.error(res.statusText, {})
+      toast.update(createId, {
+        render: res.statusText,
+        type: 'error',
+        isLoading: false,
+        autoClose: 5000,
+      })
     }
   }
   return (
