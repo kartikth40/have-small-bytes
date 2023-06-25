@@ -12,6 +12,7 @@ import {
 import { redirect, useRouter } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
 
 type Props = {}
 
@@ -65,19 +66,19 @@ export default function SignUpPage({}: Props) {
         password: password.current,
       })
       router.replace('/')
+      toast.success('🦄 Account Created!', {})
     } else {
-      alert(res.statusText)
+      console.log(user, res)
+      toast.error(res.statusText, {})
     }
   }
   return (
     <>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div className={headingsContainer}>
-          {/* <h3>Sign in</h3> */}
-          <p>Sign up with username and password</p>
-        </div>
-
         <div className={mainContainer}>
+          <div className={headingsContainer}>
+            <h3>Sign Up</h3>
+          </div>
           {/* <label htmlFor="username">Your username</label> */}
           <input
             type="text"
@@ -86,7 +87,6 @@ export default function SignUpPage({}: Props) {
             onChange={(e) => {
               username.current = e.target.value
             }}
-            autoFocus
             required
           />
 
@@ -106,7 +106,7 @@ export default function SignUpPage({}: Props) {
           <br />
           <br />
           <div className={loginBtnContainer}>
-            <button type="submit">Sign up</button>
+            <button type="submit">Create Account</button>
           </div>
 
           <div className={thirdPartyLoginContainer}>

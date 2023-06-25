@@ -3,6 +3,7 @@ import { Inter, Nabla } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Providers from '@/components/Providers'
+import ClientToastContainer from '@/components/ClientToastContainer'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <body>
           <Header />
           {children}
+          <ClientToastContainer />
           <Footer />
         </body>
       </html>

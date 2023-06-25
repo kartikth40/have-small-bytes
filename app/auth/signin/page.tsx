@@ -13,6 +13,7 @@ import { redirect, useSearchParams } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Link from 'next/link'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
 
 type Props = {}
 
@@ -50,19 +51,23 @@ export default function LoginPage({}: Props) {
     const result = await signIn('credentials', {
       username: username.current,
       password: password.current,
-      redirect: true,
-      callbackUrl: `${callbakUrl}`,
+      redirect: false,
+      // callbackUrl: `${callbakUrl}`,
     })
+    if (result) {
+      console.log(result)
+      toast.success('Welcome back!')
+    } else {
+      toast.error('Wrong username or password!')
+    }
   }
   return (
     <>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div className={headingsContainer}>
-          {/* <h3>Sign in</h3> */}
-          <p>Sign in with your username and password</p>
-        </div>
-
         <div className={mainContainer}>
+          <div className={headingsContainer}>
+            <h3>Welcome Back</h3>
+          </div>
           {/* <label htmlFor="username">Your username</label> */}
           <input
             type="text"
@@ -71,7 +76,6 @@ export default function LoginPage({}: Props) {
             onChange={(e) => {
               username.current = e.target.value
             }}
-            autoFocus
             required
           />
 
@@ -97,7 +101,7 @@ export default function LoginPage({}: Props) {
           </div>
           <br />
           <div className={loginBtnContainer}>
-            <button type="submit">Sign in</button>
+            <button type="submit">Login</button>
           </div>
 
           <p className={register}>
