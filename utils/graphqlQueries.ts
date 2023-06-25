@@ -178,28 +178,29 @@ query GetCategories() {
 `
 
 export const loginQuery = gql`
-  query Login($username: String!) {
-    reader(where: { username: $username }) {
-      username
+  query Login($email: String!) {
+    reader(where: { email: $email }) {
+      name
+      email
       password
     }
   }
 `
 
 export const newUserQuery = gql`
-  mutation NewUser($username: String!, $password: String!) {
-    createReader(data: { username: $username, password: $password }) {
-      username
+  mutation NewUser($name: String!, $email: String!, $password: String!) {
+    createReader(data: { name: $name, email: $email, password: $password }) {
+      name
     }
-    publishReader(where: { username: $username }) {
-      username
+    publishReader(where: { email: $email }) {
+      name
     }
   }
 `
 
-export const checkUsernameQuery = gql`
-  query CheckUsername($username: String!) {
-    reader(where: { username: $username }) {
+export const checkEmailQuery = gql`
+  query CheckEmail($email: String!) {
+    reader(where: { email: $email }) {
       id
     }
   }

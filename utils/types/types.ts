@@ -133,18 +133,18 @@ export interface categoriesType {
 
 export interface loginType {
   reader: {
-    username: string
+    email: string
     password: string
   }
 }
 
 export interface userAddedType {
   reader: {
-    username: string
+    name: string
   }
 }
 
-export interface usernameExistsType {
+export interface emailExistsType {
   reader: {
     id: string | null
   }

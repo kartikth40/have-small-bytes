@@ -36,7 +36,7 @@ export default function LoginPage({}: Props) {
     setP()
   }, [])
 
-  const username = useRef('')
+  const email = useRef('')
   const password = useRef('')
   const {
     headingsContainer,
@@ -52,14 +52,14 @@ export default function LoginPage({}: Props) {
     e.preventDefault()
     const loginId = toast.loading('Checking your credentials...')
     const result = await signIn('credentials', {
-      username: username.current,
+      email: email.current,
       password: password.current,
       redirect: false,
       // callbackUrl: `${callbackUrl}`,
     })
     if (result?.error) {
       toast.update(loginId, {
-        render: 'Wrong Username or Password...',
+        render: 'Wrong Email or Password!...',
         type: 'error',
         isLoading: false,
         autoClose: 3000,
@@ -82,13 +82,13 @@ export default function LoginPage({}: Props) {
           <div className={headingsContainer}>
             <h3>Welcome Back</h3>
           </div>
-          {/* <label htmlFor="username">Your username</label> */}
+          {/* <label htmlFor="email">Your Email</label> */}
           <input
             type="text"
-            placeholder="Enter Username"
-            name="username"
+            placeholder="Enter Email"
+            name="email"
             onChange={(e) => {
-              username.current = e.target.value
+              email.current = e.target.value
             }}
             required
           />

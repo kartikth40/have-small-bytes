@@ -3,14 +3,14 @@ import { signJwtAccessToken } from '@/services/jwt'
 import * as bcrypt from 'bcrypt'
 
 interface requestBody {
-  username: string
+  email: string
   password: string
 }
 
 export async function POST(request: Request) {
   const body: requestBody = await request.json()
 
-  const user = await checkLogin(body.username)
+  const user = await checkLogin(body.email)
 
   if (user && (await bcrypt.compare(body.password, user.password))) {
     const { password, ...userWithoutPass } = user
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   } else {
     const myOptions = {
       status: 400,
-      statusText: 'Incorrect Username or Password!',
+      statusText: 'Incorrect Email or Password!',
     }
     return new Response(JSON.stringify(null), myOptions)
   }

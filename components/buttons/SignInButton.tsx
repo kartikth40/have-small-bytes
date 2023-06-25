@@ -11,7 +11,6 @@ export default function SignInButton({}: Props) {
 
   const path = usePathname()
   if (path === '/auth/signin' || path === '/auth/signup') return null
-  console.log(session)
   const { signInBtn } = styles
   if (session && session.user) {
     return <ProfileButton />

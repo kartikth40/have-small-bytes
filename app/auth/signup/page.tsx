@@ -37,7 +37,8 @@ export default function SignUpPage({}: Props) {
     setP()
   }, [])
 
-  const username = useRef('')
+  const name = useRef('')
+  const email = useRef('')
   const password = useRef('')
   const {
     headingsContainer,
@@ -51,14 +52,15 @@ export default function SignUpPage({}: Props) {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const credentials = {
-      username: username.current,
+      name: name.current,
+      email: email.current,
       password: password.current,
     }
-    const createId = toast.loading('Checking Username...')
-    const checkUser = await checkUserExists(username.current)
+    const createId = toast.loading('Checking Email...')
+    const checkUser = await checkUserExists(email.current)
     if (checkUser && checkUser.id) {
       toast.update(createId, {
-        render: 'Username already exists!',
+        render: 'Email already exists!',
         type: 'error',
         isLoading: false,
         autoClose: 5000,
@@ -88,7 +90,7 @@ export default function SignUpPage({}: Props) {
         const loginId = toast.loading('Logging you in, please wait...')
 
         await signIn('credentials', {
-          username: username.current,
+          email: email.current,
           password: password.current,
         })
         router.replace('/')
@@ -115,13 +117,26 @@ export default function SignUpPage({}: Props) {
           <div className={headingsContainer}>
             <h3>Sign Up</h3>
           </div>
-          {/* <label htmlFor="username">Your username</label> */}
+          {/* <label htmlFor="name">Your Name</label> */}
           <input
             type="text"
-            placeholder="Enter Username"
-            name="username"
+            placeholder="Enter Name"
+            name="name"
             onChange={(e) => {
-              username.current = e.target.value
+              name.current = e.target.value
+            }}
+            required
+          />
+
+          <br />
+          <br />
+          {/* <label htmlFor="email">Your Email</label> */}
+          <input
+            type="text"
+            placeholder="Enter Email"
+            name="email"
+            onChange={(e) => {
+              email.current = e.target.value
             }}
             required
           />

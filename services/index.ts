@@ -6,7 +6,7 @@ import {
   posts,
   recentPostsType,
   userAddedType,
-  usernameExistsType,
+  emailExistsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -20,7 +20,7 @@ import {
   RecentPostsQuery,
   SimilarPostsQuery,
   authorUrlQuery,
-  checkUsernameQuery,
+  checkEmailQuery,
   loginQuery,
   newUserQuery,
 } from '../utils/graphqlQueries'
@@ -138,10 +138,10 @@ export const getCategories = cache(async () => {
   return []
 })
 
-export const checkLogin = cache(async (username: string) => {
+export const checkLogin = cache(async (email: string) => {
   try {
     const result: loginType = await request(graphqlAPI, loginQuery, {
-      username,
+      email,
     })
     return result.reader
   } catch (err) {
@@ -149,27 +149,26 @@ export const checkLogin = cache(async (username: string) => {
   }
 })
 
-export const addUser = cache(async (username: string, password: string) => {
-  try {
-    const result: userAddedType = await request(graphqlAPI, newUserQuery, {
-      username,
-      password,
-    })
-    return result
-  } catch (err) {
-    console.log('ERROR Registering new user ----> ' + err)
+export const addUser = cache(
+  async (name: string, email: string, password: string) => {
+    try {
+      const result: userAddedType = await request(graphqlAPI, newUserQuery, {
+        name,
+        email,
+        password,
+      })
+      return result
+    } catch (err) {
+      console.log('ERROR Registering new user ----> ' + err)
+    }
   }
-})
+)
 
-export const checkUserExists = cache(async (username: string) => {
+export const checkUserExists = cache(async (email: string) => {
   try {
-    const result: usernameExistsType = await request(
-      graphqlAPI,
-      checkUsernameQuery,
-      {
-        username,
-      }
-    )
+    const result: emailExistsType = await request(graphqlAPI, checkEmailQuery, {
+      email,
+    })
     return result.reader
   } catch (err) {
     console.log('ERROR checking user exists ----> ' + err)
