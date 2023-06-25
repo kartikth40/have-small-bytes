@@ -196,3 +196,11 @@ export const newUserQuery = gql`
     }
   }
 `
+
+export const checkUsernameQuery = gql`
+  query CheckUsername($username: String!) {
+    reader(where: { username: $username }) {
+      id
+    }
+  }
+`

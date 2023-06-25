@@ -6,6 +6,7 @@ import {
   posts,
   recentPostsType,
   userAddedType,
+  usernameExistsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -19,6 +20,7 @@ import {
   RecentPostsQuery,
   SimilarPostsQuery,
   authorUrlQuery,
+  checkUsernameQuery,
   loginQuery,
   newUserQuery,
 } from '../utils/graphqlQueries'
@@ -156,5 +158,20 @@ export const addUser = cache(async (username: string, password: string) => {
     return result
   } catch (err) {
     console.log('ERROR Registering new user ----> ' + err)
+  }
+})
+
+export const checkUserExists = cache(async (username: string) => {
+  try {
+    const result: usernameExistsType = await request(
+      graphqlAPI,
+      checkUsernameQuery,
+      {
+        username,
+      }
+    )
+    return result.reader
+  } catch (err) {
+    console.log('ERROR checking user exists ----> ' + err)
   }
 })

@@ -143,3 +143,9 @@ export interface userAddedType {
     username: string
   }
 }
+
+export interface usernameExistsType {
+  reader: {
+    id: string | null
+  }
+}

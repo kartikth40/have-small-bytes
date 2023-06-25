@@ -13,6 +13,7 @@ import { redirect, useRouter } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
+import { checkUserExists } from '@/services'
 
 type Props = {}
 
@@ -51,44 +52,58 @@ export default function SignUpPage({}: Props) {
       username: username.current,
       password: password.current,
     }
-    const createId = toast.loading('Creating your account...')
-    const res = await fetch('/api/user', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-      headers: {
-        'Content-Type': 'application/json',
-        // authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
-      },
-    })
-    const user = await res.json()
-    if (res.ok && user) {
+    const createId = toast.loading('Checking Username...')
+    const checkUser = await checkUserExists(username.current)
+    if (checkUser && checkUser.id) {
       toast.update(createId, {
-        render: '🦄 Account Created!',
-        type: 'success',
-        isLoading: false,
-        autoClose: 3000,
-      })
-      const loginId = toast.loading('Logging you in, please wait...')
-
-      await signIn('credentials', {
-        username: username.current,
-        password: password.current,
-      })
-      toast.update(loginId, {
-        render: '🦄 Logged In',
-        type: 'success',
-        isLoading: false,
-        autoClose: 3000,
-      })
-      router.push('/')
-    } else {
-      console.log(user, res)
-      toast.update(createId, {
-        render: res.statusText,
+        render: 'Username already exists!',
         type: 'error',
         isLoading: false,
         autoClose: 5000,
       })
+    } else {
+      toast.update(createId, {
+        render: 'Creating your account...',
+        isLoading: true,
+        autoClose: 3000,
+      })
+      const res = await fetch('/api/user', {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+        headers: {
+          'Content-Type': 'application/json',
+          // authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
+        },
+      })
+      const user = await res.json()
+      if (res.ok && user) {
+        toast.update(createId, {
+          render: '🦄 Account Created!',
+          type: 'success',
+          isLoading: false,
+          autoClose: 3000,
+        })
+        const loginId = toast.loading('Logging you in, please wait...')
+
+        await signIn('credentials', {
+          username: username.current,
+          password: password.current,
+        })
+        toast.update(loginId, {
+          render: '🦄 Logged In, Redirecting to home page...',
+          type: 'success',
+          isLoading: false,
+          autoClose: 3000,
+        })
+        router.replace('/')
+      } else {
+        toast.update(createId, {
+          render: res.statusText,
+          type: 'error',
+          isLoading: false,
+          autoClose: 5000,
+        })
+      }
     }
   }
   return (
