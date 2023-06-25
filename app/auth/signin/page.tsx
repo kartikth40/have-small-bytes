@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useSearchParams } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -44,21 +44,35 @@ export default function LoginPage({}: Props) {
     register,
     loginBtnContainer,
     thirdPartyLoginContainer,
+    forgetPass,
   } = styles
-  const callbakUrl = useSearchParams().get('callbackUrl')
+  const callbackUrl = useSearchParams().get('callbackUrl')
+  const router = useRouter()
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const loginId = toast.loading('Checking your credentials...')
     const result = await signIn('credentials', {
       username: username.current,
       password: password.current,
       redirect: false,
-      // callbackUrl: `${callbakUrl}`,
+      // callbackUrl: `${callbackUrl}`,
     })
-    if (result) {
-      console.log(result)
-      toast.success('Welcome back!')
+    if (result?.error) {
+      toast.update(loginId, {
+        render: 'Wrong Username or Password...',
+        type: 'error',
+        isLoading: false,
+        autoClose: 3000,
+      })
     } else {
-      toast.error('Wrong username or password!')
+      toast.update(loginId, {
+        render: '🦄 Logged In!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 3000,
+      })
+      router.replace(callbackUrl ?? '/')
+      console.log(callbackUrl)
     }
   }
   return (
@@ -94,16 +108,15 @@ export default function LoginPage({}: Props) {
           />
           <br />
           <br />
-          <div>
-            <p>
-              <a href="#">Forgot Password?</a>
-            </p>
-          </div>
           <br />
           <div className={loginBtnContainer}>
             <button type="submit">Login</button>
           </div>
-
+          <div>
+            <p className={forgetPass}>
+              <a href="#">Forgot Password?</a>
+            </p>
+          </div>
           <p className={register}>
             Not registered? <Link href="/auth/signup">Register here!</Link>
           </p>

@@ -14,6 +14,7 @@ import { BuiltInProviderType } from 'next-auth/providers'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
 import { checkUserExists } from '@/services'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -43,6 +44,7 @@ export default function SignUpPage({}: Props) {
     mainContainer,
     loginBtnContainer,
     thirdPartyLoginContainer,
+    login,
   } = styles
   const router = useRouter()
 
@@ -89,13 +91,13 @@ export default function SignUpPage({}: Props) {
           username: username.current,
           password: password.current,
         })
+        router.replace('/')
         toast.update(loginId, {
-          render: '🦄 Logged In, Redirecting to home page...',
+          render: '🦄 Logged In!',
           type: 'success',
           isLoading: false,
           autoClose: 3000,
         })
-        router.replace('/')
       } else {
         toast.update(createId, {
           render: res.statusText,
@@ -142,7 +144,9 @@ export default function SignUpPage({}: Props) {
           <div className={loginBtnContainer}>
             <button type="submit">Create Account</button>
           </div>
-
+          <p className={login}>
+            Already have an account? <Link href="/auth/signin">Login</Link>
+          </p>
           <div className={thirdPartyLoginContainer}>
             {providers
               ? Object.values(providers).map((provider) =>

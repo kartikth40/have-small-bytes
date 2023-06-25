@@ -102,6 +102,13 @@
     }
   }
 }
+.forgetPass,
+.register {
+  font-size: 0.7em;
+  & a {
+    text-decoration: underline;
+  }
+}
 .register {
   margin-top: 1em;
 }

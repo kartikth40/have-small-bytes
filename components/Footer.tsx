@@ -8,7 +8,7 @@ type Props = {}
 export default async function Footer({}: Props) {
   const { footerContainer, footer, logo, tagLine, copyrights } = styles
   const currentDate = new Date().getFullYear()
-  const authorId = (await myPortfolioURL('clik9bnov38ao0bpm3isjt91v')) || '/'
+  const authorId = (await myPortfolioURL('cljbbxtps31rx0bpoirw9cuke')) || '/'
   return (
     <div className={footerContainer}>
       <div className={footer}>
