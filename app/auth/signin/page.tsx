@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -45,7 +45,6 @@ export default function LoginPage({}: Props) {
     thirdPartyLoginContainer,
     forgetPass,
   } = styles
-  const callbackUrl = useSearchParams().get('callbackUrl')
   const router = useRouter()
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -71,7 +70,7 @@ export default function LoginPage({}: Props) {
         isLoading: false,
         autoClose: 3000,
       })
-      router.replace(callbackUrl ?? '/')
+      router.replace('/')
     }
   }
   return (
