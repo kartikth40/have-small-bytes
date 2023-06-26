@@ -22,12 +22,6 @@ export default function LoginPage({}: Props) {
   if (session) {
     redirect('/')
   }
-
-  const [providers, setProviders] = useState<Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null>(null)
-
   useEffect(() => {
     async function setP() {
       const res = await getProviders()
@@ -35,6 +29,11 @@ export default function LoginPage({}: Props) {
     }
     setP()
   }, [])
+
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null>(null)
 
   const email = useRef('')
   const password = useRef('')
@@ -48,6 +47,7 @@ export default function LoginPage({}: Props) {
   } = styles
   const callbackUrl = useSearchParams().get('callbackUrl')
   const router = useRouter()
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const loginId = toast.loading('Checking your credentials...')
@@ -72,76 +72,73 @@ export default function LoginPage({}: Props) {
         autoClose: 3000,
       })
       router.replace(callbackUrl ?? '/')
-      console.log(callbackUrl)
     }
   }
   return (
-    <>
+    <div className={mainContainer}>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div className={mainContainer}>
-          <div className={headingsContainer}>
-            <h3>Welcome Back</h3>
-          </div>
-          {/* <label htmlFor="email">Your Email</label> */}
-          <input
-            type="text"
-            placeholder="Enter Email"
-            name="email"
-            onChange={(e) => {
-              email.current = e.target.value
-            }}
-            required
-          />
-
-          <br />
-          <br />
-
-          {/* <label htmlFor="pswrd">Your password</label> */}
-          <input
-            type="password"
-            placeholder="Enter Password"
-            name="pswrd"
-            onChange={(e) => {
-              password.current = e.target.value
-            }}
-            required
-          />
-          <br />
-          <br />
-          <br />
-          <div className={loginBtnContainer}>
-            <button type="submit">Login</button>
-          </div>
-          <div>
-            <p className={forgetPass}>
-              <a href="#">Forgot Password?</a>
-            </p>
-          </div>
-          <p className={register}>
-            Not registered? <Link href="/auth/signup">Register here!</Link>
-          </p>
-
-          <div className={thirdPartyLoginContainer}>
-            {providers
-              ? Object.values(providers).map((provider) =>
-                  provider.name !== 'Credentials' ? (
-                    <div key={provider.name}>
-                      <button onClick={() => signIn(provider.id)}>
-                        <Image
-                          src={`https://authjs.dev/img/providers/${provider.id}-dark.svg`}
-                          width={24}
-                          height={24}
-                          alt={`${provider.name} logo`}
-                        />
-                        Continue with {provider.name}
-                      </button>
-                    </div>
-                  ) : null
-                )
-              : null}
-          </div>
+        <div className={headingsContainer}>
+          <h3>Welcome Back</h3>
         </div>
+        {/* <label htmlFor="email">Your Email</label> */}
+        <input
+          type="text"
+          placeholder="Enter Email"
+          name="email"
+          onChange={(e) => {
+            email.current = e.target.value
+          }}
+          required
+        />
+
+        <br />
+        <br />
+
+        {/* <label htmlFor="pswrd">Your password</label> */}
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="pswrd"
+          onChange={(e) => {
+            password.current = e.target.value
+          }}
+          required
+        />
+        <br />
+        <br />
+        <br />
+        <div className={loginBtnContainer}>
+          <button type="submit">Login</button>
+        </div>
+        <div>
+          <p className={forgetPass}>
+            <a href="#">Forgot Password?</a>
+          </p>
+        </div>
+        <p className={register}>
+          Not registered? <Link href="/auth/signup">Register here!</Link>
+        </p>
       </form>
-    </>
+
+      <div className={thirdPartyLoginContainer}>
+        {providers
+          ? Object.values(providers).map((provider) =>
+              provider.name !== 'Credentials' ? (
+                <div key={provider.name}>
+                  <button onClick={() => signIn(provider.id)}>
+                    <Image
+                      src={`https://authjs.dev/img/providers/${provider.id}-dark.svg`}
+                      width={24}
+                      height={24}
+                      alt={`${provider.name} logo`}
+                    />
+                    Continue with {provider.name}
+                  </button>
+                </div>
+              ) : null
+            )
+          : null}
+      </div>
+    </div>
   )
 }

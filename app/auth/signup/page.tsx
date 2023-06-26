@@ -48,7 +48,6 @@ export default function SignUpPage({}: Props) {
     login,
   } = styles
   const router = useRouter()
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const credentials = {
@@ -92,14 +91,15 @@ export default function SignUpPage({}: Props) {
         await signIn('credentials', {
           email: email.current,
           password: password.current,
+          redirect: false,
         })
-        router.replace('/')
         toast.update(loginId, {
           render: '🦄 Logged In!',
           type: 'success',
           isLoading: false,
           autoClose: 3000,
         })
+        router.replace('/')
       } else {
         toast.update(createId, {
           render: res.statusText,
@@ -112,8 +112,8 @@ export default function SignUpPage({}: Props) {
   }
   return (
     <>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div className={mainContainer}>
+      <div className={mainContainer}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className={headingsContainer}>
             <h3>Sign Up</h3>
           </div>
@@ -162,27 +162,27 @@ export default function SignUpPage({}: Props) {
           <p className={login}>
             Already have an account? <Link href="/auth/signin">Login</Link>
           </p>
-          <div className={thirdPartyLoginContainer}>
-            {providers
-              ? Object.values(providers).map((provider) =>
-                  provider.name !== 'Credentials' ? (
-                    <div key={provider.name}>
-                      <button onClick={() => signIn(provider.id)}>
-                        <Image
-                          src={`https://authjs.dev/img/providers/${provider.id}-dark.svg`}
-                          width={24}
-                          height={24}
-                          alt={`${provider.name} logo`}
-                        />
-                        Continue with {provider.name}
-                      </button>
-                    </div>
-                  ) : null
-                )
-              : null}
-          </div>
+        </form>
+        <div className={thirdPartyLoginContainer}>
+          {providers
+            ? Object.values(providers).map((provider) =>
+                provider.name !== 'Credentials' ? (
+                  <div key={provider.name}>
+                    <button onClick={() => signIn(provider.id)}>
+                      <Image
+                        src={`https://authjs.dev/img/providers/${provider.id}-dark.svg`}
+                        width={24}
+                        height={24}
+                        alt={`${provider.name} logo`}
+                      />
+                      Continue with {provider.name}
+                    </button>
+                  </div>
+                ) : null
+              )
+            : null}
         </div>
-      </form>
+      </div>
     </>
   )
 }

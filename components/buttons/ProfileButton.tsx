@@ -8,7 +8,6 @@ type Props = {}
 export default function ProfileButton({}: Props) {
   const { data: session } = useSession()
   const { profileBtn } = styles
-  console.log(session)
   if (session && session.user) {
     return (
       <button className={profileBtn}>
