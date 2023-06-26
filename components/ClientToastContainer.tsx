@@ -7,8 +7,9 @@ export default function ClientToastContainer({}: Props) {
   return (
     <div>
       <ToastContainer
-        position="top-right"
+        position="bottom-right"
         autoClose={5000}
+        closeButton={true}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

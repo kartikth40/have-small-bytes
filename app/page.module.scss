@@ -22,14 +22,42 @@
   padding: 0.2em 0.5em;
   margin-left: 1em;
   font-family: var(--font-inter);
-  border-radius: 10px;
+  border-radius: 5px;
   color: var(--color-dark);
   font-weight: 600;
-  font-size: 0.9em;
+  font-size: 1em;
   cursor: pointer;
   &:hover {
     background-color: var(--color-dark);
     color: var(--color-light);
+  }
+}
+.signInBtn.loadingBtn {
+  color: transparent;
+  width: 100px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  background-color: var(0, 0, 0, 0.1);
+  pointer-events: none;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    transform: skewX(-10deg);
+    left: 0;
+    top: 0;
+    animation: slide 1s linear infinite;
+  }
+  @keyframes slide {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: 100%;
+    }
   }
 }
 
@@ -40,8 +68,8 @@
   font-family: var(--font-inter);
   border-radius: 5px;
   color: var(--color-dark);
-  font-weight: 600;
-  font-size: 0.9em;
+  font-weight: 500;
+  font-size: 1em;
   cursor: pointer;
 }
 

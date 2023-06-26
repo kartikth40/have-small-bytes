@@ -1,2 +1,28 @@
 .profilePageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.mainContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.sideMenu {
+  width: 20vw;
+  & ul {
+    list-style: none;
+    & li {
+      &.selected {
+        background-color: var(--color-dark);
+        color: var(--color-light);
+      }
+    }
+  }
+}
+.contentContainer {
+  width: 100%;
+  // & .content {
+  // }
 }

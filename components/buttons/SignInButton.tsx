@@ -7,16 +7,20 @@ import { usePathname } from 'next/navigation'
 type Props = {}
 
 export default function SignInButton({}: Props) {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const loading = status === 'loading'
 
   const path = usePathname()
   if (path === '/auth/signin' || path === '/auth/signup') return null
-  const { signInBtn } = styles
-  if (session && session.user) {
-    return <ProfileButton />
-  }
-  return (
-    <button className={signInBtn} onClick={() => signIn()}>
+  const { signInBtn, loadingBtn } = styles
+
+  return !loading && session ? (
+    <ProfileButton />
+  ) : (
+    <button
+      className={`${signInBtn} ${loading && loadingBtn}`}
+      onClick={() => signIn()}
+    >
       Login
     </button>
   )
