@@ -15,8 +15,7 @@
   font-weight: bolder;
 }
 
-.signInBtn,
-.signOutBtn {
+.signInBtn {
   border: none;
   background-color: rgba(0, 0, 0, 0.07);
   padding: 0.2em 0.5em;
@@ -30,6 +29,19 @@
   &:hover {
     background-color: var(--color-dark);
     color: var(--color-light);
+  }
+}
+.signOutBtn {
+  border: none;
+  padding: 0.2em 0.5em;
+  color: var(--color-dark);
+  font-family: var(--font-inter);
+  font-weight: 900;
+  font-size: 1em;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 .signInBtn.loadingBtn {

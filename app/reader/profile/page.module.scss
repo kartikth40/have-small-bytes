@@ -10,14 +10,16 @@
   align-items: center;
 }
 .sideMenu {
-  width: 20vw;
-  & ul {
-    list-style: none;
-    & li {
-      &.selected {
-        background-color: var(--color-dark);
-        color: var(--color-light);
-      }
+  width: 15vw;
+  font-size: 1em;
+  font-weight: 900;
+  margin-right: 2em;
+  border-right: 2px solid rgba(0, 0, 0, 0.1);
+  & div {
+    margin: 1em;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
