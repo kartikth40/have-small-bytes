@@ -3,28 +3,83 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  & h2 {
+    font-size: 2em;
+  }
 }
 .mainContainer {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
 }
 .sideMenu {
   width: 15vw;
   font-size: 1em;
   font-weight: 900;
   margin-right: 2em;
-  border-right: 2px solid rgba(0, 0, 0, 0.1);
   & div {
-    margin: 1em;
+    margin: 1em 0;
     cursor: pointer;
     &:hover {
       text-decoration: underline;
     }
   }
+  position: relative;
+  &:after {
+    position: absolute;
+    content: '';
+    width: 2px;
+    height: 80vh;
+    background-color: rgba(0, 0, 0, 0.1);
+    right: 0;
+    top: 0;
+  }
 }
+
 .contentContainer {
+  margin: 0 2rem;
   width: 100%;
-  // & .content {
-  // }
+}
+.headingsContainer {
+  & h2 {
+    font-weight: 1em;
+  }
+}
+
+.updateForm {
+  & label {
+    font-size: 1.2em;
+  }
+  & input {
+    border: none;
+    font-size: 1.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--color-dark);
+    padding: 1em 2em;
+    width: 50vw;
+  }
+}
+.mainForm {
+  width: 100%;
+  padding: 1em;
+  & section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.updateBtnContainer {
+  & button {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 1em 2em;
+    font-size: 1em;
+    margin-right: 1em;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
 }
