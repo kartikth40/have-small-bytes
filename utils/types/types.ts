@@ -152,3 +152,12 @@ export interface readerIdReturnType {
     id: string | null
   }
 }
+
+export interface profileAvatarsType {
+  assets: [
+    {
+      filename: string
+      url: string
+    }
+  ]
+}

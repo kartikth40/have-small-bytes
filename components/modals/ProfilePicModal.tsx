@@ -23,7 +23,7 @@ export default function ProfilePicModal() {
       {showModal &&
         createPortal(
           <div className={profilePicModal}>
-            <h1>Hello</h1>
+            <h1>Choose your profile pic</h1>
             <button type="button" onClick={() => setShowModal(false)}>
               close
             </button>

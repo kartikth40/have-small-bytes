@@ -222,3 +222,12 @@ export const updateUserQuery = gql`
       id
     }
 `
+
+export const getAllProfileAvatarQuery = gql`
+    query GetProfileAvatar(){
+      assets(orderBy: fileName_ASC, where: {fileName_contains: "avatar"}, first: 12) {
+        fileName
+        url
+      }
+    }
+`

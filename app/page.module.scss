@@ -330,14 +330,14 @@
   padding: 2rem 3rem;
   background: var(--color-primary-black);
   color: var(--color-light);
+  position: relative;
+  z-index: 1000;
 }
 .footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 1000;
 }
 .logo {
   font-size: 1.5rem;

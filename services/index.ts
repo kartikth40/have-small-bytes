@@ -7,6 +7,7 @@ import {
   recentPostsType,
   userAddedType,
   readerIdReturnType,
+  profileAvatarsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -21,6 +22,7 @@ import {
   SimilarPostsQuery,
   authorUrlQuery,
   checkEmailQuery,
+  getAllProfileAvatarQuery,
   loginQuery,
   newUserQuery,
 } from '../utils/graphqlQueries'
@@ -198,3 +200,16 @@ export const updateUser = cache(
     }
   }
 )
+
+export const getAllProfileAvatars = cache(async () => {
+  try {
+    const result: profileAvatarsType = await request(
+      graphqlAPI,
+      getAllProfileAvatarQuery
+    )
+    return result.assets
+  } catch (err) {
+    console.log('ERROR Extracting profile avatars ----> ' + err)
+  }
+  return []
+})
