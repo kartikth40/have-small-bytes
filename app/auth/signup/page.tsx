@@ -19,16 +19,22 @@ import Link from 'next/link'
 type Props = {}
 
 export default function SignUpPage({}: Props) {
-  const { data: session } = useSession()
-  // if (session) {
-  //   redirect('/')
-  // }
+  const { data: session, status: sessionStatus } = useSession()
+  const [signingIn, setSigningIn] = useState(false)
+
+  const shouldRedirect = !signingIn && session
+  const router = useRouter()
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      router.push('/')
+    }
+  }, [router, shouldRedirect])
 
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
   > | null>(null)
-
   useEffect(() => {
     async function setP() {
       const res = await getProviders()
@@ -46,11 +52,16 @@ export default function SignUpPage({}: Props) {
     loginBtnContainer,
     thirdPartyLoginContainer,
     login,
+    loadingState,
   } = styles
-  const router = useRouter()
   const callbackUrl = useSearchParams().get('callbackUrl')
+  if (shouldRedirect)
+    return <div className={loadingState}>Redirecting to home page...</div>
+  if (sessionStatus === 'loading')
+    return <div className={loadingState}>Loading ...</div>
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setSigningIn(true)
     const credentials = {
       name: name.current,
       email: email.current,
@@ -100,8 +111,9 @@ export default function SignUpPage({}: Props) {
           isLoading: false,
           autoClose: 3000,
         })
-        router.replace(callbackUrl ?? '/')
+        router.push(callbackUrl ?? '/')
       } else {
+        setSigningIn(false)
         toast.update(createId, {
           render: res.statusText,
           type: 'error',
