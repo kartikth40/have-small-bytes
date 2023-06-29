@@ -336,6 +336,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 1000;
 }
 .logo {
   font-size: 1.5rem;
@@ -348,4 +350,30 @@
 .copyrights {
   font-size: 0.7rem;
   font-weight: 100;
+}
+.modalContainer {
+}
+.modalBG {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  transition: 0.15s all;
+  pointer-events: none;
+  &.hideBackground {
+    pointer-events: all;
+
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+  }
+}
+.modal,
+.profilePicModal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-light);
+  padding: 2rem;
+  border: 1px solid black;
+  z-index: 20;
 }

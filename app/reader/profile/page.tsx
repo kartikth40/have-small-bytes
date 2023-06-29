@@ -2,23 +2,32 @@
 import SignOutButton from '@/components/buttons/SignOutButton '
 import { redirect } from 'next/navigation'
 import styles from './page.module.scss'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import ProfilePicModal from '@/components/modals/ProfilePicModal'
 type Props = {}
 
 export default function ProfilePage({}: Props) {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
 
+  useEffect(() => {
+    if (!loading) {
+      const user = session?.user
+      setName(user ? user.name : '')
+      setEmail(user ? user.email : '')
+      setPic(user && user.photo ? user.photo?.url : '')
+    }
+  }, [loading])
+
   if (!session && !loading) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
-  console.log(session)
 
   const [selected, setSelected] = useState<string>('profile')
-  const name = useRef('kartik')
-  const email = useRef('kartik@gmail.com')
-  const pic = useRef('picture')
+  const [name, setName] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [pic, setPic] = useState<string>('')
 
   const {
     profilePageContainer,
@@ -83,8 +92,9 @@ export default function ProfilePage({}: Props) {
                     type="text"
                     placeholder="Enter Name"
                     name="name"
+                    value={name}
                     onChange={(e) => {
-                      name.current = e.target.value
+                      setName(e.target.value)
                     }}
                     required
                   />
@@ -98,8 +108,9 @@ export default function ProfilePage({}: Props) {
                     type="text"
                     placeholder="Enter Email"
                     name="email"
+                    value={email}
                     onChange={(e) => {
-                      email.current = e.target.value
+                      setEmail(e.target.value)
                     }}
                     required
                   />
@@ -108,15 +119,17 @@ export default function ProfilePage({}: Props) {
                 <br />
                 <section>
                   <label htmlFor="pic">Profile Pic</label>
-                  <input
+                  {/* <input
                     type="text"
                     placeholder="Pic"
                     name="pic"
+                    value={pic}
                     onChange={(e) => {
-                      pic.current = e.target.value
+                      setPic(e.target.value)
                     }}
                     required
-                  />
+                  /> */}
+                  <ProfilePicModal />
                 </section>
 
                 <br />

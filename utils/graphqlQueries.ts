@@ -184,6 +184,9 @@ export const loginQuery = gql`
       name
       email
       password
+      photo {
+        url
+      }
     }
   }
 `
