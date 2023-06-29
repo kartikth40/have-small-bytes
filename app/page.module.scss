@@ -377,3 +377,11 @@
   border: 1px solid black;
   z-index: 20;
 }
+
+.avatarsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // & .avatarContainer{}
+}
