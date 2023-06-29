@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
@@ -20,9 +20,9 @@ type Props = {}
 
 export default function SignUpPage({}: Props) {
   const { data: session } = useSession()
-  if (session) {
-    redirect('/')
-  }
+  // if (session) {
+  //   redirect('/')
+  // }
 
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
@@ -48,6 +48,7 @@ export default function SignUpPage({}: Props) {
     login,
   } = styles
   const router = useRouter()
+  const callbackUrl = useSearchParams().get('callbackUrl')
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const credentials = {
@@ -99,7 +100,7 @@ export default function SignUpPage({}: Props) {
           isLoading: false,
           autoClose: 3000,
         })
-        router.replace('/')
+        router.replace(callbackUrl ?? '/')
       } else {
         toast.update(createId, {
           render: res.statusText,
@@ -160,7 +161,8 @@ export default function SignUpPage({}: Props) {
             <button type="submit">Create Account</button>
           </div>
           <p className={login}>
-            Already have an account? <Link href="/auth/signin">Login</Link>
+            Already have an account?{' '}
+            <Link href={`/auth/signin?callbackUrl=${callbackUrl}`}>Login</Link>
           </p>
         </form>
         <div className={thirdPartyLoginContainer}>

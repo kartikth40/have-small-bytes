@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -19,9 +19,9 @@ type Props = {}
 
 export default function LoginPage({}: Props) {
   const { data: session } = useSession()
-  if (session) {
-    redirect('/')
-  }
+  // if (session) {
+  //   redirect('/')
+  // }
   useEffect(() => {
     async function setP() {
       const res = await getProviders()
@@ -46,7 +46,7 @@ export default function LoginPage({}: Props) {
     forgetPass,
   } = styles
   const router = useRouter()
-
+  const callbackUrl = useSearchParams().get('callbackUrl')
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const loginId = toast.loading('Checking your credentials...')
@@ -70,7 +70,7 @@ export default function LoginPage({}: Props) {
         isLoading: false,
         autoClose: 3000,
       })
-      router.replace('/')
+      router.replace(callbackUrl ?? '/')
     }
   }
   return (
@@ -115,7 +115,10 @@ export default function LoginPage({}: Props) {
           </p>
         </div>
         <p className={register}>
-          Not registered? <Link href="/auth/signup">Register here!</Link>
+          Not registered?{' '}
+          <Link href={`/auth/signup?callbackUrl=${callbackUrl}`}>
+            Register here!
+          </Link>
         </p>
       </form>
 
