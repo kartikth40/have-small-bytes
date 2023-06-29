@@ -28,6 +28,8 @@ export default function ProfilePage({}: Props) {
     updateBtnContainer,
     updateForm,
     mainForm,
+    dangerZone,
+    deleteBtn,
   } = styles
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -52,8 +54,19 @@ export default function ProfilePage({}: Props) {
           >
             Reset Password
           </div>
-          <div>
-            <SignOutButton />
+          <br />
+          <div className={dangerZone}>
+            <div
+              className={deleteBtn}
+              onClick={() => {
+                setSelected('delete')
+              }}
+            >
+              Delete Account
+            </div>
+            <div>
+              <SignOutButton />
+            </div>
           </div>
         </div>
         <div className={contentContainer}>
@@ -109,7 +122,7 @@ export default function ProfilePage({}: Props) {
                 <br />
                 <div className={updateBtnContainer}>
                   <button type="submit">Update</button>
-                  <button>Reset</button>
+                  <button type="button">Reset</button>
                 </div>
               </div>
             </form>

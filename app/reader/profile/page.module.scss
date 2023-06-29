@@ -24,6 +24,16 @@
     &:hover {
       text-decoration: underline;
     }
+    &.dangerZone {
+      color: var(--color-dark-2);
+      &:hover {
+        text-decoration: none;
+      }
+      & .deleteBtn {
+        color: rgb(253, 136, 136);
+        text-decoration-color: rgb(253, 136, 136);
+      }
+    }
   }
   position: relative;
   &:after {
