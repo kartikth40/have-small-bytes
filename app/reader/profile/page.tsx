@@ -13,6 +13,7 @@ export default function ProfilePage({}: Props) {
   if (!session && !loading) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
+  console.log(session)
 
   const [selected, setSelected] = useState<string>('profile')
   const name = useRef('kartik')

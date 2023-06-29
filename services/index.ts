@@ -6,7 +6,7 @@ import {
   posts,
   recentPostsType,
   userAddedType,
-  emailExistsType,
+  readerIdReturnType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -166,11 +166,35 @@ export const addUser = cache(
 
 export const checkUserExists = cache(async (email: string) => {
   try {
-    const result: emailExistsType = await request(graphqlAPI, checkEmailQuery, {
-      email,
-    })
+    const result: readerIdReturnType = await request(
+      graphqlAPI,
+      checkEmailQuery,
+      {
+        email,
+      }
+    )
     return result.reader
   } catch (err) {
     console.log('ERROR checking user exists ----> ' + err)
   }
 })
+
+export const updateUser = cache(
+  async (userId: string, name: string, email: string, photoId: string) => {
+    try {
+      const result: readerIdReturnType = await request(
+        graphqlAPI,
+        newUserQuery,
+        {
+          userId,
+          name,
+          email,
+          photoId,
+        }
+      )
+      return result.reader
+    } catch (err) {
+      console.log('ERROR Updating the user ----> ' + err)
+    }
+  }
+)
