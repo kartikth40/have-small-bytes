@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -18,10 +18,22 @@ import { toast } from 'react-toastify'
 type Props = {}
 
 export default function LoginPage({}: Props) {
-  const { data: session } = useSession()
-  // if (session) {
-  //   redirect('/')
-  // }
+  const { data: session, status: sessionStatus } = useSession()
+  const [signingIn, setSigningIn] = useState(false)
+
+  const shouldRedirect = !signingIn && session
+  const router = useRouter()
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      router.push('/')
+    }
+  }, [router, shouldRedirect])
+
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null>(null)
   useEffect(() => {
     async function setP() {
       const res = await getProviders()
@@ -29,11 +41,6 @@ export default function LoginPage({}: Props) {
     }
     setP()
   }, [])
-
-  const [providers, setProviders] = useState<Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null>(null)
 
   const email = useRef('')
   const password = useRef('')
@@ -44,19 +51,25 @@ export default function LoginPage({}: Props) {
     loginBtnContainer,
     thirdPartyLoginContainer,
     forgetPass,
+    loadingState,
   } = styles
-  const router = useRouter()
   const callbackUrl = useSearchParams().get('callbackUrl')
+  if (shouldRedirect)
+    return <div className={loadingState}>Redirecting to home page...</div>
+  if (sessionStatus === 'loading')
+    return <div className={loadingState}>Loading ...</div>
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setSigningIn(true)
     const loginId = toast.loading('Checking your credentials...')
     const result = await signIn('credentials', {
       email: email.current,
       password: password.current,
       redirect: false,
-      // callbackUrl: `${callbackUrl}`,
     })
     if (result?.error) {
+      setSigningIn(false)
       toast.update(loginId, {
         render: 'Wrong Email or Password!...',
         type: 'error',
@@ -70,7 +83,7 @@ export default function LoginPage({}: Props) {
         isLoading: false,
         autoClose: 3000,
       })
-      router.replace(callbackUrl ?? '/')
+      router.push(callbackUrl ?? '/')
     }
   }
   return (
