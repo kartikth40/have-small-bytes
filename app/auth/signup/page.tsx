@@ -9,7 +9,7 @@ import {
   signIn,
   useSession,
 } from 'next-auth/react'
-import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { BuiltInProviderType } from 'next-auth/providers'
 import Image from 'next/image'
 import { toast } from 'react-toastify'
@@ -26,23 +26,23 @@ export default function SignUpPage({}: Props) {
   const shouldRedirect = !signingIn && session
   const router = useRouter()
 
-  useEffect(() => {
-    if (shouldRedirect) {
-      router.push('/')
-    }
-  }, [router, shouldRedirect])
+  // useEffect(() => {
+  //   if (shouldRedirect) {
+  //     router.push('/')
+  //   }
+  // }, [router, shouldRedirect])
 
-  const [providers, setProviders] = useState<Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null>(null)
-  useEffect(() => {
-    async function setP() {
-      const res = await getProviders()
-      setProviders(res)
-    }
-    setP()
-  }, [])
+  // const [providers, setProviders] = useState<Record<
+  //   LiteralUnion<BuiltInProviderType, string>,
+  //   ClientSafeProvider
+  // > | null>(null)
+  // useEffect(() => {
+  //   async function setP() {
+  //     const res = await getProviders()
+  //     setProviders(res)
+  //   }
+  //   setP()
+  // }, [])
 
   const name = useRef('')
   const email = useRef('')
@@ -138,6 +138,8 @@ export default function SignUpPage({}: Props) {
             type="text"
             placeholder="Enter Name"
             name="name"
+            minLength={3}
+            maxLength={15}
             onChange={(e) => {
               name.current = e.target.value
             }}
@@ -148,9 +150,10 @@ export default function SignUpPage({}: Props) {
           <br />
           {/* <label htmlFor="email">Your Email</label> */}
           <input
-            type="text"
+            type="email"
             placeholder="Enter Email"
             name="email"
+            maxLength={35}
             onChange={(e) => {
               email.current = e.target.value
             }}
@@ -165,6 +168,8 @@ export default function SignUpPage({}: Props) {
             type="password"
             placeholder="Enter Password"
             name="pswrd"
+            minLength={8}
+            maxLength={20}
             onChange={(e) => {
               password.current = e.target.value
             }}
@@ -180,7 +185,7 @@ export default function SignUpPage({}: Props) {
             <Link href={`/auth/signin?callbackUrl=${callbackUrl}`}>Login</Link>
           </p>
         </form>
-        <div className={thirdPartyLoginContainer}>
+        {/* <div className={thirdPartyLoginContainer}>
           {providers
             ? Object.values(providers).map((provider) =>
                 provider.name !== 'Credentials' ? (
@@ -198,7 +203,7 @@ export default function SignUpPage({}: Props) {
                 ) : null
               )
             : null}
-        </div>
+        </div> */}
       </div>
     </>
   )

@@ -29,16 +29,16 @@ export const authOptions = {
         return null
       },
     }),
-    GithubProvider({
-      clientId:
-        process.env.APP_ENV === 'development'
-          ? process.env.GITHUB_TEST_ID!
-          : process.env.GITHUB_ID!,
-      clientSecret:
-        process.env.APP_ENV === 'development'
-          ? process.env.GITHUB_TEST_SECRET!
-          : process.env.GITHUB_SECRET!,
-    }),
+    // GithubProvider({
+    //   clientId:
+    //     process.env.APP_ENV === 'development'
+    //       ? process.env.GITHUB_TEST_ID!
+    //       : process.env.GITHUB_ID!,
+    //   clientSecret:
+    //     process.env.APP_ENV === 'development'
+    //       ? process.env.GITHUB_TEST_SECRET!
+    //       : process.env.GITHUB_SECRET!,
+    // }),
     // ...add more providers here
   ],
   callbacks: {
@@ -53,9 +53,17 @@ export const authOptions = {
       trigger?: any
       session?: any
     }) {
+      // if updating the session
       if (trigger === 'update') {
         return { ...token, ...session.user }
       }
+      // for OAuth tokens
+      if (user && !user.photo && user.image) {
+        user = { ...user, photo: { id: user.id, url: user.image } }
+        delete user.image
+        delete token.picture
+      }
+
       return { ...token, ...user }
     },
 

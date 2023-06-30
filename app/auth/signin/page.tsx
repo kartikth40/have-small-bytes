@@ -30,17 +30,17 @@ export default function LoginPage({}: Props) {
     }
   }, [router, shouldRedirect])
 
-  const [providers, setProviders] = useState<Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null>(null)
-  useEffect(() => {
-    async function setP() {
-      const res = await getProviders()
-      setProviders(res)
-    }
-    setP()
-  }, [])
+  // const [providers, setProviders] = useState<Record<
+  //   LiteralUnion<BuiltInProviderType, string>,
+  //   ClientSafeProvider
+  // > | null>(null)
+  // useEffect(() => {
+  //   async function setP() {
+  //     const res = await getProviders()
+  //     setProviders(res)
+  //   }
+  //   setP()
+  // }, [])
 
   const email = useRef('')
   const password = useRef('')
@@ -94,7 +94,7 @@ export default function LoginPage({}: Props) {
         </div>
         {/* <label htmlFor="email">Your Email</label> */}
         <input
-          type="text"
+          type="email"
           placeholder="Enter Email"
           name="email"
           onChange={(e) => {
@@ -135,7 +135,7 @@ export default function LoginPage({}: Props) {
         </p>
       </form>
 
-      <div className={thirdPartyLoginContainer}>
+      {/* <div className={thirdPartyLoginContainer}>
         {providers
           ? Object.values(providers).map((provider) =>
               provider.name !== 'Credentials' ? (
@@ -153,7 +153,7 @@ export default function LoginPage({}: Props) {
               ) : null
             )
           : null}
-      </div>
+      </div> */}
     </div>
   )
 }
