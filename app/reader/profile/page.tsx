@@ -46,6 +46,7 @@ export default function ProfilePage({}: Props) {
     selectedBtn,
     formStatus,
     disable,
+    profilePicSection,
   } = styles
   if (loading) {
     return <div className={loadingState}>Loading ...</div>
@@ -136,7 +137,7 @@ export default function ProfilePage({}: Props) {
                 </h3>
               </div>
               <div className={mainForm}>
-                <section>
+                <section className={profilePicSection}>
                   <label htmlFor="pic">Profile Pic</label>
                   <div className={profilePicContainer}>
                     <ProfilePicModal
@@ -147,7 +148,6 @@ export default function ProfilePage({}: Props) {
                     />
                     <span
                       className={`${formStatus} ${
-                        name === session.user.name &&
                         (newAvatarId === session.user.photo?.id ||
                           newAvatarId === '') &&
                         disable

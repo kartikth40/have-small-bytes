@@ -124,17 +124,23 @@
     }
   }
 }
-
+.profilePicSection {
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  & .profilePicContainer {
+    width: 500px;
+    height: 200px;
+  }
+  & .formStatus {
+    width: max-content;
+    white-space: nowrap;
+  }
+}
 .profilePicContainer {
   width: 150px;
   height: 150px;
-  position: relative;
-  & .formStatus {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: max-content;
-  }
 }
 .loadingState {
   height: 70vh;
