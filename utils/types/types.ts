@@ -157,6 +157,11 @@ export interface readerIdReturnType {
     id: string | null
   }
 }
+export interface deletedReaderIdReturnType {
+  deleteReader: {
+    id: string | null
+  }
+}
 
 export interface profileAvatarsType {
   assets: [

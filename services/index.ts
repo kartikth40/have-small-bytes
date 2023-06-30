@@ -9,6 +9,7 @@ import {
   readerIdReturnType,
   profileAvatarsType,
   avatarType,
+  deletedReaderIdReturnType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -23,6 +24,7 @@ import {
   SimilarPostsQuery,
   authorUrlQuery,
   checkEmailQuery,
+  deleteReaderQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
   loginQuery,
@@ -197,7 +199,6 @@ export const updateUser = cache(
           photoId,
         }
       )
-      console.log(result)
       return result.reader
     } catch (err) {
       console.log('ERROR Updating the user ----> ' + err)
@@ -226,5 +227,20 @@ export const getAvatarById = cache(async (id: string) => {
     return result.asset.url
   } catch (err) {
     console.log('ERROR Extracting avatar ----> ' + err)
+  }
+})
+
+export const deleteUser = cache(async (userId: string) => {
+  try {
+    const result: deletedReaderIdReturnType = await request(
+      graphqlAPI,
+      deleteReaderQuery,
+      {
+        userId,
+      }
+    )
+    return result.deleteReader
+  } catch (err) {
+    console.log('ERROR Deleting the user ----> ' + err)
   }
 })

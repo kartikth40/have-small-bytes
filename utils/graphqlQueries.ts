@@ -257,3 +257,11 @@ export const getAvatarByIdQuery = gql`
     }
   }
 `
+
+export const deleteReaderQuery = gql`
+  query deleteReader($id: ID!) {
+    deleteReader(where: { id: $id }) {
+      id
+    }
+  }
+`
