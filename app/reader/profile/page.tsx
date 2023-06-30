@@ -15,12 +15,6 @@ export default function ProfilePage({}: Props) {
   const { data: session, status, update } = useSession()
   const loading = status === 'loading'
 
-  // useEffect(() => {
-  //   console.log('UPDATE...')
-  //   const interval = setInterval(() => update(), 10000)
-  //   return () => clearInterval(interval)
-  // }, [update])
-
   useEffect(() => {
     if (!loading) {
       const user = session?.user
@@ -36,11 +30,6 @@ export default function ProfilePage({}: Props) {
   const [avatarUrl, setAvatarUrl] = useState<string>('')
   const [newAvatarId, setNewAvatarId] = useState<string>('')
 
-  if (!session && !loading) {
-    redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
-  }
-  console.log(session)
-
   const {
     profilePageContainer,
     mainContainer,
@@ -53,30 +42,39 @@ export default function ProfilePage({}: Props) {
     dangerZone,
     deleteBtn,
     profilePicContainer,
+    loadingState,
   } = styles
+  if (loading) {
+    return <div className={loadingState}>Loading ...</div>
+  }
+  if (!session) {
+    redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (session) {
-      const newId = newAvatarId ?? session.user.photo?.id
-      const newUrl = await getAvatarById(newId)
-      console.log(newId)
-      console.log(newAvatarId)
-      console.log(newUrl)
-      await updateUser(session.user.id, name, newId)
-      toast.success('Profile Updated!')
-      await update({
-        ...session,
-        user: {
-          ...session.user,
-          name: name,
-          photo: {
-            id: newId,
-            url: newUrl,
-          },
+    const newId = newAvatarId !== '' ? newAvatarId : session.user.photo?.id
+    const newUrl = await getAvatarById(newId!)
+    // console.log(session)
+    // console.log(newId)
+    // console.log(newUrl)
+    // console.log(newAvatarId)
+    await updateUser(session.user.id, name, newId!)
+    await update({
+      ...session,
+      user: {
+        ...session.user,
+        name: name,
+        photo: {
+          id: newId,
+          url: newUrl,
         },
-      })
-      console.log('UPDATE...EDDDDDDDDDD')
-    }
+      },
+    })
+
+    toast.success('Profile Updated!', {
+      autoClose: 3000,
+      position: 'bottom-left',
+    })
   }
   return (
     <div className={profilePageContainer}>
@@ -164,8 +162,26 @@ export default function ProfilePage({}: Props) {
                 <br />
                 <br />
                 <div className={updateBtnContainer}>
-                  <button type="submit">Update</button>
-                  <button type="button">Reset</button>
+                  <button
+                    type="submit"
+                    disabled={
+                      name === session.user.name &&
+                      (newAvatarId === session.user.photo?.id ||
+                        newAvatarId === '')
+                    }
+                  >
+                    Save
+                  </button>
+                  {/* <button
+                    type="button"
+                    disabled={
+                      name === session.user.name &&
+                      (newAvatarId === session.user.photo?.id ||
+                        newAvatarId === '')
+                    }
+                  >
+                    Reset
+                  </button> */}
                 </div>
               </div>
             </form>

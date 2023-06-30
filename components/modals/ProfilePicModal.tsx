@@ -51,7 +51,10 @@ export default function ProfilePicModal({
     setNewAvatarId(id)
   }
   const handleUpdateBtn = () => {
-    toast('Changes will be seen after updation.')
+    toast('Click save To see changes.', {
+      autoClose: 3000,
+      position: 'bottom-left',
+    })
     setShowModal(false)
   }
   return (

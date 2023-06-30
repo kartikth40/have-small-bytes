@@ -87,7 +87,8 @@
   justify-content: flex-end;
   & button {
     border: none;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--color-dark);
+    color: var(--color-light);
     padding: 1em 2em;
     font-size: 1em;
     margin-right: 1em;
@@ -95,10 +96,22 @@
     &:hover {
       background-color: rgba(0, 0, 0, 0.3);
     }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
 }
 
 .profilePicContainer {
   width: 150px;
   height: 150px;
+}
+.loadingState {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-weight: 900;
 }
