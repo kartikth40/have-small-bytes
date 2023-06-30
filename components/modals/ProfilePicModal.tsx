@@ -4,7 +4,6 @@ import { createPortal } from 'react-dom'
 import styles from '@/app/page.module.scss'
 import { getAllProfileAvatars } from '@/services'
 import Image from 'next/image'
-import { toast } from 'react-toastify'
 
 export default function ProfilePicModal({
   setNewAvatarId,
@@ -20,7 +19,6 @@ export default function ProfilePicModal({
   const [avatars, setAvatars] = useState<
     Array<{ id: string; filename: string; url: string }>
   >([])
-  const [newTemporaryAvatarId, setNewTemporaryAvatarId] = useState<string>('')
   useEffect(() => {
     async function getAvatars() {
       const ava = await getAllProfileAvatars()
@@ -51,10 +49,6 @@ export default function ProfilePicModal({
     setNewAvatarId(id)
   }
   const handleUpdateBtn = () => {
-    toast('Click save To see changes.', {
-      autoClose: 3000,
-      position: 'bottom-left',
-    })
     setShowModal(false)
   }
   return (

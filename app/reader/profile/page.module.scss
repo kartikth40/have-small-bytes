@@ -13,13 +13,23 @@
   align-items: flex-start;
   width: 100%;
 }
+.formStatus {
+  font-weight: 500;
+  font-size: 1em;
+  color: var(--color-primary-blue);
+  &.disable {
+    display: none;
+  }
+}
 .sideMenu {
-  width: 15vw;
+  width: 20vw;
   font-size: 1em;
   font-weight: 900;
   margin-right: 2em;
   & div {
+    width: max-content;
     margin: 1em 0;
+    padding-inline: 0em 1em;
     cursor: pointer;
     &:hover {
       text-decoration: underline;
@@ -30,10 +40,16 @@
         text-decoration: none;
       }
       & .deleteBtn {
+        font-weight: 500;
         color: rgb(253, 136, 136);
         text-decoration-color: rgb(253, 136, 136);
       }
     }
+  }
+  & .selectedBtn {
+    border-right: 10px solid var(--color-primary-blue);
+    border-radius: 10px;
+    text-decoration: underline;
   }
   position: relative;
   &:after {
@@ -52,8 +68,14 @@
   width: 100%;
 }
 .headingsContainer {
-  & h2 {
+  & h3 {
     font-weight: 1em;
+    position: relative;
+    & span {
+      position: absolute;
+      bottom: -150%;
+      left: 0;
+    }
   }
 }
 
@@ -106,6 +128,13 @@
 .profilePicContainer {
   width: 150px;
   height: 150px;
+  position: relative;
+  & .formStatus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: max-content;
+  }
 }
 .loadingState {
   height: 70vh;

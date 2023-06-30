@@ -43,6 +43,9 @@ export default function ProfilePage({}: Props) {
     deleteBtn,
     profilePicContainer,
     loadingState,
+    selectedBtn,
+    formStatus,
+    disable,
   } = styles
   if (loading) {
     return <div className={loadingState}>Loading ...</div>
@@ -83,6 +86,7 @@ export default function ProfilePage({}: Props) {
       <div className={mainContainer}>
         <div className={sideMenu}>
           <div
+            className={`${selected === 'profile' && selectedBtn}`}
             onClick={() => {
               setSelected('profile')
             }}
@@ -90,6 +94,7 @@ export default function ProfilePage({}: Props) {
             Update Profile
           </div>
           <div
+            className={`${selected === 'reset' && selectedBtn}`}
             onClick={() => {
               setSelected('reset')
             }}
@@ -99,7 +104,7 @@ export default function ProfilePage({}: Props) {
           <br />
           <div className={dangerZone}>
             <div
-              className={deleteBtn}
+              className={`${selected === 'delete' && selectedBtn} ${deleteBtn}`}
               onClick={() => {
                 setSelected('delete')
               }}
@@ -115,7 +120,19 @@ export default function ProfilePage({}: Props) {
           {selected === 'profile' && (
             <form className={updateForm} onSubmit={(e) => handleSubmit(e)}>
               <div className={headingsContainer}>
-                <h3>Update Profile</h3>
+                <h3>
+                  Update Profile
+                  <span
+                    className={`${formStatus} ${
+                      name === session.user.name &&
+                      (newAvatarId === session.user.photo?.id ||
+                        newAvatarId === '') &&
+                      disable
+                    }`}
+                  >
+                    (unsaved changes)*
+                  </span>
+                </h3>
               </div>
               <div className={mainForm}>
                 <section>
@@ -127,6 +144,16 @@ export default function ProfilePage({}: Props) {
                       src={avatarUrl}
                       alt={name}
                     />
+                    <span
+                      className={`${formStatus} ${
+                        name === session.user.name &&
+                        (newAvatarId === session.user.photo?.id ||
+                          newAvatarId === '') &&
+                        disable
+                      }`}
+                    >
+                      (save to see changes)*
+                    </span>
                   </div>
                 </section>
                 <section>
@@ -161,6 +188,7 @@ export default function ProfilePage({}: Props) {
 
                 <br />
                 <br />
+
                 <div className={updateBtnContainer}>
                   <button
                     type="submit"
