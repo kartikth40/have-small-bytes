@@ -78,9 +78,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 1em;
   }
 }
 .updateBtnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   & button {
     border: none;
     background-color: rgba(0, 0, 0, 0.1);
@@ -92,4 +96,9 @@
       background-color: rgba(0, 0, 0, 0.3);
     }
   }
+}
+
+.profilePicContainer {
+  width: 150px;
+  height: 150px;
 }

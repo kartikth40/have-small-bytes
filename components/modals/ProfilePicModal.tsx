@@ -5,7 +5,15 @@ import styles from '@/app/page.module.scss'
 import { getAllProfileAvatars } from '@/services'
 import Image from 'next/image'
 
-export default function ProfilePicModal() {
+export default function ProfilePicModal({
+  src,
+  alt,
+  loading,
+}: {
+  src: string
+  alt: string
+  loading: boolean
+}) {
   const [avatars, setAvatars] = useState<
     Array<{ filename: string; url: string }>
   >([])
@@ -28,18 +36,19 @@ export default function ProfilePicModal() {
     avatarContainer,
     modalBtns,
     chooseProfilePicBtn,
+    loader,
   } = styles
   const closeOnClick = () => setShowModal(false)
 
   return (
     <>
-      <button
-        className={chooseProfilePicBtn}
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        Show modal
-      </button>
+      <div className={chooseProfilePicBtn} onClick={() => setShowModal(true)}>
+        {loading ? (
+          <div className={loader}>loading...</div>
+        ) : (
+          <Image src={src} alt={alt} width={100} height={100} />
+        )}
+      </div>
       <div className={modalContainer} id="profilePics"></div>
       <div
         onClick={closeOnClick}
@@ -53,8 +62,8 @@ export default function ProfilePicModal() {
             </div>
             <div className={modalContent}>
               <div className={avatarsContainer}>
-                {avatars.map((avatar) => (
-                  <div key={avatar.filename} className={avatarContainer}>
+                {avatars.map((avatar, index) => (
+                  <div key={index} className={avatarContainer}>
                     <Image
                       src={avatar.url}
                       alt={avatar.filename}

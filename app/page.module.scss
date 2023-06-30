@@ -412,12 +412,17 @@
 }
 
 .chooseProfilePicBtn {
-  border: none;
-  background-color: var(--color-dark);
-  color: var(--color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
   padding: 0.5em 1em;
   cursor: pointer;
   &:hover {
     opacity: 0.7;
+  }
+  & .loader {
+    font-weight: 500;
   }
 }

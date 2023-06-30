@@ -5,6 +5,7 @@ import styles from './page.module.scss'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import ProfilePicModal from '@/components/modals/ProfilePicModal'
+import Image from 'next/image'
 type Props = {}
 
 export default function ProfilePage({}: Props) {
@@ -23,6 +24,7 @@ export default function ProfilePage({}: Props) {
   if (!session && !loading) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
+  console.log(session)
 
   const [selected, setSelected] = useState<string>('profile')
   const [name, setName] = useState<string>('')
@@ -40,6 +42,7 @@ export default function ProfilePage({}: Props) {
     mainForm,
     dangerZone,
     deleteBtn,
+    profilePicContainer,
   } = styles
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -87,6 +90,12 @@ export default function ProfilePage({}: Props) {
               </div>
               <div className={mainForm}>
                 <section>
+                  <label htmlFor="pic">Profile Pic</label>
+                  <div className={profilePicContainer}>
+                    <ProfilePicModal loading={loading} src={pic} alt={name} />
+                  </div>
+                </section>
+                <section>
                   <label htmlFor="name">Name</label>
                   <input
                     type="text"
@@ -117,20 +126,6 @@ export default function ProfilePage({}: Props) {
                 </section>
                 <br />
                 <br />
-                <section>
-                  <label htmlFor="pic">Profile Pic</label>
-                  {/* <input
-                    type="text"
-                    placeholder="Pic"
-                    name="pic"
-                    value={pic}
-                    onChange={(e) => {
-                      setPic(e.target.value)
-                    }}
-                    required
-                  /> */}
-                  <ProfilePicModal />
-                </section>
 
                 <br />
                 <br />
