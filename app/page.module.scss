@@ -390,7 +390,20 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 1em;
 
-  // & .avatarContainer{}
+  & .avatarContainer {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+    & input:checked + label {
+      // border-radius: 50%;
+      background-color: var(--color-primary-blue);
+      outline: 1px solid var(--color-primary-blue);
+    }
+    & input {
+      display: none;
+    }
+  }
 }
 
 .modalBtns {

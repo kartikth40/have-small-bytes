@@ -6,17 +6,20 @@ import { getAllProfileAvatars } from '@/services'
 import Image from 'next/image'
 
 export default function ProfilePicModal({
+  setNewAvatarId,
   src,
   alt,
   loading,
 }: {
+  setNewAvatarId: React.Dispatch<React.SetStateAction<string>>
   src: string
   alt: string
   loading: boolean
 }) {
   const [avatars, setAvatars] = useState<
-    Array<{ filename: string; url: string }>
+    Array<{ id: string; filename: string; url: string }>
   >([])
+  const [newTemporaryAvatarId, setNewTemporaryAvatarId] = useState<string>('')
   useEffect(() => {
     async function getAvatars() {
       const ava = await getAllProfileAvatars()
@@ -39,11 +42,17 @@ export default function ProfilePicModal({
     loader,
   } = styles
   const closeOnClick = () => setShowModal(false)
-
+  const handleClick = (id: string) => {
+    setNewTemporaryAvatarId(id)
+  }
+  const handleUpdateBtn = () => {
+    setNewAvatarId(newTemporaryAvatarId)
+    setShowModal(false)
+  }
   return (
     <>
       <div className={chooseProfilePicBtn} onClick={() => setShowModal(true)}>
-        {loading ? (
+        {loading || !src ? (
           <div className={loader}>loading...</div>
         ) : (
           <Image src={src} alt={alt} width={100} height={100} />
@@ -63,18 +72,25 @@ export default function ProfilePicModal({
             <div className={modalContent}>
               <div className={avatarsContainer}>
                 {avatars.map((avatar, index) => (
-                  <div key={index} className={avatarContainer}>
-                    <Image
-                      src={avatar.url}
-                      alt={avatar.filename}
-                      width={70}
-                      height={70}
-                    />
+                  <div
+                    key={index}
+                    className={avatarContainer}
+                    onClick={() => handleClick(avatar.id)}
+                  >
+                    <input type="radio" id={avatar.id} name="radio" />
+                    <label htmlFor={avatar.id}>
+                      <Image
+                        src={avatar.url}
+                        alt={'avatar'}
+                        width={70}
+                        height={70}
+                      />
+                    </label>
                   </div>
                 ))}
               </div>
               <div className={modalBtns}>
-                <button type="button" onClick={() => {}}>
+                <button type="button" onClick={handleUpdateBtn}>
                   Update
                 </button>
                 <button type="button" onClick={() => setShowModal(false)}>

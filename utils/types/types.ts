@@ -156,6 +156,7 @@ export interface readerIdReturnType {
 export interface profileAvatarsType {
   assets: [
     {
+      id: string
       filename: string
       url: string
     }

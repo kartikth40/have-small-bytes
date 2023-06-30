@@ -17,19 +17,19 @@ export default function ProfilePage({}: Props) {
       const user = session?.user
       setName(user ? user.name : '')
       setEmail(user ? user.email : '')
-      setPic(user && user.photo ? user.photo?.url : '')
+      setAvatarUrl(user && user.photo ? user.photo?.url : '')
     }
   }, [loading])
 
   if (!session && !loading) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
-  console.log(session)
 
   const [selected, setSelected] = useState<string>('profile')
   const [name, setName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
-  const [pic, setPic] = useState<string>('')
+  const [avatarUrl, setAvatarUrl] = useState<string>('')
+  const [newAvatarId, setNewAvatarId] = useState<string>('')
 
   const {
     profilePageContainer,
@@ -58,7 +58,7 @@ export default function ProfilePage({}: Props) {
               setSelected('profile')
             }}
           >
-            Update Profile
+            Update Profile {JSON.stringify(newAvatarId)}
           </div>
           <div
             onClick={() => {
@@ -92,7 +92,12 @@ export default function ProfilePage({}: Props) {
                 <section>
                   <label htmlFor="pic">Profile Pic</label>
                   <div className={profilePicContainer}>
-                    <ProfilePicModal loading={loading} src={pic} alt={name} />
+                    <ProfilePicModal
+                      setNewAvatarId={setNewAvatarId}
+                      loading={loading}
+                      src={avatarUrl}
+                      alt={name}
+                    />
                   </div>
                 </section>
                 <section>

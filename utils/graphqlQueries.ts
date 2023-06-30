@@ -238,6 +238,7 @@ export const updateUserQuery = gql`
 export const getAllProfileAvatarQuery = gql`
     query GetProfileAvatar(){
       assets(orderBy: fileName_ASC, where: {fileName_contains: "avatar"}, first: 12) {
+        id
         fileName
         url
       }
