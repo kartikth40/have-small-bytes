@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import styles from '@/app/page.module.scss'
 import { getAllProfileAvatars } from '@/services'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
 
 export default function ProfilePicModal({
   setNewAvatarId,
@@ -41,12 +42,16 @@ export default function ProfilePicModal({
     chooseProfilePicBtn,
     loader,
   } = styles
-  const closeOnClick = () => setShowModal(false)
+  const closeOnClick = () => {
+    setNewAvatarId('')
+
+    setShowModal(false)
+  }
   const handleClick = (id: string) => {
-    setNewTemporaryAvatarId(id)
+    setNewAvatarId(id)
   }
   const handleUpdateBtn = () => {
-    setNewAvatarId(newTemporaryAvatarId)
+    toast('Changes will be seen after updation.')
     setShowModal(false)
   }
   return (
@@ -91,7 +96,7 @@ export default function ProfilePicModal({
               </div>
               <div className={modalBtns}>
                 <button type="button" onClick={handleUpdateBtn}>
-                  Update
+                  OK
                 </button>
                 <button type="button" onClick={() => setShowModal(false)}>
                   Cancel

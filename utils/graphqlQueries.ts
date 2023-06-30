@@ -185,6 +185,7 @@ export const loginQuery = gql`
       email
       password
       photo {
+        id
         url
       }
     }
@@ -226,13 +227,17 @@ export const checkEmailQuery = gql`
   }
 `
 export const updateUserQuery = gql`
-  mutation UpdateUser($userId: ID!, $name: String!, $email: String!, $photoId: ID!) {
+  mutation UpdateUser($userId: ID!, $name: String!, $photoId: ID!) {
     updateReader(
-      data: {photo: {connect: {id: $photoId}}, email: $email, name: $name}
-      where: {id: $userId}
+      data: { photo: { connect: { id: $photoId } }, name: $name }
+      where: { id: $userId }
     ) {
       id
     }
+    publishReader(where: { id: $userId }) {
+      id
+    }
+  }
 `
 
 export const getAllProfileAvatarQuery = gql`
@@ -243,4 +248,13 @@ export const getAllProfileAvatarQuery = gql`
         url
       }
     }
+`
+
+export const getAvatarByIdQuery = gql`
+  query GetAvatarById($id: ID!) {
+    assets(where: { id: $id }) {
+      id
+      url
+    }
+  }
 `

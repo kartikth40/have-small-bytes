@@ -8,6 +8,7 @@ import {
   userAddedType,
   readerIdReturnType,
   profileAvatarsType,
+  avatarType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -23,8 +24,10 @@ import {
   authorUrlQuery,
   checkEmailQuery,
   getAllProfileAvatarQuery,
+  getAvatarByIdQuery,
   loginQuery,
   newUserQuery,
+  updateUserQuery,
 } from '../utils/graphqlQueries'
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
@@ -183,18 +186,18 @@ export const checkUserExists = cache(async (email: string) => {
 })
 
 export const updateUser = cache(
-  async (userId: string, name: string, email: string, photoId: string) => {
+  async (userId: string, name: string, photoId: string) => {
     try {
       const result: readerIdReturnType = await request(
         graphqlAPI,
-        newUserQuery,
+        updateUserQuery,
         {
           userId,
           name,
-          email,
           photoId,
         }
       )
+      console.log(result)
       return result.reader
     } catch (err) {
       console.log('ERROR Updating the user ----> ' + err)
@@ -213,4 +216,15 @@ export const getAllProfileAvatars = cache(async () => {
     console.log('ERROR Extracting profile avatars ----> ' + err)
   }
   return []
+})
+
+export const getAvatarById = cache(async (id: string) => {
+  try {
+    const result: avatarType = await request(graphqlAPI, getAvatarByIdQuery, {
+      id,
+    })
+    return result.asset
+  } catch (err) {
+    console.log('ERROR Extracting avatar ----> ' + err)
+  }
 })

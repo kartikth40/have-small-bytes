@@ -5,12 +5,21 @@ import styles from './page.module.scss'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import ProfilePicModal from '@/components/modals/ProfilePicModal'
-import Image from 'next/image'
+import { getAvatarById, updateUser } from '@/services'
+import { toast } from 'react-toastify'
+import { Session } from 'inspector'
+
 type Props = {}
 
 export default function ProfilePage({}: Props) {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const loading = status === 'loading'
+
+  // useEffect(() => {
+  //   console.log('UPDATE...')
+  //   const interval = setInterval(() => update(), 10000)
+  //   return () => clearInterval(interval)
+  // }, [update])
 
   useEffect(() => {
     if (!loading) {
@@ -21,15 +30,16 @@ export default function ProfilePage({}: Props) {
     }
   }, [loading])
 
-  if (!session && !loading) {
-    redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
-  }
-
   const [selected, setSelected] = useState<string>('profile')
   const [name, setName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [avatarUrl, setAvatarUrl] = useState<string>('')
   const [newAvatarId, setNewAvatarId] = useState<string>('')
+
+  if (!session && !loading) {
+    redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
+  }
+  console.log(session)
 
   const {
     profilePageContainer,
@@ -44,8 +54,29 @@ export default function ProfilePage({}: Props) {
     deleteBtn,
     profilePicContainer,
   } = styles
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    console.log(newAvatarId)
+    if (session) {
+      const newId = newAvatarId ?? session.user.photo?.id
+      const newUrl = await getAvatarById(newId)
+      console.log(newId, newAvatarId, session.user, newUrl)
+      await updateUser(session.user.id, name, newId)
+      toast.success('Profile Updated!')
+      await update({
+        ...session,
+        user: {
+          ...session.user,
+          name: name,
+          photo: {
+            ...session.user.photo,
+            id: newId,
+            url: newUrl,
+          },
+        },
+      })
+      console.log('UPDATE...EDDDDDDDDDD')
+    }
   }
   return (
     <div className={profilePageContainer}>
@@ -58,7 +89,7 @@ export default function ProfilePage({}: Props) {
               setSelected('profile')
             }}
           >
-            Update Profile {JSON.stringify(newAvatarId)}
+            Update Profile
           </div>
           <div
             onClick={() => {
@@ -120,9 +151,10 @@ export default function ProfilePage({}: Props) {
                   <label htmlFor="email">Email</label>
                   <input
                     type="text"
-                    placeholder="Enter Email"
+                    placeholder="Email"
                     name="email"
                     value={email}
+                    contentEditable={false}
                     onChange={(e) => {
                       setEmail(e.target.value)
                     }}

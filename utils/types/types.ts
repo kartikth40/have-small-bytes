@@ -134,8 +134,13 @@ export interface categoriesType {
 export interface loginType {
   reader: {
     id: string
+    name: string
     email: string
     password: string
+    photo: {
+      id: string
+      url: string
+    }
   }
 }
 
@@ -161,4 +166,11 @@ export interface profileAvatarsType {
       url: string
     }
   ]
+}
+
+export interface avatarType {
+  asset: {
+    id: string
+    url: string
+  }
 }
