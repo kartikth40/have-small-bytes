@@ -2,7 +2,7 @@
 import SignOutButton from '@/components/buttons/SignOutButton '
 import { redirect } from 'next/navigation'
 import styles from './page.module.scss'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import ProfilePicModal from '@/components/modals/ProfilePicModal'
 import { getAvatarById, updateUser } from '@/services'
@@ -25,14 +25,14 @@ export default function ProfilePage({}: Props) {
     if (!loading) {
       const user = session?.user
       setName(user ? user.name : '')
-      setEmail(user ? user.email : '')
+      email.current = user ? user.email : ''
       setAvatarUrl(user && user.photo ? user.photo?.url : '')
     }
   }, [loading])
 
   const [selected, setSelected] = useState<string>('profile')
   const [name, setName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
+  const email = useRef('')
   const [avatarUrl, setAvatarUrl] = useState<string>('')
   const [newAvatarId, setNewAvatarId] = useState<string>('')
 
@@ -56,11 +56,12 @@ export default function ProfilePage({}: Props) {
   } = styles
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(newAvatarId)
     if (session) {
       const newId = newAvatarId ?? session.user.photo?.id
       const newUrl = await getAvatarById(newId)
-      console.log(newId, newAvatarId, session.user, newUrl)
+      console.log(newId)
+      console.log(newAvatarId)
+      console.log(newUrl)
       await updateUser(session.user.id, name, newId)
       toast.success('Profile Updated!')
       await update({
@@ -69,7 +70,6 @@ export default function ProfilePage({}: Props) {
           ...session.user,
           name: name,
           photo: {
-            ...session.user.photo,
             id: newId,
             url: newUrl,
           },
@@ -153,11 +153,8 @@ export default function ProfilePage({}: Props) {
                     type="text"
                     placeholder="Email"
                     name="email"
-                    value={email}
-                    contentEditable={false}
-                    onChange={(e) => {
-                      setEmail(e.target.value)
-                    }}
+                    value={email.current}
+                    readOnly
                     required
                   />
                 </section>

@@ -252,8 +252,7 @@ export const getAllProfileAvatarQuery = gql`
 
 export const getAvatarByIdQuery = gql`
   query GetAvatarById($id: ID!) {
-    assets(where: { id: $id }) {
-      id
+    asset(where: { id: $id }) {
       url
     }
   }

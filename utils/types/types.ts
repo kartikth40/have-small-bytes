@@ -170,7 +170,6 @@ export interface profileAvatarsType {
 
 export interface avatarType {
   asset: {
-    id: string
     url: string
   }
 }

@@ -223,7 +223,7 @@ export const getAvatarById = cache(async (id: string) => {
     const result: avatarType = await request(graphqlAPI, getAvatarByIdQuery, {
       id,
     })
-    return result.asset
+    return result.asset.url
   } catch (err) {
     console.log('ERROR Extracting avatar ----> ' + err)
   }
