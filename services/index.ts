@@ -152,12 +152,13 @@ export const checkLogin = cache(async (email: string) => {
 })
 
 export const addUser = cache(
-  async (name: string, email: string, password: string) => {
+  async (name: string, email: string, password: string, photoId: string) => {
     try {
       const result: userAddedType = await request(graphqlAPI, newUserQuery, {
         name,
         email,
         password,
+        photoId,
       })
       return result
     } catch (err) {

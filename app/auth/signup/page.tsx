@@ -15,6 +15,7 @@ import Image from 'next/image'
 import { toast } from 'react-toastify'
 import { checkUserExists } from '@/services'
 import Link from 'next/link'
+import { getRandomPhotoId } from '@/utils/constants/profilePicIds'
 
 type Props = {}
 
@@ -62,10 +63,12 @@ export default function SignUpPage({}: Props) {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSigningIn(true)
+
     const credentials = {
       name: name.current,
       email: email.current,
       password: password.current,
+      photoId: getRandomPhotoId(),
     }
     const createId = toast.loading('Checking Email...')
     const checkUser = await checkUserExists(email.current)

@@ -5,6 +5,7 @@ interface requestBody {
   name: string
   email: string
   password: string
+  photoId: string
 }
 
 export async function POST(request: Request) {
@@ -12,7 +13,8 @@ export async function POST(request: Request) {
   const user = await addUser(
     body.name,
     body.email,
-    await bcrypt.hash(body.password, 10)
+    await bcrypt.hash(body.password, 10),
+    body.photoId
   )
 
   if (user) {

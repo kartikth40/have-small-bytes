@@ -1,4 +1,4 @@
-export const profileToId = {
+export const profileToId: { [key: string]: string } = {
   avatar_1: 'cljhcnkv10axy0bpjpknoib7m',
   avatar_2: 'cljhcnkwx0arl0bo3uubcf2i4',
   avatar_3: 'cljhcnkvm0arh0bo3nuenuck9',
@@ -11,4 +11,13 @@ export const profileToId = {
   avatar_10: 'cljhcnkxb0ars0bo3th7pnsqv',
   avatar_11: 'cljhcnkya0as10bo3pk93v64q',
   avatar_12: 'cljhcnkv10axw0bpj42mx7e4y',
+}
+
+export const getRandomPhotoId = () => {
+  const avatars = Object.keys(profileToId)
+
+  const randomPhotoIdx = Math.floor(Math.random() * avatars.length)
+  const randomPhotoName = avatars[randomPhotoIdx]
+  const randomPhotoId = profileToId[randomPhotoName]
+  return randomPhotoId
 }

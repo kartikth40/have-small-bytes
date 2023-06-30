@@ -192,8 +192,20 @@ export const loginQuery = gql`
 `
 
 export const newUserQuery = gql`
-  mutation NewUser($name: String!, $email: String!, $password: String!) {
-    createReader(data: { name: $name, email: $email, password: $password }) {
+  mutation NewUser(
+    $name: String!
+    $email: String!
+    $password: String!
+    $photoId: ID!
+  ) {
+    createReader(
+      data: {
+        name: $name
+        email: $email
+        password: $password
+        photo: { connect: { id: $photoId } }
+      }
+    ) {
       id
       name
       email
