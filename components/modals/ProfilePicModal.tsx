@@ -26,12 +26,18 @@ export default function ProfilePicModal() {
     modalContent,
     avatarsContainer,
     avatarContainer,
+    modalBtns,
+    chooseProfilePicBtn,
   } = styles
   const closeOnClick = () => setShowModal(false)
 
   return (
     <>
-      <button type="button" onClick={() => setShowModal(true)}>
+      <button
+        className={chooseProfilePicBtn}
+        type="button"
+        onClick={() => setShowModal(true)}
+      >
         Show modal
       </button>
       <div className={modalContainer} id="profilePics"></div>
@@ -44,9 +50,6 @@ export default function ProfilePicModal() {
           <div className={profilePicModal}>
             <div className={modalHeader}>
               <h1>Choose your profile pic</h1>
-              <button type="button" onClick={() => setShowModal(false)}>
-                close
-              </button>
             </div>
             <div className={modalContent}>
               <div className={avatarsContainer}>
@@ -55,11 +58,19 @@ export default function ProfilePicModal() {
                     <Image
                       src={avatar.url}
                       alt={avatar.filename}
-                      width={100}
-                      height={100}
+                      width={70}
+                      height={70}
                     />
                   </div>
                 ))}
+              </div>
+              <div className={modalBtns}>
+                <button type="button" onClick={() => {}}>
+                  Update
+                </button>
+                <button type="button" onClick={() => setShowModal(false)}>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>,

@@ -377,11 +377,47 @@
   border: 1px solid black;
   z-index: 20;
 }
+.modalHeader {
+  margin-bottom: 1em;
+  text-align: center;
+}
+.modalContent {
+  margin: 2em;
+}
 
 .avatarsContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
 
   // & .avatarContainer{}
+}
+
+.modalBtns {
+  margin: 2em;
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+
+  & button {
+    border: none;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    padding: 0.5em 1em;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.chooseProfilePicBtn {
+  border: none;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding: 0.5em 1em;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
 }
