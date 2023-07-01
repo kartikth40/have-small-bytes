@@ -137,9 +137,6 @@ export default function ProfileUpdate({}: Props) {
         <br />
         <br />
 
-        <br />
-        <br />
-
         <div className={updateBtnContainer}>
           <button
             type="submit"

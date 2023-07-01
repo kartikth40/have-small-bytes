@@ -17,6 +17,7 @@ export default function ResetPassword({}: Props) {
     updateBtnContainer,
     updateForm,
     mainForm,
+    dltBtn,
   } = styles
 
   if (loading) {
@@ -51,7 +52,9 @@ export default function ResetPassword({}: Props) {
         <br />
 
         <div className={updateBtnContainer}>
-          <button type="submit">Yes, Delete it.</button>
+          <button type="submit" className={dltBtn}>
+            Yes, Delete it.
+          </button>
         </div>
       </div>
     </form>
