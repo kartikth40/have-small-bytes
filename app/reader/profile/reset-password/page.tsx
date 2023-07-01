@@ -5,6 +5,7 @@ import styles from '@/app/reader/profile/page.module.scss'
 import { toast } from 'react-toastify'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { resetPassword } from '@/services'
 
 type Props = {}
 
@@ -38,11 +39,38 @@ export default function ResetPassword({}: Props) {
       })
     } else {
       // reset password
-
-      toast.success('Password Updated!', {
-        autoClose: 3000,
+      const resetId = toast.loading('resetting password...', {
         position: 'bottom-left',
       })
+
+      const res = await fetch('/api/reset', {
+        method: 'POST',
+        body: JSON.stringify({ userId: session.user.id, password: newPass }),
+        headers: {
+          'Content-Type': 'application/json',
+          // authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
+        },
+      })
+      const user = await res.json()
+      if (res.ok && user) {
+        toast.update(resetId, {
+          render: '✅ Password reset successfully!',
+          type: 'default',
+          isLoading: false,
+          autoClose: 3000,
+          position: 'bottom-left',
+        })
+        setNewConfirmPass('')
+        setNewPass('')
+      } else {
+        toast.update(resetId, {
+          render: 'Error Ocurred! Please try again later...',
+          type: 'error',
+          isLoading: false,
+          autoClose: 5000,
+          position: 'bottom-left',
+        })
+      }
     }
   }
   return (
@@ -57,6 +85,8 @@ export default function ResetPassword({}: Props) {
             type="password"
             placeholder="New Password"
             name="pswd"
+            minLength={8}
+            maxLength={20}
             value={newPass}
             onChange={(e) => {
               setNewPass(e.target.value)

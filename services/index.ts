@@ -10,6 +10,7 @@ import {
   profileAvatarsType,
   avatarType,
   deletedReaderIdReturnType,
+  updateReaderType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -29,6 +30,7 @@ import {
   getAvatarByIdQuery,
   loginQuery,
   newUserQuery,
+  resetPasswordQuery,
   updateUserQuery,
 } from '../utils/graphqlQueries'
 
@@ -190,7 +192,7 @@ export const checkUserExists = cache(async (email: string) => {
 export const updateUser = cache(
   async (userId: string, name: string, photoId: string) => {
     try {
-      const result: readerIdReturnType = await request(
+      const result: updateReaderType = await request(
         graphqlAPI,
         updateUserQuery,
         {
@@ -199,7 +201,7 @@ export const updateUser = cache(
           photoId,
         }
       )
-      return result.reader
+      return result
     } catch (err) {
       console.log('ERROR Updating the user ----> ' + err)
     }
@@ -242,5 +244,18 @@ export const deleteUser = cache(async (userId: string) => {
     return result.deleteReader
   } catch (err) {
     console.log('ERROR Deleting the user ----> ' + err)
+  }
+})
+
+export const resetPassword = cache(async (userId: string, password: string) => {
+  try {
+    const result: updateReaderType = await request(
+      graphqlAPI,
+      resetPasswordQuery,
+      { userId, password }
+    )
+    return result
+  } catch (err) {
+    console.log('ERROR Resetting the password ----> ' + err)
   }
 })

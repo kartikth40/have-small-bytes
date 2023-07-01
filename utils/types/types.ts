@@ -178,3 +178,12 @@ export interface avatarType {
     url: string
   }
 }
+
+export interface updateReaderType {
+  updateReader: {
+    id: string
+  }
+  publishReader: {
+    id: string
+  }
+}

@@ -265,3 +265,14 @@ export const deleteReaderQuery = gql`
     }
   }
 `
+
+export const resetPasswordQuery = gql`
+  mutation ResetPassword($userId: ID!, $password: String!) {
+    updateReader(data: { password: $password }, where: { id: $userId }) {
+      id
+    }
+    publishReader(where: { id: $userId }) {
+      id
+    }
+  }
+`

@@ -52,23 +52,38 @@ export default function ProfileUpdate({}: Props) {
     const newUrl = await getAvatarById(newId!)
 
     // update user
-    await updateUser(session.user.id, name, newId!)
-    await update({
-      ...session,
-      user: {
-        ...session.user,
-        name: name,
-        photo: {
-          id: newId,
-          url: newUrl,
-        },
-      },
-    })
-
-    toast.success('Profile Updated!', {
-      autoClose: 3000,
+    const updateId = toast.loading('updating profile...', {
       position: 'bottom-left',
     })
+    const result = await updateUser(session.user.id, name, newId!)
+    if (result) {
+      await update({
+        ...session,
+        user: {
+          ...session.user,
+          name: name,
+          photo: {
+            id: newId,
+            url: newUrl,
+          },
+        },
+      })
+      toast.update(updateId, {
+        render: 'Profile Updated!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 3000,
+        position: 'bottom-left',
+      })
+    } else {
+      toast.update(updateId, {
+        render: 'Error Ocurred! Please try again later...',
+        type: 'error',
+        isLoading: false,
+        autoClose: 5000,
+        position: 'bottom-left',
+      })
+    }
   }
   return (
     <form className={updateForm} onSubmit={(e) => handleSubmit(e)}>

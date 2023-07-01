@@ -31,16 +31,22 @@ export default function ResetPassword({}: Props) {
     e.preventDefault()
 
     // delete account
+    const deleteId = toast.loading('deleting account...')
 
     const result = await deleteUser(session.user.id)
-    console.log(result)
     if (result) {
-      toast.info('Account Deleted! Logging you out...', {
+      toast.update(deleteId, {
+        render: 'Account Deleted! Logging you out...',
+        type: 'info',
+        isLoading: false,
         autoClose: 5000,
       })
       signOut({ callbackUrl: '/' })
     } else {
-      toast.error('Error Ocurred! Please try again later...', {
+      toast.update(deleteId, {
+        render: 'Error Ocurred! Please try again later...',
+        type: 'error',
+        isLoading: false,
         autoClose: 5000,
       })
     }
