@@ -1,8 +1,9 @@
 'use client'
 
 import React from 'react'
-import styles from './page.module.scss'
+import styles from '@/app/reader/profile/page.module.scss'
 import SignOutButton from '@/components/buttons/SignOutButton '
+import Link from 'next/link'
 
 type Props = {
   selected: string
@@ -20,7 +21,7 @@ export default function SideMenu({ selected, setSelected }: Props) {
           setSelected('profile')
         }}
       >
-        Update Profile
+        <Link href="/reader/profile">Update Profile</Link>
       </div>
       <div
         className={`${selected === 'reset' && selectedBtn}`}
@@ -28,8 +29,9 @@ export default function SideMenu({ selected, setSelected }: Props) {
           setSelected('reset')
         }}
       >
-        Reset Password
+        <Link href="/reader/profile/reset-password">Reset Password</Link>
       </div>
+
       <br />
       <div className={dangerZone}>
         <div
@@ -38,8 +40,9 @@ export default function SideMenu({ selected, setSelected }: Props) {
             setSelected('delete')
           }}
         >
-          Delete Account
+          <Link href="/reader/profile/delete-account">Delete Account</Link>
         </div>
+
         <div>
           <SignOutButton />
         </div>

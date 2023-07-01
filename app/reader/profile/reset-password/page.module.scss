@@ -1,0 +1,64 @@
+.loadingState {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-weight: 900;
+}
+.headingsContainer {
+  & h3 {
+    font-weight: 1em;
+    position: relative;
+    & span {
+      position: absolute;
+      bottom: -150%;
+      left: 0;
+    }
+  }
+}
+.updateBtnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  & button {
+    border: none;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    padding: 1em 2em;
+    font-size: 1em;
+    margin-right: 1em;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+.updateForm {
+  & label {
+    font-size: 1.2em;
+  }
+  & input {
+    border: none;
+    font-size: 1.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--color-dark);
+    padding: 1em 2em;
+    width: 50vw;
+  }
+}
+.mainForm {
+  width: 100%;
+  padding: 1em;
+  & section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+  }
+}

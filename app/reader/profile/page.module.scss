@@ -31,9 +31,7 @@
     margin: 1em 0;
     padding-inline: 0em 1em;
     cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
+
     &.dangerZone {
       color: var(--color-dark-2);
       &:hover {
