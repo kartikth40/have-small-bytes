@@ -35,14 +35,13 @@ export default function ResetPassword({}: Props) {
     const result = await deleteUser(session.user.id)
     console.log(result)
     if (result) {
-      toast.info('Account Deleted! ba bye.', {
-        autoClose: 3000,
+      toast.info('Account Deleted! Logging you out...', {
+        autoClose: 5000,
       })
-      toast.info('logging out', { autoClose: 1000 })
       signOut({ callbackUrl: '/' })
     } else {
       toast.error('Error Ocurred! Please try again later...', {
-        autoClose: 3000,
+        autoClose: 5000,
       })
     }
   }

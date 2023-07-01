@@ -80,8 +80,8 @@ export default function SignUpPage() {
       const user = await res.json()
       if (res.ok && user) {
         toast.update(createId, {
-          render: '🦄 Account Created!',
-          type: 'success',
+          render: '🎀 Account Created!',
+          type: 'default',
           isLoading: false,
           autoClose: 3000,
         })
@@ -94,7 +94,7 @@ export default function SignUpPage() {
         })
         toast.update(loginId, {
           render: '🦄 Logged In!',
-          type: 'success',
+          type: 'default',
           isLoading: false,
           autoClose: 3000,
         })

@@ -63,7 +63,7 @@ export default function LoginPage() {
     else {
       toast.update(loginId, {
         render: '🦄 Logged In!',
-        type: 'success',
+        type: 'default',
         isLoading: false,
         autoClose: 3000,
       })
