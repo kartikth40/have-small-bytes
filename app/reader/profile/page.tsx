@@ -5,7 +5,6 @@ import styles from '@/app/reader/profile/page.module.scss'
 import ProfilePicModal from '@/components/modals/ProfilePicModal'
 import { getAvatarById, updateUser } from '@/services'
 import { toast } from 'react-toastify'
-import { Session } from 'next-auth'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 

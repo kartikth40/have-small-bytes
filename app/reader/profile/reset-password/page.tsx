@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import styles from '@/app/reader/profile/page.module.scss'
 import { toast } from 'react-toastify'
 import { redirect } from 'next/navigation'
