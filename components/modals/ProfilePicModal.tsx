@@ -5,20 +5,23 @@ import styles from '@/app/page.module.scss'
 import { getAllProfileAvatars } from '@/services'
 import Image from 'next/image'
 
+type Props = {
+  setNewAvatarId: React.Dispatch<React.SetStateAction<string>>
+  src: string
+  alt: string
+  loading: boolean
+}
+
 export default function ProfilePicModal({
   setNewAvatarId,
   src,
   alt,
   loading,
-}: {
-  setNewAvatarId: React.Dispatch<React.SetStateAction<string>>
-  src: string
-  alt: string
-  loading: boolean
-}) {
+}: Props) {
   const [avatars, setAvatars] = useState<
     Array<{ id: string; filename: string; url: string }>
   >([])
+
   useEffect(() => {
     async function getAvatars() {
       const ava = await getAllProfileAvatars()
@@ -26,7 +29,9 @@ export default function ProfilePicModal({
     }
     getAvatars()
   }, [])
+
   const [showModal, setShowModal] = useState(false)
+
   const {
     profilePicModal,
     modalContainer,
@@ -40,19 +45,23 @@ export default function ProfilePicModal({
     chooseProfilePicBtn,
     loader,
   } = styles
+
   const closeOnClick = () => {
     setNewAvatarId('')
 
     setShowModal(false)
   }
+
   const handleClick = (id: string) => {
     setNewAvatarId(id)
   }
+
   const handleUpdateBtn = () => {
     setShowModal(false)
   }
   return (
     <>
+      {/* modal opener */}
       <div className={chooseProfilePicBtn} onClick={() => setShowModal(true)}>
         {loading || !src ? (
           <div className={loader}>loading...</div>
@@ -60,11 +69,14 @@ export default function ProfilePicModal({
           <Image src={src} alt={alt} width={100} height={100} />
         )}
       </div>
+      {/* modal react portal insertion point */}
       <div className={modalContainer} id="profilePics"></div>
+      {/* modal background */}
       <div
         onClick={closeOnClick}
         className={`${showModal && hideBackground} ${modalBG}`}
       ></div>
+      {/* Modal */}
       {showModal &&
         createPortal(
           <div className={profilePicModal}>

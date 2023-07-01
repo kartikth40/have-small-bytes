@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from '../app/page.module.scss'
+import styles from '@/app/page.module.scss'
 import Image from 'next/image'
 import { myPortfolioURL } from '@/services'
 

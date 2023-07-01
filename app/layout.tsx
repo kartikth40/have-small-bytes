@@ -1,9 +1,9 @@
 import './globals.scss'
 import { Inter, Nabla } from 'next/font/google'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import Providers from '@/components/Providers'
-import ClientToastContainer from '@/components/ClientToastContainer'
+import Header from '@/components/global/Header'
+import Footer from '@/components/global/Footer'
+import Providers from '@/components/global/Providers'
+import ClientToastContainer from '@/components/global/ClientToastContainer'
 
 const inter = Inter({
   subsets: ['latin'],
