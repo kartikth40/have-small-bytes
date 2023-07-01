@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 export default function LoginPage() {
   const { data: session, status: sessionStatus } = useSession()
   const [signingIn, setSigningIn] = useState(false)
+
   // should redirect if not sigining in and also session is not there
   const shouldRedirect = !signingIn && session
   const router = useRouter()
@@ -41,12 +42,14 @@ export default function LoginPage() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSigningIn(true)
+    // Match Credentials
     const loginId = toast.loading('Checking your credentials...')
     const result = await signIn('credentials', {
       email: email.current,
       password: password.current,
       redirect: false,
     })
+    // handle error
     if (result?.error) {
       setSigningIn(false)
       toast.update(loginId, {
@@ -55,7 +58,9 @@ export default function LoginPage() {
         isLoading: false,
         autoClose: 3000,
       })
-    } else {
+    }
+    // logged in - push to callbackUrl
+    else {
       toast.update(loginId, {
         render: '🦄 Logged In!',
         type: 'success',
