@@ -1,26 +1,16 @@
 'use client'
 
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import styles from './page.module.scss'
-import {
-  ClientSafeProvider,
-  LiteralUnion,
-  getProviders,
-  signIn,
-  useSession,
-} from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { BuiltInProviderType } from 'next-auth/providers'
+import styles from './page.module.scss'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { toast } from 'react-toastify'
 
-type Props = {}
-
-export default function LoginPage({}: Props) {
+export default function LoginPage() {
   const { data: session, status: sessionStatus } = useSession()
   const [signingIn, setSigningIn] = useState(false)
-
+  // should redirect if not sigining in and also session is not there
   const shouldRedirect = !signingIn && session
   const router = useRouter()
 
@@ -30,30 +20,19 @@ export default function LoginPage({}: Props) {
     }
   }, [router, shouldRedirect])
 
-  // const [providers, setProviders] = useState<Record<
-  //   LiteralUnion<BuiltInProviderType, string>,
-  //   ClientSafeProvider
-  // > | null>(null)
-  // useEffect(() => {
-  //   async function setP() {
-  //     const res = await getProviders()
-  //     setProviders(res)
-  //   }
-  //   setP()
-  // }, [])
-
-  const email = useRef('')
-  const password = useRef('')
   const {
     headingsContainer,
     mainContainer,
     register,
     loginBtnContainer,
-    thirdPartyLoginContainer,
     forgetPass,
     loadingState,
   } = styles
+
+  const email = useRef('')
+  const password = useRef('')
   const callbackUrl = useSearchParams().get('callbackUrl')
+
   if (shouldRedirect)
     return <div className={loadingState}>Redirecting to home page...</div>
   if (sessionStatus === 'loading')
@@ -92,7 +71,7 @@ export default function LoginPage({}: Props) {
         <div className={headingsContainer}>
           <h3>Welcome Back</h3>
         </div>
-        {/* <label htmlFor="email">Your Email</label> */}
+        {/* Email */}
         <input
           type="email"
           placeholder="Enter Email"
@@ -106,7 +85,7 @@ export default function LoginPage({}: Props) {
         <br />
         <br />
 
-        {/* <label htmlFor="pswrd">Your password</label> */}
+        {/* Password */}
         <input
           type="password"
           placeholder="Enter Password"
@@ -134,26 +113,6 @@ export default function LoginPage({}: Props) {
           </Link>
         </p>
       </form>
-
-      {/* <div className={thirdPartyLoginContainer}>
-        {providers
-          ? Object.values(providers).map((provider) =>
-              provider.name !== 'Credentials' ? (
-                <div key={provider.name}>
-                  <button onClick={() => signIn(provider.id)}>
-                    <Image
-                      src={`https://authjs.dev/img/providers/${provider.id}-dark.svg`}
-                      width={24}
-                      height={24}
-                      alt={`${provider.name} logo`}
-                    />
-                    Continue with {provider.name}
-                  </button>
-                </div>
-              ) : null
-            )
-          : null}
-      </div> */}
     </div>
   )
 }
