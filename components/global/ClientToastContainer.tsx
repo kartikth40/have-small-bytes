@@ -14,7 +14,6 @@ export default function ClientToastContainer({}: Props) {
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="light"
