@@ -3,7 +3,8 @@
 import styles from '@/app/reader/profile/page.module.scss'
 import { toast } from 'react-toastify'
 import { redirect } from 'next/navigation'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import { deleteUser } from '@/services'
 
 type Props = {}
 
@@ -31,10 +32,19 @@ export default function ResetPassword({}: Props) {
 
     // delete account
 
-    toast.success('Account Deleted!', {
-      autoClose: 3000,
-      position: 'bottom-left',
-    })
+    const result = await deleteUser(session.user.id)
+    console.log(result)
+    if (result) {
+      toast.info('Account Deleted! ba bye.', {
+        autoClose: 3000,
+      })
+      toast.info('logging out', { autoClose: 1000 })
+      signOut({ callbackUrl: '/' })
+    } else {
+      toast.error('Error Ocurred! Please try again later...', {
+        autoClose: 3000,
+      })
+    }
   }
   return (
     <form className={updateForm} onSubmit={(e) => handleSubmit(e)}>
