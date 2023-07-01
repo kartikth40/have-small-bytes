@@ -104,7 +104,9 @@ export default function LoginPage() {
         <br />
         <br />
         <div className={loginBtnContainer}>
-          <button type="submit">Login</button>
+          <button type="submit" disabled={signingIn}>
+            Login
+          </button>
         </div>
         <div>
           <p className={forgetPass}>

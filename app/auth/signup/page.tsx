@@ -164,7 +164,9 @@ export default function SignUpPage() {
           <br />
           <br />
           <div className={loginBtnContainer}>
-            <button type="submit">Create Account</button>
+            <button type="submit" disabled={signingIn}>
+              Create Account
+            </button>
           </div>
           <p className={login}>
             Already have an account?{' '}
