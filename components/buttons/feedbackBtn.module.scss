@@ -1,15 +1,16 @@
-.like_button {
+.Btn_container {
   --color-bg: #fdf1f2;
   --color-heart: #ea442b;
+  --color-comment: var(--color-primary-blue);
   --easing: cubic-bezier(0.7, 0, 0.3, 1);
   --duration: 0.5s;
-  font-size: 50px;
+  font-size: 32px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   border: none;
   border-radius: 50%;
-  background: white;
+  background: transparent;
   width: 1em;
   height: 1em;
   padding: 0;
@@ -24,83 +25,8 @@
   cursor: pointer;
   position: relative;
 }
-.like_button:before {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.3);
-  border-radius: inherit;
-  -webkit-transition: inherit;
-  transition: inherit;
-}
-.like_button:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  border-radius: inherit;
-  z-index: -1;
-}
-.like_button:active:before {
-  -webkit-animation: depress-shadow var(--duration) var(--easing) both;
-  animation: depress-shadow var(--duration) var(--easing) both;
-}
-.like_button:focus:after {
-  -webkit-animation: depress var(--duration) var(--easing) both;
-  animation: depress var(--duration) var(--easing) both;
-}
-@-webkit-keyframes depress {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: translateY(5%) scale(0.9);
-    transform: translateY(5%) scale(0.9);
-  }
-}
-@keyframes depress {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: translateY(5%) scale(0.9);
-    transform: translateY(5%) scale(0.9);
-  }
-}
-@-webkit-keyframes depress-shadow {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
-  }
-}
-@keyframes depress-shadow {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
-  }
-}
-.like_wrapper {
+
+.Btn_wrapper {
   display: grid;
   -webkit-box-align: center;
   align-items: center;
@@ -108,14 +34,15 @@
   justify-content: center;
   z-index: 1;
 }
-.like_wrapper > * {
+.Btn_wrapper > * {
   margin: auto;
   grid-area: 1 / 1;
 }
 
-.heart {
-  width: 0.5em;
-  height: 0.5em;
+.heart,
+.comment {
+  width: 0.7em;
+  height: 0.7em;
   display: block;
   -webkit-transform-origin: center 80%;
   transform-origin: center 80%;
@@ -127,10 +54,15 @@
   -webkit-transition: fill var(--duration) var(--easing);
   transition: fill var(--duration) var(--easing);
 }
-.like_button:focus .heart > path {
+.comment > path {
+  stroke: var(--color-comment);
+  stroke-width: 2;
+  fill: transparent;
+}
+.Btn_container:focus .heart > path {
   fill: var(--color-heart);
 }
-.like_button:focus .heart {
+.Btn_container:focus .heart {
   -webkit-animation: heart-bounce var(--duration) var(--easing);
   animation: heart-bounce var(--duration) var(--easing);
 }
@@ -181,7 +113,7 @@
   -webkit-transition: all var(--duration) var(--easing);
   transition: all var(--duration) var(--easing);
 }
-.like_button:focus .particle {
+.Btn_container:focus .particle {
   -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing)
     forwards;
   animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
@@ -246,7 +178,7 @@
   -webkit-transform: translate(-50%, -50%) scale(0);
   transform: translate(-50%, -50%) scale(0);
 }
-.like_button:focus .ripple:before {
+.Btn_container:focus .ripple:before {
   -webkit-animation: ripple-out var(--duration) var(--easing);
   animation: ripple-out var(--duration) var(--easing);
 }
@@ -256,8 +188,8 @@
     transform: translate(-50%, -50%) scale(0);
   }
   to {
-    -webkit-transform: translate(-50%, -50%) scale(3);
-    transform: translate(-50%, -50%) scale(3);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 @keyframes ripple-out {
@@ -266,13 +198,13 @@
     transform: translate(-50%, -50%) scale(0);
   }
   to {
-    -webkit-transform: translate(-50%, -50%) scale(3);
-    transform: translate(-50%, -50%) scale(3);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
 /* Reset the animation when clicking again! */
-.like_button:focus {
+.Btn_container:focus {
   pointer-events: none;
   cursor: normal;
 }
