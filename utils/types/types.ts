@@ -8,6 +8,7 @@ export interface authorURL {
 export interface posts {
   posts: [
     {
+      id: string
       author: {
         bio: string
         id: string
@@ -33,6 +34,7 @@ export interface posts {
   ]
 }
 export interface postsType {
+  id: string
   author: {
     bio: string
     id: string
@@ -58,6 +60,7 @@ export interface postsType {
 
 export interface postDetailsType {
   post: {
+    id: string
     author: {
       bio: string
       id: string
@@ -84,6 +87,7 @@ export interface postDetailsType {
 }
 
 export interface postType {
+  id: string
   author: {
     bio: string
     id: string

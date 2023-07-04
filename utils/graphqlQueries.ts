@@ -11,6 +11,7 @@ export const authorUrlQuery = gql`
 export const PostsQuery = gql`
   query GetPosts {
     posts {
+      id
       author {
         bio
         id
@@ -37,6 +38,7 @@ export const PostsQuery = gql`
 export const FeaturedPostsQuery = gql`
   query GetPosts {
     posts(where: { featuredPost: true }) {
+      id
       author {
         bio
         id
@@ -63,6 +65,7 @@ export const FeaturedPostsQuery = gql`
 export const FeaturedCategoryPostsQuery = gql`
   query GetPosts($category: String!) {
     posts(where: { featuredPost: true, categories_some: { slug: $category } }) {
+      id
       author {
         bio
         id
@@ -85,6 +88,7 @@ export const FeaturedCategoryPostsQuery = gql`
 export const CategoryPostsQuery = gql`
   query GetPosts($category: String!) {
     posts(where: { categories_some: { slug: $category } }) {
+      id
       author {
         bio
         id
@@ -111,6 +115,7 @@ export const CategoryPostsQuery = gql`
 export const PostDetailsQuery = gql`
   query GetPostDetails($slug: String!) {
     post(where: { slug: $slug }) {
+      id
       author {
         bio
         id
