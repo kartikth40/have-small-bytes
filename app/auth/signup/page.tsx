@@ -73,6 +73,7 @@ export default function SignUpPage() {
         isLoading: false,
         autoClose: 5000,
       })
+      setSigningIn(false)
     }
     // create new account
     else {

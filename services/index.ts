@@ -109,6 +109,8 @@ export const getPostDetails = cache(async (slug: string) => {
 })
 
 export const getRecentPosts = cache(async () => {
+  console.log('------------------> GET RECENT POSTS')
+
   try {
     const result: recentPostsType = await request(graphqlAPI, RecentPostsQuery)
     return result.posts
@@ -120,6 +122,8 @@ export const getRecentPosts = cache(async () => {
 
 export const getSimilarPosts = cache(
   async (categories: string[], slug: string) => {
+    console.log('------------------> GET SIMILAR POSTS')
+
     try {
       const result: recentPostsType = await request(
         graphqlAPI,
@@ -138,6 +142,7 @@ export const getSimilarPosts = cache(
 )
 
 export const getCategories = cache(async () => {
+  console.log('------------------> GET CATEGORIES')
   try {
     const result: categoriesType = await request(graphqlAPI, CategoriesQuery)
     return result.categories

@@ -27,11 +27,7 @@ export function nameValidate(
 export function emailValidate(email: string, maxLength: number = 35): response {
   const validEmailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-  console.log(
-    email.match(validEmailRegex),
-    !email.match(validEmailRegex),
-    email
-  )
+
   const zeroLengthError = 'Email is required!'
   const overSizeEmailError = `Email must not exceed ${maxLength} characters!`
   const invalidEmailError = 'Email is not valid!'

@@ -9,4 +9,9 @@ module.exports = {
       'avatars.githubusercontent.com',
     ],
   },
+  // turn on this if graphql Too many request error occurs
+  // experimental: {
+  //   workerThreads: false,
+  //   cpus: 1,
+  // },
 }
