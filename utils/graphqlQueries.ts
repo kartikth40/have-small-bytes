@@ -276,3 +276,43 @@ export const resetPasswordQuery = gql`
     }
   }
 `
+
+export const getPostLikesQuery = gql`
+  query GetPostLikes($postId: ID!) {
+    postLikesConnection(where: { post: { id: $postId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export const addPostLikeQuery = gql`
+  mutation AddLike($postId: ID!, $readerId: ID!, $postPlusReaderId) {
+    createPostLike(
+      data: {
+        post: { connect: { id: $postId } }
+        reader: { connect: { id: $readerId } }
+        postPlusReaderId: $postPlusReaderId
+      }
+    ) {
+      id
+    }
+  }
+`
+
+export const addPostLikePublishQuery = gql`
+  mutation AddLikePublish($likeId: ID!) {
+    publishPostLike(where: { id: $likeId }) {
+      id
+    }
+  }
+`
+
+export const checkIfPostLikeQuery = gql`
+  query CheckPostLike($postPlusReaderId: String!) {
+    postLike(where: { postPlusReaderId: $postPlusReaderId }) {
+      id
+    }
+  }
+`

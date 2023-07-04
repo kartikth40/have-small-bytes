@@ -11,6 +11,10 @@ import {
   avatarType,
   deletedReaderIdReturnType,
   updateReaderType,
+  postLikesCountType,
+  postAddLikeType,
+  postAddLikePublishType,
+  checkPostLikeType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -23,11 +27,15 @@ import {
   PostsQuery,
   RecentPostsQuery,
   SimilarPostsQuery,
+  addPostLikePublishQuery,
+  addPostLikeQuery,
   authorUrlQuery,
   checkEmailQuery,
+  checkIfPostLikeQuery,
   deleteReaderQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
+  getPostLikesQuery,
   loginQuery,
   newUserQuery,
   resetPasswordQuery,
@@ -109,8 +117,6 @@ export const getPostDetails = cache(async (slug: string) => {
 })
 
 export const getRecentPosts = cache(async () => {
-  console.log('------------------> GET RECENT POSTS')
-
   try {
     const result: recentPostsType = await request(graphqlAPI, RecentPostsQuery)
     return result.posts
@@ -122,8 +128,6 @@ export const getRecentPosts = cache(async () => {
 
 export const getSimilarPosts = cache(
   async (categories: string[], slug: string) => {
-    console.log('------------------> GET SIMILAR POSTS')
-
     try {
       const result: recentPostsType = await request(
         graphqlAPI,
@@ -142,7 +146,6 @@ export const getSimilarPosts = cache(
 )
 
 export const getCategories = cache(async () => {
-  console.log('------------------> GET CATEGORIES')
   try {
     const result: categoriesType = await request(graphqlAPI, CategoriesQuery)
     return result.categories
@@ -262,5 +265,59 @@ export const resetPassword = cache(async (userId: string, password: string) => {
     return result
   } catch (err) {
     console.log('ERROR Resetting the password ----> ' + err)
+  }
+})
+
+export const getPostLikes = cache(async (postId: string) => {
+  try {
+    const result: postLikesCountType = await request(
+      graphqlAPI,
+      getPostLikesQuery,
+      {
+        postId,
+      }
+    )
+    return result.postLikesConnection.aggregate.count
+  } catch (err) {
+    console.log('ERROR getting post likes ----> ' + err)
+  }
+})
+
+export const addPostLike = cache(async (postId: string, readerId: string) => {
+  try {
+    const postPlusReaderId = postId + readerId
+    const like: postAddLikeType = await request(graphqlAPI, addPostLikeQuery, {
+      postId,
+      readerId,
+      postPlusReaderId,
+    })
+    const likeId = like.createPostLike.id
+
+    const result: postAddLikePublishType = await request(
+      graphqlAPI,
+      addPostLikePublishQuery,
+      {
+        likeId,
+      }
+    )
+    return result.publishPostLike
+  } catch (err) {
+    console.log('ERROR adding post like ----> ' + err)
+  }
+})
+
+export const checkPostLike = cache(async (postId: string, readerId: string) => {
+  try {
+    const postPlusReaderId = postId + readerId
+    const result: checkPostLikeType = await request(
+      graphqlAPI,
+      checkIfPostLikeQuery,
+      {
+        postPlusReaderId,
+      }
+    )
+    return result.postLike
+  } catch (err) {
+    console.log('ERROR checking post like ----> ' + err)
   }
 })

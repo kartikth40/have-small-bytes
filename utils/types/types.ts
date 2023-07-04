@@ -187,3 +187,29 @@ export interface updateReaderType {
     id: string
   }
 }
+
+export interface postLikesCountType {
+  postLikesConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
+
+export interface postAddLikeType {
+  createPostLike: {
+    id: string
+  }
+}
+
+export interface postAddLikePublishType {
+  publishPostLike: {
+    id: string
+  }
+}
+
+export interface checkPostLikeType {
+  postLike: {
+    id: string
+  }
+}
