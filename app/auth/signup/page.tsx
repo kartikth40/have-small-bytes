@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { checkUserExists } from '@/services'
 import { getRandomPhotoId } from '@/utils/constants/profilePicIds'
+import { signupValidation } from '@/utils/constants/formValidation'
 
 export default function SignUpPage() {
   const { data: session, status: sessionStatus } = useSession()
@@ -43,14 +44,25 @@ export default function SignUpPage() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSigningIn(true)
-
     const credentials = {
       name: name.current,
       email: email.current,
       password: password.current,
       photoId: getRandomPhotoId(),
     }
+
+    const validateResponse = signupValidation(
+      credentials.name,
+      credentials.email,
+      credentials.password
+    )
+
+    if (!validateResponse.pass) {
+      toast.warning(validateResponse.error, { autoClose: 5000 })
+      return
+    }
+
+    setSigningIn(true)
     // check for existing email
     const createId = toast.loading('Checking Email...')
     const checkUser = await checkUserExists(email.current)
@@ -115,7 +127,7 @@ export default function SignUpPage() {
   return (
     <>
       <div className={mainContainer}>
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form onSubmit={(e) => handleSubmit(e)} noValidate={true}>
           <div className={headingsContainer}>
             <h3>Sign Up</h3>
           </div>
@@ -124,8 +136,6 @@ export default function SignUpPage() {
             type="text"
             placeholder="Enter Name"
             name="name"
-            minLength={3}
-            maxLength={15}
             onChange={(e) => {
               name.current = e.target.value
             }}
@@ -139,7 +149,6 @@ export default function SignUpPage() {
             type="email"
             placeholder="Enter Email"
             name="email"
-            maxLength={35}
             onChange={(e) => {
               email.current = e.target.value
             }}
@@ -154,8 +163,6 @@ export default function SignUpPage() {
             type="password"
             placeholder="Enter Password"
             name="pswrd"
-            minLength={8}
-            maxLength={20}
             onChange={(e) => {
               password.current = e.target.value
             }}
