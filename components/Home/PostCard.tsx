@@ -4,6 +4,7 @@ import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
 import { myPortfolioURL } from '@/services'
+import LikeButton from '../buttons/LikeButton'
 
 type Props = { post: postsType }
 
@@ -19,6 +20,7 @@ async function PostCard({ post }: Props) {
     authorImage,
     date,
     icon,
+    userFeedbackContainer,
   } = styles
   const authorId: string = (await myPortfolioURL(post.author.id)) || '/'
   return (
@@ -40,6 +42,9 @@ async function PostCard({ post }: Props) {
         </Link>
       </h1>
       <div className={summary}>{post.summary}</div>
+      <div className={userFeedbackContainer}>
+        <LikeButton />
+      </div>
       <div className={authorInfoContainer}>
         <div className={date}>
           <div className={icon}>
