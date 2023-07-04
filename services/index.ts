@@ -316,7 +316,7 @@ export const checkPostLike = cache(async (postId: string, readerId: string) => {
         postPlusReaderId,
       }
     )
-    return result.postLike
+    return result.postLike ? true : false
   } catch (err) {
     console.log('ERROR checking post like ----> ' + err)
   }

@@ -3,7 +3,7 @@ import styles from '../../app/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
-import { myPortfolioURL } from '@/services'
+import { getPostLikes, myPortfolioURL } from '@/services'
 import LikeButton from '../buttons/LikeButton'
 import CommentButton from '../buttons/CommentButton'
 
@@ -26,6 +26,7 @@ async function PostCard({ post }: Props) {
     comment,
   } = styles
   const authorId: string = (await myPortfolioURL(post.author.id)) || '/'
+  const likesCount: number = (await getPostLikes(post.id)) || 0
   return (
     <div className={postCard}>
       <Link href={`/post/${post.slug}`}>
@@ -49,8 +50,8 @@ async function PostCard({ post }: Props) {
       <div className={authorInfoContainer}>
         <div className={userFeedbackContainer}>
           <div className={like}>
-            <LikeButton />
-            <span>0</span>
+            <LikeButton postId={post.id} />
+            <span>{likesCount}</span>
           </div>
           <div className={comment}>
             <CommentButton />

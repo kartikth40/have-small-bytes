@@ -293,7 +293,7 @@ export const getPostLikesQuery = gql`
 `
 
 export const addPostLikeQuery = gql`
-  mutation AddLike($postId: ID!, $readerId: ID!, $postPlusReaderId) {
+  mutation AddLike($postId: ID!, $readerId: ID!, $postPlusReaderId: String!) {
     createPostLike(
       data: {
         post: { connect: { id: $postId } }

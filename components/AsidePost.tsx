@@ -1,5 +1,5 @@
 import styles from '../app/page.module.scss'
-import { getPostDetails } from '@/services'
+import { getPostDetails, getPostLikes } from '@/services'
 import SimilarWidget from './SimilarWidget'
 import { notFound } from 'next/navigation'
 import LikeButton from './buttons/LikeButton'
@@ -9,6 +9,7 @@ async function Aside({ slug }: { slug: string }) {
   const { aside, like, comment, userFeedbackContainerAside } = styles
   const post = await getPostDetails(slug)
   if (!post) return notFound()
+  const likesCount: number = (await getPostLikes(post.id)) || 0
 
   return (
     <aside className={aside}>
@@ -18,8 +19,8 @@ async function Aside({ slug }: { slug: string }) {
       />
       <div className={userFeedbackContainerAside}>
         <div className={like}>
-          <LikeButton />
-          <span>0</span>
+          <LikeButton postId={post.id} />
+          <span>{likesCount}</span>
         </div>
         <div className={comment}>
           <CommentButton />
