@@ -47,6 +47,16 @@ async function PostCard({ post }: Props) {
       <div className={summary}>{post.summary}</div>
 
       <div className={authorInfoContainer}>
+        <div className={userFeedbackContainer}>
+          <div className={like}>
+            <LikeButton />
+            <span>0</span>
+          </div>
+          <div className={comment}>
+            <CommentButton />
+            <span>0</span>
+          </div>
+        </div>
         <div className={date}>
           <div className={icon}>
             <Image
@@ -58,16 +68,7 @@ async function PostCard({ post }: Props) {
           </div>
           <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
         </div>
-        <div className={userFeedbackContainer}>
-          <div className={like}>
-            <LikeButton />
-            <span>0</span>
-          </div>
-          <div className={comment}>
-            <CommentButton />
-            <span>0</span>
-          </div>
-        </div>
+
         <Link
           href={authorId}
           className={authorInfo}

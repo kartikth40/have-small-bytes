@@ -22,7 +22,6 @@
   transition: transform var(--duration) var(--easing);
   transition: transform var(--duration) var(--easing),
     -webkit-transform var(--duration) var(--easing);
-  cursor: pointer;
   position: relative;
 }
 
@@ -33,6 +32,21 @@
   -webkit-box-pack: center;
   justify-content: center;
   z-index: 1;
+
+  & label {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  & input:checked ~ label > .heart > path {
+    fill: var(--color-heart);
+  }
+  & input {
+    display: none;
+  }
 }
 .Btn_wrapper > * {
   margin: auto;
@@ -46,6 +60,9 @@
   display: block;
   -webkit-transform-origin: center 80%;
   transform-origin: center 80%;
+  & path {
+    pointer-events: none;
+  }
 }
 .heart > path {
   stroke: var(--color-heart);
@@ -59,10 +76,8 @@
   stroke-width: 2;
   fill: transparent;
 }
-.Btn_container:focus .heart > path {
-  fill: var(--color-heart);
-}
-.Btn_container:focus .heart {
+
+.Btn_container input:checked ~ label .heart {
   -webkit-animation: heart-bounce var(--duration) var(--easing);
   animation: heart-bounce var(--duration) var(--easing);
 }
@@ -113,7 +128,7 @@
   -webkit-transition: all var(--duration) var(--easing);
   transition: all var(--duration) var(--easing);
 }
-.Btn_container:focus .particle {
+.Btn_container input:checked ~ .particles .particle {
   -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing)
     forwards;
   animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
@@ -159,6 +174,7 @@
   }
 }
 .ripple {
+  pointer-events: none;
   height: 1em;
   width: 1em;
   border-radius: 50%;
@@ -178,7 +194,7 @@
   -webkit-transform: translate(-50%, -50%) scale(0);
   transform: translate(-50%, -50%) scale(0);
 }
-.Btn_container:focus .ripple:before {
+.Btn_container input:checked ~ .ripple:before {
   -webkit-animation: ripple-out var(--duration) var(--easing);
   animation: ripple-out var(--duration) var(--easing);
 }
@@ -204,7 +220,6 @@
 }
 
 /* Reset the animation when clicking again! */
-.Btn_container:focus {
-  pointer-events: none;
+.Btn_container > input:checked {
   cursor: normal;
 }
