@@ -15,49 +15,58 @@ type Props = { postId: string }
 
 export default function LikeButton({ postId }: Props) {
   const { data: session, status } = useSession()
-  const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false)
+  const [liked, setLiked] = useState<boolean>(false)
   const loading = status === 'loading'
   useEffect(() => {
     async function isLiked() {
       if (session) {
         const liked = await checkPostLike(postId, session.user.id)
-        if (liked) setAlreadyLiked(true)
+        if (liked) {
+          setLiked(true)
+        }
       }
     }
     isLiked()
   }, [loading])
-  const {
-    Btn_container,
-    Btn_wrapper,
-    ripple,
-    heart,
-    particles,
-    particle,
-    likeLoading,
-  } = styles
-
-  if (loading) {
-    return <div className={likeLoading}>Loading ...</div>
-  }
+  const { Btn_container, Btn_wrapper, ripple, heart, particles, particle } =
+    styles
 
   async function handleLikeClick() {
     if (loading) return
+
     if (!session) {
+      setLiked(true)
+      const timeoutId = setTimeout(() => {
+        setLiked(false)
+        clearTimeout(timeoutId)
+      }, 1000)
       toast('please login to give your feedback.')
       return
     }
-    if (alreadyLiked) {
+    if (liked) {
       // delete
+      setLiked(false)
+      return
     }
+
+    setLiked(true)
     const result = await addPostLike(postId, session?.user.id)
     if (!result) {
       toast.error('Something went wrong! Please try later.')
+      setLiked(false)
     }
   }
   return (
     <button className={Btn_container}>
       <div className={Btn_wrapper}>
-        <input type="checkbox" id="like_id" name="check" />
+        <input
+          disabled={loading}
+          type="checkbox"
+          id="like_id"
+          name="check"
+          checked={liked}
+          onChange={() => {}}
+        />
         <div className={ripple}></div>
         <label htmlFor="like_id" onClick={handleLikeClick}>
           <svg className={heart} width="24" height="24" viewBox="0 0 24 24">
