@@ -28,7 +28,6 @@ export default function LikeButton({ postId }: Props) {
   useEffect(() => {
     async function getCount() {
       const count: number = (await getPostLikes(postId)) || 0
-      console.log(count)
       setLikeCount(count)
     }
     getCount()
@@ -37,7 +36,6 @@ export default function LikeButton({ postId }: Props) {
     async function isLiked() {
       if (session) {
         const liked = await checkPostLike(postId, session.user.id)
-        console.log(liked, postId + session.user.id)
         if (liked) {
           setLiked(true)
         }
@@ -57,8 +55,7 @@ export default function LikeButton({ postId }: Props) {
   } = styles
 
   async function handleLikeClick() {
-    console.log('CLICK .........')
-    if (loading) return
+    if (loading || updating) return
 
     // if not logged in
     if (!session) {
@@ -73,17 +70,12 @@ export default function LikeButton({ postId }: Props) {
       return
     }
 
-    if (updating) {
-      console.log('SKIPED')
-      return
-    }
     setUpdating(true)
     // if liked before
     if (liked) {
       // delete
       setLikeCount((prev) => prev - 1)
       setLiked(false)
-      console.log('DELETE -----------')
       const deleteLike = await deletePostLike(postId, session?.user.id)
 
       if (!deleteLike) {
@@ -94,7 +86,6 @@ export default function LikeButton({ postId }: Props) {
       // add new like
       setLikeCount((prev) => prev + 1)
       setLiked(true)
-      console.log('ADD +++++++++')
       const result = await addPostLike(postId, session?.user.id)
 
       if (!result) {

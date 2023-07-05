@@ -16,10 +16,10 @@ export default async function Author({ author }: Props) {
     authorText,
     authorInfoContainer,
   } = styles
-  const authorId = (await myPortfolioURL(author.id)) || '/'
+  const authorWebsiteUrl = (await myPortfolioURL(author.id)) || '/'
   return (
     <Link
-      href={authorId}
+      href={authorWebsiteUrl}
       rel="noopener noreferrer"
       target="_blank"
       className={authorContainer}

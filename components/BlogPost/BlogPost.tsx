@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { postType } from '@/utils/types/types'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
+import { myPortfolioURL } from '@/services'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
@@ -20,6 +21,8 @@ export default async function BlogPost({ post }: { post: postType }) {
     strict,
   } = styles
 
+  const authorWebsiteUrl = (await myPortfolioURL(post.author.id)) || '/'
+
   return (
     <>
       <div className={postHeroImg}>
@@ -33,7 +36,12 @@ export default async function BlogPost({ post }: { post: postType }) {
       <div className={blogPostContainer}>
         <h1>{post.title}</h1>
         <div className={authorInfoContainerStart}>
-          <Link href={`author/${post.author.id}`} className={authorInfo}>
+          <Link
+            href={`${authorWebsiteUrl}`}
+            className={authorInfo}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <div className={authorImage}>
               <Image
                 src={post.author.photo.url}
