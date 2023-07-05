@@ -6,7 +6,7 @@ import LikeButton from './buttons/LikeButton'
 import CommentButton from './buttons/CommentButton'
 
 async function Aside({ slug }: { slug: string }) {
-  const { aside, like, comment, userFeedbackContainerAside } = styles
+  const { aside, userFeedbackContainerAside } = styles
   const post = await getPostDetails(slug)
   if (!post) return notFound()
   const likesCount: number = (await getPostLikes(post.id)) || 0
@@ -18,14 +18,9 @@ async function Aside({ slug }: { slug: string }) {
         categories={post!.categories.map((category) => category.slug)}
       />
       <div className={userFeedbackContainerAside}>
-        <div className={like}>
-          <LikeButton postId={post.id} />
-          <span>{likesCount}</span>
-        </div>
-        <div className={comment}>
-          <CommentButton />
-          <span>0</span>
-        </div>
+        <LikeButton postId={post.id} />
+
+        <CommentButton />
       </div>
     </aside>
   )

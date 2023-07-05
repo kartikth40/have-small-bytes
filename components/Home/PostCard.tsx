@@ -22,8 +22,6 @@ async function PostCard({ post }: Props) {
     date,
     icon,
     userFeedbackContainer,
-    like,
-    comment,
   } = styles
   const authorId: string = (await myPortfolioURL(post.author.id)) || '/'
   const likesCount: number = (await getPostLikes(post.id)) || 0
@@ -49,14 +47,8 @@ async function PostCard({ post }: Props) {
 
       <div className={authorInfoContainer}>
         <div className={userFeedbackContainer}>
-          <div className={like}>
-            <LikeButton postId={post.id} />
-            <span>{likesCount}</span>
-          </div>
-          <div className={comment}>
-            <CommentButton />
-            <span>0</span>
-          </div>
+          <LikeButton postId={post.id} />
+          <CommentButton />
         </div>
         <div className={date}>
           <div className={icon}>

@@ -23,6 +23,19 @@
   transition: transform var(--duration) var(--easing),
     -webkit-transform var(--duration) var(--easing);
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & .likeCount,
+  & .commentCount {
+    pointer-events: none;
+    font-size: 0.5em;
+    font-weight: 500;
+    color: var(--color-dark2);
+  }
+  & .commentCount {
+    padding-left: 0.3em;
+  }
 }
 
 .Btn_wrapper {
@@ -64,6 +77,7 @@
     pointer-events: none;
   }
 }
+
 .heart > path {
   stroke: var(--color-heart);
   stroke-width: 2;

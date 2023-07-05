@@ -28,8 +28,15 @@ export default function LikeButton({ postId }: Props) {
     }
     isLiked()
   }, [loading])
-  const { Btn_container, Btn_wrapper, ripple, heart, particles, particle } =
-    styles
+  const {
+    Btn_container,
+    Btn_wrapper,
+    ripple,
+    heart,
+    particles,
+    particle,
+    likeCount,
+  } = styles
 
   async function handleLikeClick() {
     if (loading) return
@@ -104,6 +111,7 @@ export default function LikeButton({ postId }: Props) {
           ></div>
         </div>
       </div>
+      <span className={likeCount}>0</span>
     </button>
   )
 }
