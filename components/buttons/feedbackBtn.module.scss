@@ -26,16 +26,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  & .likeCount,
-  & .commentCount {
+  & .likeCountContainer,
+  & .commentCountContainer {
     pointer-events: none;
     font-size: 0.5em;
     font-weight: 500;
     color: var(--color-dark2);
   }
-  & .commentCount {
+  & .commentCountContainer {
     padding-left: 0.3em;
   }
+}
+
+.commentBtn {
+  padding-left: 0.2em;
 }
 
 .Btn_wrapper {

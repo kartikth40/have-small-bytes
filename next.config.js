@@ -10,8 +10,8 @@ module.exports = {
     ],
   },
   // turn on this if graphql Too many request error occurs
-  // experimental: {
-  //   workerThreads: false,
-  //   cpus: 1,
-  // },
+  experimental: {
+    workerThreads: false,
+    cpus: 1,
+  },
 }

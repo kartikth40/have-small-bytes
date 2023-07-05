@@ -3,7 +3,7 @@
 import { CSSProperties, useState, useEffect } from 'react'
 import styles from './feedbackBtn.module.scss'
 import { useSession } from 'next-auth/react'
-import { addPostLike, checkPostLike } from '@/services'
+import { addPostLike, checkPostLike, getPostLikes } from '@/services'
 import { toast } from 'react-toastify'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
@@ -16,7 +16,15 @@ type Props = { postId: string }
 export default function LikeButton({ postId }: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
+  const [likeCount, setLikeCount] = useState<number>(0)
   const loading = status === 'loading'
+  useEffect(() => {
+    async function getCount() {
+      const count: number = (await getPostLikes(postId)) || 0
+      setLikeCount(count)
+    }
+    getCount()
+  })
   useEffect(() => {
     async function isLiked() {
       if (session) {
@@ -35,7 +43,7 @@ export default function LikeButton({ postId }: Props) {
     heart,
     particles,
     particle,
-    likeCount,
+    likeCountContainer,
   } = styles
 
   async function handleLikeClick() {
@@ -47,7 +55,9 @@ export default function LikeButton({ postId }: Props) {
         setLiked(false)
         clearTimeout(timeoutId)
       }, 1000)
-      toast('please login to give your feedback.')
+      toast.warn('please login to give your feedback.', {
+        toastId: 'do_not_allow_duplicate',
+      })
       return
     }
     if (liked) {
@@ -111,7 +121,7 @@ export default function LikeButton({ postId }: Props) {
           ></div>
         </div>
       </div>
-      <span className={likeCount}>0</span>
+      <span className={likeCountContainer}>{likeCount}</span>
     </button>
   )
 }
