@@ -66,7 +66,7 @@ export default function SignUpPage() {
     // check for existing email
     const createId = toast.loading('Checking Email...')
     const checkUser = await checkUserExists(email.current)
-    if (checkUser && checkUser?.id) {
+    if (checkUser) {
       toast.update(createId, {
         render: 'Email already exists!',
         type: 'error',

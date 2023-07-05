@@ -43,7 +43,7 @@ export default function LikeButton({ postId }: Props) {
       }
     }
     isLiked()
-  }, [loading])
+  }, [loading, postId, session])
   const {
     Btn_container,
     Btn_wrapper,

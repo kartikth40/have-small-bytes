@@ -26,7 +26,7 @@ export default function ProfileUpdate({}: Props) {
       email.current = user ? user.email : ''
       setAvatarUrl(user && user.photo ? user.photo?.url : '')
     }
-  }, [loading])
+  }, [loading, session?.user])
   const {
     headingsContainer,
     updateBtnContainer,
