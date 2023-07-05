@@ -317,6 +317,15 @@ export const addPostLikePublishQuery = gql`
 export const checkIfPostLikeQuery = gql`
   query CheckPostLike($postPlusReaderId: String!) {
     postLike(where: { postPlusReaderId: $postPlusReaderId }) {
+      postPlusReaderId
+      id
+    }
+  }
+`
+
+export const deletePostLikeQuery = gql`
+  mutation DeletePostLike($postPlusReaderId: String!) {
+    deletePostLike(where: { postPlusReaderId: $postPlusReaderId }) {
       id
     }
   }

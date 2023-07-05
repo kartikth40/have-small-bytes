@@ -15,6 +15,7 @@ import {
   postAddLikeType,
   postAddLikePublishType,
   checkPostLikeType,
+  postDeleteLikeType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -32,6 +33,7 @@ import {
   authorUrlQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
+  deletePostLikeQuery,
   deleteReaderQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
@@ -52,6 +54,7 @@ export const myPortfolioURL = cache(async (authorId: string) => {
     return result.author.websiteUrl
   } catch (err) {
     console.log('ERROR Extracting authorURL ----> ' + err)
+    return '#'
   }
 })
 
@@ -61,8 +64,8 @@ export const getPosts = cache(async () => {
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Posts ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const getFeaturedPosts = cache(async () => {
@@ -71,8 +74,8 @@ export const getFeaturedPosts = cache(async () => {
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Featured Posts ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const getCategoryPosts = cache(async (category: string) => {
@@ -83,8 +86,8 @@ export const getCategoryPosts = cache(async (category: string) => {
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting certain category Posts ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const getFeaturedCategoryPosts = cache(async (category: string) => {
@@ -97,8 +100,8 @@ export const getFeaturedCategoryPosts = cache(async (category: string) => {
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting certain category featured Posts ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const getPostDetails = cache(async (slug: string) => {
@@ -113,6 +116,7 @@ export const getPostDetails = cache(async (slug: string) => {
     return result?.post
   } catch (err) {
     console.log('ERROR Extracting Post Details ----> ' + err)
+    return null
   }
 })
 
@@ -122,8 +126,8 @@ export const getRecentPosts = cache(async () => {
     return result.posts
   } catch (err) {
     console.log('ERROR Extracting Recent Posts ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const getSimilarPosts = cache(
@@ -140,8 +144,8 @@ export const getSimilarPosts = cache(
       return result.posts
     } catch (err) {
       console.log('ERROR Extracting Similar Posts ----> ' + err)
+      return []
     }
-    return []
   }
 )
 
@@ -151,8 +155,8 @@ export const getCategories = cache(async () => {
     return result.categories
   } catch (err) {
     console.log('ERROR Extracting Categories ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const checkLogin = cache(async (email: string) => {
@@ -163,6 +167,7 @@ export const checkLogin = cache(async (email: string) => {
     return result.reader
   } catch (err) {
     console.log('ERROR Logging you in ----> ' + err)
+    return null
   }
 })
 
@@ -178,6 +183,7 @@ export const addUser = cache(
       return result
     } catch (err) {
       console.log('ERROR Registering new user ----> ' + err)
+      return null
     }
   }
 )
@@ -191,9 +197,10 @@ export const checkUserExists = cache(async (email: string) => {
         email,
       }
     )
-    return result.reader
+    return result.reader ? true : false
   } catch (err) {
     console.log('ERROR checking user exists ----> ' + err)
+    return false
   }
 })
 
@@ -212,6 +219,7 @@ export const updateUser = cache(
       return result
     } catch (err) {
       console.log('ERROR Updating the user ----> ' + err)
+      return null
     }
   }
 )
@@ -225,8 +233,8 @@ export const getAllProfileAvatars = cache(async () => {
     return result.assets
   } catch (err) {
     console.log('ERROR Extracting profile avatars ----> ' + err)
+    return []
   }
-  return []
 })
 
 export const getAvatarById = cache(async (id: string) => {
@@ -237,6 +245,7 @@ export const getAvatarById = cache(async (id: string) => {
     return result.asset.url
   } catch (err) {
     console.log('ERROR Extracting avatar ----> ' + err)
+    return '#'
   }
 })
 
@@ -252,6 +261,7 @@ export const deleteUser = cache(async (userId: string) => {
     return result.deleteReader
   } catch (err) {
     console.log('ERROR Deleting the user ----> ' + err)
+    return null
   }
 })
 
@@ -265,6 +275,7 @@ export const resetPassword = cache(async (userId: string, password: string) => {
     return result
   } catch (err) {
     console.log('ERROR Resetting the password ----> ' + err)
+    return null
   }
 })
 
@@ -280,6 +291,7 @@ export const getPostLikes = cache(async (postId: string) => {
     return result.postLikesConnection.aggregate.count
   } catch (err) {
     console.log('ERROR getting post likes ----> ' + err)
+    return 0
   }
 })
 
@@ -303,12 +315,14 @@ export const addPostLike = cache(async (postId: string, readerId: string) => {
     return result.publishPostLike
   } catch (err) {
     console.log('ERROR adding post like ----> ' + err)
+    return null
   }
 })
 
 export const checkPostLike = cache(async (postId: string, readerId: string) => {
   try {
     const postPlusReaderId = postId + readerId
+    console.log('---->', postPlusReaderId)
     const result: checkPostLikeType = await request(
       graphqlAPI,
       checkIfPostLikeQuery,
@@ -316,8 +330,29 @@ export const checkPostLike = cache(async (postId: string, readerId: string) => {
         postPlusReaderId,
       }
     )
+    console.log('---->', result)
     return result.postLike ? true : false
   } catch (err) {
     console.log('ERROR checking post like ----> ' + err)
+    return false
   }
 })
+
+export const deletePostLike = cache(
+  async (postId: string, readerId: string) => {
+    try {
+      const postPlusReaderId = postId + readerId
+      const result: postDeleteLikeType = await request(
+        graphqlAPI,
+        deletePostLikeQuery,
+        {
+          postPlusReaderId,
+        }
+      )
+      return result.deletePostLike ? true : false
+    } catch (err) {
+      console.log('ERROR deleting post likes ----> ' + err)
+      return false
+    }
+  }
+)

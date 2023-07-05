@@ -3,7 +3,12 @@
 import { CSSProperties, useState, useEffect } from 'react'
 import styles from './feedbackBtn.module.scss'
 import { useSession } from 'next-auth/react'
-import { addPostLike, checkPostLike, getPostLikes } from '@/services'
+import {
+  addPostLike,
+  checkPostLike,
+  deletePostLike,
+  getPostLikes,
+} from '@/services'
 import { toast } from 'react-toastify'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
@@ -16,22 +21,27 @@ type Props = { postId: string }
 export default function LikeButton({ postId }: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
+  const [updating, setUpdating] = useState<boolean>(false)
+  const [fethedIfLiked, setFetchedIfLike] = useState<boolean>(false)
   const [likeCount, setLikeCount] = useState<number>(0)
   const loading = status === 'loading'
   useEffect(() => {
     async function getCount() {
       const count: number = (await getPostLikes(postId)) || 0
+      console.log(count)
       setLikeCount(count)
     }
     getCount()
-  })
+  }, [])
   useEffect(() => {
     async function isLiked() {
       if (session) {
         const liked = await checkPostLike(postId, session.user.id)
+        console.log(liked, postId + session.user.id)
         if (liked) {
           setLiked(true)
         }
+        setFetchedIfLike(true)
       }
     }
     isLiked()
@@ -47,8 +57,10 @@ export default function LikeButton({ postId }: Props) {
   } = styles
 
   async function handleLikeClick() {
+    console.log('CLICK .........')
     if (loading) return
 
+    // if not logged in
     if (!session) {
       setLiked(true)
       const timeoutId = setTimeout(() => {
@@ -60,24 +72,44 @@ export default function LikeButton({ postId }: Props) {
       })
       return
     }
-    if (liked) {
-      // delete
-      setLiked(false)
+
+    if (updating) {
+      console.log('SKIPED')
       return
     }
-
-    setLiked(true)
-    const result = await addPostLike(postId, session?.user.id)
-    if (!result) {
-      toast.error('Something went wrong! Please try later.')
+    setUpdating(true)
+    // if liked before
+    if (liked) {
+      // delete
+      setLikeCount((prev) => prev - 1)
       setLiked(false)
+      console.log('DELETE -----------')
+      const deleteLike = await deletePostLike(postId, session?.user.id)
+
+      if (!deleteLike) {
+        setLiked(true)
+        toast.error('Something went wrong! Please try later.')
+      }
+    } else {
+      // add new like
+      setLikeCount((prev) => prev + 1)
+      setLiked(true)
+      console.log('ADD +++++++++')
+      const result = await addPostLike(postId, session?.user.id)
+
+      if (!result) {
+        toast.error('Something went wrong! Please try later.')
+        setLiked(false)
+      }
     }
+    setLikeCount((await getPostLikes(postId)) || 0)
+    setUpdating(false)
   }
   return (
     <button className={Btn_container}>
       <div className={Btn_wrapper}>
         <input
-          disabled={loading}
+          disabled={loading || !fethedIfLiked}
           type="checkbox"
           id="like_id"
           name="check"

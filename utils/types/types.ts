@@ -217,3 +217,9 @@ export interface checkPostLikeType {
     id: string
   }
 }
+
+export interface postDeleteLikeType {
+  deletePostLike: {
+    id: string
+  }
+}
