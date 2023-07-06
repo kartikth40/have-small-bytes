@@ -31,7 +31,7 @@ export default function LikeButton({ postId }: Props) {
       setLikeCount(count)
     }
     getCount()
-  }, [])
+  }, [postId])
   useEffect(() => {
     async function isLiked() {
       if (session) {

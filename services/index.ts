@@ -44,6 +44,21 @@ import {
   updateUserQuery,
 } from '../utils/graphqlQueries'
 
+interface ErrorType {
+  response: { status: number }
+}
+
+function consoleLog(err: any, errorMessage: string) {
+  const error = err as ErrorType
+  console.log('...................................')
+  if (error.response.status === 429) {
+    console.log(`|-ERROR-|--> |Too many requests|--> ${errorMessage}`)
+  } else {
+    console.log(`|-ERROR-|--> |while ${errorMessage}|-->  ${err}`)
+  }
+  console.log('...................................')
+}
+
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
 
 export const myPortfolioURL = cache(async (authorId: string) => {
@@ -53,7 +68,8 @@ export const myPortfolioURL = cache(async (authorId: string) => {
     })
     return result.author.websiteUrl
   } catch (err) {
-    console.log('ERROR Extracting authorURL ----> ' + err)
+    consoleLog(err, 'extracting author URL')
+
     return '#'
   }
 })
@@ -63,7 +79,8 @@ export const getPosts = cache(async () => {
     const result: posts = await request(graphqlAPI, PostsQuery)
     return result.posts
   } catch (err) {
-    console.log('ERROR Extracting Posts ----> ' + err)
+    consoleLog(err, 'extracting posts')
+
     return []
   }
 })
@@ -73,7 +90,8 @@ export const getFeaturedPosts = cache(async () => {
     const result: posts = await request(graphqlAPI, FeaturedPostsQuery)
     return result.posts
   } catch (err) {
-    console.log('ERROR Extracting Featured Posts ----> ' + err)
+    consoleLog(err, 'extracting featured posts')
+
     return []
   }
 })
@@ -85,7 +103,8 @@ export const getCategoryPosts = cache(async (category: string) => {
     })
     return result.posts
   } catch (err) {
-    console.log('ERROR Extracting certain category Posts ----> ' + err)
+    consoleLog(err, 'extracting certain category posts')
+
     return []
   }
 })
@@ -99,7 +118,8 @@ export const getFeaturedCategoryPosts = cache(async (category: string) => {
     )
     return result.posts
   } catch (err) {
-    console.log('ERROR Extracting certain category featured Posts ----> ' + err)
+    consoleLog(err, 'extracting certain category featured posts')
+
     return []
   }
 })
@@ -115,7 +135,8 @@ export const getPostDetails = cache(async (slug: string) => {
     )
     return result?.post
   } catch (err) {
-    console.log('ERROR Extracting Post Details ----> ' + err)
+    consoleLog(err, 'extracting post details')
+
     return null
   }
 })
@@ -125,7 +146,8 @@ export const getRecentPosts = cache(async () => {
     const result: recentPostsType = await request(graphqlAPI, RecentPostsQuery)
     return result.posts
   } catch (err) {
-    console.log('ERROR Extracting Recent Posts ----> ' + err)
+    consoleLog(err, 'extracting recent posts')
+
     return []
   }
 })
@@ -143,7 +165,8 @@ export const getSimilarPosts = cache(
       )
       return result.posts
     } catch (err) {
-      console.log('ERROR Extracting Similar Posts ----> ' + err)
+      consoleLog(err, 'extracting similar posts')
+
       return []
     }
   }
@@ -154,7 +177,8 @@ export const getCategories = cache(async () => {
     const result: categoriesType = await request(graphqlAPI, CategoriesQuery)
     return result.categories
   } catch (err) {
-    console.log('ERROR Extracting Categories ----> ' + err)
+    consoleLog(err, 'extracting categories')
+
     return []
   }
 })
@@ -166,7 +190,8 @@ export const checkLogin = cache(async (email: string) => {
     })
     return result.reader
   } catch (err) {
-    console.log('ERROR Logging you in ----> ' + err)
+    consoleLog(err, 'logging in the user')
+
     return null
   }
 })
@@ -182,7 +207,8 @@ export const addUser = cache(
       })
       return result
     } catch (err) {
-      console.log('ERROR Registering new user ----> ' + err)
+      consoleLog(err, 'registering new user')
+
       return null
     }
   }
@@ -199,7 +225,8 @@ export const checkUserExists = cache(async (email: string) => {
     )
     return result.reader ? true : false
   } catch (err) {
-    console.log('ERROR checking user exists ----> ' + err)
+    consoleLog(err, 'checking user exists')
+
     return false
   }
 })
@@ -218,7 +245,8 @@ export const updateUser = cache(
       )
       return result
     } catch (err) {
-      console.log('ERROR Updating the user ----> ' + err)
+      consoleLog(err, 'updating the user')
+
       return null
     }
   }
@@ -232,7 +260,8 @@ export const getAllProfileAvatars = cache(async () => {
     )
     return result.assets
   } catch (err) {
-    console.log('ERROR Extracting profile avatars ----> ' + err)
+    consoleLog(err, 'extracting user profile avatars')
+
     return []
   }
 })
@@ -244,7 +273,8 @@ export const getAvatarById = cache(async (id: string) => {
     })
     return result.asset.url
   } catch (err) {
-    console.log('ERROR Extracting avatar ----> ' + err)
+    consoleLog(err, 'extracting user profile avatar')
+
     return '#'
   }
 })
@@ -260,7 +290,8 @@ export const deleteUser = cache(async (userId: string) => {
     )
     return result.deleteReader
   } catch (err) {
-    console.log('ERROR Deleting the user ----> ' + err)
+    consoleLog(err, 'deleting the user')
+
     return null
   }
 })
@@ -274,7 +305,8 @@ export const resetPassword = cache(async (userId: string, password: string) => {
     )
     return result
   } catch (err) {
-    console.log('ERROR Resetting the password ----> ' + err)
+    consoleLog(err, 'resetting the user password')
+
     return null
   }
 })
@@ -290,7 +322,8 @@ export const getPostLikes = cache(async (postId: string) => {
     )
     return result.postLikesConnection.aggregate.count
   } catch (err) {
-    console.log('ERROR getting post likes ----> ' + err)
+    consoleLog(err, 'getting post likes')
+
     return 0
   }
 })
@@ -314,7 +347,8 @@ export const addPostLike = cache(async (postId: string, readerId: string) => {
     )
     return result.publishPostLike
   } catch (err) {
-    console.log('ERROR adding post like ----> ' + err)
+    consoleLog(err, 'adding like to posts')
+
     return null
   }
 })
@@ -322,7 +356,6 @@ export const addPostLike = cache(async (postId: string, readerId: string) => {
 export const checkPostLike = cache(async (postId: string, readerId: string) => {
   try {
     const postPlusReaderId = postId + readerId
-    console.log('---->', postPlusReaderId)
     const result: checkPostLikeType = await request(
       graphqlAPI,
       checkIfPostLikeQuery,
@@ -330,10 +363,10 @@ export const checkPostLike = cache(async (postId: string, readerId: string) => {
         postPlusReaderId,
       }
     )
-    console.log('---->', result)
     return result.postLike ? true : false
   } catch (err) {
-    console.log('ERROR checking post like ----> ' + err)
+    consoleLog(err, 'checking if post liked')
+
     return false
   }
 })
@@ -351,7 +384,8 @@ export const deletePostLike = cache(
       )
       return result.deletePostLike ? true : false
     } catch (err) {
-      console.log('ERROR deleting post likes ----> ' + err)
+      consoleLog(err, 'deleting post likes')
+
       return false
     }
   }
