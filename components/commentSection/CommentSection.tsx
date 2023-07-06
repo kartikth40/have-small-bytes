@@ -12,20 +12,50 @@ export default function CommentSection({}: Props) {
     head,
     commentInputContainer,
     commentsContainer,
+    commentContainer,
+    readerContainer,
+    commentContentContainer,
+    readerAvatar,
+    readerName,
   } = styles
   function handleSendComment() {}
   return (
     <section className={commentSectionContainer}>
       <h1 className={head}>Comments</h1>
       <div className={commentInputContainer}>
-        <input
-          type="text"
+        <textarea
+          rows={6}
           value={currentComment}
           onChange={(e) => setCurrentComment(e.target.value)}
         />
         <button onClick={handleSendComment}>Send</button>
       </div>
-      <div className={commentsContainer}></div>
+      <div className={commentsContainer}>
+        <div className={commentContainer}>
+          <div className={readerContainer}>
+            <div className={readerAvatar}>^_^</div>
+            <div className={readerName}>Kartik Thakur</div>
+          </div>
+          <div className={commentContentContainer}>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore
+            veniam voluptates earum commodi suscipit vero velit labore
+            reiciendis odio quos ducimus necessitatibus, soluta, accusantium
+            unde fugiat, qui repellendus alias ullam?
+          </div>
+        </div>
+        <div className={commentContainer}>
+          <div className={readerContainer}>
+            <div className={readerAvatar}>^_^</div>
+            <div className={readerName}>Zolo</div>
+          </div>
+          <div className={commentContentContainer}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
+            repellendus dolores facilis error nisi nam quia necessitatibus hic
+            sequi quod explicabo excepturi, facere modi. Culpa, totam nulla.
+            Doloremque, alias dolorum?
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
