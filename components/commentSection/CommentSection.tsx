@@ -17,6 +17,9 @@ export default function CommentSection({}: Props) {
     commentContentContainer,
     readerAvatar,
     readerName,
+    interact,
+    replyContainer,
+    age,
   } = styles
   function handleSendComment() {}
   return (
@@ -42,7 +45,12 @@ export default function CommentSection({}: Props) {
             reiciendis odio quos ducimus necessitatibus, soluta, accusantium
             unde fugiat, qui repellendus alias ullam?
           </div>
+          <div className={interact}>
+            <div className={replyContainer}>Reply</div>
+            <div className={age}>9 min</div>
+          </div>
         </div>
+        <hr />
         <div className={commentContainer}>
           <div className={readerContainer}>
             <div className={readerAvatar}>^_^</div>
@@ -53,6 +61,10 @@ export default function CommentSection({}: Props) {
             repellendus dolores facilis error nisi nam quia necessitatibus hic
             sequi quod explicabo excepturi, facere modi. Culpa, totam nulla.
             Doloremque, alias dolorum?
+          </div>
+          <div className={interact}>
+            <div className={replyContainer}>Reply</div>
+            <div className={age}>10 hr</div>
           </div>
         </div>
       </div>

@@ -14,14 +14,14 @@
   margin-block: 1em;
   display: flex;
   flex-direction: column;
-  justify-items: center;
+  justify-content: center;
   align-items: flex-end;
   gap: 0.5em;
   & textarea {
     border-radius: 10px;
     font-family: var(--font-inter);
     width: 100%;
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 1em;
     resize: none;
   }
@@ -36,14 +36,20 @@
   }
 }
 .commentsContainer {
+  & hr {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: 95%;
+    margin-inline: auto;
+  }
 }
 .commentContainer {
-  margin-bottom: 2em;
+  margin-block: 1em;
   & .readerContainer {
     display: flex;
-    justify-items: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 0.5em;
+    margin-bottom: 0.3em;
     & .readerAvatar {
       width: 24px;
       height: 24px;
@@ -53,5 +59,22 @@
     }
   }
   & .commentContentContainer {
+    font-size: 1.1rem;
+  }
+  & .interact {
+    font-size: 0.8rem;
+    margin-top: 0.5em;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    & .replyContainer {
+      font-weight: 700;
+      margin-left: 2em;
+    }
+    & .age {
+      color: var(--color-dark2);
+      margin-left: 3em;
+    }
   }
 }
