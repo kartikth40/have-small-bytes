@@ -50,13 +50,14 @@ interface ErrorType {
 
 function consoleLog(err: any, errorMessage: string) {
   const error = err as ErrorType
-  console.log('...................................')
+  console.log('|----ERROR')
   if (error.response.status === 429) {
-    console.log(`|-ERROR-|--> |Too many requests|--> ${errorMessage}`)
+    console.log(`|----Too many requests`)
+    console.log(`|----> ${errorMessage}`)
   } else {
-    console.log(`|-ERROR-|--> |while ${errorMessage}|-->  ${err}`)
+    console.log(`|----While ${errorMessage}|`)
+    console.log(`|----> ${err}`)
   }
-  console.log('...................................')
 }
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!

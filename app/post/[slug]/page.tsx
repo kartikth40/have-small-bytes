@@ -6,6 +6,7 @@ import BlogPost from '@/components/BlogPost/BlogPost'
 import { getPostDetails } from '@/services'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import CommentSection from '@/components/commentSection/CommentSection'
 
 // export async function generateStaticParams() {
 //   const posts = await getPosts()
@@ -29,6 +30,7 @@ export default async function Blog({ params }: Props) {
     <div>
       <BlogPost post={post} />
       <Author author={post.author} />
+      <CommentSection />
     </div>
   )
 }
