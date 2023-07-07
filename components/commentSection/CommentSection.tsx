@@ -27,7 +27,7 @@ export default function CommentSection({}: Props) {
       <h1 className={head}>Comments</h1>
       <div className={commentInputContainer}>
         <textarea
-          rows={6}
+          rows={3}
           value={currentComment}
           onChange={(e) => setCurrentComment(e.target.value)}
         />

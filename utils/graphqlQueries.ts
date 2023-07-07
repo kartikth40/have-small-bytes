@@ -330,3 +330,60 @@ export const deletePostLikeQuery = gql`
     }
   }
 `
+
+export const getPostCommentsCountQuery = gql`
+  query GetPostCommentsCount($postId: ID!) {
+    commentsConnection(where: { post: { id: $postId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export const getPostCommentsQuery = gql`
+  query GetPostComments($postId: ID!) {
+    comments(where: { post: { id: $postId } }, orderBy: createdAt_ASC) {
+      id
+      reader {
+        id
+        name
+        email
+        photo {
+          url
+        }
+      }
+      comment
+    }
+  }
+`
+
+export const addCommentDraftQuery = gql`
+  mutation AddComment($comment: String!, $postId: ID!, $readerId: ID!) {
+    createComment(
+      data: {
+        comment: $comment
+        post: { connect: { id: $postId } }
+        reader: { connect: { id: $readerId } }
+      }
+    ) {
+      id
+    }
+  }
+`
+
+export const addCommentPublisheQuery = gql`
+  mutation AddCommentPublish($commentId: ID!) {
+    publishComment(where: { id: $commentId }) {
+      id
+    }
+  }
+`
+
+export const updateCommentQuery = gql`
+  mutation UpdateComment($commentId: ID!, $comment: String!) {
+    updateComment(data: { comment: $comment }, where: { id: $commentId }) {
+      id
+    }
+  }
+`
