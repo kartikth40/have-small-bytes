@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import styles from './commentSection.module.scss'
-import { getPostCommentsType } from '@/utils/types/types'
+import { getPostCommentType } from '@/utils/types/types'
 import { getComments, getCommentsCount } from '@/services'
 import Image from 'next/image'
 
@@ -11,7 +11,7 @@ type Props = { postId: string }
 export default function CommentSection({ postId }: Props) {
   const [currentComment, setCurrentComment] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
-  const [comments, setComments] = useState<getPostCommentsType>()
+  const [comments, setComments] = useState<getPostCommentType[]>()
   useEffect(() => {
     async function initialize() {
       setCommentsCount(await getCommentsCount(postId))
