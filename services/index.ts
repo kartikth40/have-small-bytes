@@ -16,6 +16,12 @@ import {
   postAddLikePublishType,
   checkPostLikeType,
   postDeleteLikeType,
+  postCommentsCountType,
+  postAddCommentType,
+  postAddCommentPublishType,
+  getPostCommentsType,
+  postDeleteCommentType,
+  postUpdateCommentType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -28,19 +34,25 @@ import {
   PostsQuery,
   RecentPostsQuery,
   SimilarPostsQuery,
+  addCommentDraftQuery,
+  addCommentPublisheQuery,
   addPostLikePublishQuery,
   addPostLikeQuery,
   authorUrlQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
+  deletePostCommentQuery,
   deletePostLikeQuery,
   deleteReaderQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
+  getPostCommentsCountQuery,
+  getPostCommentsQuery,
   getPostLikesQuery,
   loginQuery,
   newUserQuery,
   resetPasswordQuery,
+  updateCommentQuery,
   updateUserQuery,
 } from '../utils/graphqlQueries'
 
@@ -391,3 +403,102 @@ export const deletePostLike = cache(
     }
   }
 )
+///////
+
+export const getCommentsCount = cache(async (postId: string) => {
+  try {
+    const result: postCommentsCountType = await request(
+      graphqlAPI,
+      getPostCommentsCountQuery,
+      {
+        postId,
+      }
+    )
+    return result.commentsConnection.aggregate.count
+  } catch (err) {
+    consoleLog(err, 'getting post comments count')
+
+    return 0
+  }
+})
+
+export const addComment = cache(
+  async (comment: string, postId: string, readerId: string) => {
+    try {
+      const com: postAddCommentType = await request(
+        graphqlAPI,
+        addCommentDraftQuery,
+        {
+          comment,
+          postId,
+          readerId,
+        }
+      )
+      const commentId = com.createComment.id
+
+      const result: postAddCommentPublishType = await request(
+        graphqlAPI,
+        addCommentPublisheQuery,
+        {
+          commentId,
+        }
+      )
+      return result.publishComment ? true : false
+    } catch (err) {
+      consoleLog(err, 'adding post comment')
+
+      return null
+    }
+  }
+)
+
+export const getComments = cache(async (postId: string) => {
+  try {
+    const result: getPostCommentsType = await request(
+      graphqlAPI,
+      getPostCommentsQuery,
+      {
+        postId,
+      }
+    )
+    return result.comments
+  } catch (err) {
+    consoleLog(err, 'getting post comments')
+
+    return []
+  }
+})
+
+export const updateComment = cache(async (commentId: string) => {
+  try {
+    const result: postUpdateCommentType = await request(
+      graphqlAPI,
+      updateCommentQuery,
+      {
+        commentId,
+      }
+    )
+    return result.updateComment ? true : false
+  } catch (err) {
+    consoleLog(err, 'updating post comment')
+
+    return false
+  }
+})
+
+export const deleteComment = cache(async (commentId: string) => {
+  try {
+    const result: postDeleteCommentType = await request(
+      graphqlAPI,
+      deletePostCommentQuery,
+      {
+        commentId,
+      }
+    )
+    return result.deleteComment ? true : false
+  } catch (err) {
+    consoleLog(err, 'deleting post comment')
+
+    return false
+  }
+})

@@ -6,32 +6,7 @@ export interface authorURL {
   }
 }
 export interface posts {
-  posts: [
-    {
-      id: string
-      author: {
-        bio: string
-        id: string
-        name: string
-        photo: {
-          url: string
-        }
-      }
-      createdAt: string
-      slug: string
-      title: string
-      summary: string
-      featuredImage: {
-        url: string
-      }
-      categories: [
-        {
-          name: string
-          slug: string
-        }
-      ]
-    }
-  ]
+  posts: [postsType]
 }
 export interface postsType {
   id: string
@@ -59,31 +34,7 @@ export interface postsType {
 }
 
 export interface postDetailsType {
-  post: {
-    id: string
-    author: {
-      bio: string
-      id: string
-      name: string
-      photo: {
-        url: string
-      }
-    }
-    createdAt: string
-    slug: string
-    title: string
-    summary: string
-    featuredImage: {
-      url: string
-    }
-    categories: [
-      {
-        name: string
-        slug: string
-      }
-    ]
-    content: string
-  }
+  post: postType
 }
 
 export interface postType {
@@ -220,6 +171,54 @@ export interface checkPostLikeType {
 
 export interface postDeleteLikeType {
   deletePostLike: {
+    id: string
+  }
+}
+
+export interface postCommentsCountType {
+  commentsConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
+
+export interface postAddCommentType {
+  createComment: {
+    id: string
+  }
+}
+
+export interface postAddCommentPublishType {
+  publishComment: {
+    id: string
+  }
+}
+export interface getPostCommentType {
+  id: string
+  reader: {
+    id: string
+    name: string
+    email: string
+    photo: {
+      url: string
+    }
+  }
+  comment: string
+  createdAt: string
+}
+export interface getPostCommentsType {
+  comments: [getPostCommentType]
+}
+
+export interface postUpdateCommentType {
+  updateComment: {
+    id: string
+  }
+}
+
+export interface postDeleteCommentType {
+  deleteComment: {
     id: string
   }
 }

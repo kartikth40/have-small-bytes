@@ -1,12 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './commentSection.module.scss'
+import { getPostCommentType } from '@/utils/types/types'
+import { getComments, getCommentsCount } from '@/services'
+import Image from 'next/image'
 
-type Props = {}
+type Props = { postId: string }
 
-export default function CommentSection({}: Props) {
+export default function CommentSection({ postId }: Props) {
   const [currentComment, setCurrentComment] = useState<string>('')
+  const [commentsCount, setCommentsCount] = useState<number>(0)
+  const [comments, setComments] = useState<getPostCommentType[]>()
+  useEffect(() => {
+    async function initialize() {
+      setCommentsCount(await getCommentsCount(postId))
+      setComments(await getComments(postId))
+    }
+    initialize()
+  }, [])
   const {
     commentSectionContainer,
     head,
@@ -24,49 +36,38 @@ export default function CommentSection({}: Props) {
   function handleSendComment() {}
   return (
     <section className={commentSectionContainer}>
-      <h1 className={head}>Comments</h1>
+      <h1 className={head}>{`Comments ${commentsCount}`}</h1>
       <div className={commentInputContainer}>
         <textarea
-          rows={6}
+          rows={3}
           value={currentComment}
           onChange={(e) => setCurrentComment(e.target.value)}
         />
         <button onClick={handleSendComment}>Send</button>
       </div>
       <div className={commentsContainer}>
-        <div className={commentContainer}>
-          <div className={readerContainer}>
-            <div className={readerAvatar}>^_^</div>
-            <div className={readerName}>Kartik Thakur</div>
-          </div>
-          <div className={commentContentContainer}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore
-            veniam voluptates earum commodi suscipit vero velit labore
-            reiciendis odio quos ducimus necessitatibus, soluta, accusantium
-            unde fugiat, qui repellendus alias ullam?
-          </div>
-          <div className={interact}>
-            <div className={replyContainer}>Reply</div>
-            <div className={age}>9 min</div>
-          </div>
-        </div>
+        {comments &&
+          comments.map((comment) => (
+            <div key={comment.id} className={commentContainer}>
+              <div className={readerContainer}>
+                <div className={readerAvatar}>
+                  <Image
+                    src={comment.reader.photo.url}
+                    width={24}
+                    height={24}
+                    alt={comment.reader.name}
+                  />
+                </div>
+                <div className={readerName}>{comment.reader.name}</div>
+              </div>
+              <div className={commentContentContainer}>{comment.comment}</div>
+              <div className={interact}>
+                <div className={replyContainer}>Reply</div>
+                <div className={age}>{comment.createdAt}</div>
+              </div>
+            </div>
+          ))}
         <hr />
-        <div className={commentContainer}>
-          <div className={readerContainer}>
-            <div className={readerAvatar}>^_^</div>
-            <div className={readerName}>Zolo</div>
-          </div>
-          <div className={commentContentContainer}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
-            repellendus dolores facilis error nisi nam quia necessitatibus hic
-            sequi quod explicabo excepturi, facere modi. Culpa, totam nulla.
-            Doloremque, alias dolorum?
-          </div>
-          <div className={interact}>
-            <div className={replyContainer}>Reply</div>
-            <div className={age}>10 hr</div>
-          </div>
-        </div>
       </div>
     </section>
   )
