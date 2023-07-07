@@ -244,7 +244,7 @@ export interface postAddCommentPublishType {
   }
 }
 
-export interface getPostCommentType {
+export interface getPostCommentsType {
   comments: [
     id: string,
     reader: {
