@@ -223,3 +223,50 @@ export interface postDeleteLikeType {
     id: string
   }
 }
+
+export interface postCommentsCountType {
+  commentsConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
+
+export interface postAddCommentType {
+  createComment: {
+    id: string
+  }
+}
+
+export interface postAddCommentPublishType {
+  publishComment: {
+    id: string
+  }
+}
+
+export interface getPostCommentType {
+  comments: [
+    id: string,
+    reader: {
+      id: string
+      name: string
+      email: string
+      photo: {
+        url: string
+      }
+    },
+    comment: string
+  ]
+}
+
+export interface postUpdateCommentType {
+  updateComment: {
+    id: string
+  }
+}
+
+export interface postDeleteCommentType {
+  deleteComment: {
+    id: string
+  }
+}

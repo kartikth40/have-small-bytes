@@ -387,3 +387,11 @@ export const updateCommentQuery = gql`
     }
   }
 `
+
+export const deletePostCommentQuery = gql`
+  mutation DeletePostComment($commentId: ID!) {
+    deleteComment(where: { id: $commentId }) {
+      id
+    }
+  }
+`
