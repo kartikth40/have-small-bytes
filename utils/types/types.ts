@@ -255,7 +255,8 @@ export interface getPostCommentsType {
         url: string
       }
     },
-    comment: string
+    comment: string,
+    createdAt: string
   ]
 }
 
