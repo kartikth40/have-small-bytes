@@ -47,7 +47,7 @@ async function PostCard({ post }: Props) {
       <div className={authorInfoContainer}>
         <div className={userFeedbackContainer}>
           <LikeButton postId={post.id} />
-          <CommentButton />
+          <CommentButton postId={post.id} />
         </div>
         <div className={date}>
           <div className={icon}>

@@ -20,7 +20,7 @@ async function Aside({ slug }: { slug: string }) {
       <div className={userFeedbackContainerAside}>
         <LikeButton postId={post.id} />
 
-        <CommentButton />
+        <CommentButton postId={post.id} />
       </div>
     </aside>
   )
