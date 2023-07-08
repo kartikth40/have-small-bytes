@@ -13,6 +13,7 @@ type Props = { postId: string }
 export default function CommentSection({ postId }: Props) {
   const { data: session, status } = useSession()
   const [currentComment, setCurrentComment] = useState<string>('')
+  const [posting, setPosting] = useState<boolean>(false)
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
   useEffect(() => {
@@ -35,15 +36,18 @@ export default function CommentSection({ postId }: Props) {
     interact,
     replyContainer,
     age,
+    line,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
+      setPosting(true)
       const result = addComment(currentComment, postId, session?.user.id)
       if (!result) {
         toast.error('something went wrong! Please try again later.')
       } else {
         setCurrentComment('')
       }
+      setPosting(false)
     }
   }
   return (
@@ -55,8 +59,11 @@ export default function CommentSection({ postId }: Props) {
           value={currentComment}
           onChange={(e) => setCurrentComment(e.target.value)}
         />
-        <button disabled={status === 'loading'} onClick={handleSendComment}>
-          Post
+        <button
+          disabled={status === 'loading' || posting}
+          onClick={handleSendComment}
+        >
+          {posting || status === 'loading' ? 'Wait' : 'Post'}
         </button>
       </div>
       <div className={commentsContainer}>
@@ -76,10 +83,10 @@ export default function CommentSection({ postId }: Props) {
               </div>
               <div className={commentContentContainer}>{comment.comment}</div>
               <div className={interact}>
+                <span className={line}></span>
                 <div className={replyContainer}>Reply</div>
                 <div className={age}>{comment.createdAt}</div>
               </div>
-              <hr />
             </div>
           ))}
       </div>
