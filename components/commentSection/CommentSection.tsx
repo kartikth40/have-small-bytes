@@ -35,7 +35,7 @@ export default function CommentSection({ postId }: Props) {
   } = styles
   function handleSendComment() {}
   return (
-    <section className={commentSectionContainer}>
+    <section id={`comment-${postId}`} className={commentSectionContainer}>
       <h1 className={head}>{`Comments ${commentsCount}`}</h1>
       <div className={commentInputContainer}>
         <textarea

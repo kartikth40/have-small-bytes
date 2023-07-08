@@ -9,7 +9,6 @@ async function Aside({ slug }: { slug: string }) {
   const { aside, userFeedbackContainerAside } = styles
   const post = await getPostDetails(slug)
   if (!post) return notFound()
-  const likesCount: number = (await getPostLikes(post.id)) || 0
 
   return (
     <aside className={aside}>
@@ -20,7 +19,7 @@ async function Aside({ slug }: { slug: string }) {
       <div className={userFeedbackContainerAside}>
         <LikeButton postId={post.id} />
 
-        <CommentButton postId={post.id} />
+        <CommentButton postId={post.id} canClick={true} />
       </div>
     </aside>
   )
