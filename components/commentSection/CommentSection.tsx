@@ -3,7 +3,13 @@
 import { useState, useEffect } from 'react'
 import styles from './commentSection.module.scss'
 import { getPostCommentType } from '@/utils/types/types'
-import { addComment, getComments, getCommentsCount } from '@/services'
+import {
+  addComment,
+  deleteComment,
+  getComments,
+  getCommentsCount,
+  updateComment,
+} from '@/services'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
@@ -17,11 +23,11 @@ export default function CommentSection({ postId }: Props) {
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
+  async function initialize() {
+    setCommentsCount(await getCommentsCount(postId))
+    setComments(await getComments(postId))
+  }
   useEffect(() => {
-    async function initialize() {
-      setCommentsCount(await getCommentsCount(postId))
-      setComments(await getComments(postId))
-    }
     initialize()
   }, [])
   const {
@@ -61,11 +67,23 @@ export default function CommentSection({ postId }: Props) {
       return id
     })
   }
-  function handleEdit(id: string) {
+  async function handleEdit(id: string) {
     SetShowId('')
+    const result = await updateComment(id)
+    if (!result) {
+      toast.error('something went wrong! Please try again later.')
+    } else {
+      await initialize()
+    }
   }
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     SetShowId('')
+    const result = await deleteComment(id)
+    if (!result) {
+      toast.error('something went wrong! Please try again later.')
+    } else {
+      await initialize()
+    }
   }
   return (
     <section id={`comment-${postId}`} className={commentSectionContainer}>
