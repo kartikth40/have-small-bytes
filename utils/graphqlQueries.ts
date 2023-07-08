@@ -343,7 +343,7 @@ export const getPostCommentsCountQuery = gql`
 
 export const getPostCommentsQuery = gql`
   query GetPostComments($postId: ID!) {
-    comments(where: { post: { id: $postId } }, orderBy: createdAt_ASC) {
+    comments(where: { post: { id: $postId } }, orderBy: createdAt_DESC) {
       id
       reader {
         id

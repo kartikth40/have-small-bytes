@@ -14,6 +14,7 @@ export default function CommentSection({ postId }: Props) {
   const { data: session, status } = useSession()
   const [currentComment, setCurrentComment] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
+  const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
   useEffect(() => {
@@ -37,6 +38,10 @@ export default function CommentSection({ postId }: Props) {
     replyContainer,
     age,
     line,
+    dropdown,
+    dropdownContent,
+    show,
+    menuDot,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
@@ -49,6 +54,18 @@ export default function CommentSection({ postId }: Props) {
       }
       setPosting(false)
     }
+  }
+  function handleDropdown(id: string) {
+    SetShowId((prev) => {
+      if (prev) return ''
+      return id
+    })
+  }
+  function handleEdit(id: string) {
+    SetShowId('')
+  }
+  function handleDelete(id: string) {
+    SetShowId('')
   }
   return (
     <section id={`comment-${postId}`} className={commentSectionContainer}>
@@ -84,8 +101,23 @@ export default function CommentSection({ postId }: Props) {
               <div className={commentContentContainer}>{comment.comment}</div>
               <div className={interact}>
                 <span className={line}></span>
+                <div className={age}>9min ago</div>
+                <div className={dropdown}>
+                  <div onClick={() => handleDropdown(comment.id)}>
+                    <span className={menuDot}></span>
+                    <span className={menuDot}></span>
+                    <span className={menuDot}></span>
+                  </div>
+                  <div
+                    className={`${dropdownContent} ${
+                      showId && showId === comment.id && show
+                    }`}
+                  >
+                    <div onClick={() => handleEdit(comment.id)}>Edit</div>
+                    <div onClick={() => handleDelete(comment.id)}>Delete</div>
+                  </div>
+                </div>
                 <div className={replyContainer}>Reply</div>
-                <div className={age}>{comment.createdAt}</div>
               </div>
             </div>
           ))}
