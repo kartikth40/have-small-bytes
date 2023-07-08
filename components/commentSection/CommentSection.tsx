@@ -3,12 +3,15 @@
 import { useState, useEffect } from 'react'
 import styles from './commentSection.module.scss'
 import { getPostCommentType } from '@/utils/types/types'
-import { getComments, getCommentsCount } from '@/services'
+import { addComment, getComments, getCommentsCount } from '@/services'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
 
 type Props = { postId: string }
 
 export default function CommentSection({ postId }: Props) {
+  const { data: session, status } = useSession()
   const [currentComment, setCurrentComment] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
@@ -33,7 +36,16 @@ export default function CommentSection({ postId }: Props) {
     replyContainer,
     age,
   } = styles
-  function handleSendComment() {}
+  async function handleSendComment() {
+    if (currentComment.length > 0 && session) {
+      const result = addComment(currentComment, postId, session?.user.id)
+      if (!result) {
+        toast.error('something went wrong! Please try again later.')
+      } else {
+        setCurrentComment('')
+      }
+    }
+  }
   return (
     <section id={`comment-${postId}`} className={commentSectionContainer}>
       <h1 className={head}>{`Comments ${commentsCount}`}</h1>
@@ -43,7 +55,9 @@ export default function CommentSection({ postId }: Props) {
           value={currentComment}
           onChange={(e) => setCurrentComment(e.target.value)}
         />
-        <button onClick={handleSendComment}>Send</button>
+        <button disabled={status === 'loading'} onClick={handleSendComment}>
+          Post
+        </button>
       </div>
       <div className={commentsContainer}>
         {comments &&
@@ -65,9 +79,9 @@ export default function CommentSection({ postId }: Props) {
                 <div className={replyContainer}>Reply</div>
                 <div className={age}>{comment.createdAt}</div>
               </div>
+              <hr />
             </div>
           ))}
-        <hr />
       </div>
     </section>
   )

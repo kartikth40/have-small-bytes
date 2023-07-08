@@ -6,6 +6,7 @@
   width: 90%;
   margin-inline: auto;
   margin-bottom: 1em;
+  scroll-margin-top: 5em;
 }
 .head {
   margin-bottom: 1em;
@@ -21,7 +22,7 @@
     border-radius: 10px;
     font-family: var(--font-inter);
     width: 100%;
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 1em;
     resize: none;
   }
@@ -33,11 +34,15 @@
     padding: 1em 2em;
     background-color: var(--color-primary-blue);
     color: var(--color-light);
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 }
 .commentsContainer {
   & hr {
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 0.5em;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     width: 95%;
     margin-inline: auto;
   }
@@ -59,7 +64,9 @@
     }
   }
   & .commentContentContainer {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    white-space: pre-wrap;
+    // padding-left: 0.5em;
   }
   & .interact {
     font-size: 0.8rem;
