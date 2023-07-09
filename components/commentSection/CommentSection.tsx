@@ -19,7 +19,9 @@ type Props = { postId: string }
 export default function CommentSection({ postId }: Props) {
   const { data: session, status } = useSession()
   const [currentComment, setCurrentComment] = useState<string>('')
+  const [currentEditingComment, setCurrentEditingComment] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
+  const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
@@ -47,6 +49,7 @@ export default function CommentSection({ postId }: Props) {
     dropdown,
     dropdownContent,
     show,
+    commentEditContainer,
     menuDot,
   } = styles
   async function handleSendComment() {
@@ -57,6 +60,7 @@ export default function CommentSection({ postId }: Props) {
         toast.error('something went wrong! Please try again later.')
       } else {
         setCurrentComment('')
+        await initialize()
       }
       setPosting(false)
     }
@@ -67,9 +71,10 @@ export default function CommentSection({ postId }: Props) {
       return id
     })
   }
-  async function handleEdit(id: string) {
+  async function handleEditComment(id: string) {
+    setEditing('')
     SetShowId('')
-    const result = await updateComment(id)
+    const result = await updateComment(id, currentEditingComment)
     if (!result) {
       toast.error('something went wrong! Please try again later.')
     } else {
@@ -116,26 +121,62 @@ export default function CommentSection({ postId }: Props) {
                 </div>
                 <div className={readerName}>{comment.reader.name}</div>
               </div>
-              <div className={commentContentContainer}>{comment.comment}</div>
+              <div className={commentContentContainer}>
+                {editing === comment.id ? (
+                  <div className={commentEditContainer}>
+                    <textarea
+                      rows={3}
+                      value={currentEditingComment}
+                      onChange={(e) => setCurrentEditingComment(e.target.value)}
+                    />
+                    <div>
+                      <button onClick={() => handleEditComment(comment.id)}>
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditing('')
+                          SetShowId('')
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  comment.comment
+                )}
+              </div>
               <div className={interact}>
                 <span className={line}></span>
                 <div className={age}>9min ago</div>
                 <div className={dropdown}>
-                  <div onClick={() => handleDropdown(comment.id)}>
+                  <button
+                    disabled={editing !== ''}
+                    onClick={() => handleDropdown(comment.id)}
+                  >
                     <span className={menuDot}></span>
                     <span className={menuDot}></span>
                     <span className={menuDot}></span>
-                  </div>
+                  </button>
                   <div
                     className={`${dropdownContent} ${
                       showId && showId === comment.id && show
                     }`}
                   >
-                    <div onClick={() => handleEdit(comment.id)}>Edit</div>
+                    <div
+                      onClick={() => {
+                        setEditing(comment.id)
+                        setCurrentEditingComment(comment.comment)
+                        SetShowId('')
+                      }}
+                    >
+                      Edit
+                    </div>
                     <div onClick={() => handleDelete(comment.id)}>Delete</div>
                   </div>
                 </div>
-                <div className={replyContainer}>Reply</div>
+                <button className={replyContainer}>Reply</button>
               </div>
             </div>
           ))}

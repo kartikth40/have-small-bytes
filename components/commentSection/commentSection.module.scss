@@ -47,6 +47,40 @@
     background-color: rgba(0, 0, 0, 0.08);
   }
 }
+.commentEditContainer {
+  margin-block: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5em;
+  & textarea {
+    border-radius: 10px;
+    font-family: var(--font-inter);
+    width: 100%;
+    font-size: 1rem;
+    padding: 1em;
+    resize: none;
+  }
+  & div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1em;
+  }
+  & button {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    padding: 0.5em 1em;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}
 .commentContainer {
   margin-block: 1em;
   & .readerContainer {
@@ -78,15 +112,22 @@
     & .dropdown {
       position: relative;
       width: 1em;
-      height: 1.3em;
+      // height: 1.5em;
       cursor: pointer;
       // border: 1px solid red;
+      & button {
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        background-color: var(--color-light);
+        border: none;
+      }
 
       & .menuDot {
         display: block;
         background: var(--color-dark);
         width: 0.3em;
-        height: 0.2em;
+        height: 0.25em;
         margin-inline: auto;
         margin-block: 0.2em;
         pointer-events: none;
@@ -117,6 +158,8 @@
     & .replyContainer {
       font-weight: 700;
       margin-left: 1em;
+      border: none;
+      background-color: var(--color-light);
     }
     & .age {
       color: var(--color-dark2);
