@@ -90,6 +90,29 @@ export default function CommentSection({ postId }: Props) {
       await initialize()
     }
   }
+
+  function timeAgo(updatedAt: string) {
+    const date = new Date(updatedAt)
+    const now = new Date()
+
+    const updatedTime = date.getTime()
+    const currTime = now.getTime()
+
+    const diffInHrs = (currTime - updatedTime) / (1000 * 60 * 60)
+
+    // in minutes
+    if (diffInHrs < 1) return `${Math.round(diffInHrs * 60)} min`
+    // in hours
+    else if (diffInHrs < 24) return `${Math.round(diffInHrs)} hrs`
+    // in days
+    else if (diffInHrs > 24 && diffInHrs < 24 * 30)
+      return `${Math.round(diffInHrs / 24)} days`
+    // in months
+    else if (diffInHrs > 24 * 30 && diffInHrs < 24 * 30 * 12)
+      return `${Math.round(diffInHrs / (24 * 30))} months`
+    // in years
+    else return `${Math.round(diffInHrs / (24 * 30 * 12))} years`
+  }
   return (
     <section id={`comment-${postId}`} className={commentSectionContainer}>
       <h1 className={head}>{`Comments ${commentsCount}`}</h1>
@@ -149,7 +172,7 @@ export default function CommentSection({ postId }: Props) {
               </div>
               <div className={interact}>
                 <span className={line}></span>
-                <div className={age}>9min ago</div>
+                <div className={age}>{timeAgo(comment.updatedAt)} ago</div>
                 <div className={dropdown}>
                   <button
                     disabled={editing !== ''}
