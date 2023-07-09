@@ -469,22 +469,33 @@ export const getComments = cache(async (postId: string) => {
   }
 })
 
-export const updateComment = cache(async (commentId: string) => {
-  try {
-    const result: postUpdateCommentType = await request(
-      graphqlAPI,
-      updateCommentQuery,
-      {
-        commentId,
-      }
-    )
-    return result.updateComment ? true : false
-  } catch (err) {
-    consoleLog(err, 'updating post comment')
+export const updateComment = cache(
+  async (commentId: string, comment: string) => {
+    try {
+      const updated: postUpdateCommentType = await request(
+        graphqlAPI,
+        updateCommentQuery,
+        {
+          commentId,
+          comment,
+        }
+      )
 
-    return false
+      const result: postAddCommentPublishType = await request(
+        graphqlAPI,
+        addCommentPublisheQuery,
+        {
+          commentId,
+        }
+      )
+      return result.publishComment && updated.updateComment ? true : false
+    } catch (err) {
+      consoleLog(err, 'updating post comment')
+
+      return false
+    }
   }
-})
+)
 
 export const deleteComment = cache(async (commentId: string) => {
   try {
