@@ -83,6 +83,7 @@
 }
 .commentContainer {
   margin-block: 1em;
+
   & .readerContainer {
     display: flex;
     justify-content: flex-start;
@@ -95,6 +96,9 @@
     }
     & .readerName {
       font-weight: 700;
+      &.myComment {
+        color: var(--color-primary-blue);
+      }
     }
   }
   & .commentContentContainer {
@@ -126,10 +130,11 @@
       & .menuDot {
         display: block;
         background: var(--color-dark);
+        opacity: 0.7;
         width: 0.3em;
         height: 0.25em;
         margin-inline: auto;
-        margin-block: 0.2em;
+        margin-block: 0.16em;
         pointer-events: none;
       }
 

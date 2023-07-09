@@ -51,6 +51,7 @@ export default function CommentSection({ postId }: Props) {
     show,
     commentEditContainer,
     menuDot,
+    myComment,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
@@ -142,7 +143,13 @@ export default function CommentSection({ postId }: Props) {
                     alt={comment.reader.name}
                   />
                 </div>
-                <div className={readerName}>{comment.reader.name}</div>
+                <div
+                  className={`${readerName} ${
+                    comment.reader.id === session?.user.id ? myComment : null
+                  }`}
+                >
+                  {comment.reader.name}
+                </div>
               </div>
               <div className={commentContentContainer}>
                 {editing === comment.id ? (
@@ -173,32 +180,35 @@ export default function CommentSection({ postId }: Props) {
               <div className={interact}>
                 <span className={line}></span>
                 <div className={age}>{timeAgo(comment.updatedAt)} ago</div>
-                <div className={dropdown}>
-                  <button
-                    disabled={editing !== ''}
-                    onClick={() => handleDropdown(comment.id)}
-                  >
-                    <span className={menuDot}></span>
-                    <span className={menuDot}></span>
-                    <span className={menuDot}></span>
-                  </button>
-                  <div
-                    className={`${dropdownContent} ${
-                      showId && showId === comment.id && show
-                    }`}
-                  >
-                    <div
-                      onClick={() => {
-                        setEditing(comment.id)
-                        setCurrentEditingComment(comment.comment)
-                        SetShowId('')
-                      }}
+                {comment.reader.id === session?.user.id && (
+                  <div className={dropdown}>
+                    <button
+                      disabled={editing !== ''}
+                      onClick={() => handleDropdown(comment.id)}
                     >
-                      Edit
+                      <span className={menuDot}></span>
+                      <span className={menuDot}></span>
+                      <span className={menuDot}></span>
+                    </button>
+                    <div
+                      className={`${dropdownContent} ${
+                        showId && showId === comment.id && show
+                      }`}
+                    >
+                      <div
+                        onClick={() => {
+                          if (comment.reader.id !== session?.user.id) return
+                          setEditing(comment.id)
+                          setCurrentEditingComment(comment.comment)
+                          SetShowId('')
+                        }}
+                      >
+                        Edit
+                      </div>
+                      <div onClick={() => handleDelete(comment.id)}>Delete</div>
                     </div>
-                    <div onClick={() => handleDelete(comment.id)}>Delete</div>
                   </div>
-                </div>
+                )}
                 <button className={replyContainer}>Reply</button>
               </div>
             </div>
