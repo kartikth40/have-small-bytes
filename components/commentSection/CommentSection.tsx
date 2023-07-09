@@ -52,15 +52,18 @@ export default function CommentSection({ postId }: Props) {
     commentEditContainer,
     menuDot,
     myComment,
+    letMEcomment,
+    edited,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
       setPosting(true)
-      const result = addComment(currentComment, postId, session?.user.id)
+      const result = await addComment(currentComment, postId, session?.user.id)
       if (!result) {
         toast.error('something went wrong! Please try again later.')
       } else {
         setCurrentComment('')
+        console.log('initialze')
         await initialize()
       }
       setPosting(false)
@@ -92,8 +95,8 @@ export default function CommentSection({ postId }: Props) {
     }
   }
 
-  function timeAgo(updatedAt: string) {
-    const date = new Date(updatedAt)
+  function timeAgo(createdAt: string) {
+    const date = new Date(createdAt)
     const now = new Date()
 
     const updatedTime = date.getTime()
@@ -118,6 +121,16 @@ export default function CommentSection({ postId }: Props) {
     <section id={`comment-${postId}`} className={commentSectionContainer}>
       <h1 className={head}>{`Comments ${commentsCount}`}</h1>
       <div className={commentInputContainer}>
+        <div className={letMEcomment}>
+          {session && (
+            <Image
+              src={session?.user.photo?.url!}
+              width={24}
+              height={24}
+              alt={session?.user.name!}
+            />
+          )}
+        </div>
         <textarea
           rows={3}
           value={currentComment}
@@ -179,7 +192,10 @@ export default function CommentSection({ postId }: Props) {
               </div>
               <div className={interact}>
                 <span className={line}></span>
-                <div className={age}>{timeAgo(comment.updatedAt)} ago</div>
+                {comment.createdAt !== comment.updatedAt && (
+                  <div className={edited}>Edited</div>
+                )}
+                <div className={age}>{timeAgo(comment.createdAt)}</div>
                 {comment.reader.id === session?.user.id && (
                   <div className={dropdown}>
                     <button

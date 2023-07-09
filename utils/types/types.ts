@@ -205,6 +205,7 @@ export interface getPostCommentType {
     }
   }
   comment: string
+  createdAt: string
   updatedAt: string
 }
 export interface getPostCommentsType {

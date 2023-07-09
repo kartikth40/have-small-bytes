@@ -354,6 +354,7 @@ export const getPostCommentsQuery = gql`
         }
       }
       comment
+      createdAt
       updatedAt
     }
   }
