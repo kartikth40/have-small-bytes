@@ -4,7 +4,7 @@ Byte size blogs all about Web Development, DSA and Personal Development that I w
 
 ## Demo
 
-havesmallbytes.vercel.app
+[havesmallbytes.vercel.app](havesmallbytes.vercel.app)
 
 ## Screenshots
 
