@@ -78,7 +78,7 @@ async function PostCard({ post }: Props) {
           </div>
         </div>
         <div className={rightAlign}>
-          <div className={readTimeContainer}>9 min read</div>
+          <div className={readTimeContainer}>{post.readTime} min read</div>
         </div>
       </div>
     </div>

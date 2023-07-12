@@ -31,6 +31,7 @@ export interface postsType {
       slug: string
     }
   ]
+  readTime: number
 }
 
 export interface postDetailsType {

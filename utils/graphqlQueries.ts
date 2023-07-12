@@ -31,6 +31,7 @@ export const PostsQuery = gql`
         name
         slug
       }
+      readTime
     }
   }
 `
@@ -108,6 +109,7 @@ export const CategoryPostsQuery = gql`
         name
         slug
       }
+      readTime
     }
   }
 `
