@@ -8,20 +8,38 @@ Byte size blogs all about Web Development, DSA and Personal Development that I w
 
 ## Screenshots
 
-![ss1](https://user-images.githubusercontent.com/53307443/252889349-18b1964e-9b75-4091-967f-a59b75b17da7.png)
-![ss2](https://user-images.githubusercontent.com/53307443/252889561-7c0e4ecb-3fee-4d8f-b0f9-9d85c8ed9296.png)
-![image](https://user-images.githubusercontent.com/53307443/252889750-3e4322ec-33ae-4eb0-8754-ec5101057f6e.png)
+#### Home and Blogpost pages 👇🏻
 
-## Run Locally
+<p align="center">
+  <img alt="home page" src="https://user-images.githubusercontent.com/53307443/253012380-0b3bd477-a47d-4cf0-8dc8-6c023f86ac58.png" width="48.5%">
+   &nbsp; &nbsp; 
+  <img alt="post page" src="https://user-images.githubusercontent.com/53307443/253009886-189bacf7-dfc5-4110-b546-beb7c4d991d1.png" width="48.5%">
+</p>
+<p align="center">
+  <img alt="comments" src="https://user-images.githubusercontent.com/53307443/253011600-3fa14511-857d-4806-9f6d-af73cca20608.png" width="32%">
+&nbsp; 
+  <img alt="category page" src="https://user-images.githubusercontent.com/53307443/253011020-ac32c77a-a633-416b-bf18-918771d8359a.png" width="32%">
+  &nbsp; 
+  <img alt="user progile" src="https://user-images.githubusercontent.com/53307443/253011142-926fcce7-858b-4b8b-b99e-49573aa1bd18.png" width="32%">
+</p>
 
-Install dependencies
+#### comments, category pages and user profile ☝🏻
 
-```bash
-  npm install
+## Installation and Setup Instructions
+
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.
+
+Installation:
+
+```javascript
+cd have-small-byte/
+npm i
 ```
 
-Start the development server
+To Start the dev server:
 
-```bash
-  npm run dev
+```javascript
+npm run dev
 ```
+
+To Visit App after its started in your local machine: `localhost:3000`

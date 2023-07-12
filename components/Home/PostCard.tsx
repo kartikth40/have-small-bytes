@@ -22,45 +22,15 @@ async function PostCard({ post }: Props) {
     date,
     icon,
     userFeedbackContainer,
+    leftAlign,
+    rightAlign,
+    readTimeContainer,
+    postReactionSection,
   } = styles
   const authorId: string = (await myPortfolioURL(post.author.id)) || '/'
   return (
     <div className={postCard}>
-      <Link href={`/post/${post.slug}`}>
-        <div className={postImage}>
-          <Image
-            src={post.featuredImage.url}
-            style={{ objectFit: 'cover', borderRadius: '.5rem' }}
-            fill={true}
-            alt={post.title}
-          />
-        </div>
-      </Link>
-
-      <h1>
-        <Link href={`/post/${post.slug}`} className={title}>
-          {post.title}
-        </Link>
-      </h1>
-      <div className={summary}>{post.summary}</div>
-
       <div className={authorInfoContainer}>
-        <div className={userFeedbackContainer}>
-          <LikeButton postId={post.id} />
-          <CommentButton postId={post.id} />
-        </div>
-        <div className={date}>
-          <div className={icon}>
-            <Image
-              src="https://img.icons8.com/fluency-systems-regular/48/calendar--v1.png"
-              width={48}
-              height={48}
-              alt="cal"
-            />
-          </div>
-          <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
-        </div>
-
         <Link
           href={authorId}
           className={authorInfo}
@@ -78,6 +48,38 @@ async function PostCard({ post }: Props) {
           </div>
           <p className={authorName}>{post.author.name}</p>
         </Link>
+
+        <div className={date}>
+          <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
+        </div>
+      </div>
+      <Link href={`/post/${post.slug}`}>
+        <div className={postImage}>
+          <Image
+            src={post.featuredImage.url}
+            style={{ objectFit: 'cover', borderRadius: '.5rem' }}
+            fill={true}
+            alt={post.title}
+          />
+        </div>
+      </Link>
+
+      <h1>
+        <Link href={`/post/${post.slug}`} className={title}>
+          {post.title}
+        </Link>
+      </h1>
+      <div className={summary}>{post.summary}</div>
+      <div className={postReactionSection}>
+        <div className={leftAlign}>
+          <div className={userFeedbackContainer}>
+            <LikeButton postId={post.id} />
+            <CommentButton postId={post.id} />
+          </div>
+        </div>
+        <div className={rightAlign}>
+          <div className={readTimeContainer}>{post.readTime} min read</div>
+        </div>
       </div>
     </div>
   )
