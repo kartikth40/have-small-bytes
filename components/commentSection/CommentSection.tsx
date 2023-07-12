@@ -19,7 +19,9 @@ type Props = { postId: string }
 export default function CommentSection({ postId }: Props) {
   const { data: session, status } = useSession()
   const [currentComment, setCurrentComment] = useState<string>('')
+  const [currentEditingComment, setCurrentEditingComment] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
+  const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
@@ -47,16 +49,22 @@ export default function CommentSection({ postId }: Props) {
     dropdown,
     dropdownContent,
     show,
+    commentEditContainer,
     menuDot,
+    myComment,
+    letMEcomment,
+    edited,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
       setPosting(true)
-      const result = addComment(currentComment, postId, session?.user.id)
+      const result = await addComment(currentComment, postId, session?.user.id)
       if (!result) {
         toast.error('something went wrong! Please try again later.')
       } else {
         setCurrentComment('')
+        console.log('initialze')
+        await initialize()
       }
       setPosting(false)
     }
@@ -67,9 +75,10 @@ export default function CommentSection({ postId }: Props) {
       return id
     })
   }
-  async function handleEdit(id: string) {
+  async function handleEditComment(id: string) {
+    setEditing('')
     SetShowId('')
-    const result = await updateComment(id)
+    const result = await updateComment(id, currentEditingComment)
     if (!result) {
       toast.error('something went wrong! Please try again later.')
     } else {
@@ -85,10 +94,43 @@ export default function CommentSection({ postId }: Props) {
       await initialize()
     }
   }
+
+  function timeAgo(createdAt: string) {
+    const date = new Date(createdAt)
+    const now = new Date()
+
+    const updatedTime = date.getTime()
+    const currTime = now.getTime()
+
+    const diffInHrs = (currTime - updatedTime) / (1000 * 60 * 60)
+
+    // in minutes
+    if (diffInHrs < 1) return `${Math.round(diffInHrs * 60)} min`
+    // in hours
+    else if (diffInHrs < 24) return `${Math.round(diffInHrs)} hrs`
+    // in days
+    else if (diffInHrs > 24 && diffInHrs < 24 * 30)
+      return `${Math.round(diffInHrs / 24)} days`
+    // in months
+    else if (diffInHrs > 24 * 30 && diffInHrs < 24 * 30 * 12)
+      return `${Math.round(diffInHrs / (24 * 30))} months`
+    // in years
+    else return `${Math.round(diffInHrs / (24 * 30 * 12))} years`
+  }
   return (
     <section id={`comment-${postId}`} className={commentSectionContainer}>
       <h1 className={head}>{`Comments ${commentsCount}`}</h1>
       <div className={commentInputContainer}>
+        <div className={letMEcomment}>
+          {session && (
+            <Image
+              src={session?.user.photo?.url!}
+              width={24}
+              height={24}
+              alt={session?.user.name!}
+            />
+          )}
+        </div>
         <textarea
           rows={3}
           value={currentComment}
@@ -114,28 +156,76 @@ export default function CommentSection({ postId }: Props) {
                     alt={comment.reader.name}
                   />
                 </div>
-                <div className={readerName}>{comment.reader.name}</div>
+                <div
+                  className={`${readerName} ${
+                    comment.reader.id === session?.user.id ? myComment : null
+                  }`}
+                >
+                  {comment.reader.name}
+                </div>
               </div>
-              <div className={commentContentContainer}>{comment.comment}</div>
+              <div className={commentContentContainer}>
+                {editing === comment.id ? (
+                  <div className={commentEditContainer}>
+                    <textarea
+                      rows={3}
+                      value={currentEditingComment}
+                      onChange={(e) => setCurrentEditingComment(e.target.value)}
+                    />
+                    <div>
+                      <button onClick={() => handleEditComment(comment.id)}>
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditing('')
+                          SetShowId('')
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  comment.comment
+                )}
+              </div>
               <div className={interact}>
                 <span className={line}></span>
-                <div className={age}>9min ago</div>
-                <div className={dropdown}>
-                  <div onClick={() => handleDropdown(comment.id)}>
-                    <span className={menuDot}></span>
-                    <span className={menuDot}></span>
-                    <span className={menuDot}></span>
+                {comment.createdAt !== comment.updatedAt && (
+                  <div className={edited}>Edited</div>
+                )}
+                <div className={age}>{timeAgo(comment.createdAt)}</div>
+                {comment.reader.id === session?.user.id && (
+                  <div className={dropdown}>
+                    <button
+                      disabled={editing !== ''}
+                      onClick={() => handleDropdown(comment.id)}
+                    >
+                      <span className={menuDot}></span>
+                      <span className={menuDot}></span>
+                      <span className={menuDot}></span>
+                    </button>
+                    <div
+                      className={`${dropdownContent} ${
+                        showId && showId === comment.id && show
+                      }`}
+                    >
+                      <div
+                        onClick={() => {
+                          if (comment.reader.id !== session?.user.id) return
+                          setEditing(comment.id)
+                          setCurrentEditingComment(comment.comment)
+                          SetShowId('')
+                        }}
+                      >
+                        Edit
+                      </div>
+                      <div onClick={() => handleDelete(comment.id)}>Delete</div>
+                    </div>
                   </div>
-                  <div
-                    className={`${dropdownContent} ${
-                      showId && showId === comment.id && show
-                    }`}
-                  >
-                    <div onClick={() => handleEdit(comment.id)}>Edit</div>
-                    <div onClick={() => handleDelete(comment.id)}>Delete</div>
-                  </div>
-                </div>
-                <div className={replyContainer}>Reply</div>
+                )}
+                <button className={replyContainer}>Reply</button>
               </div>
             </div>
           ))}
