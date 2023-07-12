@@ -6,6 +6,10 @@ Byte size blogs all about Web Development, DSA and Personal Development that I w
 
 [havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
 
+## Status
+
+Under Construction 🚧👷‍♂️
+
 ## Screenshots
 
 #### Home and Blogpost pages 👇🏻
