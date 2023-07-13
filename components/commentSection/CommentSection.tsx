@@ -205,9 +205,15 @@ export default function CommentSection({ postId }: Props) {
               </div>
               <div className={interact}>
                 <button
-                  className={`${replyContainer} ${openReplies && opened}`}
+                  className={`${replyContainer} ${
+                    openReplies === comment.id && opened
+                  }`}
                   onClick={() => {
-                    setOpenReplies((prev) => (prev === '' ? comment.id : ''))
+                    setOpenReplies((prev) => {
+                      if (prev === '') return comment.id
+                      if (prev === comment.id) return ''
+                      return comment.id
+                    })
                   }}
                 >
                   Reply
