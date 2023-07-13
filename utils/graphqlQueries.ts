@@ -380,7 +380,7 @@ export const getPostCommentsRepliesQuery = gql`
   query GetPostCommentsReply($commentId: ID!) {
     comments(
       where: { replyToCommentId: { id: $commentId } }
-      orderBy: createdAt_DESC
+      orderBy: createdAt_ASC
     ) {
       id
       reader {
@@ -421,10 +421,17 @@ export const addCommentPublisheQuery = gql`
 `
 
 export const addCommentReplyDraftQuery = gql`
-  mutation AddComment($comment: String!, $commentId) {
+  mutation AddCommentReply(
+    $comment: String!
+    $postId: ID!
+    $readerId: ID!
+    $commentId: ID!
+  ) {
     createComment(
       data: {
         comment: $comment
+        post: { connect: { id: $postId } }
+        reader: { connect: { id: $readerId } }
         replyToCommentId: { connect: { id: $commentId } }
       }
     ) {
@@ -434,8 +441,8 @@ export const addCommentReplyDraftQuery = gql`
 `
 
 export const addCommentReplyPublisheQuery = gql`
-  mutation AddCommentPublish($commentId: ID!) {
-    publishComment(where: { id: $commentId }) {
+  mutation AddCommentReplyPublish($newCommentId: ID!) {
+    publishComment(where: { id: $newCommentId }) {
       id
     }
   }

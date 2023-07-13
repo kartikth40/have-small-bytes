@@ -473,13 +473,20 @@ export const addComment = cache(
 )
 
 export const addCommentReply = cache(
-  async (comment: string, commentId: string) => {
+  async (
+    comment: string,
+    postId: string,
+    readerId: string,
+    commentId: string
+  ) => {
     try {
       const reply: postAddCommentType = await request(
         graphqlAPI,
         addCommentReplyDraftQuery,
         {
           comment,
+          postId,
+          readerId,
           commentId,
         }
       )
