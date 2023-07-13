@@ -36,6 +36,8 @@ import {
   SimilarPostsQuery,
   addCommentDraftQuery,
   addCommentPublisheQuery,
+  addCommentReplyDraftQuery,
+  addCommentReplyPublisheQuery,
   addPostLikePublishQuery,
   addPostLikeQuery,
   authorUrlQuery,
@@ -48,6 +50,8 @@ import {
   getAvatarByIdQuery,
   getPostCommentsCountQuery,
   getPostCommentsQuery,
+  getPostCommentsRepliesCountQuery,
+  getPostCommentsRepliesQuery,
   getPostLikesQuery,
   loginQuery,
   newUserQuery,
@@ -403,7 +407,6 @@ export const deletePostLike = cache(
     }
   }
 )
-///////
 
 export const getCommentsCount = cache(async (postId: string) => {
   try {
@@ -417,6 +420,23 @@ export const getCommentsCount = cache(async (postId: string) => {
     return result.commentsConnection.aggregate.count
   } catch (err) {
     consoleLog(err, 'getting post comments count')
+
+    return 0
+  }
+})
+
+export const getCommentRepliesCount = cache(async (commentId: string) => {
+  try {
+    const result: postCommentsCountType = await request(
+      graphqlAPI,
+      getPostCommentsRepliesCountQuery,
+      {
+        commentId,
+      }
+    )
+    return result.commentsConnection.aggregate.count
+  } catch (err) {
+    consoleLog(err, 'getting post comments replies count')
 
     return 0
   }
@@ -452,6 +472,42 @@ export const addComment = cache(
   }
 )
 
+export const addCommentReply = cache(
+  async (
+    comment: string,
+    postId: string,
+    readerId: string,
+    commentId: string
+  ) => {
+    try {
+      const reply: postAddCommentType = await request(
+        graphqlAPI,
+        addCommentReplyDraftQuery,
+        {
+          comment,
+          postId,
+          readerId,
+          commentId,
+        }
+      )
+      const newCommentId = reply.createComment.id
+
+      const result: postAddCommentPublishType = await request(
+        graphqlAPI,
+        addCommentReplyPublisheQuery,
+        {
+          newCommentId,
+        }
+      )
+      return result.publishComment ? true : false
+    } catch (err) {
+      consoleLog(err, 'adding post comment replies')
+
+      return null
+    }
+  }
+)
+
 export const getComments = cache(async (postId: string) => {
   try {
     const result: getPostCommentsType = await request(
@@ -464,6 +520,23 @@ export const getComments = cache(async (postId: string) => {
     return result.comments
   } catch (err) {
     consoleLog(err, 'getting post comments')
+
+    return []
+  }
+})
+
+export const getCommentReplies = cache(async (commentId: string) => {
+  try {
+    const result: getPostCommentsType = await request(
+      graphqlAPI,
+      getPostCommentsRepliesQuery,
+      {
+        commentId,
+      }
+    )
+    return result.comments
+  } catch (err) {
+    consoleLog(err, 'getting post comments replies')
 
     return []
   }

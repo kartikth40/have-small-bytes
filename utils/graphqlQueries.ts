@@ -335,7 +335,19 @@ export const deletePostLikeQuery = gql`
 
 export const getPostCommentsCountQuery = gql`
   query GetPostCommentsCount($postId: ID!) {
-    commentsConnection(where: { post: { id: $postId } }) {
+    commentsConnection(
+      where: { post: { id: $postId }, replyToCommentId: null }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export const getPostCommentsRepliesCountQuery = gql`
+  query GetPostCommentsCount($commentId: ID!) {
+    commentsConnection(where: { replyToCommentId: { id: $commentId } }) {
       aggregate {
         count
       }
@@ -345,7 +357,31 @@ export const getPostCommentsCountQuery = gql`
 
 export const getPostCommentsQuery = gql`
   query GetPostComments($postId: ID!) {
-    comments(where: { post: { id: $postId } }, orderBy: createdAt_DESC) {
+    comments(
+      where: { post: { id: $postId }, replyToCommentId: null }
+      orderBy: createdAt_DESC
+    ) {
+      id
+      reader {
+        id
+        name
+        email
+        photo {
+          url
+        }
+      }
+      comment
+      createdAt
+      updatedAt
+    }
+  }
+`
+export const getPostCommentsRepliesQuery = gql`
+  query GetPostCommentsReply($commentId: ID!) {
+    comments(
+      where: { replyToCommentId: { id: $commentId } }
+      orderBy: createdAt_ASC
+    ) {
       id
       reader {
         id
@@ -379,6 +415,34 @@ export const addCommentDraftQuery = gql`
 export const addCommentPublisheQuery = gql`
   mutation AddCommentPublish($commentId: ID!) {
     publishComment(where: { id: $commentId }) {
+      id
+    }
+  }
+`
+
+export const addCommentReplyDraftQuery = gql`
+  mutation AddCommentReply(
+    $comment: String!
+    $postId: ID!
+    $readerId: ID!
+    $commentId: ID!
+  ) {
+    createComment(
+      data: {
+        comment: $comment
+        post: { connect: { id: $postId } }
+        reader: { connect: { id: $readerId } }
+        replyToCommentId: { connect: { id: $commentId } }
+      }
+    ) {
+      id
+    }
+  }
+`
+
+export const addCommentReplyPublisheQuery = gql`
+  mutation AddCommentReplyPublish($newCommentId: ID!) {
+    publishComment(where: { id: $newCommentId }) {
       id
     }
   }

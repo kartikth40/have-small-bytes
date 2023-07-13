@@ -6,6 +6,7 @@ import { getPostCommentType } from '@/utils/types/types'
 import {
   addComment,
   deleteComment,
+  getCommentRepliesCount,
   getComments,
   getCommentsCount,
   updateComment,
@@ -13,6 +14,8 @@ import {
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
+import RepliesSection from './RepliesSection'
+import { timeAgo } from '@/utils/functions'
 
 type Props = { postId: string }
 
@@ -21,17 +24,33 @@ export default function CommentSection({ postId }: Props) {
   const [currentComment, setCurrentComment] = useState<string>('')
   const [currentEditingComment, setCurrentEditingComment] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
+  const [openReplies, setOpenReplies] = useState<string>('')
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [comments, setComments] = useState<getPostCommentType[]>()
-  async function initialize() {
+  const [repliesCounts, setRepliesCounts] = useState<Map<string, number>>(
+    new Map()
+  )
+  async function initializeComments() {
     setCommentsCount(await getCommentsCount(postId))
     setComments(await getComments(postId))
   }
   useEffect(() => {
-    initialize()
+    initializeComments()
   }, [])
+
+  async function initializeReplies() {
+    comments?.map(async (c) => {
+      const repliesCountForThisComment: number = await getCommentRepliesCount(
+        c.id
+      )
+      setRepliesCounts((prev) => prev?.set(c.id, repliesCountForThisComment))
+    })
+  }
+  useEffect(() => {
+    initializeReplies()
+  }, [comments])
   const {
     commentSectionContainer,
     head,
@@ -43,7 +62,6 @@ export default function CommentSection({ postId }: Props) {
     readerAvatar,
     readerName,
     interact,
-    replyContainer,
     age,
     line,
     dropdown,
@@ -54,17 +72,21 @@ export default function CommentSection({ postId }: Props) {
     myComment,
     letMEcomment,
     edited,
+    opened,
+    replyContainer,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
       setPosting(true)
       const result = await addComment(currentComment, postId, session?.user.id)
       if (!result) {
-        toast.error('something went wrong! Please try again later.')
+        toast.error('something went wrong! Please try again later.', {
+          toastId: 'error_add_cmt',
+        })
       } else {
         setCurrentComment('')
         console.log('initialze')
-        await initialize()
+        await initializeComments()
       }
       setPosting(false)
     }
@@ -80,43 +102,34 @@ export default function CommentSection({ postId }: Props) {
     SetShowId('')
     const result = await updateComment(id, currentEditingComment)
     if (!result) {
-      toast.error('something went wrong! Please try again later.')
+      toast.error('something went wrong! Please try again later.', {
+        toastId: 'error_edit',
+      })
     } else {
-      await initialize()
+      await initializeComments()
     }
   }
   async function handleDelete(id: string) {
     SetShowId('')
     const result = await deleteComment(id)
     if (!result) {
-      toast.error('something went wrong! Please try again later.')
+      toast.error('something went wrong! Please try again later.', {
+        toastId: 'error_dlt',
+      })
     } else {
-      await initialize()
+      await initializeComments()
     }
   }
 
-  function timeAgo(createdAt: string) {
-    const date = new Date(createdAt)
-    const now = new Date()
-
-    const updatedTime = date.getTime()
-    const currTime = now.getTime()
-
-    const diffInHrs = (currTime - updatedTime) / (1000 * 60 * 60)
-
-    // in minutes
-    if (diffInHrs < 1) return `${Math.round(diffInHrs * 60)} min`
-    // in hours
-    else if (diffInHrs < 24) return `${Math.round(diffInHrs)} hrs`
-    // in days
-    else if (diffInHrs > 24 && diffInHrs < 24 * 30)
-      return `${Math.round(diffInHrs / 24)} days`
-    // in months
-    else if (diffInHrs > 24 * 30 && diffInHrs < 24 * 30 * 12)
-      return `${Math.round(diffInHrs / (24 * 30))} months`
-    // in years
-    else return `${Math.round(diffInHrs / (24 * 30 * 12))} years`
+  async function getRepliescount(commentId: string) {
+    const count = await getCommentRepliesCount(commentId)
+    if (typeof count !== 'number') {
+      return 0
+    } else {
+      return count
+    }
   }
+
   return (
     <section id={`comment-${postId}`} className={commentSectionContainer}>
       <h1 className={head}>{`Comments ${commentsCount}`}</h1>
@@ -191,6 +204,21 @@ export default function CommentSection({ postId }: Props) {
                 )}
               </div>
               <div className={interact}>
+                <button
+                  className={`${replyContainer} ${
+                    openReplies === comment.id && opened
+                  }`}
+                  onClick={() => {
+                    setOpenReplies((prev) => {
+                      if (prev === '') return comment.id
+                      if (prev === comment.id) return ''
+                      return comment.id
+                    })
+                  }}
+                >
+                  Reply
+                  <span>{repliesCounts?.get(comment.id) || 0}</span>
+                </button>
                 <span className={line}></span>
                 {comment.createdAt !== comment.updatedAt && (
                   <div className={edited}>Edited</div>
@@ -225,8 +253,13 @@ export default function CommentSection({ postId }: Props) {
                     </div>
                   </div>
                 )}
-                <button className={replyContainer}>Reply</button>
               </div>
+              <RepliesSection
+                commentId={comment.id}
+                postId={postId}
+                open={openReplies}
+                setOpen={setOpenReplies}
+              />
             </div>
           ))}
       </div>

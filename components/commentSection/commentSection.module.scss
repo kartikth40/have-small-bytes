@@ -12,7 +12,8 @@
 .head {
   margin-bottom: 1em;
 }
-.commentInputContainer {
+.commentInputContainer,
+.replyInputContainer {
   position: relative;
   & .letMEcomment {
     position: absolute;
@@ -47,6 +48,13 @@
     &:disabled {
       opacity: 0.5;
     }
+  }
+}
+.replyInputContainer {
+  & button {
+    font-size: 0.8em;
+    padding: 0.8em 1.6em;
+    background-color: var(--color-dark);
   }
 }
 .commentsContainer {
@@ -170,10 +178,17 @@
       }
     }
     & .replyContainer {
+      display: flex;
+      gap: 0.5em;
+      color: var(--color-dark);
       font-weight: 700;
-      margin-left: 1em;
+      margin-right: 1em;
       border: none;
       background-color: var(--color-light);
+      cursor: pointer;
+      &.opened {
+        text-decoration: underline;
+      }
     }
     & .age {
       color: var(--color-dark2);
@@ -185,4 +200,28 @@
       margin-left: 1em;
     }
   }
+}
+
+.replySectionContainer {
+  margin-left: 2em;
+
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: calc(100% - 10em);
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
+    left: -1em;
+    top: 0;
+  }
+}
+.expansion {
+  font-size: 0.8em;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.5em 0;
+  border-radius: 5px;
 }
