@@ -1,42 +1,41 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import styles from './commentSection.module.scss'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { getPostCommentType } from '@/utils/types/types'
 import {
-  addComment,
+  addCommentReply,
   deleteComment,
-  getComments,
-  getCommentsCount,
+  getCommentReplies,
   updateComment,
 } from '@/services'
-import Image from 'next/image'
-import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
-import RepliesSection from './RepliesSection'
 import { timeAgo } from '@/utils/functions'
 
-type Props = { postId: string }
+type Props = {
+  commentId: string
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+}
 
-export default function CommentSection({ postId }: Props) {
+export default function RepliesSection({ commentId, open, setOpen }: Props) {
   const { data: session, status } = useSession()
-  const [currentComment, setCurrentComment] = useState<string>('')
-  const [currentEditingComment, setCurrentEditingComment] = useState<string>('')
+  const [currentReply, setCurrentReply] = useState<string>('')
+  const [currentEditingReply, setCurrentEditingReply] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
-  const [openReplies, setOpenReplies] = useState<boolean>(false)
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
-  const [commentsCount, setCommentsCount] = useState<number>(0)
-  const [comments, setComments] = useState<getPostCommentType[]>()
+  const [replies, setReplies] = useState<getPostCommentType[]>()
   async function initialize() {
-    setCommentsCount(await getCommentsCount(postId))
-    setComments(await getComments(postId))
+    setReplies(await getCommentReplies(commentId))
   }
   useEffect(() => {
     initialize()
   }, [])
   const {
-    commentSectionContainer,
+    replySectionContainer,
     head,
     commentInputContainer,
     commentsContainer,
@@ -58,15 +57,14 @@ export default function CommentSection({ postId }: Props) {
     letMEcomment,
     edited,
   } = styles
-  async function handleSendComment() {
-    if (currentComment.length > 0 && session) {
+  async function handleSendReply() {
+    if (currentReply.length > 0 && session) {
       setPosting(true)
-      const result = await addComment(currentComment, postId, session?.user.id)
+      const result = await addCommentReply(currentReply, commentId)
       if (!result) {
         toast.error('something went wrong! Please try again later.')
       } else {
-        setCurrentComment('')
-        console.log('initialze')
+        setCurrentReply('')
         await initialize()
       }
       setPosting(false)
@@ -81,7 +79,7 @@ export default function CommentSection({ postId }: Props) {
   async function handleEditComment(id: string) {
     setEditing('')
     SetShowId('')
-    const result = await updateComment(id, currentEditingComment)
+    const result = await updateComment(id, currentEditingReply)
     if (!result) {
       toast.error('something went wrong! Please try again later.')
     } else {
@@ -99,8 +97,8 @@ export default function CommentSection({ postId }: Props) {
   }
 
   return (
-    <section id={`comment-${postId}`} className={commentSectionContainer}>
-      <h1 className={head}>{`Comments ${commentsCount}`}</h1>
+    <section className={replySectionContainer}>
+      <h1 className={head}>Replies</h1>
       <div className={commentInputContainer}>
         <div className={letMEcomment}>
           {session && (
@@ -114,19 +112,19 @@ export default function CommentSection({ postId }: Props) {
         </div>
         <textarea
           rows={3}
-          value={currentComment}
-          onChange={(e) => setCurrentComment(e.target.value)}
+          value={currentReply}
+          onChange={(e) => setCurrentReply(e.target.value)}
         />
         <button
           disabled={status === 'loading' || posting}
-          onClick={handleSendComment}
+          onClick={handleSendReply}
         >
           {posting || status === 'loading' ? 'Wait' : 'Post'}
         </button>
       </div>
       <div className={commentsContainer}>
-        {comments &&
-          comments.map((comment) => (
+        {replies &&
+          replies.map((comment) => (
             <div key={comment.id} className={commentContainer}>
               <div className={readerContainer}>
                 <div className={readerAvatar}>
@@ -150,8 +148,8 @@ export default function CommentSection({ postId }: Props) {
                   <div className={commentEditContainer}>
                     <textarea
                       rows={3}
-                      value={currentEditingComment}
-                      onChange={(e) => setCurrentEditingComment(e.target.value)}
+                      value={currentEditingReply}
+                      onChange={(e) => setCurrentEditingReply(e.target.value)}
                     />
                     <div>
                       <button onClick={() => handleEditComment(comment.id)}>
@@ -196,7 +194,7 @@ export default function CommentSection({ postId }: Props) {
                         onClick={() => {
                           if (comment.reader.id !== session?.user.id) return
                           setEditing(comment.id)
-                          setCurrentEditingComment(comment.comment)
+                          setCurrentEditingReply(comment.comment)
                           SetShowId('')
                         }}
                       >
@@ -206,20 +204,7 @@ export default function CommentSection({ postId }: Props) {
                     </div>
                   </div>
                 )}
-                <button
-                  className={replyContainer}
-                  onClick={() => {
-                    setOpenReplies((prev) => !prev)
-                  }}
-                >
-                  Reply
-                </button>
               </div>
-              <RepliesSection
-                commentId={comment.id}
-                open={openReplies}
-                setOpen={setOpenReplies}
-              />
             </div>
           ))}
       </div>
