@@ -210,9 +210,12 @@ export default function RepliesSection({
           {replies && replies?.length > 5 && (
             <div
               className={expansion}
-              onClick={() => setExpand((prev) => !prev)}
+              onClick={() => {
+                if (expand) setOpen('')
+                setExpand((prev) => !prev)
+              }}
             >
-              <span>{expand ? 'collapse' : 'expand'}</span>
+              <span>{expand ? 'hide all' : 'show all...'}</span>
             </div>
           )}
         </div>
