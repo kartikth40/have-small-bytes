@@ -44,6 +44,7 @@ import {
   checkEmailQuery,
   checkIfPostLikeQuery,
   deletePostCommentQuery,
+  deletePostCommentRepliesQuery,
   deletePostLikeQuery,
   deleteReaderQuery,
   getAllProfileAvatarQuery,
@@ -582,6 +583,23 @@ export const deleteComment = cache(async (commentId: string) => {
     return result.deleteComment ? true : false
   } catch (err) {
     consoleLog(err, 'deleting post comment')
+
+    return false
+  }
+})
+
+export const deleteCommentReplies = cache(async (commentId: string) => {
+  try {
+    const result: postDeleteCommentType = await request(
+      graphqlAPI,
+      deletePostCommentRepliesQuery,
+      {
+        commentId,
+      }
+    )
+    return result.deleteComment ? true : false
+  } catch (err) {
+    consoleLog(err, 'deleting post comment replies')
 
     return false
   }
