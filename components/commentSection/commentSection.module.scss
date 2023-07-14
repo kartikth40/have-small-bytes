@@ -116,7 +116,6 @@
       font-weight: 700;
       &.myComment {
         background-color: rgb(200, 213, 254);
-        color: var(--color-primary-blue);
         font-size: 0.8em;
         font-weight: 600;
         padding: 0.2em 0.3em;
@@ -124,8 +123,8 @@
       }
     }
     & .isAuthor {
-      background-color: rgb(187, 215, 225);
-      color: rgb(120, 135, 245);
+      background-color: rgb(214, 223, 226);
+      color: rgb(92, 109, 240);
       font-size: 0.8em;
       font-weight: 600;
       padding: 0.2em 0.3em;
