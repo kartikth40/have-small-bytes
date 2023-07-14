@@ -39,8 +39,8 @@ export default function RepliesSection({
     setReplies(await getCommentReplies(commentId))
   }
   useEffect(() => {
-    initialize()
-  }, [])
+    if (open === commentId) initialize()
+  }, [open])
   const {
     replySectionContainer,
     replyInputContainer,
@@ -62,6 +62,7 @@ export default function RepliesSection({
     letMEcomment,
     edited,
     expansion,
+    isAuthor,
   } = styles
   async function handleSendReply() {
     if (currentReply.length > 0 && session) {
@@ -134,6 +135,9 @@ export default function RepliesSection({
                       >
                         {comment.reader.name}
                       </div>
+                      {comment.reader.isAuthor && (
+                        <div className={isAuthor}>Author</div>
+                      )}
                     </div>
                     <div className={commentContentContainer}>
                       {editing === comment.id ? (

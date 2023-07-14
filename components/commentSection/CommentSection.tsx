@@ -6,6 +6,7 @@ import { getPostCommentType } from '@/utils/types/types'
 import {
   addComment,
   deleteComment,
+  deleteCommentReplies,
   getCommentRepliesCount,
   getComments,
   getCommentsCount,
@@ -49,7 +50,7 @@ export default function CommentSection({ postId }: Props) {
     })
   }
   useEffect(() => {
-    initializeReplies()
+    if (comments) initializeReplies()
   }, [comments])
   const {
     commentSectionContainer,
@@ -74,6 +75,7 @@ export default function CommentSection({ postId }: Props) {
     edited,
     opened,
     replyContainer,
+    isAuthor,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
@@ -111,23 +113,33 @@ export default function CommentSection({ postId }: Props) {
   }
   async function handleDelete(id: string) {
     SetShowId('')
-    const result = await deleteComment(id)
-    if (!result) {
+    const repliesDeleted = await deleteCommentReplies(id)
+    if (!repliesDeleted) {
       toast.error('something went wrong! Please try again later.', {
         toastId: 'error_dlt',
       })
-    } else {
-      await initializeComments()
+      return
     }
+    const commentDeleted = await deleteComment(id)
+    if (!commentDeleted) {
+      toast.error('something went wrong! Please try again later.', {
+        toastId: 'error_dlt',
+      })
+      return
+    }
+    await initializeComments()
   }
 
-  async function getRepliescount(commentId: string) {
-    const count = await getCommentRepliesCount(commentId)
-    if (typeof count !== 'number') {
-      return 0
-    } else {
-      return count
-    }
+  async function handleReplyClick(commentId: string) {
+    const repliesCountForThisComment: number = await getCommentRepliesCount(
+      commentId
+    )
+    setRepliesCounts((prev) => prev?.set(commentId, repliesCountForThisComment))
+    setOpenReplies((prev) => {
+      if (prev === '') return commentId
+      if (prev === commentId) return ''
+      return commentId
+    })
   }
 
   return (
@@ -176,6 +188,9 @@ export default function CommentSection({ postId }: Props) {
                 >
                   {comment.reader.name}
                 </div>
+                {comment.reader.isAuthor && (
+                  <div className={isAuthor}>Author</div>
+                )}
               </div>
               <div className={commentContentContainer}>
                 {editing === comment.id ? (
@@ -209,11 +224,7 @@ export default function CommentSection({ postId }: Props) {
                     openReplies === comment.id && opened
                   }`}
                   onClick={() => {
-                    setOpenReplies((prev) => {
-                      if (prev === '') return comment.id
-                      if (prev === comment.id) return ''
-                      return comment.id
-                    })
+                    handleReplyClick(comment.id)
                   }}
                 >
                   Reply

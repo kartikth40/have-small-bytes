@@ -11,6 +11,7 @@ declare module 'next-auth' {
         url: string
       }
       accessToken: string
+      isAuthor: boolean
     }
   }
 }

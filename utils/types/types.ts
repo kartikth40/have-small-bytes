@@ -97,6 +97,7 @@ export interface loginType {
       id: string
       url: string
     }
+    isAuthor: boolean
   }
 }
 
@@ -204,6 +205,7 @@ export interface getPostCommentType {
     photo: {
       url: string
     }
+    isAuthor: boolean
   }
   comment: string
   createdAt: string
@@ -222,5 +224,11 @@ export interface postUpdateCommentType {
 export interface postDeleteCommentType {
   deleteComment: {
     id: string
+  }
+}
+
+export interface postDeleteCommentRepliesType {
+  deleteManyComments: {
+    count: number
   }
 }

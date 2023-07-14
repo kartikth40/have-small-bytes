@@ -112,12 +112,26 @@
       height: 24px;
     }
     & .readerName {
+      font-size: 0.9em;
       font-weight: 700;
       &.myComment {
-        color: var(--color-primary-blue);
+        background-color: rgb(200, 213, 254);
+        font-size: 0.8em;
+        font-weight: 600;
+        padding: 0.2em 0.3em;
+        border-radius: 0.2em;
       }
     }
+    & .isAuthor {
+      background-color: rgb(214, 223, 226);
+      color: rgb(92, 109, 240);
+      font-size: 0.8em;
+      font-weight: 600;
+      padding: 0.2em 0.3em;
+      border-radius: 0.2em;
+    }
   }
+
   & .commentContentContainer {
     font-size: 1rem;
     white-space: pre-wrap;
@@ -181,7 +195,7 @@
       display: flex;
       gap: 0.5em;
       color: var(--color-dark);
-      font-weight: 700;
+      font-weight: 600;
       margin-right: 1em;
       border: none;
       background-color: var(--color-light);

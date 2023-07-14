@@ -195,6 +195,7 @@ export const loginQuery = gql`
         id
         url
       }
+      isAuthor
     }
   }
 `
@@ -369,6 +370,7 @@ export const getPostCommentsQuery = gql`
         photo {
           url
         }
+        isAuthor
       }
       comment
       createdAt
@@ -390,6 +392,7 @@ export const getPostCommentsRepliesQuery = gql`
         photo {
           url
         }
+        isAuthor
       }
       comment
       createdAt
@@ -460,6 +463,14 @@ export const deletePostCommentQuery = gql`
   mutation DeletePostComment($commentId: ID!) {
     deleteComment(where: { id: $commentId }) {
       id
+    }
+  }
+`
+
+export const deletePostCommentRepliesQuery = gql`
+  mutation DeletePostComment($commentId: ID!) {
+    deleteManyComments(where: { replyToCommentId: { id: $commentId } }) {
+      count
     }
   }
 `
