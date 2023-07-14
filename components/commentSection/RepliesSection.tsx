@@ -39,8 +39,8 @@ export default function RepliesSection({
     setReplies(await getCommentReplies(commentId))
   }
   useEffect(() => {
-    initialize()
-  }, [])
+    if (open === commentId) initialize()
+  }, [open])
   const {
     replySectionContainer,
     replyInputContainer,

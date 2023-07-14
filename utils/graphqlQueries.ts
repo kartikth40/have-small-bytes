@@ -195,6 +195,7 @@ export const loginQuery = gql`
         id
         url
       }
+      isAuthor
     }
   }
 `

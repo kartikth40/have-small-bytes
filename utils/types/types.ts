@@ -97,6 +97,7 @@ export interface loginType {
       id: string
       url: string
     }
+    isAuthor: boolean
   }
 }
 

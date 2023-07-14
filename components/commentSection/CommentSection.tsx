@@ -39,6 +39,7 @@ export default function CommentSection({ postId }: Props) {
   }
   useEffect(() => {
     initializeComments()
+    console.log(session)
   }, [])
 
   async function initializeReplies() {
@@ -50,7 +51,7 @@ export default function CommentSection({ postId }: Props) {
     })
   }
   useEffect(() => {
-    initializeReplies()
+    if (comments) initializeReplies()
   }, [comments])
   const {
     commentSectionContainer,
@@ -127,6 +128,18 @@ export default function CommentSection({ postId }: Props) {
       return
     }
     await initializeComments()
+  }
+
+  async function handleReplyClick(commentId: string) {
+    const repliesCountForThisComment: number = await getCommentRepliesCount(
+      commentId
+    )
+    setRepliesCounts((prev) => prev?.set(commentId, repliesCountForThisComment))
+    setOpenReplies((prev) => {
+      if (prev === '') return commentId
+      if (prev === commentId) return ''
+      return commentId
+    })
   }
 
   return (
@@ -208,11 +221,7 @@ export default function CommentSection({ postId }: Props) {
                     openReplies === comment.id && opened
                   }`}
                   onClick={() => {
-                    setOpenReplies((prev) => {
-                      if (prev === '') return comment.id
-                      if (prev === comment.id) return ''
-                      return comment.id
-                    })
+                    handleReplyClick(comment.id)
                   }}
                 >
                   Reply
