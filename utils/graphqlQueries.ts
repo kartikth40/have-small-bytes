@@ -370,6 +370,7 @@ export const getPostCommentsQuery = gql`
         photo {
           url
         }
+        isAuthor
       }
       comment
       createdAt
@@ -391,6 +392,7 @@ export const getPostCommentsRepliesQuery = gql`
         photo {
           url
         }
+        isAuthor
       }
       comment
       createdAt

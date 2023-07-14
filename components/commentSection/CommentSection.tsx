@@ -39,7 +39,6 @@ export default function CommentSection({ postId }: Props) {
   }
   useEffect(() => {
     initializeComments()
-    console.log(session)
   }, [])
 
   async function initializeReplies() {
@@ -76,6 +75,7 @@ export default function CommentSection({ postId }: Props) {
     edited,
     opened,
     replyContainer,
+    isAuthor,
   } = styles
   async function handleSendComment() {
     if (currentComment.length > 0 && session) {
@@ -188,6 +188,9 @@ export default function CommentSection({ postId }: Props) {
                 >
                   {comment.reader.name}
                 </div>
+                {comment.reader.isAuthor && (
+                  <div className={isAuthor}>Author</div>
+                )}
               </div>
               <div className={commentContentContainer}>
                 {editing === comment.id ? (

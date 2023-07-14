@@ -205,6 +205,7 @@ export interface getPostCommentType {
     photo: {
       url: string
     }
+    isAuthor: boolean
   }
   comment: string
   createdAt: string
