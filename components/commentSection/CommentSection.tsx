@@ -6,6 +6,7 @@ import { getPostCommentType } from '@/utils/types/types'
 import {
   addComment,
   deleteComment,
+  deleteCommentReplies,
   getCommentRepliesCount,
   getComments,
   getCommentsCount,
@@ -111,23 +112,21 @@ export default function CommentSection({ postId }: Props) {
   }
   async function handleDelete(id: string) {
     SetShowId('')
-    const result = await deleteComment(id)
-    if (!result) {
+    const repliesDeleted = await deleteCommentReplies(id)
+    if (!repliesDeleted) {
       toast.error('something went wrong! Please try again later.', {
         toastId: 'error_dlt',
       })
-    } else {
-      await initializeComments()
+      return
     }
-  }
-
-  async function getRepliescount(commentId: string) {
-    const count = await getCommentRepliesCount(commentId)
-    if (typeof count !== 'number') {
-      return 0
-    } else {
-      return count
+    const commentDeleted = await deleteComment(id)
+    if (!commentDeleted) {
+      toast.error('something went wrong! Please try again later.', {
+        toastId: 'error_dlt',
+      })
+      return
     }
+    await initializeComments()
   }
 
   return (

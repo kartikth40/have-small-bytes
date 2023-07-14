@@ -224,3 +224,9 @@ export interface postDeleteCommentType {
     id: string
   }
 }
+
+export interface postDeleteCommentRepliesType {
+  deleteManyComments: {
+    count: number
+  }
+}

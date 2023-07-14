@@ -22,6 +22,7 @@ import {
   getPostCommentsType,
   postDeleteCommentType,
   postUpdateCommentType,
+  postDeleteCommentRepliesType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -590,14 +591,14 @@ export const deleteComment = cache(async (commentId: string) => {
 
 export const deleteCommentReplies = cache(async (commentId: string) => {
   try {
-    const result: postDeleteCommentType = await request(
+    const result: postDeleteCommentRepliesType = await request(
       graphqlAPI,
       deletePostCommentRepliesQuery,
       {
         commentId,
       }
     )
-    return result.deleteComment ? true : false
+    return result.deleteManyComments.count >= 0 ? true : false
   } catch (err) {
     consoleLog(err, 'deleting post comment replies')
 
