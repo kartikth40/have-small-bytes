@@ -15,7 +15,7 @@ Under Construction 🚧👷‍♂️
 #### Home and Blogpost pages 👇🏻
 
 <p align="center">
-  <img alt="home page" src="https://user-images.githubusercontent.com/53307443/253012380-0b3bd477-a47d-4cf0-8dc8-6c023f86ac58.png" width="48.5%">
+  <img alt="home page" src="https://user-images.githubusercontent.com/53307443/253638835-64f5842b-8cb3-4602-af5f-a64d9d237685.png" width="48.5%">
    &nbsp; &nbsp; 
   <img alt="post page" src="https://user-images.githubusercontent.com/53307443/253009886-189bacf7-dfc5-4110-b546-beb7c4d991d1.png" width="48.5%">
 </p>
