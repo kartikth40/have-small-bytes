@@ -13,9 +13,10 @@ export default function Markdown({ content }: Props) {
         img: ImageRenderer,
         code: function ({ ...props }) {
           const { inline, children, className } = props
+          const language = className?.split('language-')[1]
           if (!inline)
             return (
-              <ReactSyntaxHighlighter language="javascript">
+              <ReactSyntaxHighlighter language={language || 'cmd'}>
                 {String(children)}
               </ReactSyntaxHighlighter>
             )
