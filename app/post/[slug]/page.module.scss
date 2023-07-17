@@ -164,7 +164,8 @@
 
 .authorContainer {
   width: 40vw;
-  margin: 2em auto;
+  margin-inline: auto;
+  margin-bottom: 3em;
   display: flex;
   justify-content: center;
   align-items: flex-start;
