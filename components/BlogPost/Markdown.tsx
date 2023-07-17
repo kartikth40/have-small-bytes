@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { ImageRenderer } from './Renderers'
-import ReactSyntaxHighlighter from 'react-syntax-highlighter'
+import ReactSyntaxHighlighter from './ReactSyntaxHighlighter'
 
 type Props = { content: string }
 

@@ -1,6 +1,6 @@
 'use client'
-import SyntaxHighlighter from 'react-syntax-highlighter'
-import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 type Props = { children: string; language: string }
 
@@ -9,7 +9,8 @@ export default function ReactSyntaxHighlighter({ children, language }: Props) {
     <SyntaxHighlighter
       children={children}
       language={language}
-      style={docco}
+      style={dracula}
+      wrapLongLines
     ></SyntaxHighlighter>
   )
 }
