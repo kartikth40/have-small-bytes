@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import styles from '../../app/post/[slug]/page.module.scss'
+import ReactSyntaxHighlighter from './ReactSyntaxHighlighter'
 
 export function ImageRenderer({ ...props }: any) {
   const { postImg, strict } = styles
@@ -78,4 +79,19 @@ export function ImageRenderer({ ...props }: any) {
       </span>
     )
   }
+}
+
+export function CodeRenderer({ ...props }: any) {
+  const { codeType } = styles
+  const { inline, children, className } = props
+  const language = className?.split('language-')[1]
+  if (!inline)
+    return (
+      <div className={codeType} data-codetype={language}>
+        <ReactSyntaxHighlighter language={language || 'cmd'}>
+          {String(children)}
+        </ReactSyntaxHighlighter>
+      </div>
+    )
+  return <code className={className}>{children}</code>
 }

@@ -90,7 +90,7 @@ export const dracula: { [key: string]: CSSProperties } = {
     color: '#6539a3',
   },
   number: {
-    color: '#377ffa',
+    color: '#000',
   },
   selector: {
     color: '#0cc92d',
@@ -100,7 +100,7 @@ export const dracula: { [key: string]: CSSProperties } = {
     color: '#089e2e',
   },
   string: {
-    color: '#4230ff',
+    color: '#000',
     fontWeight: 'bold',
   },
   char: {
