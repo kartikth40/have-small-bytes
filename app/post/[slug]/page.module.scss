@@ -131,9 +131,10 @@
     }
   }
   :not(pre) > code {
-    color: #e7e7e7;
-    background: #171717;
-    border: 1px solid #3e3c3c;
+    color: #000;
+    font-weight: bold;
+    background: #e7e7e7;
+    border: 1px solid #c1c1c1;
     padding: 0.05em 0.5em;
     border-radius: 0.15em;
   }
