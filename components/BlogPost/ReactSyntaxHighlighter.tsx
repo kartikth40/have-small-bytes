@@ -1,6 +1,6 @@
 'use client'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 type Props = { children: string; language: string }
 
@@ -9,9 +9,10 @@ export default function ReactSyntaxHighlighter({ children, language }: Props) {
     <SyntaxHighlighter
       children={children}
       language={language}
-      style={dracula}
+      style={atomDark}
       wrapLongLines
       wrapLines
+      customStyle={{ background: '#171717' }}
     ></SyntaxHighlighter>
   )
 }
