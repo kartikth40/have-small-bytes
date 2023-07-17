@@ -3,8 +3,8 @@ import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
 import { postType } from '@/utils/types/types'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { myPortfolioURL } from '@/services'
+import Markdown from './Markdown'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
@@ -17,12 +17,9 @@ export default async function BlogPost({ post }: { post: postType }) {
     authorInfo,
     authorName,
     authorImage,
-    postImg,
-    strict,
   } = styles
 
   const authorWebsiteUrl = (await myPortfolioURL(post.author.id)) || '/'
-
   return (
     <>
       <div className={postHeroImg}>
@@ -66,52 +63,7 @@ export default async function BlogPost({ post }: { post: postType }) {
           </div>
         </div>
         <div className={postContent}>
-          <ReactMarkdown
-            components={{
-              img: function ({ ...props }) {
-                if (props.alt) {
-                  const substrings: string[] = props.alt?.split('{{')
-                  const alt: string = substrings[0].trim()
-
-                  if (substrings[1]) {
-                    const width = Number(
-                      substrings[1].match(/(?<=w:\s?)\d+/g)![0]
-                    )
-                    const height = Number(
-                      substrings[1].match(/(?<=h:\s?)\d+/g)![0]
-                    )
-
-                    return (
-                      <span className={postImg}>
-                        <Image
-                          src={props.src!}
-                          alt={alt}
-                          width={width}
-                          height={height!}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 70vw"
-                          style={{ objectFit: 'cover', borderRadius: '5px' }}
-                        />
-                      </span>
-                    )
-                  }
-
-                  return (
-                    <span className={`${postImg} ${strict}`}>
-                      <Image
-                        src={props.src!}
-                        alt={alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 70vw"
-                        style={{ objectFit: 'cover', borderRadius: '5px' }}
-                      />
-                    </span>
-                  )
-                }
-              },
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
+          <Markdown content={post.content} />
         </div>
       </div>
     </>
