@@ -3,9 +3,8 @@ import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
 import { postType } from '@/utils/types/types'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { myPortfolioURL } from '@/services'
-import { ImageRenderer } from './Renderers'
+import Markdown from './Markdown'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
@@ -21,7 +20,6 @@ export default async function BlogPost({ post }: { post: postType }) {
   } = styles
 
   const authorWebsiteUrl = (await myPortfolioURL(post.author.id)) || '/'
-
   return (
     <>
       <div className={postHeroImg}>
@@ -65,13 +63,7 @@ export default async function BlogPost({ post }: { post: postType }) {
           </div>
         </div>
         <div className={postContent}>
-          <ReactMarkdown
-            components={{
-              img: ImageRenderer,
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
+          <Markdown content={post.content} />
         </div>
       </div>
     </>
