@@ -237,6 +237,7 @@ export default function RepliesSection({
           <textarea
             rows={1}
             value={currentReply}
+            autoFocus={!!open}
             onChange={(e) => setCurrentReply(e.target.value)}
           />
           <div>
