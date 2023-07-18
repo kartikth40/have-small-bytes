@@ -12,12 +12,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
-
-  const color = theme === 'light' ? '#333' : '#FFF'
-  const backgroundColor = theme === 'light' ? '#FFF' : '#333'
-
-  document.body.style.color = color
-  document.body.style.backgroundColor = backgroundColor
+  if (theme === 'dark') document.body.classList.add('darkTheme')
+  else document.body.classList.remove('darkTheme')
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

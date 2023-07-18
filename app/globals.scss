@@ -41,12 +41,12 @@ body {
 }
 
 .darkTheme {
-  --color-primary-blue: #8c52ff;
-  --color-primary-sky: #5ce1e6;
-  --color-primary-black: #111111;
-  --color-foreground: #fff;
-  --color-foreground-2: #d0d0d0;
-  --color-background: #111111;
+  --color-dark-theme-primary-blue: #8c52ff;
+  --color-dark-theme-primary-sky: #5ce1e6;
+  --color-dark-theme-primary-black: #111111;
+  --color-dark-theme-foreground: #fff;
+  --color-dark-theme-foreground-2: #d0d0d0;
+  --color-dark-theme-background: #111111;
 }
 
 // @media (prefers-color-scheme: dark) {
