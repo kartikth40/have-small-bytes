@@ -22,7 +22,7 @@ export const dracula: { [key: string]: CSSProperties } = {
   },
   'pre[class*="language-"]': {
     color: '#000',
-    background: '#e7e7e7',
+    background: '#efefef',
     // textShadow: '0 1px rgba(0, 0, 0, 0.3)',
     fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     textAlign: 'left',
