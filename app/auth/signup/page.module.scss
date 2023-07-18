@@ -25,14 +25,14 @@
   // width: 30vw;
   padding: 1em;
   background-color: var(--color-primary-black);
-  color: var(--color-light);
+  color: var(--color-background);
   border-radius: 10px;
   & button {
     cursor: pointer;
   }
   & input {
     background-color: var(--color-primary-black);
-    color: var(--color-light);
+    color: var(--color-background);
     width: 100%;
     border: 2px solid rgba(255, 255, 255, 0.1);
     font-size: 1.5em;
@@ -54,7 +54,7 @@
       padding: 0.5em 1em;
       border: none;
       background-color: rgba(255, 255, 255, 0.1);
-      color: var(--color-light);
+      color: var(--color-background);
       border-radius: 5px;
       text-transform: uppercase;
 

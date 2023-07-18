@@ -127,7 +127,7 @@
       height: 8px;
     }
     ::-webkit-scrollbar-thumb {
-      background: var(--color-dark);
+      background: var(--color-foreground);
       border-radius: 0.5em;
     }
   }
@@ -157,7 +157,7 @@
       border-radius: 0.5em;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      color: var(--color-dark);
+      color: var(--color-foreground);
       background-color: #efefef;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -180,14 +180,14 @@
     var(--color-primary-blue),
     var(--color-primary-sky)
   );
-  color: var(--color-light);
+  color: var(--color-background);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   transition: 0.2s all;
 
   &:hover {
     text-decoration: none;
-    color: var(--color-light);
+    color: var(--color-background);
     transform: translate(-5px, -5px);
     box-shadow: 5px 5px 10px var(--color-primary-blue);
   }

@@ -8,9 +8,9 @@
   --color-primary-blue: #8c52ff;
   --color-primary-sky: #5ce1e6;
   --color-primary-black: #111111;
-  --color-dark: #495464;
-  --color-dark-2: #919191;
-  --color-light: #fff;
+  --color-foreground: #495464;
+  --color-foreground-2: #919191;
+  --color-background: #fff;
 }
 html {
   scroll-behavior: smooth;
@@ -36,8 +36,17 @@ a:hover {
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: var(--color-light);
-  color: var(--color-dark);
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.darkTheme {
+  --color-primary-blue: #8c52ff;
+  --color-primary-sky: #5ce1e6;
+  --color-primary-black: #111111;
+  --color-foreground: #fff;
+  --color-foreground-2: #d0d0d0;
+  --color-background: #111111;
 }
 
 // @media (prefers-color-scheme: dark) {
@@ -55,7 +64,7 @@ body {
   /* border-radius: 5px; */
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-dark);
+  background: var(--color-foreground);
 }
 
 ::selection {

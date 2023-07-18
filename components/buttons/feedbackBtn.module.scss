@@ -5,7 +5,7 @@
   --easing: cubic-bezier(0.7, 0, 0.3, 1);
   --duration: 0.5s;
   font-size: 1em;
-  color: var(--color-dark);
+  color: var(--color-foreground);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -32,7 +32,7 @@
     pointer-events: none;
     font-size: 0.5em;
     font-weight: 500;
-    color: var(--color-dark2);
+    color: var(--color-foreground2);
   }
   & .commentCountContainer {
     padding-left: 0.3em;
