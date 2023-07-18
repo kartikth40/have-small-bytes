@@ -160,6 +160,7 @@ export default function CommentSection({ postId }: Props) {
               width={24}
               height={24}
               alt={session?.user.name!}
+              style={{ borderRadius: '50%' }}
             />
           )}
         </div>
@@ -186,6 +187,7 @@ export default function CommentSection({ postId }: Props) {
                     width={24}
                     height={24}
                     alt={comment.reader.name}
+                    style={{ borderRadius: '50%' }}
                   />
                 </div>
                 <div

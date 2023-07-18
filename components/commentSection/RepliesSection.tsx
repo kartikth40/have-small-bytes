@@ -124,6 +124,7 @@ export default function RepliesSection({
                           width={24}
                           height={24}
                           alt={comment.reader.name}
+                          style={{ borderRadius: '50%' }}
                         />
                       </div>
                       <div
@@ -231,6 +232,7 @@ export default function RepliesSection({
                 width={24}
                 height={24}
                 alt={session?.user.name!}
+                style={{ borderRadius: '50%' }}
               />
             )}
           </div>
