@@ -66,7 +66,13 @@ export default function ProfilePicModal({
         {loading || !src ? (
           <div className={loader}>loading...</div>
         ) : (
-          <Image src={src} alt={alt} width={100} height={100} />
+          <Image
+            src={src}
+            alt={alt}
+            width={100}
+            height={100}
+            style={{ borderRadius: '50%' }}
+          />
         )}
       </div>
       {/* modal react portal insertion point */}
@@ -98,6 +104,7 @@ export default function ProfilePicModal({
                         alt={'avatar'}
                         width={70}
                         height={70}
+                        style={{ borderRadius: '50%' }}
                       />
                     </label>
                   </div>

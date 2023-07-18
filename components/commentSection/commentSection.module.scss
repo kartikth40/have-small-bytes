@@ -19,8 +19,8 @@
     position: absolute;
     width: 1.5em;
     aspect-ratio: 1;
-    top: 0;
-    left: 0;
+    top: 0.25em;
+    left: 0.25em;
   }
   margin-block: 1em;
   display: flex;
@@ -29,11 +29,12 @@
   align-items: flex-end;
   & textarea {
     border-radius: 10px;
+    border-top-left-radius: 0.75em;
     font-family: var(--font-inter);
     width: 100%;
     font-size: 1rem;
     padding: 1em;
-    padding-top: 2em;
+    padding-top: 2.3em;
     resize: none;
     margin-bottom: 0.5em;
   }
