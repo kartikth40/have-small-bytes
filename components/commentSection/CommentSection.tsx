@@ -43,10 +43,14 @@ export default function CommentSection({ postId }: Props) {
 
   async function initializeReplies() {
     comments?.map(async (c) => {
+      const currentComment = c.id
       const repliesCountForThisComment: number = await getCommentRepliesCount(
-        c.id
+        currentComment
       )
-      setRepliesCounts((prev) => prev?.set(c.id, repliesCountForThisComment))
+      console.log(repliesCountForThisComment)
+      setRepliesCounts(
+        new Map(repliesCounts.set(currentComment, repliesCountForThisComment))
+      )
     })
   }
   useEffect(() => {
@@ -134,7 +138,10 @@ export default function CommentSection({ postId }: Props) {
     const repliesCountForThisComment: number = await getCommentRepliesCount(
       commentId
     )
-    setRepliesCounts((prev) => prev?.set(commentId, repliesCountForThisComment))
+    setRepliesCounts(
+      new Map(repliesCounts.set(commentId, repliesCountForThisComment))
+    )
+
     setOpenReplies((prev) => {
       if (prev === '') return commentId
       if (prev === commentId) return ''
