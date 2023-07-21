@@ -13,6 +13,10 @@
   padding: 5rem;
   border-radius: 10px;
 
+  body:global(.darkTheme) & {
+    border: 15px solid var(--color-back-07);
+  }
+
   &:hover::after {
     right: -100%;
     transform: translate(0, -50%) skewX(-30deg);

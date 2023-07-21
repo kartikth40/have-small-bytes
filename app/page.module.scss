@@ -153,6 +153,9 @@
           opacity: 1;
         }
       }
+      body:global(.darkTheme) &:hover {
+        box-shadow: 0 0 10px var(--color-shadow-2);
+      }
 
       &:hover {
         text-decoration: none;
@@ -388,7 +391,7 @@
   &.hideBackground {
     pointer-events: all;
 
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--color-back-1);
     backdrop-filter: blur(5px);
   }
 }
@@ -400,7 +403,7 @@
   transform: translate(-50%, -50%);
   background-color: var(--color-background);
   padding: 2rem;
-  border: 1px solid black;
+  border: 1px solid var(--color-back-2);
   z-index: 20;
 }
 .modalHeader {
@@ -458,7 +461,7 @@
   height: 150px;
   padding: 0.5em 1em;
   cursor: pointer;
-  background-color: #fff;
+  background-color: var(--color-back-05);
   border-radius: 50%;
   &:hover {
     opacity: 0.7;
