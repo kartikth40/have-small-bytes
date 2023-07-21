@@ -17,7 +17,7 @@
 
 .signInBtn {
   border: none;
-  background-color: var(--color-black-07);
+  background-color: var(--color-back-07);
   padding: 0.2em 0.5em;
   margin-left: 1em;
   font-family: var(--font-inter);
@@ -51,14 +51,14 @@
   position: relative;
   overflow: hidden;
   cursor: default;
-  background-color: var(0, 0, 0, 0.1);
+  background-color: var(--color-back-01);
   pointer-events: none;
   &:before {
     content: '';
     position: absolute;
     width: 30px;
     height: 100%;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: var(--color-back-03);
     transform: skewX(-10deg);
     left: 0;
     top: 0;
@@ -80,7 +80,7 @@
   margin-left: 1em;
   font-family: var(--font-inter);
   border-radius: 5px;
-  background-color: var(--color-black-07);
+  background-color: var(--color-back-07);
   color: var(--color-foreground);
   font-weight: 500;
   font-size: 1em;
@@ -136,8 +136,8 @@
       flex: 1;
       padding: 1rem;
       margin-inline: 0.5rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0);
-      border: 1px solid rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 10px var(--color-back-00);
+      border: 1px solid var(--color-back-3);
       border-radius: 0.3rem;
       align-self: stretch;
       position: relative;
@@ -145,8 +145,8 @@
       transition: 0.15s all;
 
       &:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(0, 0, 0, 0.9);
+        box-shadow: 0 0 10px var(--color-back-3);
+        border: 1px solid var(--color-back-9);
         &::before {
           opacity: 1;
         }
@@ -197,8 +197,9 @@
   flex-basis: 70vw;
 
   & .postCard {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--color-back-03);
+    border: 2px solid var(--color-border-1);
+    box-shadow: 0 0 10px var(--color-shadow-2);
     margin-bottom: 3rem;
     padding: 1rem;
     border-radius: 0.5rem;
