@@ -105,6 +105,8 @@
 }
 
 .nav {
+  display: flex;
+  align-items: center;
   & .navLink {
     margin-inline-start: 1rem;
   }
@@ -463,5 +465,24 @@
   }
   & .loader {
     font-weight: 500;
+  }
+}
+
+.themeButton {
+  height: 1.5rem;
+  aspect-ratio: 1;
+  margin-left: 1em;
+  position: relative;
+  margin-block: auto;
+  cursor: pointer;
+  border: 1px solid var(--color-back-1);
+  background-color: var(--color-background);
+  box-shadow: 0 2px var(--color-back-1);
+  border-radius: 30%;
+  transition: 0.15s all;
+
+  &:hover {
+    translate: 0 2px;
+    box-shadow: 0 0 var(--color-back-1);
   }
 }
