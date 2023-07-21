@@ -39,7 +39,7 @@ export default function CommentSection({ postId }: Props) {
   }
   useEffect(() => {
     initializeComments()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function initializeReplies() {
     comments?.map(async (c) => {
@@ -55,7 +55,7 @@ export default function CommentSection({ postId }: Props) {
   }
   useEffect(() => {
     if (comments) initializeReplies()
-  }, [comments])
+  }, [comments]) // eslint-disable-line react-hooks/exhaustive-deps
   const {
     commentSectionContainer,
     head,

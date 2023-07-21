@@ -40,7 +40,7 @@ export default function RepliesSection({
   }
   useEffect(() => {
     if (open === commentId) initialize()
-  }, [open])
+  }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
   const {
     replySectionContainer,
     replyInputContainer,
