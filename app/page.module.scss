@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--color-background);
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -17,7 +17,7 @@
 
 .signInBtn {
   border: none;
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: var(--color-black-07);
   padding: 0.2em 0.5em;
   margin-left: 1em;
   font-family: var(--font-inter);
@@ -80,6 +80,7 @@
   margin-left: 1em;
   font-family: var(--font-inter);
   border-radius: 5px;
+  background-color: var(--color-black-07);
   color: var(--color-foreground);
   font-weight: 500;
   font-size: 1em;

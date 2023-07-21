@@ -11,6 +11,16 @@
   --color-foreground: #495464;
   --color-foreground-2: #919191;
   --color-background: #fff;
+
+  --color-black-01: rgba(0, 0, 0, 0.01);
+  --color-black-02: rgba(0, 0, 0, 0.02);
+  --color-black-03: rgba(0, 0, 0, 0.03);
+  --color-black-04: rgba(0, 0, 0, 0.04);
+  --color-black-05: rgba(0, 0, 0, 0.05);
+  --color-black-06: rgba(0, 0, 0, 0.06);
+  --color-black-07: rgba(0, 0, 0, 0.07);
+  --color-black-08: rgba(0, 0, 0, 0.08);
+  --color-black-09: rgba(0, 0, 0, 0.09);
 }
 html {
   scroll-behavior: smooth;
@@ -41,12 +51,23 @@ body {
 }
 
 .darkTheme {
-  --color-dark-theme-primary-blue: #8c52ff;
-  --color-dark-theme-primary-sky: #5ce1e6;
-  --color-dark-theme-primary-black: #111111;
-  --color-dark-theme-foreground: #fff;
-  --color-dark-theme-foreground-2: #d0d0d0;
-  --color-dark-theme-background: #111111;
+  --color-primary-blue: #8c52ff;
+  --color-primary-sky: #5ce1e6;
+  --color-primary-black: #080808;
+  --color-primary-black-2: #1c1c1c;
+  --color-foreground: #fff;
+  --color-foreground-2: #ededed;
+  --color-background: #080808;
+
+  --color-black-01: rgba(0, 0, 0, 0.01);
+  --color-black-02: rgba(0, 0, 0, 0.02);
+  --color-black-03: rgba(0, 0, 0, 0.03);
+  --color-black-04: rgba(0, 0, 0, 0.04);
+  --color-black-05: rgba(0, 0, 0, 0.05);
+  --color-black-06: rgba(0, 0, 0, 0.06);
+  --color-black-07: rgba(0, 0, 0, 0.07);
+  --color-black-08: rgba(0, 0, 0, 0.08);
+  --color-black-09: rgba(0, 0, 0, 0.09);
 }
 
 // @media (prefers-color-scheme: dark) {
