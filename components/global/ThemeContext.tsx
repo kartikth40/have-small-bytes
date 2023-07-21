@@ -8,8 +8,12 @@ export const ThemeContext = React.createContext<ThemeContext>(
 )
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const currentTheme = window.localStorage.getItem('theme') as Theme
-  const [theme, setTheme] = useState<Theme>(currentTheme || 'light')
+  const [theme, setTheme] = useState<Theme>('light')
+
+  useEffect(() => {
+    const currentTheme = window.localStorage.getItem('theme') as Theme
+    setTheme(currentTheme)
+  }, [])
 
   useEffect(() => {
     if (document) {
