@@ -249,8 +249,43 @@
 .expansion {
   font-size: 0.8em;
   text-align: center;
-  cursor: pointer;
   background-color: rgba(0, 0, 0, 0.05);
   padding: 0.5em 0;
   border-radius: 5px;
+  display: flex;
+  & span {
+    width: 100%;
+    display: inline-block;
+    border: var(--color-back-1) 1px solid;
+    padding: 1em 0;
+    cursor: pointer;
+    text-align: center;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:nth-child(1) {
+      border-top-left-radius: 0.75em;
+      border-bottom-left-radius: 0.75em;
+      border-right: none;
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        background-color: var(--color-back-1);
+        right: 0;
+        top: 50%;
+        width: 2px;
+        height: 80%;
+        border-radius: 2px;
+        transform: translateY(-50%);
+      }
+    }
+    &:nth-child(2) {
+      border-top-right-radius: 0.75em;
+      border-bottom-right-radius: 0.75em;
+      border-left: none;
+    }
+  }
 }

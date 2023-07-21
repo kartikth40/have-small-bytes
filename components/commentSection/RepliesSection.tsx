@@ -213,14 +213,23 @@ export default function RepliesSection({
                 )
             )}
           {replies && replies?.length > 5 && (
-            <div
-              className={expansion}
-              onClick={() => {
-                if (expand) setOpen('')
-                setExpand((prev) => !prev)
-              }}
-            >
-              <span>{expand ? 'hide all' : 'show all...'}</span>
+            <div className={expansion}>
+              <span
+                onClick={() => {
+                  setOpen('')
+                  setExpand((prev) => false)
+                }}
+              >
+                hide all
+              </span>
+
+              <span
+                onClick={() => {
+                  setExpand((prev) => !prev)
+                }}
+              >
+                {expand ? 'show less' : 'show all'}
+              </span>
             </div>
           )}
         </div>
