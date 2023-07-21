@@ -63,6 +63,7 @@ export default function RepliesSection({
     edited,
     expansion,
     isAuthor,
+    readjustLeftThreadHeight,
   } = styles
   async function handleSendReply() {
     if (currentReply.length > 0 && session) {
@@ -110,7 +111,11 @@ export default function RepliesSection({
 
   return (
     open === commentId && (
-      <section className={replySectionContainer}>
+      <section
+        className={`${replySectionContainer} ${
+          replies && replies?.length > 5 && readjustLeftThreadHeight
+        }`}
+      >
         <div className={commentsContainer}>
           {replies &&
             replies.map(
@@ -213,14 +218,23 @@ export default function RepliesSection({
                 )
             )}
           {replies && replies?.length > 5 && (
-            <div
-              className={expansion}
-              onClick={() => {
-                if (expand) setOpen('')
-                setExpand((prev) => !prev)
-              }}
-            >
-              <span>{expand ? 'hide all' : 'show all...'}</span>
+            <div className={expansion}>
+              <span
+                onClick={() => {
+                  setOpen('')
+                  setExpand((prev) => false)
+                }}
+              >
+                hide all
+              </span>
+
+              <span
+                onClick={() => {
+                  setExpand((prev) => !prev)
+                }}
+              >
+                {expand ? 'show less' : 'show all'}
+              </span>
             </div>
           )}
         </div>

@@ -3,6 +3,7 @@ import styles from '@/app/page.module.scss'
 import { getCategories } from '@/services'
 import Image from 'next/image'
 import SignInButton from '../buttons/SignInButton'
+import ThemeToggleButton from '../buttons/ThemeToggleButton'
 
 type Props = {}
 
@@ -36,6 +37,7 @@ async function Header({}: Props) {
             {category.name}
           </Link>
         ))}
+        <ThemeToggleButton />
         <SignInButton />
       </nav>
     </header>
