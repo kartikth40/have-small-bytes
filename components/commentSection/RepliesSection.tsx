@@ -63,6 +63,7 @@ export default function RepliesSection({
     edited,
     expansion,
     isAuthor,
+    readjustLeftThreadHeight,
   } = styles
   async function handleSendReply() {
     if (currentReply.length > 0 && session) {
@@ -110,7 +111,11 @@ export default function RepliesSection({
 
   return (
     open === commentId && (
-      <section className={replySectionContainer}>
+      <section
+        className={`${replySectionContainer} ${
+          replies && replies?.length > 5 && readjustLeftThreadHeight
+        }`}
+      >
         <div className={commentsContainer}>
           {replies &&
             replies.map(

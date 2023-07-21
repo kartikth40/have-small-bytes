@@ -239,11 +239,16 @@
     content: '';
     position: absolute;
     width: 2px;
-    height: calc(100% - 30%);
+    height: calc(100% - 10em);
     background-color: var(--color-back-1);
     border-radius: 1px;
     left: -1em;
     top: 0;
+  }
+  &.readjustLeftThreadHeight {
+    &:after {
+      height: calc(100% - 14em);
+    }
   }
 }
 .expansion {
