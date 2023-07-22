@@ -10,7 +10,17 @@ export default function ThemeToggleButton({}: Props) {
   const { theme, toggleTheme } = useContext(ThemeContext)
 
   return (
-    <button onClick={toggleTheme} className={styles.themeButton}>
+    <button
+      onClick={toggleTheme}
+      className={styles.themeButton}
+      data-theme={
+        theme.startsWith('system')
+          ? 'OS Default'
+          : theme === 'dark'
+          ? 'Dark Mode'
+          : 'Light Mode'
+      }
+    >
       <Image
         src={`/icons/${
           theme === 'light' ? 'sun' : theme === 'dark' ? 'moon' : 'half-moon'
