@@ -507,6 +507,13 @@
     transform: translateX(-50%);
     border-radius: 0.5em;
   }
+  &#adjustIt {
+    &:after {
+      left: unset;
+      right: 0;
+      transform: none;
+    }
+  }
 
   &:hover {
     &::after {

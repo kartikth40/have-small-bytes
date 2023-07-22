@@ -20,19 +20,20 @@
   }
 }
 .mainContainer {
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  margin-top: 10vh;
+  border: 2px solid var(--color-back-3);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
   // width: 30vw;
   padding: 1em;
   background-color: var(--color-primary-black);
-  color: var(--color-background);
+  color: var(--color-primary-white);
   border-radius: 10px;
   & button {
     cursor: pointer;
   }
   & input {
-    background-color: var(--color-primary-black);
-    color: var(--color-background);
+    background-color: var(--color-back-1);
+    color: var(--color-primary-white);
     width: 100%;
     border: 2px solid rgba(255, 255, 255, 0.1);
     font-size: 1.5em;
@@ -53,14 +54,14 @@
       font-size: 1.2em;
       padding: 0.5em 1em;
       border: none;
-      background-color: rgba(255, 255, 255, 0.1);
-      color: var(--color-background);
+      background-color: var(--color-primary-white);
+      color: var(--color-primary-black);
       border-radius: 5px;
       text-transform: uppercase;
 
       cursor: pointer;
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        opacity: 0.7;
       }
       &:disabled {
         cursor: wait;
