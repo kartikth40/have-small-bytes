@@ -1,9 +1,12 @@
 'use client'
+import { useContext } from 'react'
 import { ToastContainer } from 'react-toastify'
+import { ThemeContext } from './ThemeContext'
 
 type Props = {}
 
 export default function ClientToastContainer({}: Props) {
+  const { theme } = useContext(ThemeContext)
   return (
     <div>
       <ToastContainer
@@ -16,7 +19,7 @@ export default function ClientToastContainer({}: Props) {
         rtl={false}
         draggable
         pauseOnHover
-        theme="light"
+        theme={theme === 'system-dark' || theme === 'dark' ? 'dark' : 'light'}
       />
     </div>
   )

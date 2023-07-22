@@ -91,3 +91,15 @@ export function signupValidation(
 
   return successResponse
 }
+
+export function signinValidation(email: string, password: string): response {
+  const successResponse: response = { pass: true, error: '' }
+
+  const emailResponse = emailValidate(email)
+  if (!emailResponse.pass) return emailResponse
+
+  const passwordResponse = passwordValidate(password)
+  if (!passwordResponse.pass) return passwordResponse
+
+  return successResponse
+}

@@ -12,7 +12,7 @@ export default function CommentButton({ postId, canClick = false }: Props) {
       setCommentsCount(await getCommentsCount(postId))
     }
     initialize()
-  }, [])
+  }, [postId])
   const {
     Btn_container,
     commentBtn,

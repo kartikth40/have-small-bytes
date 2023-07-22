@@ -89,7 +89,7 @@ body {
 }
 
 .darkTheme {
-  --color-foreground: rgb(236, 236, 236);
+  --color-foreground: rgb(220, 218, 218);
   --color-background: rgb(8, 8, 8);
 
   --color-front-00: rgba(0, 0, 0, 0);
@@ -136,6 +136,10 @@ body {
 
   --color-border-1: var(--color-back-1);
   --color-shadow-2: var(--color-front-9);
+}
+
+body.darkTheme img {
+  filter: brightness(0.8) contrast(1);
 }
 
 // @media (prefers-color-scheme: dark) {
