@@ -12,7 +12,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const currentTheme = window.localStorage.getItem('theme') as Theme
-    setTheme(currentTheme)
+    if (currentTheme) setTheme(currentTheme)
   }, [])
 
   useEffect(() => {
