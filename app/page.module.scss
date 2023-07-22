@@ -500,6 +500,7 @@
     position: absolute;
     color: var(--color-foreground);
     border: 1px solid var(--color-foreground);
+    box-shadow: 0 3px var(--color-foreground);
     padding: 0.5em;
     bottom: -3em;
     left: 50%;
