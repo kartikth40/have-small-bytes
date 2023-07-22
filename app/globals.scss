@@ -138,6 +138,10 @@ body {
   --color-shadow-2: var(--color-front-9);
 }
 
+body.darkTheme img {
+  filter: brightness(0.8) contrast(1);
+}
+
 // @media (prefers-color-scheme: dark) {
 //   html {
 //     color-scheme: dark;
