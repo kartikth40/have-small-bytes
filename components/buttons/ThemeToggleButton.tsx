@@ -12,8 +12,13 @@ export default function ThemeToggleButton({}: Props) {
   return (
     <button onClick={toggleTheme} className={styles.themeButton}>
       <Image
-        src={`/icons/${theme === 'light' ? 'sun' : 'moon'}.png`}
-        style={{ objectFit: 'cover' }}
+        src={`/icons/${
+          theme === 'light' ? 'sun' : theme === 'dark' ? 'moon' : 'half-moon'
+        }.png`}
+        style={{
+          objectFit: 'cover',
+          filter: `${theme === 'system-dark' ? 'invert(1)' : 'invert(0)'}`,
+        }}
         // sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
         fill
         alt={'theme logo'}
