@@ -6,6 +6,7 @@ import styles from './page.module.scss'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
+import { signinValidation } from '@/utils/constants/formValidation'
 
 export default function LoginPage() {
   const { data: session, status: sessionStatus } = useSession()
@@ -41,6 +42,14 @@ export default function LoginPage() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
+    const validateResponse = signinValidation(email.current, password.current)
+
+    if (!validateResponse.pass) {
+      toast.warning(validateResponse.error, { autoClose: 5000 })
+      return
+    }
+
     setSigningIn(true)
     // Match Credentials
     const loginId = toast.loading('Checking your credentials...')
