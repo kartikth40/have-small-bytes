@@ -5,13 +5,14 @@ export const dracula_light: { [key: string]: CSSProperties } = {
     color: '#000',
     background: 'none',
     // textShadow: '0 1px rgba(0, 0, 0, 0.3)',
-    fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+    fontFamily:
+      "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     textAlign: 'left',
     whiteSpace: 'pre',
     wordBreak: 'normal',
     wordWrap: 'normal',
     letterSpacing: '.05em',
-    lineHeight: '1.5',
+    lineHeight: '2',
     MozTabSize: '4',
     OTabSize: '4',
     tabSize: '4',
@@ -25,7 +26,8 @@ export const dracula_light: { [key: string]: CSSProperties } = {
     background: '#efefef',
     border: '1px solid rgba(0,0,0,.1)',
     // textShadow: '0 1px rgba(0, 0, 0, 0.3)',
-    fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+    fontFamily:
+      "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     textAlign: 'left',
     whiteSpace: 'pre',
     wordSpacing: 'normal',
@@ -45,6 +47,8 @@ export const dracula_light: { [key: string]: CSSProperties } = {
     borderRadius: '0.3em',
   },
   ':not(pre) > code[class*="language-"]': {
+    fontFamily:
+      "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     background: '#282a36',
     padding: '.1em',
     borderRadius: '.3em',
@@ -73,40 +77,40 @@ export const dracula_light: { [key: string]: CSSProperties } = {
     color: '#3d4dfc',
   },
   tag: {
-    color: '#ff2ba5',
-    fontWeight: 'bold',
+    color: '#fc0599',
+    fontWeight: 'normal',
   },
   constant: {
     color: '#b218f5',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   symbol: {
-    color: '#fc3d80',
-    fontWeight: 'bold',
+    color: '#ff0f63',
+    fontWeight: 'normal',
   },
   deleted: {
     color: '#ff79c6',
   },
   boolean: {
-    color: '#6539a3',
+    color: '#7519f7',
   },
   number: {
     color: '#000',
   },
   selector: {
-    color: '#0cc92d',
+    color: '#4aaaff',
     fontWeight: 'light',
   },
   'attr-name': {
-    color: '#089e2e',
+    color: '#4aaaff',
   },
   string: {
     color: '#000',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   char: {
-    color: '#4230ff',
-    fontWeight: 'bold',
+    color: '#7c70fa',
+    fontWeight: 'normal',
   },
   builtin: {
     color: '#4f3efa',
@@ -132,29 +136,29 @@ export const dracula_light: { [key: string]: CSSProperties } = {
   },
   variable: {
     color: '#ad0cf7',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   atrule: {
-    color: '#ee61fa',
+    color: '#eb05ff',
   },
   'attr-value': {
-    color: '#ee61fa',
+    color: '#eb05ff',
   },
   function: {
-    color: '#23a0fa',
-    fontWeight: 'bold',
+    color: '#027eeb',
+    fontWeight: 'normal',
   },
   'class-name': {
-    color: '#b8670b',
-    fontWeight: 'bold',
+    color: '#88c914',
+    fontWeight: 'normal',
   },
   class: {
-    color: '#b8670b',
-    fontWeight: 'bold',
+    color: '#88c914',
+    fontWeight: 'normal',
   },
   keyword: {
-    color: '#9634f7',
-    fontWeight: 'bold',
+    color: '#8100ff',
+    fontWeight: 'normal',
   },
   regex: {
     color: '#ffb86c',
@@ -173,14 +177,14 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
   'code[class*="language-"]': {
     color: '#dcdada',
     background: 'none',
-    // textShadow: '0 1px rgba(0, 0, 0, 0.3)',
-    fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+    fontFamily:
+      "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     textAlign: 'left',
     whiteSpace: 'pre',
     wordBreak: 'normal',
     wordWrap: 'normal',
     letterSpacing: '.05em',
-    lineHeight: '1.5',
+    lineHeight: '2',
     MozTabSize: '4',
     OTabSize: '4',
     tabSize: '4',
@@ -193,8 +197,8 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
     color: 'rgb(220, 218, 218)',
     background: '#0A0A0A',
     border: '1px solid rgba(255,255,255,.1)',
-    // textShadow: '0 1px rgba(0, 0, 0, 0.3)',
-    fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+    fontFamily:
+      "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     textAlign: 'left',
     whiteSpace: 'pre',
     wordSpacing: 'normal',
@@ -214,6 +218,8 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
     borderRadius: '0.3em',
   },
   ':not(pre) > code[class*="language-"]': {
+    fontFamily:
+      "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
     background: '#282a36',
     padding: '.1em',
     borderRadius: '.3em',
@@ -242,40 +248,40 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
     color: '#737eff',
   },
   tag: {
-    color: '#ff2ba5',
-    fontWeight: 'bold',
+    color: '#fc62be',
+    fontWeight: 'normal',
   },
   constant: {
     color: '#b218f5',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   symbol: {
     color: '#fc3d80',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   deleted: {
     color: '#ff79c6',
   },
   boolean: {
-    color: '#6539a3',
+    color: '#a15eff',
   },
   number: {
     color: '#dcdada',
   },
   selector: {
-    color: '#0cc92d',
+    color: '#4aaaff',
     fontWeight: 'light',
   },
   'attr-name': {
-    color: '#089e2e',
+    color: '#4aaaff',
   },
   string: {
     color: '#dcdada',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   char: {
     color: '#7c70fa',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   builtin: {
     color: '#4f3efa',
@@ -301,7 +307,7 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
   },
   variable: {
     color: '#ad0cf7',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
   },
   atrule: {
     color: '#ee61fa',
@@ -310,20 +316,20 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
     color: '#ee61fa',
   },
   function: {
-    color: '#23a0fa',
-    fontWeight: 'bold',
+    color: '#4aaaff',
+    fontWeight: 'normal',
   },
   'class-name': {
-    color: '#b8670b',
-    fontWeight: 'bold',
+    color: '#9deb15',
+    fontWeight: 'normal',
   },
   class: {
-    color: '#b8670b',
-    fontWeight: 'bold',
+    color: '#9deb15',
+    fontWeight: 'normal',
   },
   keyword: {
-    color: '#9634f7',
-    fontWeight: 'bold',
+    color: '#c58aff',
+    fontWeight: 'normal',
   },
   regex: {
     color: '#ffb86c',

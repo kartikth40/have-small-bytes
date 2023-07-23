@@ -137,6 +137,7 @@
   }
 
   :not(pre) > code {
+    font-family: var(--font-source-code-pro), monospace;
     font-size: 0.8em;
     font-weight: bold;
     background: #efefef;
