@@ -1,5 +1,5 @@
 import './globals.scss'
-import { Inter, Nabla } from 'next/font/google'
+import { Inter, Nabla, Source_Code_Pro } from 'next/font/google'
 import Header from '@/components/global/Header'
 import Footer from '@/components/global/Footer'
 import Providers from '@/components/global/Providers'
@@ -9,6 +9,12 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+})
+
+const source_code_pro = Source_Code_Pro({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-source-code-pro',
 })
 
 export const nabla = Nabla({
