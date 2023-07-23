@@ -69,7 +69,7 @@ interface ErrorType {
 function consoleLog(err: any, errorMessage: string) {
   const error = err as ErrorType
   console.log('|----ERROR')
-  if (error.response.status === 429) {
+  if (error.response?.status === 429) {
     console.log(`|----Too many requests`)
     console.log(`|----> ${errorMessage}`)
   } else {
@@ -373,6 +373,7 @@ export const addPostLike = cache(async (postId: string, readerId: string) => {
 })
 
 export const checkPostLike = cache(async (postId: string, readerId: string) => {
+  console.log('CHECK IF POST LIKED --> ', postId, readerId)
   try {
     const postPlusReaderId = postId + readerId
     const result: checkPostLikeType = await request(

@@ -36,6 +36,7 @@ export default function ThemeToggleButton({}: Props) {
         }}
         // sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
         fill
+        sizes="24px"
         alt={'theme logo'}
       />
     </button>
