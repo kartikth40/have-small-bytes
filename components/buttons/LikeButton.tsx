@@ -21,8 +21,8 @@ type Props = { postId: string }
 export default function LikeButton({ postId }: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
+  const [allowLiking, setAllowLiking] = useState<boolean>(false)
   const [updating, setUpdating] = useState<boolean>(false)
-  const [fethedIfLiked, setFetchedIfLike] = useState<boolean>(false)
   const [likeCount, setLikeCount] = useState<number>(0)
   const loading = status === 'loading'
   useEffect(() => {
@@ -33,16 +33,16 @@ export default function LikeButton({ postId }: Props) {
     getCount()
   }, [postId])
   useEffect(() => {
-    async function isLiked() {
-      if (session) {
-        const liked = await checkPostLike(postId, session.user.id)
-        if (liked) {
+    async function checkLike() {
+      if (session && !loading) {
+        const isLiked = await checkPostLike(postId, session.user.id)
+        if (isLiked) {
           setLiked(true)
         }
-        setFetchedIfLike(true)
+        setAllowLiking(true)
       }
     }
-    isLiked()
+    checkLike()
   }, [loading, postId, session])
   const {
     Btn_container,
@@ -70,12 +70,14 @@ export default function LikeButton({ postId }: Props) {
       return
     }
 
+    if (!allowLiking) return
+
     setUpdating(true)
     // if liked before
     if (liked) {
       // delete
-      setLikeCount((prev) => prev - 1)
       setLiked(false)
+      setLikeCount((prev) => prev - 1)
       const deleteLike = await deletePostLike(postId, session?.user.id)
 
       if (!deleteLike) {
@@ -100,7 +102,7 @@ export default function LikeButton({ postId }: Props) {
     <button className={Btn_container}>
       <div className={Btn_wrapper}>
         <input
-          disabled={loading || !fethedIfLiked}
+          disabled={loading}
           type="checkbox"
           id="like_id"
           name="check"

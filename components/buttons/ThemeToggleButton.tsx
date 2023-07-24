@@ -30,10 +30,13 @@ export default function ThemeToggleButton({}: Props) {
         }.png`}
         style={{
           objectFit: 'cover',
-          filter: `${theme === 'system-dark' ? 'invert(1)' : 'invert(0)'}`,
+          filter: `${
+            theme === 'system-dark' ? 'invert(1) brightness(0.9)' : 'invert(0)'
+          }`,
         }}
         // sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
         fill
+        sizes="24px"
         alt={'theme logo'}
       />
     </button>

@@ -42,16 +42,19 @@ export default function CommentSection({ postId }: Props) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function initializeReplies() {
-    comments?.map(async (c) => {
-      const currentComment = c.id
-      const repliesCountForThisComment: number = await getCommentRepliesCount(
-        currentComment
-      )
-      console.log(repliesCountForThisComment)
-      setRepliesCounts(
-        new Map(repliesCounts.set(currentComment, repliesCountForThisComment))
-      )
-    })
+    if (!comments) return
+    await Promise.all(
+      comments?.map(async (c) => {
+        const currentComment = c.id
+
+        const repliesCountForThisComment: number = await getCommentRepliesCount(
+          currentComment
+        )
+        setRepliesCounts(
+          new Map(repliesCounts.set(currentComment, repliesCountForThisComment))
+        )
+      })
+    )
   }
   useEffect(() => {
     if (comments) initializeReplies()
@@ -91,7 +94,6 @@ export default function CommentSection({ postId }: Props) {
         })
       } else {
         setCurrentComment('')
-        console.log('initialze')
         await initializeComments()
       }
       setPosting(false)

@@ -23,6 +23,8 @@ import {
   postDeleteCommentType,
   postUpdateCommentType,
   postDeleteCommentRepliesType,
+  postType,
+  postsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -69,7 +71,7 @@ interface ErrorType {
 function consoleLog(err: any, errorMessage: string) {
   const error = err as ErrorType
   console.log('|----ERROR')
-  if (error.response.status === 429) {
+  if (error.response?.status === 429) {
     console.log(`|----Too many requests`)
     console.log(`|----> ${errorMessage}`)
   } else {
@@ -78,25 +80,55 @@ function consoleLog(err: any, errorMessage: string) {
   }
 }
 
+async function retryAPICall(apiCall: any, retryMessage: string = '') {
+  const maxRetries = 5
+  const retryInterval = 1000
+
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+  for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+    if (retryCount !== 0) console.log('Retrying...', retryMessage)
+    try {
+      const result = await apiCall()
+      return result // Return the result if the API call succeeds.
+    } catch (err) {
+      if (retryCount === maxRetries - 1) {
+        throw err // Throw last error if all retries are exhausted.
+      }
+      await sleep(retryInterval)
+    }
+  }
+}
+
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
 
-export const myPortfolioURL = cache(async (authorId: string) => {
-  try {
-    const result: authorURL = await request(graphqlAPI, authorUrlQuery, {
-      authorId,
-    })
-    return result.author.websiteUrl
-  } catch (err) {
-    consoleLog(err, 'extracting author URL')
-
-    return '#'
+export const myPortfolioURL = cache(
+  async (authorId: string): Promise<string> => {
+    async function thisFunction() {
+      const result: authorURL = await request(graphqlAPI, authorUrlQuery, {
+        authorId,
+      })
+      return result.author.websiteUrl
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting author URL')
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting author URL')
+      return '#'
+    }
   }
-})
+)
 
-export const getPosts = cache(async () => {
-  try {
+export const getPosts = cache(async (): Promise<[postsType] | []> => {
+  async function thisFunction() {
     const result: posts = await request(graphqlAPI, PostsQuery)
     return result.posts
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'extracting posts')
+    return res
   } catch (err) {
     consoleLog(err, 'extracting posts')
 
@@ -104,10 +136,14 @@ export const getPosts = cache(async () => {
   }
 })
 
-export const getFeaturedPosts = cache(async () => {
-  try {
+export const getFeaturedPosts = cache(async (): Promise<[postsType] | []> => {
+  async function thisFunction() {
     const result: posts = await request(graphqlAPI, FeaturedPostsQuery)
     return result.posts
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'extracting featured posts')
+    return res
   } catch (err) {
     consoleLog(err, 'extracting featured posts')
 
@@ -115,65 +151,101 @@ export const getFeaturedPosts = cache(async () => {
   }
 })
 
-export const getCategoryPosts = cache(async (category: string) => {
-  try {
-    const result: posts = await request(graphqlAPI, CategoryPostsQuery, {
-      category,
-    })
-    return result.posts
-  } catch (err) {
-    consoleLog(err, 'extracting certain category posts')
+export const getCategoryPosts = cache(
+  async (category: string): Promise<[postsType] | []> => {
+    async function thisFunction() {
+      const result: posts = await request(graphqlAPI, CategoryPostsQuery, {
+        category,
+      })
+      return result.posts
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'extracting certain category posts'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting certain category posts')
 
-    return []
+      return []
+    }
   }
-})
+)
 
-export const getFeaturedCategoryPosts = cache(async (category: string) => {
-  try {
-    const result: posts = await request(
-      graphqlAPI,
-      FeaturedCategoryPostsQuery,
-      { category }
-    )
-    return result.posts
-  } catch (err) {
-    consoleLog(err, 'extracting certain category featured posts')
+export const getFeaturedCategoryPosts = cache(
+  async (category: string): Promise<[postsType] | []> => {
+    async function thisFunction() {
+      const result: posts = await request(
+        graphqlAPI,
+        FeaturedCategoryPostsQuery,
+        { category }
+      )
+      return result.posts
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'extracting certain category featured posts'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting certain category featured posts')
 
-    return []
+      return []
+    }
   }
-})
+)
 
-export const getPostDetails = cache(async (slug: string) => {
-  try {
-    const result: postDetailsType = await request(
-      graphqlAPI,
-      PostDetailsQuery,
-      {
-        slug,
-      }
-    )
-    return result?.post
-  } catch (err) {
-    consoleLog(err, 'extracting post details')
+export const getPostDetails = cache(
+  async (slug: string): Promise<postType | null> => {
+    async function thisFunction() {
+      const result: postDetailsType = await request(
+        graphqlAPI,
+        PostDetailsQuery,
+        {
+          slug,
+        }
+      )
+      return result?.post
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting post details')
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting post details')
 
-    return null
+      return null
+    }
   }
-})
+)
 
-export const getRecentPosts = cache(async () => {
-  try {
-    const result: recentPostsType = await request(graphqlAPI, RecentPostsQuery)
-    return result.posts
-  } catch (err) {
-    consoleLog(err, 'extracting recent posts')
+export const getRecentPosts = cache(
+  async (): Promise<recentPostsType['posts'] | []> => {
+    async function thisFunction() {
+      const result: recentPostsType = await request(
+        graphqlAPI,
+        RecentPostsQuery
+      )
+      return result.posts
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting recent posts')
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting recent posts')
 
-    return []
+      return []
+    }
   }
-})
+)
 
 export const getSimilarPosts = cache(
-  async (categories: string[], slug: string) => {
-    try {
+  async (
+    categories: string[],
+    slug: string
+  ): Promise<recentPostsType['posts'] | []> => {
+    async function thisFunction() {
       const result: recentPostsType = await request(
         graphqlAPI,
         SimilarPostsQuery,
@@ -183,6 +255,10 @@ export const getSimilarPosts = cache(
         }
       )
       return result.posts
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting similar posts')
+      return res
     } catch (err) {
       consoleLog(err, 'extracting similar posts')
 
@@ -191,33 +267,50 @@ export const getSimilarPosts = cache(
   }
 )
 
-export const getCategories = cache(async () => {
-  try {
-    const result: categoriesType = await request(graphqlAPI, CategoriesQuery)
-    return result.categories
-  } catch (err) {
-    consoleLog(err, 'extracting categories')
+export const getCategories = cache(
+  async (): Promise<categoriesType['categories'] | []> => {
+    async function thisFunction() {
+      const result: categoriesType = await request(graphqlAPI, CategoriesQuery)
+      return result.categories
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting categories')
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting categories')
 
-    return []
+      return []
+    }
   }
-})
+)
 
-export const checkLogin = cache(async (email: string) => {
-  try {
-    const result: loginType = await request(graphqlAPI, loginQuery, {
-      email,
-    })
-    return result.reader
-  } catch (err) {
-    consoleLog(err, 'logging in the user')
+export const checkLogin = cache(
+  async (email: string): Promise<loginType['reader'] | null> => {
+    async function thisFunction() {
+      const result: loginType = await request(graphqlAPI, loginQuery, {
+        email,
+      })
+      return result.reader
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'logging in the user')
+      return res
+    } catch (err) {
+      consoleLog(err, 'logging in the user')
 
-    return null
+      return null
+    }
   }
-})
+)
 
 export const addUser = cache(
-  async (name: string, email: string, password: string, photoId: string) => {
-    try {
+  async (
+    name: string,
+    email: string,
+    password: string,
+    photoId: string
+  ): Promise<userAddedType | null> => {
+    async function thisFunction() {
       const result: userAddedType = await request(graphqlAPI, newUserQuery, {
         name,
         email,
@@ -225,6 +318,10 @@ export const addUser = cache(
         photoId,
       })
       return result
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'registering new user')
+      return res
     } catch (err) {
       consoleLog(err, 'registering new user')
 
@@ -233,26 +330,36 @@ export const addUser = cache(
   }
 )
 
-export const checkUserExists = cache(async (email: string) => {
-  try {
-    const result: readerIdReturnType = await request(
-      graphqlAPI,
-      checkEmailQuery,
-      {
-        email,
-      }
-    )
-    return result.reader ? true : false
-  } catch (err) {
-    consoleLog(err, 'checking user exists')
+export const checkUserExists = cache(
+  async (email: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: readerIdReturnType = await request(
+        graphqlAPI,
+        checkEmailQuery,
+        {
+          email,
+        }
+      )
+      return result.reader ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'checking user exists')
+      return res
+    } catch (err) {
+      consoleLog(err, 'checking user exists')
 
-    return false
+      return false
+    }
   }
-})
+)
 
 export const updateUser = cache(
-  async (userId: string, name: string, photoId: string) => {
-    try {
+  async (
+    userId: string,
+    name: string,
+    photoId: string
+  ): Promise<updateReaderType | null> => {
+    async function thisFunction() {
       const result: updateReaderType = await request(
         graphqlAPI,
         updateUserQuery,
@@ -263,6 +370,10 @@ export const updateUser = cache(
         }
       )
       return result
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'updating the user')
+      return res
     } catch (err) {
       consoleLog(err, 'updating the user')
 
@@ -271,26 +382,42 @@ export const updateUser = cache(
   }
 )
 
-export const getAllProfileAvatars = cache(async () => {
-  try {
-    const result: profileAvatarsType = await request(
-      graphqlAPI,
-      getAllProfileAvatarQuery
-    )
-    return result.assets
-  } catch (err) {
-    consoleLog(err, 'extracting user profile avatars')
+export const getAllProfileAvatars = cache(
+  async (): Promise<profileAvatarsType['assets'] | []> => {
+    async function thisFunction() {
+      const result: profileAvatarsType = await request(
+        graphqlAPI,
+        getAllProfileAvatarQuery
+      )
+      return result.assets
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'extracting user profile avatars'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting user profile avatars')
 
-    return []
+      return []
+    }
   }
-})
+)
 
-export const getAvatarById = cache(async (id: string) => {
-  try {
+export const getAvatarById = cache(async (id: string): Promise<string> => {
+  async function thisFunction() {
     const result: avatarType = await request(graphqlAPI, getAvatarByIdQuery, {
       id,
     })
     return result.asset.url
+  }
+  try {
+    const res = await retryAPICall(
+      thisFunction,
+      'extracting user profile avatar'
+    )
+    return res
   } catch (err) {
     consoleLog(err, 'extracting user profile avatar')
 
@@ -298,40 +425,60 @@ export const getAvatarById = cache(async (id: string) => {
   }
 })
 
-export const deleteUser = cache(async (userId: string) => {
-  try {
-    const result: deletedReaderIdReturnType = await request(
-      graphqlAPI,
-      deleteReaderQuery,
-      {
-        userId,
-      }
-    )
-    return result.deleteReader
-  } catch (err) {
-    consoleLog(err, 'deleting the user')
+export const deleteUser = cache(
+  async (
+    userId: string
+  ): Promise<deletedReaderIdReturnType['deleteReader'] | null> => {
+    async function thisFunction() {
+      const result: deletedReaderIdReturnType = await request(
+        graphqlAPI,
+        deleteReaderQuery,
+        {
+          userId,
+        }
+      )
+      return result.deleteReader
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting the user')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting the user')
 
-    return null
+      return null
+    }
   }
-})
+)
 
-export const resetPassword = cache(async (userId: string, password: string) => {
-  try {
-    const result: updateReaderType = await request(
-      graphqlAPI,
-      resetPasswordQuery,
-      { userId, password }
-    )
-    return result
-  } catch (err) {
-    consoleLog(err, 'resetting the user password')
+export const resetPassword = cache(
+  async (
+    userId: string,
+    password: string
+  ): Promise<updateReaderType | null> => {
+    async function thisFunction() {
+      const result: updateReaderType = await request(
+        graphqlAPI,
+        resetPasswordQuery,
+        { userId, password }
+      )
+      return result
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'resetting the user password'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'resetting the user password')
 
-    return null
+      return null
+    }
   }
-})
+)
 
-export const getPostLikes = cache(async (postId: string) => {
-  try {
+export const getPostLikes = cache(async (postId: string): Promise<number> => {
+  async function thisFunction() {
     const result: postLikesCountType = await request(
       graphqlAPI,
       getPostLikesQuery,
@@ -340,6 +487,10 @@ export const getPostLikes = cache(async (postId: string) => {
       }
     )
     return result.postLikesConnection.aggregate.count
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'getting post likes')
+    return res
   } catch (err) {
     consoleLog(err, 'getting post likes')
 
@@ -347,52 +498,71 @@ export const getPostLikes = cache(async (postId: string) => {
   }
 })
 
-export const addPostLike = cache(async (postId: string, readerId: string) => {
-  try {
-    const postPlusReaderId = postId + readerId
-    const like: postAddLikeType = await request(graphqlAPI, addPostLikeQuery, {
-      postId,
-      readerId,
-      postPlusReaderId,
-    })
-    const likeId = like.createPostLike.id
+export const addPostLike = cache(
+  async (
+    postId: string,
+    readerId: string
+  ): Promise<postAddLikePublishType['publishPostLike'] | null> => {
+    async function thisFunction() {
+      const postPlusReaderId = postId + readerId
+      const like: postAddLikeType = await request(
+        graphqlAPI,
+        addPostLikeQuery,
+        {
+          postId,
+          readerId,
+          postPlusReaderId,
+        }
+      )
+      const likeId = like.createPostLike.id
 
-    const result: postAddLikePublishType = await request(
-      graphqlAPI,
-      addPostLikePublishQuery,
-      {
-        likeId,
-      }
-    )
-    return result.publishPostLike
-  } catch (err) {
-    consoleLog(err, 'adding like to posts')
+      const result: postAddLikePublishType = await request(
+        graphqlAPI,
+        addPostLikePublishQuery,
+        {
+          likeId,
+        }
+      )
+      return result.publishPostLike
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'adding like to posts')
+      return res
+    } catch (err) {
+      consoleLog(err, 'adding like to posts')
 
-    return null
+      return null
+    }
   }
-})
+)
 
-export const checkPostLike = cache(async (postId: string, readerId: string) => {
-  try {
-    const postPlusReaderId = postId + readerId
-    const result: checkPostLikeType = await request(
-      graphqlAPI,
-      checkIfPostLikeQuery,
-      {
-        postPlusReaderId,
-      }
-    )
-    return result.postLike ? true : false
-  } catch (err) {
-    consoleLog(err, 'checking if post liked')
+export const checkPostLike = cache(
+  async (postId: string, readerId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const postPlusReaderId = postId + readerId
+      const result: checkPostLikeType = await request(
+        graphqlAPI,
+        checkIfPostLikeQuery,
+        {
+          postPlusReaderId,
+        }
+      )
+      return result.postLike ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'checking if post liked')
+      return res
+    } catch (err) {
+      consoleLog(err, 'checking if post liked')
 
-    return false
+      return false
+    }
   }
-})
+)
 
 export const deletePostLike = cache(
-  async (postId: string, readerId: string) => {
-    try {
+  async (postId: string, readerId: string): Promise<boolean> => {
+    async function thisFunction() {
       const postPlusReaderId = postId + readerId
       const result: postDeleteLikeType = await request(
         graphqlAPI,
@@ -402,6 +572,10 @@ export const deletePostLike = cache(
         }
       )
       return result.deletePostLike ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting post likes')
+      return res
     } catch (err) {
       consoleLog(err, 'deleting post likes')
 
@@ -410,43 +584,65 @@ export const deletePostLike = cache(
   }
 )
 
-export const getCommentsCount = cache(async (postId: string) => {
-  try {
-    const result: postCommentsCountType = await request(
-      graphqlAPI,
-      getPostCommentsCountQuery,
-      {
-        postId,
-      }
-    )
-    return result.commentsConnection.aggregate.count
-  } catch (err) {
-    consoleLog(err, 'getting post comments count')
+export const getCommentsCount = cache(
+  async (postId: string): Promise<number> => {
+    async function thisFunction() {
+      const result: postCommentsCountType = await request(
+        graphqlAPI,
+        getPostCommentsCountQuery,
+        {
+          postId,
+        }
+      )
+      return result.commentsConnection.aggregate.count
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting post comments count'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting post comments count')
 
-    return 0
+      return 0
+    }
   }
-})
+)
 
-export const getCommentRepliesCount = cache(async (commentId: string) => {
-  try {
-    const result: postCommentsCountType = await request(
-      graphqlAPI,
-      getPostCommentsRepliesCountQuery,
-      {
-        commentId,
-      }
-    )
-    return result.commentsConnection.aggregate.count
-  } catch (err) {
-    consoleLog(err, 'getting post comments replies count')
+export const getCommentRepliesCount = cache(
+  async (commentId: string): Promise<number> => {
+    async function thisFunction() {
+      const result: postCommentsCountType = await request(
+        graphqlAPI,
+        getPostCommentsRepliesCountQuery,
+        {
+          commentId,
+        }
+      )
+      return result.commentsConnection.aggregate.count
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting post comments replies count'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting post comments replies count')
 
-    return 0
+      return 0
+    }
   }
-})
+)
 
 export const addComment = cache(
-  async (comment: string, postId: string, readerId: string) => {
-    try {
+  async (
+    comment: string,
+    postId: string,
+    readerId: string
+  ): Promise<boolean> => {
+    async function thisFunction() {
       const com: postAddCommentType = await request(
         graphqlAPI,
         addCommentDraftQuery,
@@ -466,10 +662,14 @@ export const addComment = cache(
         }
       )
       return result.publishComment ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'adding post comment')
+      return res
     } catch (err) {
       consoleLog(err, 'adding post comment')
 
-      return null
+      return false
     }
   }
 )
@@ -480,8 +680,8 @@ export const addCommentReply = cache(
     postId: string,
     readerId: string,
     commentId: string
-  ) => {
-    try {
+  ): Promise<boolean> => {
+    async function thisFunction() {
       const reply: postAddCommentType = await request(
         graphqlAPI,
         addCommentReplyDraftQuery,
@@ -502,51 +702,73 @@ export const addCommentReply = cache(
         }
       )
       return result.publishComment ? true : false
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'adding post comment replies'
+      )
+      return res
     } catch (err) {
       consoleLog(err, 'adding post comment replies')
 
-      return null
+      return false
     }
   }
 )
 
-export const getComments = cache(async (postId: string) => {
-  try {
-    const result: getPostCommentsType = await request(
-      graphqlAPI,
-      getPostCommentsQuery,
-      {
-        postId,
-      }
-    )
-    return result.comments
-  } catch (err) {
-    consoleLog(err, 'getting post comments')
+export const getComments = cache(
+  async (postId: string): Promise<getPostCommentsType['comments'] | []> => {
+    async function thisFunction() {
+      const result: getPostCommentsType = await request(
+        graphqlAPI,
+        getPostCommentsQuery,
+        {
+          postId,
+        }
+      )
+      return result.comments
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'getting post comments')
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting post comments')
 
-    return []
+      return []
+    }
   }
-})
+)
 
-export const getCommentReplies = cache(async (commentId: string) => {
-  try {
-    const result: getPostCommentsType = await request(
-      graphqlAPI,
-      getPostCommentsRepliesQuery,
-      {
-        commentId,
-      }
-    )
-    return result.comments
-  } catch (err) {
-    consoleLog(err, 'getting post comments replies')
+export const getCommentReplies = cache(
+  async (commentId: string): Promise<getPostCommentsType['comments'] | []> => {
+    async function thisFunction() {
+      const result: getPostCommentsType = await request(
+        graphqlAPI,
+        getPostCommentsRepliesQuery,
+        {
+          commentId,
+        }
+      )
+      return result.comments
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting post comments replies'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting post comments replies')
 
-    return []
+      return []
+    }
   }
-})
+)
 
 export const updateComment = cache(
-  async (commentId: string, comment: string) => {
-    try {
+  async (commentId: string, comment: string): Promise<boolean> => {
+    async function thisFunction() {
       const updated: postUpdateCommentType = await request(
         graphqlAPI,
         updateCommentQuery,
@@ -564,6 +786,10 @@ export const updateComment = cache(
         }
       )
       return result.publishComment && updated.updateComment ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'updating post comment')
+      return res
     } catch (err) {
       consoleLog(err, 'updating post comment')
 
@@ -572,36 +798,51 @@ export const updateComment = cache(
   }
 )
 
-export const deleteComment = cache(async (commentId: string) => {
-  try {
-    const result: postDeleteCommentType = await request(
-      graphqlAPI,
-      deletePostCommentQuery,
-      {
-        commentId,
-      }
-    )
-    return result.deleteComment ? true : false
-  } catch (err) {
-    consoleLog(err, 'deleting post comment')
+export const deleteComment = cache(
+  async (commentId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: postDeleteCommentType = await request(
+        graphqlAPI,
+        deletePostCommentQuery,
+        {
+          commentId,
+        }
+      )
+      return result.deleteComment ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting post comment')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting post comment')
 
-    return false
+      return false
+    }
   }
-})
+)
 
-export const deleteCommentReplies = cache(async (commentId: string) => {
-  try {
-    const result: postDeleteCommentRepliesType = await request(
-      graphqlAPI,
-      deletePostCommentRepliesQuery,
-      {
-        commentId,
-      }
-    )
-    return result.deleteManyComments.count >= 0 ? true : false
-  } catch (err) {
-    consoleLog(err, 'deleting post comment replies')
+export const deleteCommentReplies = cache(
+  async (commentId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: postDeleteCommentRepliesType = await request(
+        graphqlAPI,
+        deletePostCommentRepliesQuery,
+        {
+          commentId,
+        }
+      )
+      return result.deleteManyComments.count >= 0 ? true : false
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'deleting post comment replies'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting post comment replies')
 
-    return false
+      return false
+    }
   }
-})
+)
