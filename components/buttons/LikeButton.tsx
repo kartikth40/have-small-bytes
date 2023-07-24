@@ -35,7 +35,6 @@ export default function LikeButton({ postId }: Props) {
     async function checkLike() {
       if (session && !loading) {
         const isLiked = await checkPostLike(postId, session.user.id)
-        console.log('second - ', isLiked)
         if (isLiked) {
           setLiked(true)
         }
@@ -106,7 +105,6 @@ export default function LikeButton({ postId }: Props) {
           checked={liked}
           onChange={() => {}}
         />
-        {JSON.stringify(liked)}
         <div className={ripple}></div>
         <label htmlFor="like_id" onClick={handleLikeClick}>
           <svg className={heart} width="24" height="24" viewBox="0 0 24 24">
