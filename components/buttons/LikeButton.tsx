@@ -21,6 +21,7 @@ type Props = { postId: string }
 export default function LikeButton({ postId }: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
+  const [allowLiking, setAllowLiking] = useState<boolean>(false)
   const [updating, setUpdating] = useState<boolean>(false)
   const [likeCount, setLikeCount] = useState<number>(0)
   const loading = status === 'loading'
@@ -38,6 +39,7 @@ export default function LikeButton({ postId }: Props) {
         if (isLiked) {
           setLiked(true)
         }
+        setAllowLiking(true)
       }
     }
     checkLike()
@@ -67,6 +69,8 @@ export default function LikeButton({ postId }: Props) {
       })
       return
     }
+
+    if (!allowLiking) return
 
     setUpdating(true)
     // if liked before
