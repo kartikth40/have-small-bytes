@@ -198,7 +198,7 @@ export const getFeaturedCategoryPosts = cache(
 )
 
 export const getPostDetails = cache(
-  async (slug: string): Promise<[postType] | null> => {
+  async (slug: string): Promise<postType | null> => {
     async function thisFunction() {
       const result: postDetailsType = await request(
         graphqlAPI,
