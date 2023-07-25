@@ -8,6 +8,16 @@ export const authorUrlQuery = gql`
   }
 `
 
+export const getPostsCountQuery = gql`
+  query GetPostsCount {
+    postsConnection {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
 export const PostsQuery = gql`
   query GetPosts($skip: Int!) {
     posts(orderBy: createdAt_DESC, first: 3, skip: $skip) {
@@ -84,6 +94,16 @@ export const FeaturedCategoryPostsQuery = gql`
       summary
       featuredImage {
         url
+      }
+    }
+  }
+`
+
+export const getCategoryPostsCountQuery = gql`
+  query GetCategoryPostsCount($category: String!) {
+    postsConnection(where: { categories_some: { slug: $category } }) {
+      aggregate {
+        count
       }
     }
   }

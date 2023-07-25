@@ -25,6 +25,7 @@ import {
   postDeleteCommentRepliesType,
   postType,
   postsType,
+  postsCountType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -57,6 +58,7 @@ import {
   getPostCommentsRepliesCountQuery,
   getPostCommentsRepliesQuery,
   getPostLikesQuery,
+  getPostsCountQuery,
   loginQuery,
   newUserQuery,
   resetPasswordQuery,
@@ -121,6 +123,21 @@ export const myPortfolioURL = cache(
   }
 )
 
+export const getPostsCount = cache(async (): Promise<number> => {
+  async function thisFunction() {
+    const result: postsCountType = await request(graphqlAPI, getPostsCountQuery)
+    return result.postConnection.aggregate.count
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'getting posts count')
+    return res
+  } catch (err) {
+    consoleLog(err, 'getting posts count')
+
+    return 0
+  }
+})
+
 export const getPosts = cache(
   async (skip: number = 0): Promise<[postsType] | []> => {
     async function thisFunction() {
@@ -152,6 +169,30 @@ export const getFeaturedPosts = cache(async (): Promise<[postsType] | []> => {
     return []
   }
 })
+
+export const getCategoryPostsCount = cache(
+  async (category: string): Promise<number> => {
+    async function thisFunction() {
+      const result: postsCountType = await request(
+        graphqlAPI,
+        getPostsCountQuery,
+        { category }
+      )
+      return result.postConnection.aggregate.count
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting category posts count'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting category posts count')
+
+      return 0
+    }
+  }
+)
 
 export const getCategoryPosts = cache(
   async (category: string, skip: number = 0): Promise<[postsType] | []> => {
