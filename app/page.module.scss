@@ -523,3 +523,22 @@
     }
   }
 }
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & .pageDiv {
+    cursor: pointer;
+    border-radius: 0.3em;
+    background: var(--color-back-1);
+    color: var(--color-back-9);
+    padding: 0.5em;
+    margin-inline: 0.2em;
+    &.selectedPage {
+      background: var(--color-back-9);
+      color: var(--color-front-9);
+    }
+  }
+}

@@ -126,7 +126,7 @@ export const myPortfolioURL = cache(
 export const getPostsCount = cache(async (): Promise<number> => {
   async function thisFunction() {
     const result: postsCountType = await request(graphqlAPI, getPostsCountQuery)
-    return result.postConnection.aggregate.count
+    return result.postsConnection.aggregate.count
   }
   try {
     const res = await retryAPICall(thisFunction, 'getting posts count')
@@ -178,7 +178,7 @@ export const getCategoryPostsCount = cache(
         getPostsCountQuery,
         { category }
       )
-      return result.postConnection.aggregate.count
+      return result.postsConnection.aggregate.count
     }
     try {
       const res = await retryAPICall(

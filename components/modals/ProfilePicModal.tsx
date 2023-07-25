@@ -24,8 +24,7 @@ export default function ProfilePicModal({
 
   useEffect(() => {
     async function getAvatars() {
-      const ava = await getAllProfileAvatars()
-      setAvatars(ava)
+      setAvatars(await getAllProfileAvatars())
     }
     getAvatars()
   }, [])

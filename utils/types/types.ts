@@ -6,7 +6,7 @@ export interface authorURL {
   }
 }
 export interface postsCountType {
-  postConnection: {
+  postsConnection: {
     aggregate: {
       count: number
     }
