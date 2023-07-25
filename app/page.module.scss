@@ -525,16 +525,23 @@
 }
 
 .loadMoreContainer {
-  text-align: center;
-  border-radius: 0.3em;
-  background: var(--color-back-04);
-  color: var(--color-back-5);
-  padding: 0.5em;
-  margin-inline: 0.2em;
-  border: 1px solid var(--color-back-01);
-  &:not(.noMore):hover {
-    cursor: pointer;
-    background: var(--color-back-07);
-    color: var(--color-back-8);
+  display: flex;
+  justify-content: center;
+  & div {
+    width: max-content;
+    border-radius: 0.3em;
+    background: var(--color-back-04);
+    color: var(--color-back-5);
+    padding: 0.5em;
+    border: 1px solid var(--color-back-01);
+
+    &:not(.noMore):hover {
+      cursor: pointer;
+      background: var(--color-back-07);
+      color: var(--color-back-8);
+    }
+    &.noMore {
+      pointer-events: none;
+    }
   }
 }

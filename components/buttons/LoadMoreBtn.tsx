@@ -48,11 +48,10 @@ export default function LoadMoreBtn({ categorySlug }: Props) {
       {morePosts?.map((post) => (
         <PostCard post={post} key={post.title}></PostCard>
       ))}
-      <div
-        className={`${loadMoreContainer} ${!loadMore && noMore}`}
-        onClick={handleLoadMore}
-      >
-        {loadMore ? 'Load More...' : 'Thats all for now :)'}
+      <div className={loadMoreContainer}>
+        <div className={`${!loadMore && noMore}`} onClick={handleLoadMore}>
+          {loadMore ? 'Load More' : 'Thats all for now :)'}
+        </div>
       </div>
     </>
   )
