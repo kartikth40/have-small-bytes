@@ -121,20 +121,22 @@ export const myPortfolioURL = cache(
   }
 )
 
-export const getPosts = cache(async (): Promise<[postsType] | []> => {
-  async function thisFunction() {
-    const result: posts = await request(graphqlAPI, PostsQuery)
-    return result.posts
-  }
-  try {
-    const res = await retryAPICall(thisFunction, 'extracting posts')
-    return res
-  } catch (err) {
-    consoleLog(err, 'extracting posts')
+export const getPosts = cache(
+  async (skip: number = 0): Promise<[postsType] | []> => {
+    async function thisFunction() {
+      const result: posts = await request(graphqlAPI, PostsQuery, { skip })
+      return result.posts
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting posts')
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting posts')
 
-    return []
+      return []
+    }
   }
-})
+)
 
 export const getFeaturedPosts = cache(async (): Promise<[postsType] | []> => {
   async function thisFunction() {
@@ -152,10 +154,11 @@ export const getFeaturedPosts = cache(async (): Promise<[postsType] | []> => {
 })
 
 export const getCategoryPosts = cache(
-  async (category: string): Promise<[postsType] | []> => {
+  async (category: string, skip: number = 0): Promise<[postsType] | []> => {
     async function thisFunction() {
       const result: posts = await request(graphqlAPI, CategoryPostsQuery, {
         category,
+        skip,
       })
       return result.posts
     }
