@@ -1,4 +1,4 @@
-import { getCategoryPosts, getPosts } from '@/services'
+import { getCategoryPosts, getFeaturedPosts } from '@/services'
 import styles from '../../app/page.module.scss'
 import FeaturedPostCard from './FeaturedPostCard'
 
@@ -8,7 +8,7 @@ async function FeaturedPosts({ categorySlug = '' }: Props) {
   const { featuredPostsContainer, featuredPosts } = styles
   let posts = []
   if (!categorySlug) {
-    posts = (await getPosts()) || []
+    posts = (await getFeaturedPosts()) || []
   } else {
     posts = (await getCategoryPosts(categorySlug)) || []
   }

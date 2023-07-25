@@ -8,9 +8,19 @@ export const authorUrlQuery = gql`
   }
 `
 
+export const getPostsCountQuery = gql`
+  query GetPostsCount {
+    postsConnection {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
 export const PostsQuery = gql`
-  query GetPosts {
-    posts {
+  query GetPosts($skip: Int!) {
+    posts(orderBy: createdAt_DESC, first: 3, skip: $skip) {
       id
       author {
         bio
@@ -38,7 +48,7 @@ export const PostsQuery = gql`
 
 export const FeaturedPostsQuery = gql`
   query GetPosts {
-    posts(where: { featuredPost: true }) {
+    posts(orderBy: createdAt_DESC, where: { featuredPost: true }) {
       id
       author {
         bio
@@ -65,7 +75,10 @@ export const FeaturedPostsQuery = gql`
 
 export const FeaturedCategoryPostsQuery = gql`
   query GetPosts($category: String!) {
-    posts(where: { featuredPost: true, categories_some: { slug: $category } }) {
+    posts(
+      orderBy: createdAt_DESC
+      where: { featuredPost: true, categories_some: { slug: $category } }
+    ) {
       id
       author {
         bio
@@ -86,9 +99,24 @@ export const FeaturedCategoryPostsQuery = gql`
   }
 `
 
+export const getCategoryPostsCountQuery = gql`
+  query GetCategoryPostsCount($category: String!) {
+    postsConnection(where: { categories_some: { slug: $category } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
 export const CategoryPostsQuery = gql`
-  query GetPosts($category: String!) {
-    posts(where: { categories_some: { slug: $category } }) {
+  query GetPosts($category: String!, $skip: Int!) {
+    posts(
+      where: { categories_some: { slug: $category } }
+      orderBy: createdAt_DESC
+      first: 3
+      skip: $skip
+    ) {
       id
       author {
         bio
@@ -162,6 +190,7 @@ export const SimilarPostsQuery = gql`
         slug_not: $slug
         AND: { categories_some: { slug_in: $categories } }
       }
+      orderBy: createdAt_DESC
       first: 3
     ) {
       title

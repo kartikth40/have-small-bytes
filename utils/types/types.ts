@@ -5,6 +5,13 @@ export interface authorURL {
     websiteUrl: string
   }
 }
+export interface postsCountType {
+  postsConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
 export interface posts {
   posts: [postsType]
 }
