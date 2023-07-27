@@ -90,11 +90,15 @@ async function retryAPICall(apiCall: any, retryMessage: string = '') {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
   for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
-    if (retryCount !== 0) console.log('Retrying...', retryMessage)
     try {
       const result = await apiCall()
       return result // Return the result if the API call succeeds.
     } catch (err) {
+      const error = err as ErrorType
+      if (retryCount !== maxRetries - 1) {
+        if (error.response?.status === 429)
+          console.log('(API limit exceeds) Retrying...', retryMessage)
+      } else console.log('Retrying...', retryMessage)
       if (retryCount === maxRetries - 1) {
         throw err // Throw last error if all retries are exhausted.
       }

@@ -1,5 +1,4 @@
 .Btn_container {
-  --color-bg: #fdf1f2;
   --color-heart: #ea442b;
   --color-comment: var(--color-primary-blue);
   --easing: cubic-bezier(0.7, 0, 0.3, 1);
@@ -29,6 +28,7 @@
   align-items: center;
   & .likeCountContainer,
   & .commentCountContainer {
+    transition: 0.15s all;
     pointer-events: none;
     font-size: 0.5em;
     font-weight: 500;
@@ -37,10 +37,42 @@
   & .commentCountContainer {
     padding-left: 0.3em;
   }
+  & .likeSpinner + .likeCountContainer,
+  & .commentSpinner + .commentCountContainer {
+    opacity: 0;
+    padding-left: 0;
+  }
+}
+
+.likeSpinner {
+  width: 0.7em;
+  aspect-ratio: 1;
+  border: 2px solid var(--color-back-1);
+  border-left-color: var(--color-heart);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.commentSpinner {
+  width: 2em;
+  aspect-ratio: 1;
+  border: 2px solid var(--color-back-1);
+  border-left-color: var(--color-comment);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .commentBtn {
   padding-left: 0.2em;
+  &:has(.commentSpinner) {
+    padding-left: 0;
+  }
 }
 
 .Btn_wrapper {
