@@ -13,6 +13,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // on first load
   useEffect(() => {
     const currentSavedTheme = window.localStorage.getItem('theme') as Theme
+
     if (
       currentSavedTheme === 'system-light' ||
       currentSavedTheme === 'system-dark' ||
@@ -23,10 +24,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         window.matchMedia('(prefers-color-scheme: dark)').matches
       ) {
         setTheme('system-dark')
-        // window.localStorage.setItem('theme', 'system-dark')
       } else {
         setTheme('system-light')
-        // window.localStorage.setItem('theme', 'system-light')
       }
     } else setTheme(currentSavedTheme)
   }, [])
@@ -34,6 +33,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // on theme change
   useEffect(() => {
     window.localStorage.setItem('theme', theme)
+    console.log('SET')
     if (document) {
       if (theme === 'dark' || theme === 'system-dark')
         document.body.classList.add('darkTheme')
