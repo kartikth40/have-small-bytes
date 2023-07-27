@@ -39,6 +39,8 @@ export default function LikeButton({ postId }: Props) {
         if (isLiked) {
           setLiked(true)
         }
+      }
+      if (!loading) {
         setAllowLiking(true)
       }
     }
@@ -83,7 +85,7 @@ export default function LikeButton({ postId }: Props) {
 
       if (!deleteLike) {
         setLiked(true)
-        toast.error('Something went wrong! Please try later.')
+        toast.error('Something went wrong! Please try again later.')
       }
     } else {
       // add new like
@@ -92,7 +94,7 @@ export default function LikeButton({ postId }: Props) {
       const result = await addPostLike(postId, session?.user.id)
 
       if (!result) {
-        toast.error('Something went wrong! Please try later.')
+        toast.error('Something went wrong! Please try again later.')
         setLiked(false)
       }
     }
