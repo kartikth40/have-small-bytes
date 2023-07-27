@@ -34,7 +34,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const setInitialTheme = `function run() {
-    console.log('DARK')
     const theme = window.localStorage.getItem('theme')
     if (!theme) return
     if (theme === 'dark' || theme === 'system-dark') {
