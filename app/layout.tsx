@@ -33,10 +33,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const setInitialTheme = `function run() {
+    const theme = window.localStorage.getItem('theme')
+    if (!theme) return
+    if (theme === 'dark' || theme === 'system-dark') {
+      document.body.classList.add('darkTheme')
+    } else {
+      document.body.classList.remove('darkTheme')
+    }
+  }
+  run()`
   return (
     <Providers>
       <html lang="en" className={inter.className}>
-        <body>
+        <body suppressHydrationWarning={true}>
+          <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
           <Header />
           {children}
           <ClientToastContainer />

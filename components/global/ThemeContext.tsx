@@ -8,31 +8,31 @@ export const ThemeContext = React.createContext<ThemeContext>(
 )
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('light')
+  const [firstRender, setFirstRender] = useState<boolean>(true)
+  const [theme, setTheme] = useState<Theme>('system-dark')
 
   // on first load
   useEffect(() => {
     const currentSavedTheme = window.localStorage.getItem('theme') as Theme
-    if (
-      currentSavedTheme === 'system-light' ||
-      currentSavedTheme === 'system-dark' ||
-      !currentSavedTheme
-    ) {
+
+    if (!currentSavedTheme) {
       if (
         window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches
       ) {
         setTheme('system-dark')
-        // window.localStorage.setItem('theme', 'system-dark')
       } else {
         setTheme('system-light')
-        // window.localStorage.setItem('theme', 'system-light')
       }
     } else setTheme(currentSavedTheme)
   }, [])
 
   // on theme change
   useEffect(() => {
+    if (firstRender) {
+      setFirstRender(false)
+      return
+    }
     window.localStorage.setItem('theme', theme)
     if (document) {
       if (theme === 'dark' || theme === 'system-dark')
