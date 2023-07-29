@@ -85,6 +85,11 @@ export default function CommentSection({ postId }: Props) {
     isAuthor,
   } = styles
   async function handleSendComment() {
+    if (!session) {
+      toast.warn('please login to add your comment.', {
+        toastId: 'do_not_allow_duplicate_comment',
+      })
+    }
     if (currentComment.length > 0 && session) {
       setPosting(true)
       const result = await addComment(currentComment, postId, session?.user.id)

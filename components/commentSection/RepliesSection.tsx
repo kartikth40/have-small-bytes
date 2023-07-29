@@ -66,6 +66,11 @@ export default function RepliesSection({
     readjustLeftThreadHeight,
   } = styles
   async function handleSendReply() {
+    if (!session) {
+      toast.warn('please login to add your reply.', {
+        toastId: 'do_not_allow_duplicate_reply',
+      })
+    }
     if (currentReply.length > 0 && session) {
       setPosting(true)
       const result = await addCommentReply(

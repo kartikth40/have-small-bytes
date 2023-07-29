@@ -1,12 +1,15 @@
 .commentSectionContainer {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--color-back-1);
+  box-shadow: 0 0 10px var(--color-shadow-2);
   border-radius: 10px;
   padding: 2em;
   width: 90%;
   margin-inline: auto;
   margin-bottom: 1em;
   scroll-margin-top: 5em;
+  body:global(.darkTheme) & {
+    background-color: var(--color-back-01);
+  }
 }
 
 .head {
@@ -39,6 +42,9 @@
     padding-top: 2.3em;
     resize: none;
     margin-bottom: 0.5em;
+    body:global(.darkTheme) & {
+      background-color: var(--color-back-02);
+    }
   }
   & button {
     cursor: pointer;
