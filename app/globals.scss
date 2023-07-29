@@ -178,7 +178,7 @@ body.darkTheme img {
 ::-webkit-scrollbar-thumb {
   background: var(--color-primary-black);
   background: var(--color-primary-black-2);
-  /* border-radius: 5px; */
+  border-radius: 0.5rem;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-foreground);
