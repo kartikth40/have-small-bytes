@@ -1,4 +1,25 @@
 @import '~react-toastify/dist/ReactToastify.min.css';
+
+@mixin devices($breakpoint) {
+  @if $breakpoint == mobile {
+    @media screen and (max-width: 425px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == tablet {
+    @media screen and (max-width: 768px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == laptop {
+    @media screen and (min-width: 1024px) {
+      @content;
+    }
+  }
+}
+
 :root {
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',

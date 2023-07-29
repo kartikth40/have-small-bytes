@@ -186,6 +186,10 @@
       }
     }
   }
+  @import './globals.scss';
+  @include devices(mobile) {
+    display: flex;
+  }
 }
 
 .contentContainer {
