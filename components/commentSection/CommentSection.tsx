@@ -39,6 +39,11 @@ export default function CommentSection({ postId }: Props) {
   }
   useEffect(() => {
     initializeComments()
+    const scrollToId: string = window.localStorage.getItem('scrollTo') || ''
+    if (scrollToId) {
+      document.getElementById(scrollToId)?.scrollIntoView()
+      window.localStorage.removeItem('scrollTo')
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function initializeReplies() {

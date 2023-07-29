@@ -83,7 +83,7 @@ function PostCard({ post }: Props) {
         <div className={leftAlign}>
           <div className={userFeedbackContainer}>
             <LikeButton postId={post.id} />
-            <CommentButton postId={post.id} />
+            <CommentButton postId={post.id} slug={post.slug} />
           </div>
         </div>
         <div className={rightAlign}>
