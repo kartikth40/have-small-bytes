@@ -1,3 +1,4 @@
+import './global.css'
 import './globals.scss'
 import { Inter, Nabla, Source_Code_Pro } from 'next/font/google'
 import Header from '@/components/global/Header'
