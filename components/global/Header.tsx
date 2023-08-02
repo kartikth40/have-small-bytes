@@ -1,16 +1,32 @@
+'use client'
+
 import Link from 'next/link'
 import styles from '@/app/page.module.scss'
 import { getCategories } from '@/services'
 import Image from 'next/image'
 import SignInButton from '../buttons/SignInButton'
 import ThemeToggleButton from '../buttons/ThemeToggleButton'
+import useWindowSize from '@/utils/constants/useWindowSize'
+import screenSize from '@/utils/constants/mediaQueries'
+import { useEffect, useState } from 'react'
+import { categoriesType } from '@/utils/types/types'
 
 type Props = {}
 
-async function Header({}: Props) {
-  const { header, nav, logo, navLink } = styles
+function Header({}: Props) {
+  const [categories, setCategories] = useState<
+    categoriesType['categories'] | []
+  >([])
+  const windowSize = useWindowSize()
+  useEffect(() => {
+    async function setCat() {
+      setCategories(await getCategories())
+    }
+    setCat()
+  }, [])
 
-  const categories = await getCategories()
+  const { header, nav, logo, navLink } = styles
+  console.log(windowSize, screenSize.mobile)
 
   return (
     <header className={header}>
