@@ -120,8 +120,6 @@
         transform: scale(0.8);
       }
       & span {
-        // font-size: 0.5em;
-        // font-weight: normal;
         text-transform: uppercase;
       }
     }
@@ -275,6 +273,14 @@
     &::-webkit-scrollbar {
       width: 5px;
       height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary-black);
+      background: var(--color-primary-black-2);
+      border-radius: 0.5rem;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-foreground);
     }
   }
 }
@@ -460,9 +466,21 @@
     display: flex;
     justify-content: center;
 
+    &.postAside {
+      flex-direction: column-reverse;
+      gap: 2em;
+    }
+
     & .postWidgetsContainer {
       & h2 {
         text-align: center;
+      }
+    }
+    & .userFeedbackContainerAside {
+      flex-direction: row;
+      width: 100%;
+      & :nth-child(2) {
+        display: none;
       }
     }
   }

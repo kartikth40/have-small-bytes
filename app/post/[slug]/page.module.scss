@@ -1,3 +1,4 @@
+@import '../../globals.scss';
 .contentContainer {
   display: flex;
   justify-content: center;
@@ -5,6 +6,15 @@
 
   & > :first-child {
     margin-right: 1rem;
+  }
+
+  @include devices(mobile) {
+    flex-direction: column;
+
+    & > :first-child {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
   }
 }
 .postContainer {
@@ -26,6 +36,14 @@
   & > h1 {
     font-size: 4rem;
     font-weight: 900;
+  }
+  @include devices(mobile) {
+    padding: 3rem 0;
+    & > h1 {
+      font-size: 2.5rem;
+      width: 90vw;
+      word-wrap: break-word;
+    }
   }
 }
 
@@ -134,9 +152,25 @@
       background: var(--color-foreground);
       border-radius: 0.5em;
     }
-    // -webkit-user-select: none;
-    // -ms-user-select: none;
-    // user-select: none;
+    max-width: 70vw;
+    overflow-x: auto;
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary-black-2);
+      border-radius: 0.5rem;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-foreground);
+    }
+
+    @include devices(mobile) {
+      max-width: 90vw;
+      font-size: 0.9em;
+    }
   }
 
   :not(pre) > code {
@@ -235,6 +269,10 @@
         left: calc(100% + 50px);
       }
     }
+  }
+
+  @include devices(mobile) {
+    width: 90vw;
   }
 }
 .authorInfoContainer {
