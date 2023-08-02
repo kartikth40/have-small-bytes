@@ -113,6 +113,18 @@
     &:hover {
       text-decoration: none;
     }
+
+    @include devices(mobile) {
+      gap: 0.1em;
+      & img {
+        transform: scale(0.8);
+      }
+      & span {
+        // font-size: 0.5em;
+        // font-weight: normal;
+        text-transform: uppercase;
+      }
+    }
   }
 
   & span {
@@ -602,6 +614,7 @@
     left: 50%;
     transform: translateX(-50%);
     border-radius: 0.5em;
+    background-color: var(--color-background);
   }
   &#adjustIt {
     &:after {
@@ -614,6 +627,11 @@
   &:hover {
     &::after {
       opacity: 0.71;
+    }
+  }
+  @include devices(mobile) {
+    &::after {
+      content: none;
     }
   }
 }

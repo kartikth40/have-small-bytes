@@ -37,7 +37,7 @@ function Header({}: Props) {
   }, [categories])
 
   useEffect(() => {
-    if (windowSize && windowSize <= 500) {
+    if (windowSize && windowSize <= screenSize.mobile) {
       setMobile(true)
     } else {
       setMobile(false)
