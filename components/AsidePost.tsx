@@ -1,5 +1,5 @@
 import styles from '../app/page.module.scss'
-import { getPostDetails, getPostLikes } from '@/services'
+import { getPostDetails } from '@/services'
 import SimilarWidget from './SimilarWidget'
 import { notFound } from 'next/navigation'
 import LikeButton from './buttons/LikeButton'

@@ -13,7 +13,9 @@ async function SimilarWidget({ categories, slug }: Props) {
   return (
     <div className={postWidgetsContainer}>
       <h2>{'Related Posts'}</h2>
-      {posts.length === 0 && <div>0 related posts</div>}
+      {posts.length === 0 && (
+        <div style={{ textAlign: 'center' }}>0 related posts</div>
+      )}
       {posts?.map((post) => (
         <div key={post.title} className={postWidgetCard}>
           <Image

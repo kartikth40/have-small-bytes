@@ -1,3 +1,4 @@
+@import '../../globals.scss';
 .heroContainer {
   width: 100%;
   display: flex;
@@ -12,10 +13,6 @@
   box-shadow: inset 0 0 5px var(--color-primary-black);
   padding: 5rem;
   border-radius: 10px;
-
-  body:global(.darkTheme) & {
-    border: 15px solid var(--color-back-07);
-  }
 
   &:hover::after {
     right: -100%;
@@ -57,9 +54,28 @@
     background: var(--color-primary-sky);
   }
   & h1 {
+    text-shadow: -2px 2px 5px black;
     padding: 1rem auto;
     font-family: var(--font-nabla);
     font-size: 5rem;
     text-align: center;
+  }
+
+  body:global(.darkTheme) & {
+    border: 15px solid var(--color-back-07);
+    &:before,
+    &:after {
+      opacity: 1;
+      filter: hue-rotate(30deg);
+    }
+  }
+  @include devices(mobile) {
+    border: 5px solid var(--color-back-07) !important;
+    user-select: none;
+    padding: 1rem 0;
+
+    & h1 {
+      font-size: 2rem;
+    }
   }
 }

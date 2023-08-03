@@ -465,7 +465,7 @@
   @include devices(mobile) {
     display: flex;
     justify-content: center;
-
+    width: 100%;
     &.postAside {
       flex-direction: column-reverse;
       gap: 2em;
