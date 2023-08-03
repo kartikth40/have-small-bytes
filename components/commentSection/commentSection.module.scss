@@ -215,7 +215,9 @@
   & .commentContentContainer {
     font-size: 1rem;
     white-space: pre-wrap;
-    // padding-left: 0.5em;
+    @include devices(mobile) {
+      font-size: 0.8em;
+    }
   }
   & .interact {
     font-size: 0.8rem;
