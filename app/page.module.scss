@@ -47,8 +47,10 @@
   }
 }
 .signOutBtn {
+  width: 100%;
+  text-align: left;
+  padding: 0.5em;
   border: none;
-  // padding: 0.2em 0.5em;
   color: var(--color-foreground);
   font-family: var(--font-inter);
   background-color: transparent;
@@ -57,7 +59,7 @@
   cursor: pointer;
 
   &:hover {
-    text-decoration: underline;
+    background-color: var(--color-back-05);
   }
 }
 .loadingBtn {
