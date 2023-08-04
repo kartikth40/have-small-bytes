@@ -31,7 +31,7 @@ export default function ProfileUpdate({}: Props) {
     headingsContainer,
     updateBtnContainer,
     updateForm,
-    mainForm,
+    mainForm,profileUpdationForm,
     profilePicContainer,
     formStatus,
     disable,
@@ -99,7 +99,7 @@ export default function ProfileUpdate({}: Props) {
           (unsaved changes)*
         </span>
       </div>
-      <div className={mainForm}>
+      <div className={`${mainForm} ${profileUpdationForm}`}>
         <section className={profilePicSection}>
           <label htmlFor="pic">Profile Pic</label>
           <div className={profilePicContainer}>

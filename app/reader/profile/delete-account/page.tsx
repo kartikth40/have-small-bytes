@@ -58,7 +58,7 @@ export default function ResetPassword({}: Props) {
       </div>
       <div className={mainForm}>
         <section>
-          <label htmlFor="name">
+          <label htmlFor="delete">
             Are you sure you want to delete this account?
           </label>
         </section>

@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  height: 100%;
   & > h2 {
     font-size: 2em;
   }
@@ -19,6 +20,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
+  height: 100%;
 }
 .formStatus {
   font-size: 0.8em;
@@ -155,6 +157,7 @@
 .contentContainer {
   margin: 0 2rem;
   width: 100%;
+  height: 100%;
   @include devices(mobile) {
     margin-top: 0.75rem;
     margin-inline: auto;
@@ -173,6 +176,7 @@
 }
 
 .updateForm {
+  height: 100%;
   & label {
     font-size: 1em;
   }
@@ -196,7 +200,12 @@
   }
 }
 .mainForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
   padding: 1em;
   & section {
     width: 100%;
@@ -206,8 +215,15 @@
   }
 
   @include devices(mobile) {
+    &.profileUpdationForm {
+      height: max-content;
+    }
     & > section > label {
       white-space: nowrap;
+
+      &[for='delete'] {
+        white-space: normal;
+      }
     }
     & > section {
       flex-direction: column;
