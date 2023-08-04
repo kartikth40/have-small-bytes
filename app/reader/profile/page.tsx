@@ -32,6 +32,7 @@ export default function ProfileUpdate({}: Props) {
     updateBtnContainer,
     updateForm,
     mainForm,
+    profileUpdationForm,
     profilePicContainer,
     formStatus,
     disable,
@@ -85,23 +86,34 @@ export default function ProfileUpdate({}: Props) {
       })
     }
   }
+
+  const handleReset = () => {
+    if (name !== session.user.name) {
+      setName(session.user.name)
+    }
+    if (newAvatarId !== session.user.photo?.id && newAvatarId !== '') {
+      setNewAvatarId('')
+    }
+  }
   return (
-    <form className={updateForm} onSubmit={(e) => handleSubmit(e)}>
+    <form
+      className={updateForm}
+      onSubmit={(e) => handleSubmit(e)}
+      onReset={handleReset}
+    >
       <div className={headingsContainer}>
-        <h3>
-          Update Profile
-          <span
-            className={`${formStatus} ${
-              name === session.user.name &&
-              (newAvatarId === session.user.photo?.id || newAvatarId === '') &&
-              disable
-            }`}
-          >
-            (unsaved changes)*
-          </span>
-        </h3>
+        <h3>Update Profile</h3>
+        <span
+          className={`${formStatus} ${
+            name === session.user.name &&
+            (newAvatarId === session.user.photo?.id || newAvatarId === '') &&
+            disable
+          }`}
+        >
+          (unsaved changes)*
+        </span>
       </div>
-      <div className={mainForm}>
+      <div className={`${mainForm} ${profileUpdationForm}`}>
         <section className={profilePicSection}>
           <label htmlFor="pic">Profile Pic</label>
           <div className={profilePicContainer}>
@@ -122,6 +134,8 @@ export default function ProfileUpdate({}: Props) {
             </span>
           </div>
         </section>
+        <br />
+        <br />
         <section>
           <label htmlFor="name">Name</label>
           <input
@@ -161,6 +175,15 @@ export default function ProfileUpdate({}: Props) {
             }
           >
             Save
+          </button>
+          <button
+            type="reset"
+            disabled={
+              name === session.user.name &&
+              (newAvatarId === session.user.photo?.id || newAvatarId === '')
+            }
+          >
+            Cancel
           </button>
         </div>
       </div>

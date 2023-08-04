@@ -13,8 +13,6 @@ export default function ReactSyntaxHighlighter({ children, language }: Props) {
     <SyntaxHighlighter
       language={language}
       style={dark ? dracula_dark : dracula_light}
-      wrapLongLines
-      wrapLines
       showLineNumbers
       showInlineLineNumbers
     >

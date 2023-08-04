@@ -11,41 +11,41 @@ type Props = {
 }
 
 export default function SideMenu({ selected, setSelected }: Props) {
-  const { sideMenu, dangerZone, deleteBtn, selectedBtn } = styles
+  const { sideMenu, deleteBtn, selectedBtn } = styles
 
   return (
     <div className={sideMenu}>
-      <div
+      <Link
         className={`${selected === 'profile' && selectedBtn}`}
         onClick={() => {
           setSelected('profile')
         }}
+        href="/reader/profile"
       >
-        <Link href="/reader/profile">Update Profile</Link>
-      </div>
-      <div
+        Update Profile
+      </Link>
+      <Link
         className={`${selected === 'reset' && selectedBtn}`}
         onClick={() => {
           setSelected('reset')
         }}
+        href="/reader/profile/reset-password"
       >
-        <Link href="/reader/profile/reset-password">Reset Password</Link>
-      </div>
+        Reset Password
+      </Link>
 
-      <br />
-      <div className={dangerZone}>
-        <div
-          className={`${selected === 'delete' && selectedBtn} ${deleteBtn}`}
-          onClick={() => {
-            setSelected('delete')
-          }}
-        >
-          <Link href="/reader/profile/delete-account">Delete Account</Link>
-        </div>
+      <Link
+        className={`${selected === 'delete' && selectedBtn} ${deleteBtn}`}
+        onClick={() => {
+          setSelected('delete')
+        }}
+        href="/reader/profile/delete-account"
+      >
+        Delete Account
+      </Link>
 
-        <div>
-          <SignOutButton />
-        </div>
+      <div>
+        <SignOutButton />
       </div>
     </div>
   )

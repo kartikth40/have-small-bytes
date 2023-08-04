@@ -6,13 +6,14 @@ import { myPortfolioURL } from '@/services'
 type Props = {}
 
 export default async function Footer({}: Props) {
-  const { footerContainer, footer, logo, tagLine, copyrights } = styles
+  const { footerContainer, footer, logo, logoFooter, tagLine, copyrights } =
+    styles
   const currentDate = new Date().getFullYear()
   const authorId = (await myPortfolioURL('cljpg7qdy384d0bpofe3bo14s')) || '/'
   return (
     <div className={footerContainer}>
       <div className={footer}>
-        <div className={logo}>
+        <div className={`${logo} ${logoFooter}`}>
           {' '}
           <Link href="/">
             <Image

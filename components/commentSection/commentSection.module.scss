@@ -1,17 +1,79 @@
+@import '../../app/globals.scss';
 .commentSectionContainer {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--color-back-1);
+  box-shadow: 0 0 10px var(--color-shadow-2);
   border-radius: 10px;
   padding: 2em;
   width: 90%;
   margin-inline: auto;
   margin-bottom: 1em;
   scroll-margin-top: 5em;
+  body:global(.darkTheme) & {
+    background-color: var(--color-back-01);
+  }
+
+  @include devices(mobile) {
+    width: 100%;
+  }
 }
 
 .head {
-  margin-bottom: 1em;
+  display: flex;
+  justify-content: space-between;
+  .commentsDropDownBtn {
+    cursor: pointer;
+    user-select: none;
+    width: 2em;
+    position: relative;
+    border: 1px solid var(--color-back-08);
+    background-color: var(--color-back-04);
+    border-radius: 0.2em;
+    box-shadow: 0 3px var(--color-back-08);
+    transition: 0.15s all;
+    &:hover {
+      transform: translateY(3px);
+      box-shadow: 0 0 var(--color-back-08);
+      background-color: var(--color-back-01);
+    }
+    &::before,
+    &::after {
+      content: '';
+      top: 50%;
+      translate: 0 -50%;
+      position: absolute;
+      width: 0.8em;
+      height: 0.15em;
+      background-color: var(--color-foreground);
+    }
+    &::before {
+      transform: rotate(45deg);
+      left: 0.3em;
+    }
+    &::after {
+      transform: rotate(-45deg);
+      right: 0.3em;
+    }
+
+    &.showMe {
+      &::before {
+        transform: rotate(-45deg);
+      }
+
+      &::after {
+        transform: rotate(45deg);
+      }
+    }
+  }
 }
+
+.mainCommentSection {
+  display: none;
+  &.unHideComments {
+    margin-top: 2.5em;
+    display: block;
+  }
+}
+
 .commentInputContainer,
 .replyInputContainer {
   position: relative;
@@ -39,6 +101,9 @@
     padding-top: 2.3em;
     resize: none;
     margin-bottom: 0.5em;
+    body:global(.darkTheme) & {
+      background-color: var(--color-back-02);
+    }
   }
   & button {
     cursor: pointer;
@@ -150,7 +215,9 @@
   & .commentContentContainer {
     font-size: 1rem;
     white-space: pre-wrap;
-    // padding-left: 0.5em;
+    @include devices(mobile) {
+      font-size: 0.8em;
+    }
   }
   & .interact {
     font-size: 0.8rem;

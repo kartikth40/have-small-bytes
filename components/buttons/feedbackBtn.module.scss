@@ -47,7 +47,7 @@
 .likeSpinner {
   width: 0.7em;
   aspect-ratio: 1;
-  border: 2px solid var(--color-back-1);
+  border: 0.07em solid var(--color-back-1);
   border-left-color: var(--color-heart);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -56,7 +56,7 @@
 .commentSpinner {
   width: 2em;
   aspect-ratio: 1;
-  border: 2px solid var(--color-back-1);
+  border: 0.07em solid var(--color-back-1);
   border-left-color: var(--color-comment);
   border-radius: 50%;
   animation: spin 1s linear infinite;

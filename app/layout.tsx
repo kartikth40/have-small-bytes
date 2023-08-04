@@ -1,3 +1,4 @@
+import './global.css'
 import './globals.scss'
 import { Inter, Nabla, Source_Code_Pro } from 'next/font/google'
 import Header from '@/components/global/Header'
@@ -34,13 +35,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const setInitialTheme = `function run() {
-    const theme = window.localStorage.getItem('theme')
-    if (!theme) return
-    if (theme === 'dark' || theme === 'system-dark') {
+    let theme = window.localStorage.getItem('theme')
+    if (!theme) {
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        theme = ('system-dark')
+      } else {
+        theme = ('system-light')
+      }
+      window.localStorage.setItem('theme', theme)
+    }
+      if (theme === 'dark' || theme === 'system-dark') {
       document.body.classList.add('darkTheme')
     } else {
       document.body.classList.remove('darkTheme')
-    }
+      }
   }
   run()`
   return (

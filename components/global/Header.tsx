@@ -1,44 +1,96 @@
+'use client'
+
 import Link from 'next/link'
 import styles from '@/app/page.module.scss'
 import { getCategories } from '@/services'
 import Image from 'next/image'
 import SignInButton from '../buttons/SignInButton'
 import ThemeToggleButton from '../buttons/ThemeToggleButton'
+import useWindowSize from '@/utils/constants/useWindowSize'
+import screenSize from '@/utils/constants/mediaQueries'
+import { useEffect, useState } from 'react'
+import { categoriesType } from '@/utils/types/types'
 
 type Props = {}
 
-async function Header({}: Props) {
-  const { header, nav, logo, navLink } = styles
+function Header({}: Props) {
+  const [categories, setCategories] = useState<
+    categoriesType['categories'] | []
+  >([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [mobile, setMobile] = useState<boolean>(false)
 
-  const categories = await getCategories()
+  const windowSize = useWindowSize()
+  useEffect(() => {
+    async function setCat() {
+      setCategories(await getCategories())
+    }
+    setCat()
+  }, [])
+
+  useEffect(() => {
+    if (categories.length === 0) {
+      setLoading(true)
+    } else {
+      setLoading(false)
+    }
+  }, [categories])
+
+  useEffect(() => {
+    if (windowSize && windowSize <= screenSize.mobile) {
+      setMobile(true)
+    } else {
+      setMobile(false)
+    }
+  }, [windowSize])
+
+  const { header, nav, logo, navLink, loadingBtn, firstHeaderRow, hideMe } =
+    styles
+  console.log(windowSize, screenSize.mobile)
 
   return (
     <header className={header}>
-      <div className={logo}>
-        <Link href="/">
-          <Image
-            src="/icons/hsb-icon.png"
-            style={{ objectFit: 'cover' }}
-            // sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
-            width={40}
-            height={40}
-            alt={'Logo'}
-          />
-          <span>Have Small Bytes</span>
-        </Link>
-      </div>
-      <nav className={nav}>
-        {categories.map((category) => (
-          <Link
-            key={category.slug}
-            href={`category/${category.slug}`}
-            className={navLink}
-          >
-            {category.name}
+      <div className={firstHeaderRow}>
+        <div className={logo}>
+          <Link href="/">
+            <Image
+              src="/icons/hsb-icon.png"
+              style={{ objectFit: 'cover' }}
+              width={40}
+              height={40}
+              alt={'Logo'}
+            />
+            <span>Have Small Bytes</span>
           </Link>
-        ))}
-        <ThemeToggleButton />
-        <SignInButton />
+        </div>
+        <nav className={`${nav} ${!mobile && hideMe}`}>
+          <ThemeToggleButton />
+          <SignInButton />
+        </nav>
+      </div>
+
+      <nav className={nav}>
+        {loading
+          ? ['Web Development', 'DSA', 'Personal Development'].map(
+              (cat, idx) => (
+                <span key={idx} className={`${loadingBtn} ${navLink}`}>
+                  {cat}
+                </span>
+              )
+            )
+          : categories.map((category) => (
+              <Link
+                key={category.slug}
+                href={`category/${category.slug}`}
+                className={navLink}
+              >
+                {category.name}
+              </Link>
+            ))}
+        <span className={`${nav} ${mobile && hideMe}`}>
+          <ThemeToggleButton />
+          <SignInButton />
+        </span>
       </nav>
     </header>
   )
