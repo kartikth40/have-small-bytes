@@ -31,7 +31,8 @@ export default function ProfileUpdate({}: Props) {
     headingsContainer,
     updateBtnContainer,
     updateForm,
-    mainForm,profileUpdationForm,
+    mainForm,
+    profileUpdationForm,
     profilePicContainer,
     formStatus,
     disable,
@@ -85,8 +86,21 @@ export default function ProfileUpdate({}: Props) {
       })
     }
   }
+
+  const handleReset = () => {
+    if (name !== session.user.name) {
+      setName(session.user.name)
+    }
+    if (newAvatarId !== session.user.photo?.id && newAvatarId !== '') {
+      setNewAvatarId('')
+    }
+  }
   return (
-    <form className={updateForm} onSubmit={(e) => handleSubmit(e)}>
+    <form
+      className={updateForm}
+      onSubmit={(e) => handleSubmit(e)}
+      onReset={handleReset}
+    >
       <div className={headingsContainer}>
         <h3>Update Profile</h3>
         <span
@@ -161,6 +175,15 @@ export default function ProfileUpdate({}: Props) {
             }
           >
             Save
+          </button>
+          <button
+            type="reset"
+            disabled={
+              name === session.user.name &&
+              (newAvatarId === session.user.photo?.id || newAvatarId === '')
+            }
+          >
+            Cancel
           </button>
         </div>
       </div>
