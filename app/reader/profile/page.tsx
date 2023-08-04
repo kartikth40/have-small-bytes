@@ -88,18 +88,16 @@ export default function ProfileUpdate({}: Props) {
   return (
     <form className={updateForm} onSubmit={(e) => handleSubmit(e)}>
       <div className={headingsContainer}>
-        <h3>
-          Update Profile
-          <span
-            className={`${formStatus} ${
-              name === session.user.name &&
-              (newAvatarId === session.user.photo?.id || newAvatarId === '') &&
-              disable
-            }`}
-          >
-            (unsaved changes)*
-          </span>
-        </h3>
+        <h3>Update Profile</h3>
+        <span
+          className={`${formStatus} ${
+            name === session.user.name &&
+            (newAvatarId === session.user.photo?.id || newAvatarId === '') &&
+            disable
+          }`}
+        >
+          (unsaved changes)*
+        </span>
       </div>
       <div className={mainForm}>
         <section className={profilePicSection}>
@@ -122,6 +120,8 @@ export default function ProfileUpdate({}: Props) {
             </span>
           </div>
         </section>
+        <br />
+        <br />
         <section>
           <label htmlFor="name">Name</label>
           <input
