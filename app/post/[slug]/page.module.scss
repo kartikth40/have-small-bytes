@@ -145,13 +145,6 @@
   }
 
   pre {
-    ::-webkit-scrollbar {
-      height: 8px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--color-foreground);
-      border-radius: 0.5em;
-    }
     max-width: 70vw;
     overflow-x: auto;
 
