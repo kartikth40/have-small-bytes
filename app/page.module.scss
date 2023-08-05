@@ -81,14 +81,17 @@
     transform: skewX(-10deg);
     left: 0;
     top: 0;
-    animation: slide 1s linear infinite;
+    animation: slide 2s linear infinite;
   }
   @keyframes slide {
     0% {
-      left: 0;
+      left: -150%;
+    }
+    50% {
+      left: 150%;
     }
     100% {
-      left: 100%;
+      left: 150%;
     }
   }
 }

@@ -112,3 +112,33 @@ main {
   margin: 5rem 1rem 0.7rem;
   min-height: 100vh;
 }
+
+.mousemark {
+  --left: 0;
+  --top:0;
+  background-color: var(--color-foreground);
+  position: absolute;
+  z-index: 1001;
+  width: 15px;
+  height: 15px;
+  opacity: 0;
+  border-radius: 50%;
+  left: var(--left);
+  top: var(--top);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.mousemark.click{
+  animation:anim 0.25s;
+}
+@keyframes anim{
+  0%{
+    transform : translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  100%{
+    transform : translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
