@@ -130,9 +130,9 @@ main {
 }
 
 .mousemark.click{
-  animation:anim 0.25s;
+  animation:clickkk 0.25s;
 }
-@keyframes anim{
+@keyframes clickkk{
   0%{
     transform : translate(-50%, -50%) scale(1);
     opacity: 0.3;

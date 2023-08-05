@@ -42,9 +42,9 @@ export const dracula_light: { [key: string]: CSSProperties } = {
     msHyphens: 'none',
     hyphens: 'none',
     padding: '1em',
-    margin: '.5em 0',
     overflow: 'auto',
-    borderRadius: '0.3em',
+    borderBottomLeftRadius: '0.3em',
+    borderBottomRightRadius: '0.3em',
   },
   ':not(pre) > code[class*="language-"]': {
     fontFamily:
@@ -213,9 +213,9 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
     msHyphens: 'none',
     hyphens: 'none',
     padding: '1em',
-    margin: '.5em 0',
     overflow: 'auto',
-    borderRadius: '0.3em',
+    borderBottomLeftRadius: '0.3em',
+    borderBottomRightRadius: '0.3em',
   },
   ':not(pre) > code[class*="language-"]': {
     fontFamily:

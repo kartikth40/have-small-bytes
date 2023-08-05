@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import styles from '../../app/post/[slug]/page.module.scss'
 import ReactSyntaxHighlighter from './ReactSyntaxHighlighter'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 export function ImageRenderer({ ...props }: any) {
   const { postImg, strict } = styles
@@ -82,12 +83,37 @@ export function ImageRenderer({ ...props }: any) {
 }
 
 export function CodeRenderer({ ...props }: any) {
-  const { codeType } = styles
+  const {
+    codeType,
+    copyPasteBtn,
+    codeBlockTopBar,
+    codeBlockContainer,
+    copied,
+  } = styles
   const { inline, children, className } = props
   const language = className?.split('language-')[1]
+
+  function handleCopied(e: React.MouseEvent<HTMLElement>) {
+    const target = e.target as Element
+    target.classList.add(copied)
+    setTimeout(() => {
+      target.classList.remove(copied)
+    }, 1500)
+  }
+
   if (!inline)
     return (
-      <div className={codeType} data-codetype={language || 'code'}>
+      <div className={codeBlockContainer}>
+        <div className={codeBlockTopBar}>
+          <div className={codeType}>{language || 'code'}</div>
+          <CopyToClipboard text={String(children)}>
+            <button
+              onClick={(e) => handleCopied(e)}
+              className={copyPasteBtn}
+            ></button>
+          </CopyToClipboard>
+        </div>
+
         <ReactSyntaxHighlighter language={language || 'cmd'}>
           {String(children)}
         </ReactSyntaxHighlighter>
