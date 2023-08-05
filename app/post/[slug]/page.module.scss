@@ -143,6 +143,9 @@
   a {
     opacity: 0.9;
   }
+  & > pre {
+    margin-block: 1rem;
+  }
 
   pre {
     max-width: 70vw;
@@ -153,11 +156,11 @@
       height: 5px;
     }
     ::-webkit-scrollbar-thumb {
-      background: var(--color-primary-black-2);
+      background: var(--color-back-1);
       border-radius: 0.5rem;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--color-foreground);
+      background: var(--color-back-2);
     }
 
     @include devices(mobile) {
@@ -180,14 +183,19 @@
     }
   }
   .codeBlockContainer {
-    box-shadow: 0 0 5px var(--color-shadow-2);
+    background-color: #efefef;
+    border-radius: 0.5em;
+    overflow: hidden;
+    body:global(.darkTheme) & {
+      background-color: #0a0a0a;
+    }
     & .codeBlockTopBar {
       display: flex;
       justify-content: space-between;
       border: 1px solid var(--color-back-1);
       border-bottom: none;
-      border-top-right-radius: 0.5em;
-      border-top-left-radius: 0.5em;
+      border-top-right-radius: inherit;
+      border-top-left-radius: inherit;
       & .codeType {
         font-family: var(--font-source-code-pro), Consolas, Monaco,
           'Andale Mono', 'Ubuntu Mono', monospace;
@@ -195,11 +203,7 @@
         display: flex;
         padding-left: 0.5rem;
         align-items: center;
-        background-color: #efefef;
-        border-radius: 0.5em;
-        body:global(.darkTheme) & {
-          background-color: #0a0a0a;
-        }
+        border-top-left-radius: inherit;
       }
       & .copyPasteBtn {
         position: relative;
@@ -208,11 +212,18 @@
         z-index: 2;
         border: none;
         border-left: 1px solid var(--color-back-1);
-        border-top-right-radius: 0.5em;
-        background-color: #efefef;
+        border-top-right-radius: inherit;
         cursor: pointer;
+        background-color: #efefef;
         body:global(.darkTheme) & {
           background-color: #0a0a0a;
+        }
+
+        &:hover {
+          &::before,
+          &::after {
+            border: 1px solid var(--color-back-5);
+          }
         }
 
         &::before,
@@ -253,6 +264,21 @@
             top: 40%;
           }
         }
+      }
+    }
+
+    .codeBlockLoader {
+      border: 1px solid var(--color-back-1);
+      background-color: #efefef;
+      width: 70vw;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom-left-radius: inherit;
+      border-bottom-right-radius: inherit;
+      body:global(.darkTheme) & {
+        background-color: #0a0a0a;
       }
     }
   }
