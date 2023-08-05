@@ -87,7 +87,7 @@ export function CodeRenderer({ ...props }: any) {
   const language = className?.split('language-')[1]
   if (!inline)
     return (
-      <div className={codeType} data-codetype={language}>
+      <div className={codeType} data-codetype={language || 'code'}>
         <ReactSyntaxHighlighter language={language || 'cmd'}>
           {String(children)}
         </ReactSyntaxHighlighter>
