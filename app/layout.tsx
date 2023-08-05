@@ -5,6 +5,7 @@ import Header from '@/components/global/Header'
 import Footer from '@/components/global/Footer'
 import Providers from '@/components/global/Providers'
 import ClientToastContainer from '@/components/global/ClientToastContainer'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -61,6 +62,7 @@ export default function RootLayout({
           <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
           <Header />
           {children}
+          <Analytics />
           <ClientToastContainer />
           <Footer />
         </body>
