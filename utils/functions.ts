@@ -20,3 +20,21 @@ export function timeAgo(createdAt: string) {
   // in years
   else return `${Math.round(diffInHrs / (24 * 30 * 12))} years`
 }
+
+export function handleMouseFeedback() {
+  let mouseMark = document.querySelector('.mousemark') as HTMLDivElement
+  if (!mouseMark) {
+    mouseMark = document.createElement('div')
+    mouseMark.classList.add('mousemark')
+    document.body.appendChild(mouseMark)
+  }
+
+  document.body.addEventListener('click', (e: MouseEvent) => {
+    mouseMark.style.setProperty('--left', e.pageX + 'px')
+    mouseMark.style.setProperty('--top', e.pageY + 'px')
+
+    if (mouseMark.classList.contains('click')) return
+    mouseMark.classList.add('click')
+    setTimeout(() => mouseMark.classList.remove('click'), 250)
+  })
+}

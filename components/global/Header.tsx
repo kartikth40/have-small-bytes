@@ -10,6 +10,7 @@ import useWindowSize from '@/utils/constants/useWindowSize'
 import screenSize from '@/utils/constants/mediaQueries'
 import { useEffect, useState } from 'react'
 import { categoriesType } from '@/utils/types/types'
+import { handleMouseFeedback } from '@/utils/functions'
 
 type Props = {}
 
@@ -25,6 +26,8 @@ function Header({}: Props) {
     async function setCat() {
       setCategories(await getCategories())
     }
+    handleMouseFeedback()
+
     setCat()
   }, [])
 
@@ -46,7 +49,6 @@ function Header({}: Props) {
 
   const { header, nav, logo, navLink, loadingBtn, firstHeaderRow, hideMe } =
     styles
-  console.log(windowSize, screenSize.mobile)
 
   return (
     <header className={header}>

@@ -143,6 +143,9 @@
   a {
     opacity: 0.9;
   }
+  & > pre {
+    margin-block: 1rem;
+  }
 
   pre {
     max-width: 70vw;
@@ -153,11 +156,11 @@
       height: 5px;
     }
     ::-webkit-scrollbar-thumb {
-      background: var(--color-primary-black-2);
+      background: var(--color-back-1);
       border-radius: 0.5rem;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--color-foreground);
+      background: var(--color-back-2);
     }
 
     @include devices(mobile) {
@@ -179,27 +182,101 @@
       background-color: #171717;
     }
   }
-  .codeType {
-    position: relative;
-    z-index: 1;
-    margin-block: 2rem;
-    box-shadow: 0 0 5px var(--color-shadow-2);
-    &::after {
-      content: attr(data-codetype);
-      font-weight: bolder;
-      font-size: 1rem;
-      position: absolute;
-      top: -1.8rem;
-      right: 10%;
-      z-index: 1;
-      padding: 0.4em 0.5em;
-      border-radius: 0.5em;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      color: var(--color-foreground);
-      background-color: #efefef;
+  .codeBlockContainer {
+    background-color: #efefef;
+    border-radius: 0.5em;
+    overflow: hidden;
+    body:global(.darkTheme) & {
+      background-color: #0a0a0a;
+    }
+    & .codeBlockTopBar {
+      display: flex;
+      justify-content: space-between;
       border: 1px solid var(--color-back-1);
       border-bottom: none;
+      border-top-right-radius: inherit;
+      border-top-left-radius: inherit;
+      & .codeType {
+        font-family: var(--font-source-code-pro), Consolas, Monaco,
+          'Andale Mono', 'Ubuntu Mono', monospace;
+        width: 100%;
+        display: flex;
+        padding-left: 0.5rem;
+        align-items: center;
+        border-top-left-radius: inherit;
+      }
+      & .copyPasteBtn {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        z-index: 2;
+        border: none;
+        border-left: 1px solid var(--color-back-1);
+        border-top-right-radius: inherit;
+        cursor: pointer;
+        background-color: #efefef;
+        body:global(.darkTheme) & {
+          background-color: #0a0a0a;
+        }
+
+        &:hover {
+          &::before,
+          &::after {
+            border: 1px solid var(--color-back-5);
+          }
+        }
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          width: 12px;
+          aspect-ratio: 1;
+          border: 1px solid var(--color-back-2);
+          border-radius: 2px;
+        }
+
+        &::before {
+          right: 5px;
+          bottom: 6px;
+          z-index: 4;
+          background-color: inherit;
+        }
+        &::after {
+          left: 5px;
+          top: 6px;
+          z-index: 3;
+        }
+
+        &.copied {
+          &::before,
+          &::after {
+            transform: translate(-50%, -45%);
+          }
+          &::before {
+            right: unset;
+            bottom: unset;
+            left: 50%;
+            top: 50%;
+          }
+          &::after {
+            left: 50%;
+            top: 40%;
+          }
+        }
+      }
+    }
+
+    .codeBlockLoader {
+      border: 1px solid var(--color-back-1);
+      background-color: #efefef;
+      width: 70vw;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom-left-radius: inherit;
+      border-bottom-right-radius: inherit;
       body:global(.darkTheme) & {
         background-color: #0a0a0a;
       }
