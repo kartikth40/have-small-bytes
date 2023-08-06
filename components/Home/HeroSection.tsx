@@ -45,7 +45,7 @@ export default function HeroSection({}: Props) {
 
       if (iterations > currentWord.length) clearInterval(interval)
       iterations += 1 / 2
-    }, 50)
+    }, 30)
   }
 
   useEffect(() => {

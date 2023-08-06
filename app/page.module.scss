@@ -36,7 +36,7 @@
   font-weight: 900;
   font-size: 2rem;
   width: 100%;
-  padding-left: 25vw;
+  text-align: center;
   padding-block: 1rem 6rem;
   position: relative;
   margin-bottom: 1rem;
@@ -44,7 +44,9 @@
   border-radius: 10px;
   & .randomHeroDiv {
     position: absolute;
-    left: 25vw;
+    text-align: center;
+    left: 0;
+    width: 100%;
     bottom: 0.5em;
     letter-spacing: -5px;
     background: -webkit-linear-gradient(45deg, #f31559, #ff52a2);
@@ -69,6 +71,19 @@
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+  }
+  @include devices(mobile) {
+    font-size: 0.7rem;
+    & .randomHeroDiv {
+      padding-inline: 0.5em;
+      display: grid;
+      align-content: center;
+      min-height: 2.5em;
+      font-size: 2rem;
+      letter-spacing: -3px;
+      bottom: unset;
+      top: 1.3em;
     }
   }
 }
