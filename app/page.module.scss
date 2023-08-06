@@ -30,6 +30,49 @@
   display: none !important;
 }
 
+.HeroSectionContainer {
+  font-family: var(--font-source-code-pro), Consolas, Monaco, 'Andale Mono',
+    'Ubuntu Mono', monospace;
+  font-weight: 900;
+  font-size: 2rem;
+  width: 100%;
+  padding-left: 25vw;
+  padding-block: 1rem 6rem;
+  position: relative;
+  margin-bottom: 1rem;
+  background-color: var(--color-back-07);
+  border-radius: 10px;
+  & .randomHeroDiv {
+    position: absolute;
+    left: 25vw;
+    bottom: 0.5em;
+    letter-spacing: -5px;
+    background: -webkit-linear-gradient(45deg, #f31559, #ff52a2);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    &.first {
+      background: -webkit-linear-gradient(45deg, #f31559, #ff52a2);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    &.second {
+      background: -webkit-linear-gradient(45deg, #7f43c8, #c394fb);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    &.third {
+      background: -webkit-linear-gradient(45deg, #2f8886, #84c69b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+
 .signInBtn {
   border: none;
   background-color: var(--color-back-07);
