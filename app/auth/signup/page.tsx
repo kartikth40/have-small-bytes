@@ -35,7 +35,7 @@ export default function SignUpPage() {
   const name = useRef('')
   const email = useRef('')
   const password = useRef('')
-  const callbackUrl = useSearchParams().get('callbackUrl')
+  const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
 
   if (shouldRedirect)
     return <div className={loadingState}>Redirecting to home page...</div>
