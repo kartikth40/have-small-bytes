@@ -102,6 +102,7 @@
   &:hover {
     background-color: var(--color-foreground);
     color: var(--color-background);
+    text-decoration: none;
   }
 }
 .signOutBtn {

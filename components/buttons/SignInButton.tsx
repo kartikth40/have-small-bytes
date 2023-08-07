@@ -1,8 +1,9 @@
 'use client'
-import { signIn, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import styles from '@/app/page.module.scss'
 import ProfileButton from './ProfileButton'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -17,11 +18,11 @@ export default function SignInButton({}: Props) {
   return !loading && session ? (
     <ProfileButton />
   ) : (
-    <button
+    <Link
+      href="/auth/signin"
       className={`${signInBtn} ${loading && loadingBtn}`}
-      onClick={() => signIn()}
     >
       Login
-    </button>
+    </Link>
   )
 }

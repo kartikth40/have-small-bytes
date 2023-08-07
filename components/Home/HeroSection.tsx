@@ -5,38 +5,40 @@ import styles from '../../app/page.module.scss'
 type Props = {}
 
 export default function HeroSection({}: Props) {
-  const { HeroSectionContainer, randomHeroDiv, first, second, third } = styles
+  let index = 0
   const words = [
     'Web Development',
     'Data Structures and Algorithms',
     'Personal Development',
   ]
+  const { HeroSectionContainer, randomHeroDiv, first, second, third } = styles
 
-  function addClass(index: number, hero: HTMLElement) {
+  function addClass(i: number, hero: HTMLElement) {
     const classes = [first, second, third]
-    let prevIdx = index - 1
-    let curIdx = index
-    if (index === 0) {
+    let prevIdx = i - 1
+    let curIdx = i
+    if (i === 0) {
       prevIdx = words.length - 1
     }
     hero.classList.remove(classes[prevIdx])
     hero.classList.add(classes[curIdx])
   }
 
-  function randomEffect(index: number) {
+  function randomEffect(i: number) {
     const letters = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
     const hero = document.getElementById('heroRandom')
     if (!hero) return
-    addClass(index, hero)
+    addClass(i, hero)
     let iterations = 0
-    const currentWord = words[index]
+    const currentWord = words[i]
+
     const interval = setInterval(() => {
       hero.innerText = currentWord
         .split('')
-        .map((letter, index) => {
+        .map((letter, i) => {
           if (letter === ' ') return ' '
-          if (index < iterations) {
-            return currentWord[index]
+          if (i < iterations) {
+            return currentWord[i]
           } else {
             return letters[Math.floor(Math.random() * letters.length)]
           }
@@ -48,16 +50,33 @@ export default function HeroSection({}: Props) {
     }, 30)
   }
 
-  useEffect(() => {
-    let index = 0
+  function addRandomEffect(i: number = 0) {
     const interval = setInterval(() => {
-      index++
-      if (index >= words.length) index = 0
-      randomEffect(index)
+      i++
+      if (i >= words.length) i = 0
+      randomEffect(i)
+      index = i
     }, 5000)
+    return interval
+  }
+
+  useEffect(() => {
+    let interval = addRandomEffect()
+
+    function onWindowBlur() {
+      clearInterval(interval)
+    }
+    function onWindowFocus() {
+      interval = addRandomEffect(index)
+    }
+
+    window.addEventListener('blur', onWindowBlur)
+    window.addEventListener('focus', onWindowFocus)
 
     return () => {
       clearInterval(interval)
+      window.removeEventListener('blur', onWindowBlur)
+      window.removeEventListener('focus', onWindowFocus)
     }
   }, [])
 
