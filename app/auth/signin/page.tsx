@@ -33,7 +33,9 @@ export default function LoginPage() {
 
   const email = useRef('')
   const password = useRef('')
-  const callbackUrl = useSearchParams().get('callbackUrl')
+  const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
+
+  console.log(callbackUrl)
 
   if (shouldRedirect)
     return <div className={loadingState}>Redirecting to home page...</div>
