@@ -8,7 +8,7 @@
     margin-right: 1rem;
   }
 
-  @include devices(mobile) {
+  @include devices(tablet) {
     flex-direction: column;
 
     & > :first-child {
@@ -37,7 +37,7 @@
     font-size: 4rem;
     font-weight: 900;
   }
-  @include devices(mobile) {
+  @include devices(tablet) {
     padding: 3rem 0;
     & > h1 {
       font-size: 2.5rem;
@@ -163,7 +163,7 @@
       background: var(--color-back-2);
     }
 
-    @include devices(mobile) {
+    @include devices(tablet) {
       max-width: 90vw;
       font-size: 0.9em;
     }
@@ -341,7 +341,7 @@
     }
   }
 
-  @include devices(mobile) {
+  @include devices(tablet) {
     width: 90vw;
   }
 }

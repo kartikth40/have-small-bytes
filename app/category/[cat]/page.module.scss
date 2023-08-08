@@ -63,13 +63,14 @@
 
   body:global(.darkTheme) & {
     border: 15px solid var(--color-back-07);
+    box-shadow: inset 0 0 5px var(--color-primary-black);
     &:before,
     &:after {
       opacity: 1;
       filter: hue-rotate(30deg);
     }
   }
-  @include devices(mobile) {
+  @include devices(tablet) {
     border: 5px solid var(--color-back-07) !important;
     user-select: none;
     padding: 1rem 0;
