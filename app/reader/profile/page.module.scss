@@ -200,10 +200,6 @@
   }
 }
 .mainForm {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   width: 100%;
   height: 100%;
   padding: 1em;
@@ -211,6 +207,7 @@
     height: max-content;
   }
   & section {
+    margin-block: 1em;
     width: 100%;
     display: flex;
     align-items: center;
@@ -218,6 +215,10 @@
   }
 
   @include devices(mobile) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     & > section > label {
       white-space: nowrap;
 

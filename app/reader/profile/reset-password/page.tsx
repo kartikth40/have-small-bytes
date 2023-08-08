@@ -94,9 +94,6 @@ export default function ResetPassword({}: Props) {
             required
           />
         </section>
-
-        <br />
-        <br />
         <section>
           <label htmlFor="name">Confirm Password</label>
           <input
@@ -110,9 +107,6 @@ export default function ResetPassword({}: Props) {
             required
           />
         </section>
-        <br />
-        <br />
-
         <div className={updateBtnContainer}>
           <button type="submit">Reset</button>
         </div>
