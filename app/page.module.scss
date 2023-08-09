@@ -288,10 +288,10 @@
       }
     }
   }
-  @include devices(tablet) {
+  @include devices(laptop) {
     overflow: scroll;
     display: flex;
-    font-size: 0.7rem;
+    font-size: 1rem;
     & h1 {
       text-align: left;
       display: flex;
@@ -326,6 +326,9 @@
     ::-webkit-scrollbar-thumb:hover {
       background: var(--color-foreground);
     }
+  }
+  @include devices(tablet) {
+    font-size: 0.7rem;
   }
 
   @include devices(mobile) {
