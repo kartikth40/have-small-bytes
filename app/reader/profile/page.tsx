@@ -134,8 +134,6 @@ export default function ProfileUpdate({}: Props) {
             </span>
           </div>
         </section>
-        <br />
-        <br />
         <section>
           <label htmlFor="name">Name</label>
           <input
@@ -149,9 +147,6 @@ export default function ProfileUpdate({}: Props) {
             required
           />
         </section>
-
-        <br />
-        <br />
         <section>
           <label htmlFor="email">Email</label>
           <input
@@ -163,8 +158,6 @@ export default function ProfileUpdate({}: Props) {
             required
           />
         </section>
-        <br />
-        <br />
 
         <div className={updateBtnContainer}>
           <button
