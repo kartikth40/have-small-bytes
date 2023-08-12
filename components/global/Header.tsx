@@ -8,11 +8,11 @@ import SignInButton from '../buttons/SignInButton'
 import ThemeToggleButton from '../buttons/ThemeToggleButton'
 import useWindowSize from '@/utils/constants/useWindowSize'
 import screenSize from '@/utils/constants/mediaQueries'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { categoriesType } from '@/utils/types/types'
 import { handleMouseFeedback } from '@/utils/functions'
 import useNetwork from '@/utils/constants/useNetwork'
-import { toast } from 'react-toastify'
+import { Id, toast } from 'react-toastify'
 
 type Props = {}
 
@@ -25,12 +25,18 @@ function Header({}: Props) {
 
   const windowSize = useWindowSize()
   const isOnline = useNetwork()
+  const connectionToastId = useRef('' as Id)
 
   useEffect(() => {
+    toast.dismiss(connectionToastId.current)
     if (!isOnline) {
-      toast.error('You are currently Offline.', {
-        toastId: 'offline_toast',
+      connectionToastId.current = toast.warning('No Internet Connection!', {
         autoClose: false,
+        closeButton: false,
+      })
+    } else if (connectionToastId.current !== '') {
+      connectionToastId.current = toast.success('Back Online...', {
+        autoClose: 3000,
       })
     }
   }, [isOnline])
