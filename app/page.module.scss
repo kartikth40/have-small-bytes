@@ -172,6 +172,11 @@
   font-weight: 500;
   font-size: 1em;
   cursor: pointer;
+  & a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
 }
 
 .logo {

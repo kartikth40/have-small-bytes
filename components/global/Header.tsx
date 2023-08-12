@@ -8,9 +8,11 @@ import SignInButton from '../buttons/SignInButton'
 import ThemeToggleButton from '../buttons/ThemeToggleButton'
 import useWindowSize from '@/utils/constants/useWindowSize'
 import screenSize from '@/utils/constants/mediaQueries'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { categoriesType } from '@/utils/types/types'
 import { handleMouseFeedback } from '@/utils/functions'
+import useNetwork from '@/utils/constants/useNetwork'
+import { Id, toast } from 'react-toastify'
 
 type Props = {}
 
@@ -22,12 +24,28 @@ function Header({}: Props) {
   const [mobile, setMobile] = useState<boolean>(false)
 
   const windowSize = useWindowSize()
+  const isOnline = useNetwork()
+  const connectionToastId = useRef('' as Id)
+
+  useEffect(() => {
+    toast.dismiss(connectionToastId.current)
+    if (!isOnline) {
+      connectionToastId.current = toast.warning('No Internet Connection!', {
+        autoClose: false,
+        closeButton: false,
+      })
+    } else if (connectionToastId.current !== '') {
+      connectionToastId.current = toast.success('Back Online...', {
+        autoClose: 3000,
+      })
+    }
+  }, [isOnline])
+
   useEffect(() => {
     async function setCat() {
       setCategories(await getCategories())
     }
     handleMouseFeedback()
-
     setCat()
   }, [])
 
