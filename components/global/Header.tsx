@@ -11,6 +11,8 @@ import screenSize from '@/utils/constants/mediaQueries'
 import { useEffect, useState } from 'react'
 import { categoriesType } from '@/utils/types/types'
 import { handleMouseFeedback } from '@/utils/functions'
+import useNetwork from '@/utils/constants/useNetwork'
+import { toast } from 'react-toastify'
 
 type Props = {}
 
@@ -22,12 +24,22 @@ function Header({}: Props) {
   const [mobile, setMobile] = useState<boolean>(false)
 
   const windowSize = useWindowSize()
+  const isOnline = useNetwork()
+
+  useEffect(() => {
+    if (!isOnline) {
+      toast.error('You are currently Offline.', {
+        toastId: 'offline_toast',
+        autoClose: false,
+      })
+    }
+  }, [isOnline])
+
   useEffect(() => {
     async function setCat() {
       setCategories(await getCategories())
     }
     handleMouseFeedback()
-
     setCat()
   }, [])
 
