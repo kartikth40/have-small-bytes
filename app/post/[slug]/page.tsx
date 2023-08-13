@@ -15,7 +15,12 @@ export default async function Blog({ params }: Props) {
     <div>
       <BlogPost post={post} />
       <Author author={post.author} />
-      <CommentSection postId={post.id} />
+      <CommentSection
+        postId={post.id}
+        postSlug={post.slug}
+        postAuthor={post.author.id}
+        postTitle={post.title}
+      />
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import { sendNotification } from '@/services'
+
 export function timeAgo(createdAt: string) {
   const date = new Date(createdAt)
   const now = new Date()
@@ -10,14 +12,19 @@ export function timeAgo(createdAt: string) {
   // in minutes
   if (diffInHrs < 1) return `${Math.round(diffInHrs * 60)} min`
   // in hours
+  else if (diffInHrs === 1) return `1 hr`
   else if (diffInHrs < 24) return `${Math.round(diffInHrs)} hrs`
   // in days
+  else if (diffInHrs === 24) `1 day`
   else if (diffInHrs > 24 && diffInHrs < 24 * 30)
     return `${Math.round(diffInHrs / 24)} days`
   // in months
+  else if (diffInHrs >= 24 * 30 && diffInHrs < 24 * 30 * 2) return `1 month`
   else if (diffInHrs > 24 * 30 && diffInHrs < 24 * 30 * 12)
     return `${Math.round(diffInHrs / (24 * 30))} months`
   // in years
+  else if (diffInHrs >= 24 * 30 * 12 && diffInHrs < 24 * 30 * 12 * 2)
+    return `1 year`
   else return `${Math.round(diffInHrs / (24 * 30 * 12))} years`
 }
 
@@ -37,4 +44,55 @@ export function handleMouseFeedback() {
     mouseMark.classList.add('click')
     setTimeout(() => mouseMark.classList.remove('click'), 250)
   })
+}
+
+export async function sendCommentNotification(
+  actor: string,
+  actorId: string,
+  notifierId: string,
+  postTitle: string,
+  postSlug: string
+  // commentId: string
+) {
+  const entity = `${actor} commented on your post "${postTitle}"`
+  await sendNotification(
+    'commented',
+    'comment',
+    postSlug,
+    entity,
+    actorId,
+    notifierId,
+    '' // will replace with commentId in future
+  )
+}
+
+export async function sendReplyNotification(
+  actor: string,
+  actorId: string,
+  notifierId: string,
+  postTitle: string,
+  postSlug: string
+  // commentId: string
+) {
+  const entity = `${actor} replied on your comment on "${postTitle}"`
+  await sendNotification(
+    'replied',
+    'reply',
+    postSlug,
+    entity,
+    actorId,
+    notifierId,
+    '' // will replace with commentId in future
+  )
+}
+
+export async function sendLikeNotification(
+  actor: string,
+  actorId: string,
+  notifierId: string,
+  postTitle: string,
+  postSlug: string
+) {
+  const entity = `${actor} Liked your post "${postTitle}"`
+  await sendNotification('liked', 'post', postSlug, entity, actorId, notifierId)
 }

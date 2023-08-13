@@ -12,11 +12,14 @@ import {
   updateComment,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { timeAgo } from '@/utils/functions'
+import { sendReplyNotification, timeAgo } from '@/utils/functions'
 
 type Props = {
   commentId: string
   postId: string
+  postSlug: string
+  postAuthor: string
+  postTitle: string
   open: string
   setOpen: Dispatch<SetStateAction<string>>
 }
@@ -24,6 +27,9 @@ type Props = {
 export default function RepliesSection({
   commentId,
   postId,
+  postSlug,
+  postAuthor,
+  postTitle,
   open,
   setOpen,
 }: Props) {
@@ -41,6 +47,20 @@ export default function RepliesSection({
   useEffect(() => {
     if (open === commentId) initialize()
   }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    function reset() {
+      SetShowId('')
+    }
+    if (showId) {
+      document.body.addEventListener('click', reset)
+    }
+
+    return () => {
+      document.body.removeEventListener('click', reset)
+    }
+  }, [showId])
+
   const {
     replySectionContainer,
     replyInputContainer,
@@ -64,6 +84,7 @@ export default function RepliesSection({
     expansion,
     isAuthor,
     readjustLeftThreadHeight,
+    aboveCommentContent,
   } = styles
   async function handleSendReply() {
     if (!session) {
@@ -81,11 +102,22 @@ export default function RepliesSection({
       )
       if (!result) {
         toast.error('something went wrong! Please try again later.')
+        setPosting(false)
       } else {
         setCurrentReply('')
         await initialize()
+        setPosting(false)
+
+        const actorId = session?.user.id
+        const actor = session?.user.name
+        await sendReplyNotification(
+          actor,
+          actorId,
+          postAuthor,
+          postTitle,
+          postSlug
+        )
       }
-      setPosting(false)
     }
   }
   function handleDropdown(id: string) {
@@ -106,6 +138,8 @@ export default function RepliesSection({
   }
   async function handleDelete(id: string) {
     SetShowId('')
+    const sure = confirm('Are you sure you want to delete this reply ?')
+    if (!sure) return
     const result = await deleteComment(id)
     if (!result) {
       toast.error('something went wrong! Please try again later.')
@@ -127,34 +161,72 @@ export default function RepliesSection({
               (comment, idx) =>
                 idx < (expand ? replies.length : 5) && (
                   <div key={comment.id} className={commentContainer}>
-                    <div className={readerContainer}>
-                      <div className={readerAvatar}>
-                        <Image
-                          src={comment.reader.photo.url}
-                          width={24}
-                          height={24}
-                          alt={comment.reader.name}
-                          style={{ borderRadius: '50%' }}
-                        />
+                    <div className={aboveCommentContent}>
+                      <div className={readerContainer}>
+                        <div className={readerAvatar}>
+                          <Image
+                            src={comment.reader.photo.url}
+                            width={24}
+                            height={24}
+                            alt={comment.reader.name}
+                            style={{ borderRadius: '50%' }}
+                          />
+                        </div>
+                        <div
+                          className={`${readerName} ${
+                            comment.reader.id === session?.user.id
+                              ? myComment
+                              : null
+                          }`}
+                        >
+                          {comment.reader.name}
+                        </div>
+                        {comment.reader.isAuthor && (
+                          <div className={isAuthor}>Author</div>
+                        )}
                       </div>
-                      <div
-                        className={`${readerName} ${
-                          comment.reader.id === session?.user.id
-                            ? myComment
-                            : null
-                        }`}
-                      >
-                        {comment.reader.name}
+                      <div>
+                        {comment.reader.id === session?.user.id && (
+                          <div className={dropdown}>
+                            <button
+                              disabled={editing !== ''}
+                              onClick={() => handleDropdown(comment.id)}
+                            >
+                              <span className={menuDot}></span>
+                              <span className={menuDot}></span>
+                              <span className={menuDot}></span>
+                            </button>
+                            <div
+                              className={`${dropdownContent} ${
+                                showId && showId === comment.id && show
+                              }`}
+                            >
+                              <div
+                                onClick={() => {
+                                  if (comment.reader.id !== session?.user.id)
+                                    return
+                                  setEditing(comment.id)
+                                  setCurrentEditingReply(comment.comment)
+                                  SetShowId('')
+                                }}
+                              >
+                                Edit
+                              </div>
+                              <div onClick={() => handleDelete(comment.id)}>
+                                Delete
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      {comment.reader.isAuthor && (
-                        <div className={isAuthor}>Author</div>
-                      )}
                     </div>
+
                     <div className={commentContentContainer}>
                       {editing === comment.id ? (
                         <div className={commentEditContainer}>
                           <textarea
                             rows={3}
+                            autoFocus
                             value={currentEditingReply}
                             onChange={(e) =>
                               setCurrentEditingReply(e.target.value)
@@ -186,38 +258,6 @@ export default function RepliesSection({
                         <div className={edited}>Edited</div>
                       )}
                       <div className={age}>{timeAgo(comment.createdAt)}</div>
-                      {comment.reader.id === session?.user.id && (
-                        <div className={dropdown}>
-                          <button
-                            disabled={editing !== ''}
-                            onClick={() => handleDropdown(comment.id)}
-                          >
-                            <span className={menuDot}></span>
-                            <span className={menuDot}></span>
-                            <span className={menuDot}></span>
-                          </button>
-                          <div
-                            className={`${dropdownContent} ${
-                              showId && showId === comment.id && show
-                            }`}
-                          >
-                            <div
-                              onClick={() => {
-                                if (comment.reader.id !== session?.user.id)
-                                  return
-                                setEditing(comment.id)
-                                setCurrentEditingReply(comment.comment)
-                                SetShowId('')
-                              }}
-                            >
-                              Edit
-                            </div>
-                            <div onClick={() => handleDelete(comment.id)}>
-                              Delete
-                            </div>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                 )

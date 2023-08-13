@@ -26,6 +26,10 @@ import {
   postType,
   postsType,
   postsCountType,
+  sendNotificationType,
+  publishSendNotificationType,
+  notifyType,
+  entityType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -61,7 +65,9 @@ import {
   getPostsCountQuery,
   loginQuery,
   newUserQuery,
+  publishSendNotificationQuery,
   resetPasswordQuery,
+  sendNotificationQuery,
   updateCommentQuery,
   updateUserQuery,
 } from '../utils/graphqlQueries'
@@ -115,7 +121,7 @@ export const myPortfolioURL = cache(
       const result: authorURL = await request(graphqlAPI, authorUrlQuery, {
         authorId,
       })
-      return result.author.websiteUrl
+      return result.reader.websiteUrl
     }
     try {
       const res = await retryAPICall(thisFunction, 'extracting author URL')
@@ -889,6 +895,53 @@ export const deleteCommentReplies = cache(
       return res
     } catch (err) {
       consoleLog(err, 'deleting post comment replies')
+
+      return false
+    }
+  }
+)
+
+export const sendNotification = cache(
+  async (
+    notifyType: notifyType,
+    entityType: entityType,
+    postSlug: string,
+    entity: string,
+    actorId: string,
+    notifierId: string,
+    commentId: string = ''
+  ): Promise<boolean> => {
+    if (actorId === notifierId) return false
+    async function thisFunction() {
+      const noti: sendNotificationType = await request(
+        graphqlAPI,
+        sendNotificationQuery,
+        {
+          notifyType,
+          entityType,
+          commentId,
+          postSlug,
+          entity,
+          actorId,
+          notifierId,
+        }
+      )
+      const id = noti.createNotification.id
+
+      const result: publishSendNotificationType = await request(
+        graphqlAPI,
+        publishSendNotificationQuery,
+        {
+          id,
+        }
+      )
+      return result.publishNotification ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'sending notification')
+      return res
+    } catch (err) {
+      consoleLog(err, 'sending notification')
 
       return false
     }

@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 
 export const authorUrlQuery = gql`
   query GetauthorUrl($authorId: ID!) {
-    author(where: { id: $authorId }) {
+    reader(where: { id: $authorId }) {
       websiteUrl
     }
   }
@@ -504,6 +504,45 @@ export const deletePostCommentRepliesQuery = gql`
   mutation DeletePostComment($commentId: ID!) {
     deleteManyComments(where: { replyToCommentId: { id: $commentId } }) {
       count
+    }
+  }
+`
+
+export const sendNotificationQuery = gql`
+  mutation SendNotification(
+    $notifyType: NotificationType!
+    $entityType: EntityType!
+    $commentId: String!
+    $postSlug: String!
+    $entity: String!
+    $actorId: ID!
+    $notifierId: ID!
+  ) {
+    createNotification(
+      data: {
+        notifyType: $notifyType
+        entity: {
+          create: {
+            entityType: $entityType
+            commentId: $commentId
+            postSlug: $postSlug
+            entity: $entity
+          }
+        }
+        isRead: false
+        actor: { connect: { id: $actorId } }
+        notifier: { connect: { id: $notifierId } }
+      }
+    ) {
+      id
+    }
+  }
+`
+
+export const publishSendNotificationQuery = gql`
+  mutation PublishNotification($id: ID!) {
+    publishNotification(where: { id: $id }) {
+      id
     }
   }
 `

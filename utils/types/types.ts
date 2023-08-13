@@ -1,7 +1,13 @@
+// types
+
+export type notifyType = 'commented' | 'replied' | 'liked'
+
+export type entityType = 'post' | 'comment' | 'reply'
+
 // interfaces
 
 export interface authorURL {
-  author: {
+  reader: {
     websiteUrl: string
   }
 }
@@ -237,5 +243,17 @@ export interface postDeleteCommentType {
 export interface postDeleteCommentRepliesType {
   deleteManyComments: {
     count: number
+  }
+}
+
+export interface sendNotificationType {
+  createNotification: {
+    id: string
+  }
+}
+
+export interface publishSendNotificationType {
+  publishNotification: {
+    id: string
   }
 }
