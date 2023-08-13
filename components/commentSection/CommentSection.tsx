@@ -75,6 +75,20 @@ export default function CommentSection({
   useEffect(() => {
     if (comments) initializeReplies()
   }, [comments]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    function reset() {
+      SetShowId('')
+    }
+    if (showId) {
+      document.body.addEventListener('click', reset)
+    }
+
+    return () => {
+      document.body.removeEventListener('click', reset)
+    }
+  }, [showId])
+
   const {
     commentSectionContainer,
     mainCommentSection,
@@ -103,6 +117,7 @@ export default function CommentSection({
     opened,
     replyContainer,
     isAuthor,
+    aboveCommentContent,
   } = styles
   async function handleSendComment() {
     if (!session) {
@@ -155,6 +170,8 @@ export default function CommentSection({
   }
   async function handleDelete(id: string) {
     SetShowId('')
+    const sure = confirm('Are you sure you want to delete this comment ?')
+    if (!sure) return
     const repliesDeleted = await deleteCommentReplies(id)
     if (!repliesDeleted) {
       toast.error('something went wrong! Please try again later.', {
@@ -227,33 +244,72 @@ export default function CommentSection({
           {comments &&
             comments.map((comment) => (
               <div key={comment.id} className={commentContainer}>
-                <div className={readerContainer}>
-                  <div className={readerAvatar}>
-                    <Image
-                      src={comment.reader.photo.url}
-                      width={24}
-                      height={24}
-                      alt={comment.reader.name}
-                      style={{ borderRadius: '50%' }}
-                    />
+                <div className={aboveCommentContent}>
+                  <div className={readerContainer}>
+                    <div className={readerAvatar}>
+                      <Image
+                        src={comment.reader.photo.url}
+                        width={24}
+                        height={24}
+                        alt={comment.reader.name}
+                        style={{ borderRadius: '50%' }}
+                      />
+                    </div>
+                    <div
+                      className={`${readerName} ${
+                        comment.reader.id === session?.user.id
+                          ? myComment
+                          : null
+                      }`}
+                    >
+                      {comment.reader.name}
+                    </div>
+                    {comment.reader.isAuthor && (
+                      <div className={isAuthor}>Author</div>
+                    )}
                   </div>
-                  <div
-                    className={`${readerName} ${
-                      comment.reader.id === session?.user.id ? myComment : null
-                    }`}
-                  >
-                    {comment.reader.name}
+                  <div>
+                    {comment.reader.id === session?.user.id && (
+                      <div className={dropdown}>
+                        <button
+                          disabled={editing !== ''}
+                          onClick={() => handleDropdown(comment.id)}
+                        >
+                          <span className={menuDot}></span>
+                          <span className={menuDot}></span>
+                          <span className={menuDot}></span>
+                        </button>
+                        <div
+                          className={`${dropdownContent} ${
+                            showId && showId === comment.id && show
+                          }`}
+                        >
+                          <div
+                            onClick={() => {
+                              if (comment.reader.id !== session?.user.id) return
+                              setEditing(comment.id)
+                              setCurrentEditingComment(comment.comment)
+                              SetShowId('')
+                            }}
+                          >
+                            Edit
+                          </div>
+                          <div onClick={() => handleDelete(comment.id)}>
+                            Delete
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {comment.reader.isAuthor && (
-                    <div className={isAuthor}>Author</div>
-                  )}
                 </div>
+
                 <div className={commentContentContainer}>
                   {editing === comment.id ? (
                     <div className={commentEditContainer}>
                       <textarea
                         rows={3}
                         value={currentEditingComment}
+                        autoFocus
                         onChange={(e) =>
                           setCurrentEditingComment(e.target.value)
                         }
@@ -293,37 +349,6 @@ export default function CommentSection({
                     <div className={edited}>Edited</div>
                   )}
                   <div className={age}>{timeAgo(comment.createdAt)}</div>
-                  {comment.reader.id === session?.user.id && (
-                    <div className={dropdown}>
-                      <button
-                        disabled={editing !== ''}
-                        onClick={() => handleDropdown(comment.id)}
-                      >
-                        <span className={menuDot}></span>
-                        <span className={menuDot}></span>
-                        <span className={menuDot}></span>
-                      </button>
-                      <div
-                        className={`${dropdownContent} ${
-                          showId && showId === comment.id && show
-                        }`}
-                      >
-                        <div
-                          onClick={() => {
-                            if (comment.reader.id !== session?.user.id) return
-                            setEditing(comment.id)
-                            setCurrentEditingComment(comment.comment)
-                            SetShowId('')
-                          }}
-                        >
-                          Edit
-                        </div>
-                        <div onClick={() => handleDelete(comment.id)}>
-                          Delete
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
                 <RepliesSection
                   commentId={comment.id}
