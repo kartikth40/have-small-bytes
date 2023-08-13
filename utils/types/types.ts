@@ -1,3 +1,9 @@
+// types
+
+export type notifyType = 'commented' | 'replied' | 'liked'
+
+export type entityType = 'post' | 'comment' | 'reply'
+
 // interfaces
 
 export interface authorURL {

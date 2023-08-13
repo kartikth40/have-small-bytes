@@ -510,8 +510,8 @@ export const deletePostCommentRepliesQuery = gql`
 
 export const sendNotificationQuery = gql`
   mutation SendNotification(
-    $notifyType: String!
-    $entityType: String!
+    $notifyType: NotificationType!
+    $entityType: EntityType!
     $commentId: String!
     $postSlug: String!
     $entity: String!
@@ -530,8 +530,8 @@ export const sendNotificationQuery = gql`
           }
         }
         isRead: false
-        actor: { connect: { id: actorId } }
-        notifier: { connect: { id: notifierId } }
+        actor: { connect: { id: $actorId } }
+        notifier: { connect: { id: $notifierId } }
       }
     ) {
       id

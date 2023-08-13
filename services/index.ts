@@ -28,6 +28,8 @@ import {
   postsCountType,
   sendNotificationType,
   publishSendNotificationType,
+  notifyType,
+  entityType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -901,8 +903,8 @@ export const deleteCommentReplies = cache(
 
 export const sendNotification = cache(
   async (
-    notifyType: string,
-    entityType: string,
+    notifyType: notifyType,
+    entityType: entityType,
     commentId: string,
     postSlug: string,
     entity: string,

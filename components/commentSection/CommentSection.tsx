@@ -16,11 +16,21 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import RepliesSection from './RepliesSection'
-import { timeAgo } from '@/utils/functions'
+import { sendCommentNotification, timeAgo } from '@/utils/functions'
 
-type Props = { postId: string }
+type Props = {
+  postId: string
+  postSlug: string
+  postAuthor: string
+  postTitle: string
+}
 
-export default function CommentSection({ postId }: Props) {
+export default function CommentSection({
+  postId,
+  postSlug,
+  postAuthor,
+  postTitle,
+}: Props) {
   const { data: session, status } = useSession()
   const [currentComment, setCurrentComment] = useState<string>('')
   const [hideComments, setHideComments] = useState<boolean>(true)
@@ -107,11 +117,23 @@ export default function CommentSection({ postId }: Props) {
         toast.error('something went wrong! Please try again later.', {
           toastId: 'error_add_cmt',
         })
+        setPosting(false)
       } else {
         setCurrentComment('')
         await initializeComments()
+        setPosting(false)
+
+        const actorId = session?.user.id
+        const actor = session?.user.name
+        sendCommentNotification(
+          actor,
+          actorId,
+          postAuthor,
+          postTitle,
+          postSlug,
+          'commentId'
+        )
       }
-      setPosting(false)
     }
   }
   function handleDropdown(id: string) {

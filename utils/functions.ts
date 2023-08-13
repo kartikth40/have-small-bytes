@@ -1,3 +1,5 @@
+import { sendNotification } from '@/services'
+
 export function timeAgo(createdAt: string) {
   const date = new Date(createdAt)
   const now = new Date()
@@ -37,4 +39,24 @@ export function handleMouseFeedback() {
     mouseMark.classList.add('click')
     setTimeout(() => mouseMark.classList.remove('click'), 250)
   })
+}
+
+export async function sendCommentNotification(
+  actor: string,
+  actorId: string,
+  notifierId: string,
+  postTitle: string,
+  postSlug: string,
+  commentId: string
+) {
+  const entity = `${actor} commented on your post "${postTitle}"`
+  await sendNotification(
+    'commented',
+    'comment',
+    commentId,
+    postSlug,
+    entity,
+    actorId,
+    notifierId
+  )
 }
