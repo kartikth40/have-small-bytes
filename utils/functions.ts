@@ -12,14 +12,19 @@ export function timeAgo(createdAt: string) {
   // in minutes
   if (diffInHrs < 1) return `${Math.round(diffInHrs * 60)} min`
   // in hours
+  else if (diffInHrs === 1) return `1 hr`
   else if (diffInHrs < 24) return `${Math.round(diffInHrs)} hrs`
   // in days
+  else if (diffInHrs === 24) `1 day`
   else if (diffInHrs > 24 && diffInHrs < 24 * 30)
     return `${Math.round(diffInHrs / 24)} days`
   // in months
+  else if (diffInHrs >= 24 * 30 && diffInHrs < 24 * 30 * 2) return `1 month`
   else if (diffInHrs > 24 * 30 && diffInHrs < 24 * 30 * 12)
     return `${Math.round(diffInHrs / (24 * 30))} months`
   // in years
+  else if (diffInHrs >= 24 * 30 * 12 && diffInHrs < 24 * 30 * 12 * 2)
+    return `1 year`
   else return `${Math.round(diffInHrs / (24 * 30 * 12))} years`
 }
 
