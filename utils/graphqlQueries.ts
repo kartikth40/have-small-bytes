@@ -509,7 +509,7 @@ export const deletePostCommentRepliesQuery = gql`
 `
 
 export const sendNotificationQuery = gql`
-  mutation NewUser(
+  mutation SendNotification(
     $notifyType: String!
     $entityType: String!
     $commentId: String!
@@ -535,9 +535,14 @@ export const sendNotificationQuery = gql`
       }
     ) {
       id
-      publishNotification(where: { id: id }) {
-        id
-      }
+    }
+  }
+`
+
+export const publishSendNotificationQuery = gql`
+  mutation PublishNotification($id: ID!) {
+    publishNotification(where: { id: $id }) {
+      id
     }
   }
 `

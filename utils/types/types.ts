@@ -239,3 +239,15 @@ export interface postDeleteCommentRepliesType {
     count: number
   }
 }
+
+export interface sendNotificationType {
+  createNotification: {
+    id: string
+  }
+}
+
+export interface publishSendNotificationType {
+  publishNotification: {
+    id: string
+  }
+}
