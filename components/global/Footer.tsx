@@ -9,7 +9,8 @@ export default async function Footer({}: Props) {
   const { footerContainer, footer, logo, logoFooter, tagLine, copyrights } =
     styles
   const currentDate = new Date().getFullYear()
-  const authorId = (await myPortfolioURL('cljnzfe262fg50bporrbev7rp')) || '/'
+  const authorWebsiteUrl =
+    (await myPortfolioURL('cljnzfe262fg50bporrbev7rp')) || '/'
   return (
     <div className={footerContainer}>
       <div className={footer}>
@@ -28,7 +29,11 @@ export default async function Footer({}: Props) {
         </div>
         <div className={tagLine}>Have Small Bytes</div>
         <div className={copyrights}>
-          <Link href={authorId} rel="noopener noreferrer" target="_blank">
+          <Link
+            href={authorWebsiteUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             © Kartik Thakur {currentDate}
           </Link>
         </div>

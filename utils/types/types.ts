@@ -7,7 +7,7 @@ export type entityType = 'post' | 'comment' | 'reply'
 // interfaces
 
 export interface authorURL {
-  author: {
+  reader: {
     websiteUrl: string
   }
 }

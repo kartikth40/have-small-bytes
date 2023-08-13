@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 
 export const authorUrlQuery = gql`
   query GetauthorUrl($authorId: ID!) {
-    author(where: { id: $authorId }) {
+    reader(where: { id: $authorId }) {
       websiteUrl
     }
   }

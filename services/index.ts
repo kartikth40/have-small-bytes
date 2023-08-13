@@ -121,7 +121,7 @@ export const myPortfolioURL = cache(
       const result: authorURL = await request(graphqlAPI, authorUrlQuery, {
         authorId,
       })
-      return result.author.websiteUrl
+      return result.reader.websiteUrl
     }
     try {
       const res = await retryAPICall(thisFunction, 'extracting author URL')
