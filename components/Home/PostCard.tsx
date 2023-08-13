@@ -82,7 +82,12 @@ function PostCard({ post }: Props) {
       <div className={postReactionSection}>
         <div className={leftAlign}>
           <div className={userFeedbackContainer}>
-            <LikeButton postId={post.id} />
+            <LikeButton
+              postId={post.id}
+              postSlug={post.slug}
+              postAuthor={post.author.id}
+              postTitle={post.title}
+            />
             <CommentButton postId={post.id} slug={post.slug} />
           </div>
         </div>

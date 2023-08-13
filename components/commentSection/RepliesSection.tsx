@@ -95,7 +95,13 @@ export default function RepliesSection({
 
         const actorId = session?.user.id
         const actor = session?.user.name
-        sendReplyNotification(actor, actorId, postAuthor, postTitle, postSlug)
+        await sendReplyNotification(
+          actor,
+          actorId,
+          postAuthor,
+          postTitle,
+          postSlug
+        )
       }
     }
   }

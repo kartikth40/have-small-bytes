@@ -125,7 +125,13 @@ export default function CommentSection({
 
         const actorId = session?.user.id
         const actor = session?.user.name
-        sendCommentNotification(actor, actorId, postAuthor, postTitle, postSlug)
+        await sendCommentNotification(
+          actor,
+          actorId,
+          postAuthor,
+          postTitle,
+          postSlug
+        )
       }
     }
   }

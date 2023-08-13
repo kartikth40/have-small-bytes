@@ -905,12 +905,13 @@ export const sendNotification = cache(
   async (
     notifyType: notifyType,
     entityType: entityType,
-    commentId: string,
     postSlug: string,
     entity: string,
     actorId: string,
-    notifierId: string
+    notifierId: string,
+    commentId: string = ''
   ): Promise<boolean> => {
+    if (actorId === notifierId) return false
     async function thisFunction() {
       const noti: sendNotificationType = await request(
         graphqlAPI,

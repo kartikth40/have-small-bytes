@@ -10,15 +10,26 @@ import {
   getPostLikes,
 } from '@/services'
 import { toast } from 'react-toastify'
+import { sendLikeNotification } from '@/utils/functions'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
   '--i': number
   '--color': string
 }
 
-type Props = { postId: string }
+type Props = {
+  postId: string
+  postAuthor: string
+  postTitle: string
+  postSlug: string
+}
 
-export default function LikeButton({ postId }: Props) {
+export default function LikeButton({
+  postId,
+  postAuthor,
+  postTitle,
+  postSlug,
+}: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
   const [allowLiking, setAllowLiking] = useState<boolean>(false)
@@ -92,8 +103,18 @@ export default function LikeButton({ postId }: Props) {
       setLikeCount((prev) => prev + 1)
       setLiked(true)
       const result = await addPostLike(postId, session?.user.id)
-
-      if (!result) {
+      if (result) {
+        // send notification
+        const actorId = session?.user.id
+        const actor = session?.user.name
+        await sendLikeNotification(
+          actor,
+          actorId,
+          postAuthor,
+          postTitle,
+          postSlug
+        )
+      } else {
         toast.error('Something went wrong! Please try again later.')
         setLiked(false)
       }

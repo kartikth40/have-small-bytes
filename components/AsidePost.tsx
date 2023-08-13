@@ -17,7 +17,12 @@ async function Aside({ slug }: { slug: string }) {
         categories={post!.categories.map((category) => category.slug)}
       />
       <div className={userFeedbackContainerAside}>
-        <LikeButton postId={post.id} />
+        <LikeButton
+          postId={post.id}
+          postSlug={post.slug}
+          postAuthor={post.author.id}
+          postTitle={post.title}
+        />
         <CommentButton postId={post.id} canClick={true} />
       </div>
     </aside>
