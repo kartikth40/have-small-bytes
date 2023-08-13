@@ -12,11 +12,14 @@ import {
   updateComment,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { timeAgo } from '@/utils/functions'
+import { sendReplyNotification, timeAgo } from '@/utils/functions'
 
 type Props = {
   commentId: string
   postId: string
+  postSlug: string
+  postAuthor: string
+  postTitle: string
   open: string
   setOpen: Dispatch<SetStateAction<string>>
 }
@@ -24,6 +27,9 @@ type Props = {
 export default function RepliesSection({
   commentId,
   postId,
+  postSlug,
+  postAuthor,
+  postTitle,
   open,
   setOpen,
 }: Props) {
@@ -81,11 +87,16 @@ export default function RepliesSection({
       )
       if (!result) {
         toast.error('something went wrong! Please try again later.')
+        setPosting(false)
       } else {
         setCurrentReply('')
         await initialize()
+        setPosting(false)
+
+        const actorId = session?.user.id
+        const actor = session?.user.name
+        sendReplyNotification(actor, actorId, postAuthor, postTitle, postSlug)
       }
-      setPosting(false)
     }
   }
   function handleDropdown(id: string) {

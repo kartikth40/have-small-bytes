@@ -46,14 +46,34 @@ export async function sendCommentNotification(
   actorId: string,
   notifierId: string,
   postTitle: string,
-  postSlug: string,
-  commentId: string
+  postSlug: string
+  // commentId: string
 ) {
   const entity = `${actor} commented on your post "${postTitle}"`
   await sendNotification(
     'commented',
     'comment',
-    commentId,
+    '',
+    postSlug,
+    entity,
+    actorId,
+    notifierId
+  )
+}
+
+export async function sendReplyNotification(
+  actor: string,
+  actorId: string,
+  notifierId: string,
+  postTitle: string,
+  postSlug: string
+  // commentId: string
+) {
+  const entity = `${actor} replied on your comment on "${postTitle}"`
+  await sendNotification(
+    'replied',
+    'reply',
+    '',
     postSlug,
     entity,
     actorId,
