@@ -507,3 +507,37 @@ export const deletePostCommentRepliesQuery = gql`
     }
   }
 `
+
+export const sendNotificationQuery = gql`
+  mutation NewUser(
+    $notifyType: String!
+    $entityType: String!
+    $commentId: String!
+    $postSlug: String!
+    $entity: String!
+    $actorId: ID!
+    $notifierId: ID!
+  ) {
+    createNotification(
+      data: {
+        notifyType: $notifyType
+        entity: {
+          create: {
+            entityType: $entityType
+            commentId: $commentId
+            postSlug: $postSlug
+            entity: $entity
+          }
+        }
+        isRead: false
+        actor: { connect: { id: actorId } }
+        notifier: { connect: { id: notifierId } }
+      }
+    ) {
+      id
+      publishNotification(where: { id: id }) {
+        id
+      }
+    }
+  }
+`
