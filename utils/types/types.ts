@@ -257,3 +257,9 @@ export interface publishSendNotificationType {
     id: string
   }
 }
+
+export interface deleteNotificationType {
+  deleteNotification: {
+    id: string
+  }
+}

@@ -546,3 +546,11 @@ export const publishSendNotificationQuery = gql`
     }
   }
 `
+
+export const deleteNotificationQuery = gql`
+  mutation DeleteNotification($id: ID!) {
+    deleteNotification(where: { id: $id }) {
+      id
+    }
+  }
+`

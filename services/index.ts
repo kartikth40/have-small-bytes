@@ -30,6 +30,7 @@ import {
   publishSendNotificationType,
   notifyType,
   entityType,
+  deleteNotificationType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -51,6 +52,7 @@ import {
   authorUrlQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
+  deleteNotificationQuery,
   deletePostCommentQuery,
   deletePostCommentRepliesQuery,
   deletePostLikeQuery,
@@ -942,6 +944,29 @@ export const sendNotification = cache(
       return res
     } catch (err) {
       consoleLog(err, 'sending notification')
+
+      return false
+    }
+  }
+)
+
+export const deleteNotification = cache(
+  async (id: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: deleteNotificationType = await request(
+        graphqlAPI,
+        deleteNotificationQuery,
+        {
+          id,
+        }
+      )
+      return result.deleteNotification ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting notification')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting notification')
 
       return false
     }
