@@ -554,3 +554,17 @@ export const deleteNotificationQuery = gql`
     }
   }
 `
+
+export const deleteAllNotificationsQuery = gql`
+  mutation DeleteAllNotifications($notifierId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { notifier: { id: $notifierId } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
