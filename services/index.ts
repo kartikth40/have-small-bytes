@@ -34,6 +34,7 @@ import {
   DeleteAllNotificationsType,
   readNotificationType,
   readAllNotificationsType,
+  notificationsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -63,6 +64,7 @@ import {
   deleteReaderQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
+  getNotificationsQuery,
   getPostCommentsCountQuery,
   getPostCommentsQuery,
   getPostCommentsRepliesCountQuery,
@@ -905,6 +907,31 @@ export const deleteCommentReplies = cache(
       consoleLog(err, 'deleting post comment replies')
 
       return false
+    }
+  }
+)
+
+export const getNotifications = cache(
+  async (
+    notifierId: string
+  ): Promise<notificationsType['notifications'] | []> => {
+    async function thisFunction() {
+      const result: notificationsType = await request(
+        graphqlAPI,
+        getNotificationsQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.notifications
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'getting notifications')
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting notifications')
+
+      return []
     }
   }
 )

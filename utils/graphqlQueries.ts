@@ -508,6 +508,27 @@ export const deletePostCommentRepliesQuery = gql`
   }
 `
 
+export const getNotificationsQuery = gql`
+  query GetNotifications($notifierId: ID!) {
+    notifications(
+      orderBy: createdAt_DESC
+      where: { notifier: { id: $notifierId } }
+    ) {
+      id
+      createdAt
+      entity {
+        id
+        commentId
+        entity
+        entityType
+        postSlug
+      }
+      isRead
+      notifyType
+    }
+  }
+`
+
 export const sendNotificationQuery = gql`
   mutation SendNotification(
     $notifyType: NotificationType!

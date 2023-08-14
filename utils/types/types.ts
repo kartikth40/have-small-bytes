@@ -246,6 +246,22 @@ export interface postDeleteCommentRepliesType {
   }
 }
 
+export interface notificationsType {
+  notifications: [
+    id: string,
+    createdAt: string,
+    entity: {
+      id: string
+      commentId: string
+      entity: string
+      entityType: string
+      postSlug: string
+    },
+    isRead: boolean,
+    notifyType: string
+  ]
+}
+
 export interface sendNotificationType {
   createNotification: {
     id: string
