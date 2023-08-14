@@ -994,10 +994,38 @@ export const deleteAllNotifications = cache(
         : false
     }
     try {
-      const res = await retryAPICall(thisFunction, 'deleting notification')
+      const res = await retryAPICall(thisFunction, 'deleting all notifications')
       return res
     } catch (err) {
       consoleLog(err, 'deleting all notifications')
+
+      return false
+    }
+  }
+)
+export const deleteAllOlderNotifications = cache(
+  async (notifierId: string, date: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteAllNotificationsQuery,
+        {
+          notifierId,
+          date,
+        }
+      )
+      return result.deleteManyNotificationsConnection.edges.length > 0
+        ? true
+        : false
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'deleting older notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting older notifications')
 
       return false
     }

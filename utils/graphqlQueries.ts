@@ -569,6 +569,20 @@ export const deleteAllNotificationsQuery = gql`
   }
 `
 
+export const deleteAllOlderNotificationsQuery = gql`
+  mutation DeleteAllOlderNotifications($notifierId: ID!, $date: string!) {
+    deleteManyNotificationsConnection(
+      where: { notifier: { id: $notifierId }, createdAt_lt: $date }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
 export const readNotificationQuery = gql`
   mutation ReadNotification($id: ID!) {
     updateNotification(where: { id: $id }, data: { isRead: true }) {
