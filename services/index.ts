@@ -32,6 +32,8 @@ import {
   entityType,
   deleteNotificationType,
   DeleteAllNotificationsType,
+  readNotificationType,
+  readAllNotificationsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -70,6 +72,8 @@ import {
   loginQuery,
   newUserQuery,
   publishSendNotificationQuery,
+  readAllNotificationsQuery,
+  readNotificationQuery,
   resetPasswordQuery,
   sendNotificationQuery,
   updateCommentQuery,
@@ -994,6 +998,55 @@ export const deleteAllNotifications = cache(
       return res
     } catch (err) {
       consoleLog(err, 'deleting all notifications')
+
+      return false
+    }
+  }
+)
+
+export const readNotification = cache(async (id: string): Promise<boolean> => {
+  async function thisFunction() {
+    const result: readNotificationType = await request(
+      graphqlAPI,
+      readNotificationQuery,
+      {
+        id,
+      }
+    )
+    return result.updateNotification && result.publishNotification
+      ? true
+      : false
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'reading a notification')
+    return res
+  } catch (err) {
+    consoleLog(err, 'reading a notification')
+
+    return false
+  }
+})
+
+export const readAllNotifications = cache(
+  async (notifierId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: readAllNotificationsType = await request(
+        graphqlAPI,
+        readAllNotificationsQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.updateManyNotificationsConnection.edges.length > 0 &&
+        result.publishManyNotificationsConnection.edges.length > 0
+        ? true
+        : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'reading all notifications')
+      return res
+    } catch (err) {
+      consoleLog(err, 'reading all notifications')
 
       return false
     }

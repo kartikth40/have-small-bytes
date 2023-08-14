@@ -274,13 +274,16 @@ export interface DeleteAllNotificationsType {
   }
 }
 
-export interface updateNotificationType {
+export interface readNotificationType {
   updateNotification: {
+    id: string
+  }
+  publishNotification: {
     id: string
   }
 }
 
-export interface updateManyNotificationsType {
+export interface readAllNotificationsType {
   updateManyNotificationsConnection: {
     edges: [
       node?: {
@@ -288,9 +291,6 @@ export interface updateManyNotificationsType {
       }
     ]
   }
-}
-
-export interface publishManyNotificationsType {
   publishManyNotificationsConnection: {
     edges: [
       node?: {
