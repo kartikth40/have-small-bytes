@@ -273,3 +273,29 @@ export interface DeleteAllNotificationsType {
     ]
   }
 }
+
+export interface updateNotificationType {
+  updateNotification: {
+    id: string
+  }
+}
+
+export interface updateManyNotificationsType {
+  updateManyNotificationsConnection: {
+    edges: [
+      node?: {
+        id: string
+      }
+    ]
+  }
+}
+
+export interface publishManyNotificationsType {
+  publishManyNotificationsConnection: {
+    edges: [
+      node?: {
+        id: string
+      }
+    ]
+  }
+}

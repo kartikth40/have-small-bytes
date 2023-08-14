@@ -568,3 +568,38 @@ export const deleteAllNotificationsQuery = gql`
     }
   }
 `
+
+export const readNotificationQuery = gql`
+  mutation ReadNotification($id: ID!) {
+    updateNotification(where: { id: $id }, data: { isRead: true }) {
+      id
+    }
+    publishNotification(where: { id: $id }) {
+      id
+    }
+  }
+`
+
+export const readAllNotificationsQuery = gql`
+  mutation ReadAllNotifications($notifierId: ID!) {
+    updateManyNotificationsConnection(
+      where: { notifier: { id: $notifierId } }
+      data: { isRead: false }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+    publishManyNotificationsConnection(
+      where: { notifier: { id: $notifierId } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
