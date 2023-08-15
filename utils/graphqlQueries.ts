@@ -508,6 +508,16 @@ export const deletePostCommentRepliesQuery = gql`
   }
 `
 
+export const getUnreadNotificationsCountQuery = gql`
+  query GetNotificationsCount($notifierId: ID!) {
+    notificationsConnection(where: { notifier: { id: $notifierId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
 export const getNotificationsQuery = gql`
   query GetNotifications($notifierId: ID!) {
     notifications(

@@ -162,6 +162,7 @@
 }
 
 .profileBtn {
+  position: relative;
   border: none;
   padding: 0.2em 0.5em;
   margin-left: 1em;
@@ -176,6 +177,24 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
+  }
+
+  &::after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 7px;
+    aspect-ratio: 1;
+    background-color: var(--color-incorrect-red);
+    border-radius: 50%;
+  }
+
+  &.notify {
+    &::after {
+      display: block;
+    }
   }
 }
 

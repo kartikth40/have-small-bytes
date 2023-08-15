@@ -45,6 +45,7 @@ function Header({}: Props) {
     async function setCat() {
       setCategories(await getCategories())
     }
+
     handleMouseFeedback()
     setCat()
   }, [])

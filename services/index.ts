@@ -35,6 +35,7 @@ import {
   readNotificationType,
   readAllNotificationsType,
   notificationsType,
+  notificationsCountType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -71,6 +72,7 @@ import {
   getPostCommentsRepliesQuery,
   getPostLikesQuery,
   getPostsCountQuery,
+  getUnreadNotificationsCountQuery,
   loginQuery,
   newUserQuery,
   publishSendNotificationQuery,
@@ -907,6 +909,32 @@ export const deleteCommentReplies = cache(
       consoleLog(err, 'deleting post comment replies')
 
       return false
+    }
+  }
+)
+
+export const getNotificationsCount = cache(
+  async (notifierId: string): Promise<number> => {
+    async function thisFunction() {
+      const result: notificationsCountType = await request(
+        graphqlAPI,
+        getUnreadNotificationsCountQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.notificationsConnection.aggregate.count
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting unread notifications count'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting unread notifications count')
+
+      return 0
     }
   }
 )

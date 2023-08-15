@@ -246,6 +246,14 @@ export interface postDeleteCommentRepliesType {
   }
 }
 
+export interface notificationsCountType {
+  notificationsConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
+
 export interface notificationsType {
   notifications: [
     id: string,

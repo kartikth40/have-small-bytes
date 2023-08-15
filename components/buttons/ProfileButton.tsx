@@ -4,23 +4,31 @@ import styles from '@/app/page.module.scss'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { getNotificationsCount } from '@/services'
 
 type Props = {}
 
 export default function ProfileButton({}: Props) {
   const [isAuthor, setIsAuthor] = useState(false)
+  const [unReadNotifications, setUnReadNotifications] = useState(false)
   const { data: session } = useSession()
 
   useEffect(() => {
     if (session?.user) {
       setIsAuthor(session.user.isAuthor)
+      async function getNotif() {
+        const notif = await getNotificationsCount(session?.user.id!)
+        if (notif > 0) setUnReadNotifications(true)
+        else setUnReadNotifications(false)
+      }
+      getNotif()
     }
   }, [session])
 
-  const { profileBtn } = styles
+  const { profileBtn, notify } = styles
   if (session && session.user) {
     return (
-      <button className={profileBtn}>
+      <button className={`${profileBtn} ${unReadNotifications ? notify : ''}`}>
         <Link href="/reader/profile">
           {isAuthor ? (
             <Image
