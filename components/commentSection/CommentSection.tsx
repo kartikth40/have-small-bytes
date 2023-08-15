@@ -356,7 +356,7 @@ export default function CommentSection({
                   commentId={comment.id}
                   postId={postId}
                   postSlug={postSlug}
-                  postAuthor={postAuthor}
+                  commenter={comment.reader.id}
                   postTitle={postTitle}
                   open={openReplies}
                   setOpen={setOpenReplies}
