@@ -87,6 +87,7 @@
   font-weight: 500;
   margin-right: 1em;
   & > a {
+    position: relative;
     display: inline-block;
     width: 100%;
     margin: 0.7em 0;
@@ -165,6 +166,8 @@
     max-width: 60vw;
   }
   @include devices(mobile) {
+    width: 100%;
+    max-width: 100%;
     margin-top: 0.75rem;
     margin-inline: auto;
   }
@@ -323,14 +326,59 @@
 
 .notificationContainer {
   height: 100%;
+  width: 100%;
 
-  & .container {
-    & .notification {
-      border: 1px solid red;
-    }
+  --local-border-color: var(--color-back-3);
+  body:global(.darkTheme) & {
+    --local-border-color: var(--color-back-1);
   }
 
-  // @include devices(mobile) {
+  & .container {
+    width: 100%;
+    margin-top: 1em;
+    border: 1px solid var(--local-border-color);
+    border-radius: 5px;
+    & .notification {
+      margin: 0 1em;
+      padding: 1em 0.5em;
+      border-left: 1px solid var(--local-border-color);
+      border-right: 1px solid var(--local-border-color);
+      border-top: 1px solid var(--local-border-color);
+      cursor: pointer;
 
-  // }
+      &:hover {
+        background-color: var(--color-back-05);
+        text-decoration: underline;
+        body:global(.darkTheme) & {
+          text-decoration: none;
+        }
+      }
+
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+}
+
+.notify {
+  &::after {
+    content: '';
+    position: absolute;
+    transform: translate(10px, 0);
+    width: 7px;
+    aspect-ratio: 1;
+    background-color: var(--color-incorrect-red);
+    border-radius: 50%;
+  }
+}
+.notifyOnMenu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  aspect-ratio: 1;
+  background-color: var(--color-incorrect-red);
+  border-radius: 50%;
+  z-index: 150;
 }

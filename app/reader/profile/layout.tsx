@@ -4,9 +4,13 @@ import React, { useEffect, useState } from 'react'
 import styles from './page.module.scss'
 import SideMenu from '@/components/readerProfile/SideMenu'
 import { usePathname } from 'next/navigation'
+import { getNotificationsCount } from '@/services'
+import { useSession } from 'next-auth/react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [selected, setSelected] = useState<string>('profile')
+  const [unReadNotifications, setUnReadNotifications] = useState(false)
+  const { data: session } = useSession()
   const params = usePathname()
 
   useEffect(() => {
@@ -20,6 +24,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       setSelected('delete')
     }
   }, [params])
+
+  useEffect(() => {
+    async function getNotif() {
+      const notif = await getNotificationsCount(session?.user.id!)
+      if (notif > 0) setUnReadNotifications(true)
+      else setUnReadNotifications(false)
+    }
+    if (session?.user) getNotif()
+  }, [session])
 
   function addClass() {
     window.addEventListener('click', handleHide)
@@ -57,6 +70,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     contentContainer,
     menuOpener,
     open,
+    notifyOnMenu,
   } = styles
 
   return (
@@ -69,8 +83,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             id="menu-opener"
             onClick={(e) => handleClick(e)}
             className={menuOpener}
-          ></button>
-          <SideMenu selected={selected} setSelected={setSelected} />
+          >
+            <span
+              className={`${unReadNotifications ? notifyOnMenu : ''}`}
+            ></span>
+          </button>
+          <SideMenu
+            selected={selected}
+            setSelected={setSelected}
+            unReadNotifications={unReadNotifications}
+          />
           <div className={contentContainer}>{children}</div>
         </div>
       </div>

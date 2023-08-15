@@ -12,6 +12,7 @@ type Props = {}
 export default function ResetPassword({}: Props) {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
+  const [loadingNotifications, setLoadingNotifications] = useState(true)
   const [notifications, setNotifications] = useState<notificationType[] | []>(
     []
   )
@@ -20,6 +21,7 @@ export default function ResetPassword({}: Props) {
     async function getAllNotif() {
       if (session?.user?.id) {
         setNotifications(await getNotifications(session?.user.id))
+        setLoadingNotifications(false)
         console.log(await getNotifications(session?.user.id))
       }
     }
@@ -47,13 +49,17 @@ export default function ResetPassword({}: Props) {
         <h3>Notifications</h3>
       </div>
       <div className={container}>
-        {notifications.length > 0
-          ? notifications.map((not) => (
-              <div key={not.id} className={notification}>
-                {not.entity.entity}
-              </div>
-            ))
-          : 'No Notifications.'}
+        {notifications.length > 0 && !loadingNotifications ? (
+          notifications.map((not) => (
+            <div key={not.id} className={notification}>
+              {not.entity.entity}
+            </div>
+          ))
+        ) : loadingNotifications ? (
+          <div className={notification}>Loading Notifications...</div>
+        ) : (
+          <div className={notification}>No Notifications.</div>
+        )}
       </div>
     </div>
   )

@@ -8,10 +8,15 @@ import Link from 'next/link'
 type Props = {
   selected: string
   setSelected: React.Dispatch<React.SetStateAction<string>>
+  unReadNotifications: boolean
 }
 
-export default function SideMenu({ selected, setSelected }: Props) {
-  const { sideMenu, deleteBtn, selectedBtn } = styles
+export default function SideMenu({
+  selected,
+  setSelected,
+  unReadNotifications,
+}: Props) {
+  const { sideMenu, deleteBtn, selectedBtn, notify } = styles
 
   return (
     <div className={sideMenu}>
@@ -25,7 +30,9 @@ export default function SideMenu({ selected, setSelected }: Props) {
         Update Profile
       </Link>
       <Link
-        className={`${selected === 'notifications' && selectedBtn}`}
+        className={`${selected === 'notifications' && selectedBtn} ${
+          unReadNotifications ? notify : ''
+        }`}
         onClick={() => {
           setSelected('notifications')
         }}
