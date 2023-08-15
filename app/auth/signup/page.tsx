@@ -45,7 +45,11 @@ export default function SignUpPage() {
     name.current = e.target.value
 
     const validate = nameValidate(e.target.value)
-    if (e.target.value.length < (validate.minLength || 3)) return
+    if (e.target.value.length < (validate.minLength || 3)) {
+      setValidName(false)
+      setInvalidNameMsg('')
+      return
+    }
 
     if (validate.pass) {
       setValidName(true)
@@ -57,22 +61,30 @@ export default function SignUpPage() {
       }
     }
   }
+
+  async function handleEmailOnBlur(e: ChangeEvent<HTMLInputElement>) {
+    const emailAlreadyExists = await checkUserExists(e.target.value)
+    if (emailAlreadyExists) {
+      setInvalidEmailMsg('Email already exists.')
+    }
+  }
   async function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
     email.current = e.target.value
 
-    if (e.target.value.length < 3) return
+    if (e.target.value.length < 3) {
+      setValidEmail(false)
+      setInvalidEmailMsg('')
+      return
+    }
 
     const validate = emailValidate(e.target.value)
-    const emailAlreadyExists = await checkUserExists(e.target.value)
-    if (validate.pass && !emailAlreadyExists) {
+    if (validate.pass) {
       setValidEmail(true)
       setInvalidEmailMsg('')
     } else {
       setValidEmail(false)
       if (validate.error) {
         setInvalidEmailMsg(validate.error)
-      } else if (emailAlreadyExists) {
-        setInvalidEmailMsg('Email already exists.')
       }
     }
   }
@@ -80,7 +92,11 @@ export default function SignUpPage() {
     password.current = e.target.value
 
     const validate = passwordValidate(e.target.value)
-    if (e.target.value.length < (validate.minLength || 8)) return
+    if (e.target.value.length < (validate.minLength || 8)) {
+      setValidPassword(false)
+      setInvalidPasswordMsg('')
+      return
+    }
     if (validate.pass) {
       setValidPassword(true)
       setInvalidPasswordMsg('')
@@ -229,6 +245,7 @@ export default function SignUpPage() {
                 onChange={async (e) => {
                   await handleEmailChange(e)
                 }}
+                onBlur={(e) => handleEmailOnBlur(e)}
                 required
               />
               <span

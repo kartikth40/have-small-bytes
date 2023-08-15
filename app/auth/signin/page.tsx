@@ -34,9 +34,14 @@ export default function LoginPage() {
   function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
     email.current = e.target.value
 
-    if (e.target.value.length < 3) return
+    if (e.target.value.length < 3) {
+      setValidEmail(false)
+      setInvalidEmailMsg('')
+      return
+    }
 
     const validate = emailValidate(e.target.value)
+    console.log(validate, e.target.value)
     if (validate.pass) {
       setValidEmail(true)
       setInvalidEmailMsg('')
@@ -51,7 +56,12 @@ export default function LoginPage() {
     password.current = e.target.value
 
     const validate = passwordValidate(e.target.value)
-    if (e.target.value.length < (validate.minLength || 8)) return
+
+    if (e.target.value.length < (validate.minLength || 8)) {
+      setValidPassword(false)
+      setInvalidPasswordMsg('')
+      return
+    }
     if (validate.pass) {
       setValidPassword(true)
       setInvalidPasswordMsg('')
