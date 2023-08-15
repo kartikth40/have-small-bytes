@@ -12,6 +12,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (params === '/reader/profile') {
       setSelected('profile')
+    } else if (params === '/reader/profile/notifications') {
+      setSelected('notifications')
     } else if (params === '/reader/profile/reset-password') {
       setSelected('reset')
     } else if (params === '/reader/profile/delete-account') {

@@ -320,3 +320,17 @@
   font-size: 2em;
   font-weight: 900;
 }
+
+.notificationContainer {
+  height: 100%;
+
+  & .container {
+    & .notification {
+      border: 1px solid red;
+    }
+  }
+
+  // @include devices(mobile) {
+
+  // }
+}

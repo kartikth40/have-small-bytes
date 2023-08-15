@@ -25,6 +25,15 @@ export default function SideMenu({ selected, setSelected }: Props) {
         Update Profile
       </Link>
       <Link
+        className={`${selected === 'notifications' && selectedBtn}`}
+        onClick={() => {
+          setSelected('notifications')
+        }}
+        href="/reader/profile/notifications"
+      >
+        Notifications
+      </Link>
+      <Link
         className={`${selected === 'reset' && selectedBtn}`}
         onClick={() => {
           setSelected('reset')
