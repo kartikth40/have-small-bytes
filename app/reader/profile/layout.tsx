@@ -1,17 +1,16 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from './page.module.scss'
 import SideMenu from '@/components/readerProfile/SideMenu'
 import { usePathname } from 'next/navigation'
-import { getNotificationsCount } from '@/services'
 import { useSession } from 'next-auth/react'
+import { NotificationContext } from '@/components/global/NotificationContext'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [selected, setSelected] = useState<string>('profile')
-  const [unReadNotifications, setUnReadNotifications] = useState(false)
-  const { data: session } = useSession()
   const params = usePathname()
+  const { unread } = useContext(NotificationContext)
 
   useEffect(() => {
     if (params === '/reader/profile') {
@@ -24,15 +23,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       setSelected('delete')
     }
   }, [params])
-
-  useEffect(() => {
-    async function getNotif() {
-      const notif = await getNotificationsCount(session?.user.id!)
-      if (notif > 0) setUnReadNotifications(true)
-      else setUnReadNotifications(false)
-    }
-    if (session?.user) getNotif()
-  }, [session])
 
   function addClass() {
     window.addEventListener('click', handleHide)
@@ -84,14 +74,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             onClick={(e) => handleClick(e)}
             className={menuOpener}
           >
-            <span
-              className={`${unReadNotifications ? notifyOnMenu : ''}`}
-            ></span>
+            <span className={`${unread ? notifyOnMenu : ''}`}></span>
           </button>
           <SideMenu
             selected={selected}
             setSelected={setSelected}
-            unReadNotifications={unReadNotifications}
+            unReadNotifications={unread}
           />
           <div className={contentContainer}>{children}</div>
         </div>

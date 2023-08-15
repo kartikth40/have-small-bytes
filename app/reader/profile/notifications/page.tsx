@@ -1,11 +1,16 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '@/app/reader/profile/page.module.scss'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { getNotifications } from '@/services'
+import {
+  deleteAllNotifications,
+  getNotifications,
+  readAllNotifications,
+} from '@/services'
 import { notificationType } from '@/utils/types/types'
+import { NotificationContext } from '@/components/global/NotificationContext'
 
 type Props = {}
 
@@ -16,6 +21,8 @@ export default function ResetPassword({}: Props) {
   const [notifications, setNotifications] = useState<notificationType[] | []>(
     []
   )
+  const { unread, setUnread } = useContext(NotificationContext)
+  const router = useRouter()
 
   useEffect(() => {
     async function getAllNotif() {
@@ -34,6 +41,10 @@ export default function ResetPassword({}: Props) {
     notificationContainer,
     container,
     notification,
+    actionsContainer,
+    readAllBtn,
+    deleteAllBtn,
+    unRead,
   } = styles
 
   if (loading) {
@@ -43,15 +54,71 @@ export default function ResetPassword({}: Props) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
 
+  async function handleReadAll(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    const readAll = await readAllNotifications(session?.user.id!)
+    if (readAll) {
+      setNotifications(await getNotifications(session?.user.id!))
+      setUnread(false)
+    }
+    const button = e.target as HTMLElement
+    button.blur()
+  }
+
+  async function handleDeleteAll(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    const deleteAll = await deleteAllNotifications(session?.user.id!)
+    if (deleteAll) {
+      setNotifications([])
+      setUnread(false)
+    }
+    const button = e.target as HTMLElement
+    button.blur()
+  }
+
+  function handleNotificationClick(postSlug: string, commentId: string) {
+    console.log('CLICK')
+    if (commentId) {
+      router.push(`/post/${postSlug}/#comment-${commentId}`)
+    } else {
+      router.push(`/post/${postSlug}`)
+    }
+  }
+
   return (
     <div className={notificationContainer}>
       <div className={headingsContainer}>
         <h3>Notifications</h3>
       </div>
       <div className={container}>
+        <div className={actionsContainer}>
+          <button
+            className={readAllBtn}
+            onClick={async (e) => await handleReadAll(e)}
+          >
+            Read All
+          </button>
+          <button
+            className={deleteAllBtn}
+            onClick={async (e) => await handleDeleteAll(e)}
+          >
+            Delete All
+          </button>
+        </div>
         {notifications.length > 0 && !loadingNotifications ? (
           notifications.map((not) => (
-            <div key={not.id} className={notification}>
+            <div
+              key={not.id}
+              className={`${notification} ${!not.isRead ? unRead : ''}`}
+              onClick={() =>
+                handleNotificationClick(
+                  not.entity.postSlug,
+                  not.entity.commentId
+                )
+              }
+            >
               {not.entity.entity}
             </div>
           ))

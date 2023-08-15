@@ -510,7 +510,9 @@ export const deletePostCommentRepliesQuery = gql`
 
 export const getUnreadNotificationsCountQuery = gql`
   query GetNotificationsCount($notifierId: ID!) {
-    notificationsConnection(where: { notifier: { id: $notifierId } }) {
+    notificationsConnection(
+      where: { notifier: { id: $notifierId }, isRead: false }
+    ) {
       aggregate {
         count
       }
@@ -629,7 +631,7 @@ export const readAllNotificationsQuery = gql`
   mutation ReadAllNotifications($notifierId: ID!) {
     updateManyNotificationsConnection(
       where: { notifier: { id: $notifierId } }
-      data: { isRead: false }
+      data: { isRead: true }
     ) {
       edges {
         node {

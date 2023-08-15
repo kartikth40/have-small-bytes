@@ -51,8 +51,8 @@ export async function sendCommentNotification(
   actorId: string,
   notifierId: string,
   postTitle: string,
-  postSlug: string
-  // commentId: string
+  postSlug: string,
+  commentId: string
 ) {
   const entity = `${actor} commented on your post "${postTitle}"`
   await sendNotification(
@@ -62,7 +62,7 @@ export async function sendCommentNotification(
     entity,
     actorId,
     notifierId,
-    '' // will replace with commentId in future
+    commentId
   )
 }
 
@@ -71,8 +71,8 @@ export async function sendReplyNotification(
   actorId: string,
   notifierId: string,
   postTitle: string,
-  postSlug: string
-  // commentId: string
+  postSlug: string,
+  commentId: string
 ) {
   const entity = `${actor} replied on your comment on "${postTitle}"`
   await sendNotification(
@@ -82,7 +82,7 @@ export async function sendReplyNotification(
     entity,
     actorId,
     notifierId,
-    '' // will replace with commentId in future
+    commentId
   )
 }
 

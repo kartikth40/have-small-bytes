@@ -1113,6 +1113,9 @@ export const readNotification = cache(async (id: string): Promise<boolean> => {
 export const readAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {
     async function thisFunction() {
+      const unread = await getNotificationsCount(notifierId)
+      if (unread === 0) return false
+
       const result: readAllNotificationsType = await request(
         graphqlAPI,
         readAllNotificationsQuery,

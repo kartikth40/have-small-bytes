@@ -338,6 +338,34 @@
     margin-top: 1em;
     border: 1px solid var(--local-border-color);
     border-radius: 5px;
+
+    & .actionsContainer {
+      margin: 0.7em 1em;
+      display: flex;
+      justify-content: flex-start;
+      & .readAllBtn,
+      & .deleteAllBtn {
+        margin-right: 1em;
+        background-color: var(--color-back-01);
+        color: var(--color-foreground);
+        font-family: var(--font-inter);
+        padding: 0.3em 0.7em;
+        border-radius: 5px;
+        border: 1px solid var(--local-border-color);
+        box-shadow: 0 3px var(--local-border-color);
+        cursor: pointer;
+        transition: 0.15s all;
+        &:hover {
+          box-shadow: 0 2px var(--local-border-color);
+          transform: translateY(1px);
+        }
+        &:focus {
+          box-shadow: 0 0 var(--local-border-color);
+          transform: translateY(3px);
+        }
+      }
+    }
+
     & .notification {
       margin: 0 1em;
       padding: 1em 0.5em;
@@ -347,15 +375,20 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--color-back-05);
+        background-color: var(--color-back-03) !important;
         text-decoration: underline;
         body:global(.darkTheme) & {
           text-decoration: none;
         }
       }
 
-      &:first-child {
-        border-top: none;
+      &:nth-child(2) {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+
+      &.unRead {
+        background-color: var(--color-back-05);
       }
     }
   }
