@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.scss'
 import { signIn, useSession } from 'next-auth/react'
@@ -8,7 +8,12 @@ import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { checkUserExists } from '@/services'
 import { getRandomPhotoId } from '@/utils/constants/profilePicIds'
-import { signupValidation } from '@/utils/constants/formValidation'
+import {
+  emailValidate,
+  nameValidate,
+  passwordValidate,
+  signupValidation,
+} from '@/utils/constants/formValidation'
 
 export default function SignUpPage() {
   const { data: session, status: sessionStatus } = useSession()
@@ -24,18 +29,81 @@ export default function SignUpPage() {
     }
   }, [router, shouldRedirect])
 
+  const [validName, setValidName] = useState(false)
+  const [validEmail, setValidEmail] = useState(false)
+  const [validPassword, setValidPassword] = useState(false)
+  const [invalidNameMsg, setInvalidNameMsg] = useState('')
+  const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
+  const [invalidPasswordMsg, setInvalidPasswordMsg] = useState('')
+
+  const name = useRef('')
+  const email = useRef('')
+  const password = useRef('')
+  const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
+
+  function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
+    name.current = e.target.value
+
+    const validate = nameValidate(e.target.value)
+    if (e.target.value.length < (validate.minLength || 3)) return
+
+    if (validate.pass) {
+      setValidName(true)
+      setInvalidNameMsg('')
+    } else {
+      setValidName(false)
+      if (validate.error) {
+        setInvalidNameMsg(validate.error)
+      }
+    }
+  }
+  async function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
+    email.current = e.target.value
+
+    if (e.target.value.length < 3) return
+
+    const validate = emailValidate(e.target.value)
+    const emailAlreadyExists = await checkUserExists(e.target.value)
+    if (validate.pass && !emailAlreadyExists) {
+      setValidEmail(true)
+      setInvalidEmailMsg('')
+    } else {
+      setValidEmail(false)
+      if (validate.error) {
+        setInvalidEmailMsg(validate.error)
+      } else if (emailAlreadyExists) {
+        setInvalidEmailMsg('Email already exists.')
+      }
+    }
+  }
+  function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
+    password.current = e.target.value
+
+    const validate = passwordValidate(e.target.value)
+    if (e.target.value.length < (validate.minLength || 8)) return
+    if (validate.pass) {
+      setValidPassword(true)
+      setInvalidPasswordMsg('')
+    } else {
+      setValidPassword(false)
+      if (validate.error) {
+        setInvalidPasswordMsg(validate.error)
+      }
+    }
+  }
+
   const {
     headingsContainer,
     mainContainer,
     loginBtnContainer,
     login,
     loadingState,
+    inputContainer,
+    userInputsContainer,
+    validationMark,
+    validated,
+    invalidate,
   } = styles
-
-  const name = useRef('')
-  const email = useRef('')
-  const password = useRef('')
-  const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
 
   if (shouldRedirect)
     return <div className={loadingState}>Redirecting to home page...</div>
@@ -133,44 +201,63 @@ export default function SignUpPage() {
             <h3>Sign Up</h3>
           </div>
           {/* Name */}
-          <input
-            type="text"
-            placeholder="Enter Name"
-            name="name"
-            onChange={(e) => {
-              name.current = e.target.value
-            }}
-            required
-          />
+          <div className={userInputsContainer}>
+            <div className={inputContainer}>
+              <input
+                type="text"
+                placeholder="Enter Name"
+                name="name"
+                onChange={(e) => {
+                  handleNameChange(e)
+                }}
+                required
+              />
+              <span
+                data-tooltip={invalidNameMsg}
+                className={`${validationMark} ${validName ? validated : ''} ${
+                  invalidNameMsg !== '' ? invalidate : ''
+                }`}
+              ></span>
+            </div>
+            {/* Email */}
+            <div className={inputContainer}>
+              <input
+                type="email"
+                placeholder="Enter Email"
+                name="email"
+                onChange={async (e) => {
+                  await handleEmailChange(e)
+                }}
+                required
+              />
+              <span
+                data-tooltip={invalidEmailMsg}
+                className={`${validationMark} ${validEmail ? validated : ''} ${
+                  invalidEmailMsg !== '' ? invalidate : ''
+                }`}
+              ></span>
+            </div>
 
-          <br />
-          <br />
-          {/* Email */}
-          <input
-            type="email"
-            placeholder="Enter Email"
-            name="email"
-            onChange={(e) => {
-              email.current = e.target.value
-            }}
-            required
-          />
+            {/* Password */}
+            <div className={inputContainer}>
+              <input
+                type="password"
+                placeholder="Enter Password"
+                name="pswrd"
+                onChange={(e) => {
+                  handlePasswordChange(e)
+                }}
+                required
+              />
+              <span
+                data-tooltip={invalidPasswordMsg}
+                className={`${validationMark} ${
+                  validPassword ? validated : ''
+                } ${invalidPasswordMsg !== '' ? invalidate : ''}`}
+              ></span>
+            </div>
+          </div>
 
-          <br />
-          <br />
-
-          {/* Password */}
-          <input
-            type="password"
-            placeholder="Enter Password"
-            name="pswrd"
-            onChange={(e) => {
-              password.current = e.target.value
-            }}
-            required
-          />
-          <br />
-          <br />
           <div className={loginBtnContainer}>
             <button type="submit" disabled={signingIn}>
               Create Account

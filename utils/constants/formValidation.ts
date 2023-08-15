@@ -1,6 +1,7 @@
 interface response {
   pass: boolean
   error: string
+  minLength?: number
 }
 
 export function nameValidate(
@@ -11,7 +12,7 @@ export function nameValidate(
   const zeroLengthError = 'Name is required!'
   const sizeError = `Name must be ${minLength} - ${maxLength} characters long!`
 
-  const response: response = { pass: true, error: '' }
+  const response: response = { pass: true, error: '', minLength: minLength }
 
   if (name.length === 0) {
     response.pass = false
@@ -57,7 +58,7 @@ export function passwordValidate(
   const underSizeError = `Password must be atleast ${minLength} characters long!`
   const overSizeError = `Password must be atmost ${maxLength} characters long!`
 
-  const response: response = { pass: true, error: '' }
+  const response: response = { pass: true, error: '', minLength: minLength }
 
   if (password.length === 0) {
     response.pass = false
