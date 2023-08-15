@@ -1,3 +1,5 @@
+@import '../../globals.scss';
+
 .loadingState {
   height: 70vh;
   display: flex;
@@ -31,42 +33,136 @@
   & button {
     cursor: pointer;
   }
-  & input {
-    background-color: var(--color-back-1);
-    color: var(--color-primary-white);
-    width: 100%;
-    border: 2px solid var(--color-back-1);
-    font-size: 1.5em;
+  & .userInputsContainer {
+    margin-bottom: 2em;
+
+    & .inputContainer {
+      margin-bottom: 1.3em;
+      position: relative;
+      & input {
+        box-sizing: border-box;
+        background-color: var(--color-back-1);
+        color: var(--color-primary-white);
+        width: 100%;
+        border: 1px solid var(--color-front-2);
+        font-size: 1.5em;
+        padding: 0.5em 1em;
+        padding-right: 1.5em;
+        border-radius: 10px;
+        outline: none;
+        body:global(.darkTheme) & {
+          border: 1px solid var(--color-back-2);
+        }
+      }
+      & label {
+        font-size: 1em;
+        font-weight: 100;
+      }
+      & .validationMark {
+        position: absolute;
+        width: 1.5em;
+        aspect-ratio: 1;
+        right: 0.5em;
+        top: 50%;
+        background-color: var(--color-correct-green);
+        border-radius: 50%;
+        transform: translateY(-50%) scale(0);
+
+        &.validated,
+        &.invalidate {
+          transform: translateY(-50%) scale(1);
+        }
+        &:not(.invalidate) {
+          &::before {
+            display: none;
+          }
+        }
+
+        &::before,
+        &::after {
+          position: absolute;
+          content: '';
+        }
+
+        &:hover::before {
+          transform: translate(-50%, 0) scale(1);
+          @include devices(mobile) {
+            transform: translate(0, 0) scale(1);
+          }
+        }
+
+        &::before {
+          content: attr(data-tooltip);
+          z-index: 1;
+          top: -200%;
+          left: 50%;
+          transform: translate(-50%, 0) scale(0);
+          transition: 0.15s transform;
+          transform-origin: center bottom;
+          width: max-content;
+          max-width: 80vw;
+          padding: 0.5em;
+          border-radius: 5px;
+          background-color: var(--color-primary-black);
+          border: 1px solid var(--color-back-3);
+          color: var(--color-primary-white);
+
+          @include devices(mobile) {
+            left: unset;
+            right: 0;
+            transform: translate(0, 0) scale(0);
+          }
+        }
+        &::after {
+          position: absolute;
+          content: '';
+          width: 0.5em;
+          height: 0.2em;
+          background-color: transparent;
+          left: 50%;
+          top: 50%;
+          border-radius: 0.1em;
+          transform: translate(-50%, -50%) rotate(-45deg);
+          border-bottom: 0.2em solid #fff;
+          border-left: 0.2em solid #fff;
+        }
+
+        &.invalidate {
+          background-color: var(--color-incorrect-red);
+          &::after {
+            width: max-content;
+            height: unset;
+            content: '!';
+            transform: translate(-50%, -50%);
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.loginBtnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & button {
+    font-size: 1.2em;
     padding: 0.5em 1em;
-    border-radius: 10px;
-    outline: none;
-  }
-  & label {
-    font-size: 1em;
-    font-weight: 100;
-  }
-  & .loginBtnContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: none;
+    background-color: var(--color-primary-white);
+    color: var(--color-primary-black);
+    border-radius: 5px;
+    text-transform: uppercase;
 
-    & button {
-      font-size: 1.2em;
-      padding: 0.5em 1em;
-      border: none;
-      background-color: var(--color-primary-white);
-      color: var(--color-primary-black);
-      border-radius: 5px;
-      text-transform: uppercase;
-
-      cursor: pointer;
-      &:hover {
-        opacity: 0.7;
-      }
-      &:disabled {
-        cursor: wait;
-        color: grey;
-      }
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+    &:disabled {
+      cursor: wait;
+      color: grey;
     }
   }
 }

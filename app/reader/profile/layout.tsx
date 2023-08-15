@@ -1,17 +1,22 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from './page.module.scss'
 import SideMenu from '@/components/readerProfile/SideMenu'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { NotificationContext } from '@/components/global/NotificationContext'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [selected, setSelected] = useState<string>('profile')
   const params = usePathname()
+  const { unread } = useContext(NotificationContext)
 
   useEffect(() => {
     if (params === '/reader/profile') {
       setSelected('profile')
+    } else if (params === '/reader/profile/notifications') {
+      setSelected('notifications')
     } else if (params === '/reader/profile/reset-password') {
       setSelected('reset')
     } else if (params === '/reader/profile/delete-account') {
@@ -55,6 +60,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     contentContainer,
     menuOpener,
     open,
+    notifyOnMenu,
   } = styles
 
   return (
@@ -67,8 +73,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             id="menu-opener"
             onClick={(e) => handleClick(e)}
             className={menuOpener}
-          ></button>
-          <SideMenu selected={selected} setSelected={setSelected} />
+          >
+            <span className={`${unread ? notifyOnMenu : ''}`}></span>
+          </button>
+          <SideMenu
+            selected={selected}
+            setSelected={setSelected}
+            unReadNotifications={unread}
+          />
           <div className={contentContainer}>{children}</div>
         </div>
       </div>

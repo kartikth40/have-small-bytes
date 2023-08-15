@@ -508,6 +508,39 @@ export const deletePostCommentRepliesQuery = gql`
   }
 `
 
+export const getUnreadNotificationsCountQuery = gql`
+  query GetNotificationsCount($notifierId: ID!) {
+    notificationsConnection(
+      where: { notifier: { id: $notifierId }, isRead: false }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+export const getNotificationsQuery = gql`
+  query GetNotifications($notifierId: ID!) {
+    notifications(
+      orderBy: createdAt_DESC
+      where: { notifier: { id: $notifierId } }
+    ) {
+      id
+      createdAt
+      entity {
+        id
+        commentId
+        entity
+        entityType
+        postSlug
+      }
+      isRead
+      notifyType
+    }
+  }
+`
+
 export const sendNotificationQuery = gql`
   mutation SendNotification(
     $notifyType: NotificationType!
@@ -543,6 +576,77 @@ export const publishSendNotificationQuery = gql`
   mutation PublishNotification($id: ID!) {
     publishNotification(where: { id: $id }) {
       id
+    }
+  }
+`
+
+export const deleteNotificationQuery = gql`
+  mutation DeleteNotification($id: ID!) {
+    deleteNotification(where: { id: $id }) {
+      id
+    }
+  }
+`
+
+export const deleteAllNotificationsQuery = gql`
+  mutation DeleteAllNotifications($notifierId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { notifier: { id: $notifierId } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const deleteAllOlderNotificationsQuery = gql`
+  mutation DeleteAllOlderNotifications($notifierId: ID!, $date: string!) {
+    deleteManyNotificationsConnection(
+      where: { notifier: { id: $notifierId }, createdAt_lt: $date }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const readNotificationQuery = gql`
+  mutation ReadNotification($id: ID!) {
+    updateNotification(where: { id: $id }, data: { isRead: true }) {
+      id
+    }
+    publishNotification(where: { id: $id }) {
+      id
+    }
+  }
+`
+
+export const readAllNotificationsQuery = gql`
+  mutation ReadAllNotifications($notifierId: ID!) {
+    updateManyNotificationsConnection(
+      where: { notifier: { id: $notifierId } }
+      data: { isRead: true }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+    publishManyNotificationsConnection(
+      where: { notifier: { id: $notifierId } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
     }
   }
 `

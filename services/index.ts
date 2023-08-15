@@ -30,6 +30,12 @@ import {
   publishSendNotificationType,
   notifyType,
   entityType,
+  deleteNotificationType,
+  DeleteAllNotificationsType,
+  readNotificationType,
+  readAllNotificationsType,
+  notificationsType,
+  notificationsCountType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -51,21 +57,27 @@ import {
   authorUrlQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
+  deleteAllNotificationsQuery,
+  deleteNotificationQuery,
   deletePostCommentQuery,
   deletePostCommentRepliesQuery,
   deletePostLikeQuery,
   deleteReaderQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
+  getNotificationsQuery,
   getPostCommentsCountQuery,
   getPostCommentsQuery,
   getPostCommentsRepliesCountQuery,
   getPostCommentsRepliesQuery,
   getPostLikesQuery,
   getPostsCountQuery,
+  getUnreadNotificationsCountQuery,
   loginQuery,
   newUserQuery,
   publishSendNotificationQuery,
+  readAllNotificationsQuery,
+  readNotificationQuery,
   resetPasswordQuery,
   sendNotificationQuery,
   updateCommentQuery,
@@ -901,6 +913,57 @@ export const deleteCommentReplies = cache(
   }
 )
 
+export const getNotificationsCount = cache(
+  async (notifierId: string): Promise<number> => {
+    async function thisFunction() {
+      const result: notificationsCountType = await request(
+        graphqlAPI,
+        getUnreadNotificationsCountQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.notificationsConnection.aggregate.count
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting unread notifications count'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting unread notifications count')
+
+      return 0
+    }
+  }
+)
+
+export const getNotifications = cache(
+  async (
+    notifierId: string
+  ): Promise<notificationsType['notifications'] | []> => {
+    async function thisFunction() {
+      const result: notificationsType = await request(
+        graphqlAPI,
+        getNotificationsQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.notifications
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'getting notifications')
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting notifications')
+
+      return []
+    }
+  }
+)
+
 export const sendNotification = cache(
   async (
     notifyType: notifyType,
@@ -942,6 +1005,134 @@ export const sendNotification = cache(
       return res
     } catch (err) {
       consoleLog(err, 'sending notification')
+
+      return false
+    }
+  }
+)
+
+export const deleteNotification = cache(
+  async (id: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: deleteNotificationType = await request(
+        graphqlAPI,
+        deleteNotificationQuery,
+        {
+          id,
+        }
+      )
+      return result.deleteNotification ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting notification')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting notification')
+
+      return false
+    }
+  }
+)
+
+export const deleteAllNotifications = cache(
+  async (notifierId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteAllNotificationsQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.deleteManyNotificationsConnection.edges.length > 0
+        ? true
+        : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting all notifications')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting all notifications')
+
+      return false
+    }
+  }
+)
+export const deleteAllOlderNotifications = cache(
+  async (notifierId: string, date: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteAllNotificationsQuery,
+        {
+          notifierId,
+          date,
+        }
+      )
+      return result.deleteManyNotificationsConnection.edges.length > 0
+        ? true
+        : false
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'deleting older notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting older notifications')
+
+      return false
+    }
+  }
+)
+
+export const readNotification = cache(async (id: string): Promise<boolean> => {
+  async function thisFunction() {
+    const result: readNotificationType = await request(
+      graphqlAPI,
+      readNotificationQuery,
+      {
+        id,
+      }
+    )
+    return result.updateNotification && result.publishNotification
+      ? true
+      : false
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'reading a notification')
+    return res
+  } catch (err) {
+    consoleLog(err, 'reading a notification')
+
+    return false
+  }
+})
+
+export const readAllNotifications = cache(
+  async (notifierId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const unread = await getNotificationsCount(notifierId)
+      if (unread === 0) return false
+
+      const result: readAllNotificationsType = await request(
+        graphqlAPI,
+        readAllNotificationsQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.updateManyNotificationsConnection.edges.length > 0 &&
+        result.publishManyNotificationsConnection.edges.length > 0
+        ? true
+        : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'reading all notifications')
+      return res
+    } catch (err) {
+      consoleLog(err, 'reading all notifications')
 
       return false
     }

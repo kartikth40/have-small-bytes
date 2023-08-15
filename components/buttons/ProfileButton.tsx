@@ -2,14 +2,16 @@
 import { useSession } from 'next-auth/react'
 import styles from '@/app/page.module.scss'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
+import { NotificationContext } from '../global/NotificationContext'
 
 type Props = {}
 
 export default function ProfileButton({}: Props) {
   const [isAuthor, setIsAuthor] = useState(false)
   const { data: session } = useSession()
+  const { unread } = useContext(NotificationContext)
 
   useEffect(() => {
     if (session?.user) {
@@ -17,10 +19,10 @@ export default function ProfileButton({}: Props) {
     }
   }, [session])
 
-  const { profileBtn } = styles
+  const { profileBtn, notify } = styles
   if (session && session.user) {
     return (
-      <button className={profileBtn}>
+      <button className={`${profileBtn} ${unread ? notify : ''}`}>
         <Link href="/reader/profile">
           {isAuthor ? (
             <Image

@@ -18,7 +18,7 @@ type Props = {
   commentId: string
   postId: string
   postSlug: string
-  postAuthor: string
+  commenter: string
   postTitle: string
   open: string
   setOpen: Dispatch<SetStateAction<string>>
@@ -28,7 +28,7 @@ export default function RepliesSection({
   commentId,
   postId,
   postSlug,
-  postAuthor,
+  commenter,
   postTitle,
   open,
   setOpen,
@@ -110,12 +110,14 @@ export default function RepliesSection({
 
         const actorId = session?.user.id
         const actor = session?.user.name
+        const cmntId = postId
         await sendReplyNotification(
           actor,
           actorId,
-          postAuthor,
+          commenter,
           postTitle,
-          postSlug
+          postSlug,
+          cmntId
         )
       }
     }

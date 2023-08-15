@@ -140,12 +140,14 @@ export default function CommentSection({
 
         const actorId = session?.user.id
         const actor = session?.user.name
+        const commentId = postId
         await sendCommentNotification(
           actor,
           actorId,
           postAuthor,
           postTitle,
-          postSlug
+          postSlug,
+          commentId
         )
       }
     }
@@ -354,7 +356,7 @@ export default function CommentSection({
                   commentId={comment.id}
                   postId={postId}
                   postSlug={postSlug}
-                  postAuthor={postAuthor}
+                  commenter={comment.reader.id}
                   postTitle={postTitle}
                   open={openReplies}
                   setOpen={setOpenReplies}

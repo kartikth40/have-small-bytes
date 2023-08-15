@@ -246,6 +246,32 @@ export interface postDeleteCommentRepliesType {
   }
 }
 
+export interface notificationsCountType {
+  notificationsConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
+
+export interface notificationType {
+  id: string
+  createdAt: string
+  entity: {
+    id: string
+    commentId: string
+    entity: string
+    entityType: string
+    postSlug: string
+  }
+  isRead: boolean
+  notifyType: string
+}
+
+export interface notificationsType {
+  notifications: [notificationType]
+}
+
 export interface sendNotificationType {
   createNotification: {
     id: string
@@ -255,5 +281,47 @@ export interface sendNotificationType {
 export interface publishSendNotificationType {
   publishNotification: {
     id: string
+  }
+}
+
+export interface deleteNotificationType {
+  deleteNotification: {
+    id: string
+  }
+}
+
+export interface DeleteAllNotificationsType {
+  deleteManyNotificationsConnection: {
+    edges: [
+      node?: {
+        id: string
+      }
+    ]
+  }
+}
+
+export interface readNotificationType {
+  updateNotification: {
+    id: string
+  }
+  publishNotification: {
+    id: string
+  }
+}
+
+export interface readAllNotificationsType {
+  updateManyNotificationsConnection: {
+    edges: [
+      node?: {
+        id: string
+      }
+    ]
+  }
+  publishManyNotificationsConnection: {
+    edges: [
+      node?: {
+        id: string
+      }
+    ]
   }
 }
