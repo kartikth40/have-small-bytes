@@ -1,12 +1,16 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.scss'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
-import { signinValidation } from '@/utils/constants/formValidation'
+import {
+  emailValidate,
+  passwordValidate,
+  signinValidation,
+} from '@/utils/constants/formValidation'
 
 export default function LoginPage() {
   const { data: session, status: sessionStatus } = useSession()
@@ -22,6 +26,43 @@ export default function LoginPage() {
     }
   }, [router, shouldRedirect])
 
+  const [validEmail, setValidEmail] = useState(false)
+  const [validPassword, setValidPassword] = useState(false)
+  const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
+  const [invalidPasswordMsg, setInvalidPasswordMsg] = useState('')
+
+  function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
+    email.current = e.target.value
+
+    if (e.target.value.length < 3) return
+
+    const validate = emailValidate(e.target.value)
+    if (validate.pass) {
+      setValidEmail(true)
+      setInvalidEmailMsg('')
+    } else {
+      setValidEmail(false)
+      if (validate.error) {
+        setInvalidEmailMsg(validate.error)
+      }
+    }
+  }
+  function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
+    password.current = e.target.value
+
+    const validate = passwordValidate(e.target.value)
+    if (e.target.value.length < (validate.minLength || 8)) return
+    if (validate.pass) {
+      setValidPassword(true)
+      setInvalidPasswordMsg('')
+    } else {
+      setValidPassword(false)
+      if (validate.error) {
+        setInvalidPasswordMsg(validate.error)
+      }
+    }
+  }
+
   const {
     headingsContainer,
     mainContainer,
@@ -29,6 +70,11 @@ export default function LoginPage() {
     loginBtnContainer,
     forgetPass,
     loadingState,
+    userInputsContainer,
+    inputContainer,
+    validationMark,
+    validated,
+    invalidate,
   } = styles
 
   const email = useRef('')
@@ -86,32 +132,45 @@ export default function LoginPage() {
           <h3>Welcome Back</h3>
         </div>
         {/* Email */}
-        <input
-          type="email"
-          placeholder="Enter Email"
-          name="email"
-          onChange={(e) => {
-            email.current = e.target.value
-          }}
-          required
-        />
+        <div className={userInputsContainer}>
+          <div className={inputContainer}>
+            <input
+              type="email"
+              placeholder="Enter Email"
+              name="email"
+              onChange={(e) => {
+                handleEmailChange(e)
+              }}
+              required
+            />
+            <span
+              data-tooltip={invalidEmailMsg}
+              className={`${validationMark} ${validEmail ? validated : ''} ${
+                invalidEmailMsg !== '' ? invalidate : ''
+              }`}
+            ></span>
+          </div>
+          <div className={inputContainer}>
+            {' '}
+            {/* Password */}
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="pswrd"
+              onChange={(e) => {
+                handlePasswordChange(e)
+              }}
+              required
+            />{' '}
+            <span
+              data-tooltip={invalidPasswordMsg}
+              className={`${validationMark} ${validPassword ? validated : ''} ${
+                invalidPasswordMsg !== '' ? invalidate : ''
+              }`}
+            ></span>
+          </div>
+        </div>
 
-        <br />
-        <br />
-
-        {/* Password */}
-        <input
-          type="password"
-          placeholder="Enter Password"
-          name="pswrd"
-          onChange={(e) => {
-            password.current = e.target.value
-          }}
-          required
-        />
-        <br />
-        <br />
-        <br />
         <div className={loginBtnContainer}>
           <button type="submit" disabled={signingIn}>
             Login

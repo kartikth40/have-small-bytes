@@ -193,6 +193,7 @@ export default function SignUpPage() {
       }
     }
   }
+
   return (
     <>
       <div className={mainContainer}>
@@ -200,8 +201,8 @@ export default function SignUpPage() {
           <div className={headingsContainer}>
             <h3>Sign Up</h3>
           </div>
-          {/* Name */}
           <div className={userInputsContainer}>
+            {/* Name */}
             <div className={inputContainer}>
               <input
                 type="text"
