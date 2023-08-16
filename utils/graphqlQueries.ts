@@ -603,7 +603,7 @@ export const deleteAllNotificationsQuery = gql`
 `
 
 export const deleteAllOlderNotificationsQuery = gql`
-  mutation DeleteAllOlderNotifications($notifierId: ID!, $date: string!) {
+  mutation DeleteAllOlderNotifications($notifierId: ID!, $date: DateTime!) {
     deleteManyNotificationsConnection(
       where: { notifier: { id: $notifierId }, createdAt_lt: $date }
     ) {

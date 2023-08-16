@@ -58,6 +58,7 @@ import {
   checkEmailQuery,
   checkIfPostLikeQuery,
   deleteAllNotificationsQuery,
+  deleteAllOlderNotificationsQuery,
   deleteNotificationQuery,
   deletePostCommentQuery,
   deletePostCommentRepliesQuery,
@@ -1011,28 +1012,6 @@ export const sendNotification = cache(
   }
 )
 
-export const deleteNotification = cache(
-  async (id: string): Promise<boolean> => {
-    async function thisFunction() {
-      const result: deleteNotificationType = await request(
-        graphqlAPI,
-        deleteNotificationQuery,
-        {
-          id,
-        }
-      )
-      return result.deleteNotification ? true : false
-    }
-    try {
-      const res = await retryAPICall(thisFunction, 'deleting notification')
-      return res
-    } catch (err) {
-      consoleLog(err, 'deleting notification')
-
-      return false
-    }
-  }
-)
 
 export const deleteAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {
@@ -1063,7 +1042,7 @@ export const deleteAllOlderNotifications = cache(
     async function thisFunction() {
       const result: DeleteAllNotificationsType = await request(
         graphqlAPI,
-        deleteAllNotificationsQuery,
+        deleteAllOlderNotificationsQuery,
         {
           notifierId,
           date,
@@ -1086,29 +1065,6 @@ export const deleteAllOlderNotifications = cache(
     }
   }
 )
-
-export const readNotification = cache(async (id: string): Promise<boolean> => {
-  async function thisFunction() {
-    const result: readNotificationType = await request(
-      graphqlAPI,
-      readNotificationQuery,
-      {
-        id,
-      }
-    )
-    return result.updateNotification && result.publishNotification
-      ? true
-      : false
-  }
-  try {
-    const res = await retryAPICall(thisFunction, 'reading a notification')
-    return res
-  } catch (err) {
-    consoleLog(err, 'reading a notification')
-
-    return false
-  }
-})
 
 export const readAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {

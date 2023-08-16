@@ -389,8 +389,24 @@
 
       &.unRead {
         background-color: var(--color-back-05);
+        position: relative;
+        overflow: hidden;
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 5px;
+          height: 100%;
+          background-color: var(--color-incorrect-red);
+        }
       }
     }
+  }
+  & > p {
+    margin-top: 1em;
+    font-size: 0.7em;
+    font-weight: 400;
   }
 }
 

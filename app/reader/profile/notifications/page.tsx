@@ -6,6 +6,7 @@ import { redirect, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   deleteAllNotifications,
+  deleteAllOlderNotifications,
   getNotifications,
   readAllNotifications,
 } from '@/services'
@@ -25,14 +26,21 @@ export default function ResetPassword({}: Props) {
   const router = useRouter()
 
   useEffect(() => {
-    async function getAllNotif() {
-      if (session?.user?.id) {
-        setNotifications(await getNotifications(session?.user.id))
-        setLoadingNotifications(false)
-        console.log(await getNotifications(session?.user.id))
-      }
+    async function deleteOldNotif() {
+      const olderDate = new Date()
+      olderDate.setDate(olderDate.getDate() - 30)
+      const olderDateString = olderDate.toISOString()
+      await deleteAllOlderNotifications(session?.user.id!, olderDateString)
     }
-    getAllNotif()
+    async function getAllNotif() {
+      setNotifications(await getNotifications(session?.user.id!))
+      setLoadingNotifications(false)
+    }
+
+    if (session?.user?.id) {
+      deleteOldNotif()
+      getAllNotif()
+    }
   }, [session])
 
   const {
@@ -128,6 +136,11 @@ export default function ResetPassword({}: Props) {
           <div className={notification}>No Notifications.</div>
         )}
       </div>
+      {notifications.length > 0 ? (
+        <p>*Notifications will be deleted automatically after 30 days.</p>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
