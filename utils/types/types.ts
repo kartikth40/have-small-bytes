@@ -254,11 +254,36 @@ export interface notificationsCountType {
   }
 }
 
-export interface deleteSpecificNotificationType {
-  deleteManyNotificationsConnection: {
-    aggregate: {
-      count: number
-    }
+export interface getSpecificNotificationType {
+  notificationsConnection: {
+    edges: [
+      {
+        node?: {
+          id?: string
+        }
+      }
+    ]
+  }
+}
+
+export interface deleteCommentNotificationType {
+  comment: {
+    edges: [
+      {
+        node?: {
+          id?: string
+        }
+      }
+    ]
+  }
+  replies: {
+    edges: [
+      {
+        node?: {
+          id?: string
+        }
+      }
+    ]
   }
 }
 

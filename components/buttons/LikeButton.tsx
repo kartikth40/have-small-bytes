@@ -4,9 +4,9 @@ import { CSSProperties, useState, useEffect } from 'react'
 import styles from './feedbackBtn.module.scss'
 import { useSession } from 'next-auth/react'
 import {
-  DeleteLikeNotification,
   addPostLike,
   checkPostLike,
+  deleteLikeNotification,
   deletePostLike,
   getPostLikes,
   sendNotification,
@@ -99,7 +99,7 @@ export default function LikeButton({
       const deleteLike = await deletePostLike(postId, session?.user.id)
       if (deleteLike) {
         const actorId = session?.user.id
-        DeleteLikeNotification(actorId, postAuthor, postId)
+        deleteLikeNotification(actorId, postAuthor, postId)
       } else {
         setLiked(true)
         toast.error('Something went wrong! Please try again later.')
@@ -121,6 +121,7 @@ export default function LikeButton({
     setLikeCount((await getPostLikes(postId)) || 0)
     setUpdating(false)
   }
+
   return (
     <button className={Btn_container}>
       {loading || !allowLiking ? (

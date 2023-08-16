@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { getPostCommentType } from '@/utils/types/types'
 import {
-  DeleteReplyNotification,
+  deleteReplyNotification,
   addCommentReply,
   deleteComment,
   getCommentReplies,
@@ -129,7 +129,7 @@ export default function RepliesSection({
       toast.error('something went wrong! Please try again later.')
     } else {
       await initialize()
-      DeleteReplyNotification(session?.user.id!, commenter, postId, id)
+      deleteReplyNotification(session?.user.id!, commenter, id)
     }
   }
   async function handleDelete(id: string) {

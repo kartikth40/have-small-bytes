@@ -527,19 +527,18 @@ export const getNotificationsQuery = gql`
       where: { notifier: { id: $notifierId } }
     ) {
       id
-    post {
-      id
-      slug
-      title
-    }
-    isRead
-    notifyType
-    actor {
-      id
-      name
-    }
-    createdAt
-  }
+      post {
+        id
+        slug
+        title
+      }
+      isRead
+      notifyType
+      actor {
+        id
+        name
+      }
+      createdAt
     }
   }
 `
@@ -567,6 +566,27 @@ export const sendNotificationQuery = gql`
   }
 `
 
+export const sendLikeNotificationQuery = gql`
+  mutation SendNotification(
+    $notifyType: NotificationType!
+    $actorId: ID!
+    $notifierId: ID!
+    $postId: ID!
+  ) {
+    createNotification(
+      data: {
+        isRead: false
+        notifyType: $notifyType
+        actor: { connect: { id: $actorId } }
+        notifier: { connect: { id: $notifierId } }
+        post: { connect: { id: $postId } }
+      }
+    ) {
+      id
+    }
+  }
+`
+
 export const publishSendNotificationQuery = gql`
   mutation PublishNotification($id: ID!) {
     publishNotification(where: { id: $id }) {
@@ -583,87 +603,65 @@ export const deleteNotificationQuery = gql`
   }
 `
 
-export const deleteLikeNotificationQuery = gql`
-  mutation DeleteLikeNotification(
-    $actorId: ID!
-    $notifierId: ID!
-    $postId: String!
-  ) {
-    deleteManyNotificationsConnection(
+export const getLikeNotificationToDeleteQuery = gql`
+  query GetLikeNotification($actorId: ID!, $notifierId: ID!, $postId: ID!) {
+    notificationsConnection(
       first: 1
       where: {
+        notifyType: liked
         actor: { id: $actorId }
         notifier: { id: $notifierId }
-        notifyType: liked
         post: { id: $postId }
       }
     ) {
-      aggregate {
-        count
+      edges {
+        node {
+          id
+        }
       }
     }
   }
 `
 
 export const deleteCommentNotificationQuery = gql`
-  mutation DeleteCommentNotification(
-    $actorId: ID!
-    $notifierId: ID!
-    $postId: String!
-    $commentId: String!
-  ) {
-    deleteManyNotificationsConnection(
+  query GetCommentNotification($commentId: ID!) {
+    comment: deleteManyNotificationsConnection(
       first: 1
-      where: {
-        actor: { id: $actorId }
-        notifier: { id: $notifierId }
-        notifyType: commented
-        post: { id: $postId }
-        comment: { id: $commentId }
-      }
+      where: { comment: { id: $commentId } }
     ) {
-      aggregate {
-        count
+      edges {
+        node {
+          id
+        }
       }
     }
-    deleteManyNotificationsConnection(
-      where: {
-        actor: { id: $actorId }
-        notifier: { id: $notifierId }
-        notifyType: replied
-        post: { id: $postId }
-        comment: { replyToCommentId: { id: $commentId } }
-      }
+
+    replies: deleteManyNotificationsConnection(
+      where: { comment: { replyToCommentId: { id: $commentId } } }
     ) {
-      aggregate {
-        count
+      edges {
+        node {
+          id
+        }
       }
     }
   }
 `
 
 export const deleteReplyNotificationQuery = gql`
-  mutation DeleteReplyNotification(
-    $actorId: ID!
-    $notifierId: ID!
-    $postId: String!
-    $replyId: String!
+  query DeleteReplyNotification(
+    $replyId: ID!
   ) {
-    deleteManyNotificationsConnection(
+    replies: deleteManyNotificationsConnection(
       first: 1
-      where: {
-        actor: { id: $actorId }
-        notifier: { id: $notifierId }
-        notifyType: replied
-        post: { id: $postId }
-        comment: { id: $replyId }
-      }
+      where: { comment: { replyToCommentId: { id: $replyId } } }
     ) {
-      aggregate {
-        count
+      edges {
+        node {
+          id
+        }
       }
     }
-  }
 `
 
 export const deleteAllNotificationsQuery = gql`

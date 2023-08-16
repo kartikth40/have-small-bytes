@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import styles from './commentSection.module.scss'
 import { getPostCommentType } from '@/utils/types/types'
 import {
-  DeleteCommentNotification,
   addComment,
   deleteComment,
+  deleteCommentNotification,
   deleteCommentReplies,
   getCommentRepliesCount,
   getComments,
@@ -192,7 +192,7 @@ export default function CommentSection({
       return
     }
     await initializeComments()
-    await DeleteCommentNotification(session?.user.id!, postAuthor, postId, id)
+    await deleteCommentNotification(session?.user.id!, postAuthor, id)
   }
 
   async function handleReplyClick(commentId: string) {
