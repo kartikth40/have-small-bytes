@@ -530,10 +530,12 @@ export const getNotificationsQuery = gql`
       createdAt
       entity {
         id
-        commentId
         entity
         entityType
         postSlug
+        postId
+        commentId
+        replyId
       }
       isRead
       notifyType
@@ -545,11 +547,13 @@ export const sendNotificationQuery = gql`
   mutation SendNotification(
     $notifyType: NotificationType!
     $entityType: EntityType!
-    $commentId: String!
-    $postSlug: String!
     $entity: String!
     $actorId: ID!
     $notifierId: ID!
+    $postSlug: String!
+    $postId: String!
+    $commentId: String!
+    $replyId: String!
   ) {
     createNotification(
       data: {
@@ -560,6 +564,8 @@ export const sendNotificationQuery = gql`
             commentId: $commentId
             postSlug: $postSlug
             entity: $entity
+            postId: $postId
+            replyId: $replyId
           }
         }
         isRead: false

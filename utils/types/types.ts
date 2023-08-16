@@ -259,10 +259,12 @@ export interface notificationType {
   createdAt: string
   entity: {
     id: string
-    commentId: string
     entity: string
     entityType: string
     postSlug: string
+    postId: string
+    commentId: string
+    replyId: string
   }
   isRead: boolean
   notifyType: string

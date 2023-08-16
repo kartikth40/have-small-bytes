@@ -86,10 +86,9 @@ export default function ResetPassword({}: Props) {
     button.blur()
   }
 
-  function handleNotificationClick(postSlug: string, commentId: string) {
-    console.log('CLICK')
-    if (commentId) {
-      router.push(`/post/${postSlug}/#comment-${commentId}`)
+  function handleNotificationClick(postSlug: string, postId: string) {
+    if (postId) {
+      router.push(`/post/${postSlug}/#comment-${postId}`)
     } else {
       router.push(`/post/${postSlug}`)
     }
@@ -121,10 +120,7 @@ export default function ResetPassword({}: Props) {
               key={not.id}
               className={`${notification} ${!not.isRead ? unRead : ''}`}
               onClick={() =>
-                handleNotificationClick(
-                  not.entity.postSlug,
-                  not.entity.commentId
-                )
+                handleNotificationClick(not.entity.postSlug, not.entity.postId)
               }
             >
               {not.entity.entity}

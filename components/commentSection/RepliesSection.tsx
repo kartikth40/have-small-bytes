@@ -110,14 +110,14 @@ export default function RepliesSection({
 
         const actorId = session?.user.id
         const actor = session?.user.name
-        const cmntId = postId
         await sendReplyNotification(
           actor,
           actorId,
           commenter,
           postTitle,
           postSlug,
-          cmntId
+          postId,
+          '' // replyId
         )
       }
     }

@@ -32,7 +32,6 @@ import {
   entityType,
   deleteNotificationType,
   DeleteAllNotificationsType,
-  readNotificationType,
   readAllNotificationsType,
   notificationsType,
   notificationsCountType,
@@ -78,7 +77,6 @@ import {
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
-  readNotificationQuery,
   resetPasswordQuery,
   sendNotificationQuery,
   updateCommentQuery,
@@ -974,11 +972,13 @@ export const sendNotification = cache(
   async (
     notifyType: notifyType,
     entityType: entityType,
-    postSlug: string,
     entity: string,
     actorId: string,
     notifierId: string,
-    commentId: string = ''
+    postSlug: string,
+    postId: string,
+    commentId: string,
+    replyId: string
   ): Promise<boolean> => {
     if (actorId === notifierId) return false
     async function thisFunction() {
@@ -988,11 +988,13 @@ export const sendNotification = cache(
         {
           notifyType,
           entityType,
-          commentId,
-          postSlug,
           entity,
           actorId,
           notifierId,
+          postSlug,
+          postId,
+          commentId,
+          replyId,
         }
       )
       const id = noti.createNotification.id
@@ -1064,6 +1066,29 @@ export const deleteAllOlderNotifications = cache(
       return res
     } catch (err) {
       consoleLog(err, 'deleting older notifications')
+
+      return false
+    }
+  }
+)
+
+export const deleteNotification = cache(
+  async (id: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: deleteNotificationType = await request(
+        graphqlAPI,
+        deleteNotificationQuery,
+        {
+          id,
+        }
+      )
+      return result.deleteNotification ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting notification')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting notification')
 
       return false
     }

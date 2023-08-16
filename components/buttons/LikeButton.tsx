@@ -115,7 +115,8 @@ export default function LikeButton({
           actorId,
           postAuthor,
           postTitle,
-          postSlug
+          postSlug,
+          postId
         )
       } else {
         toast.error('Something went wrong! Please try again later.')

@@ -52,17 +52,20 @@ export async function sendCommentNotification(
   notifierId: string,
   postTitle: string,
   postSlug: string,
+  postId: string,
   commentId: string
 ) {
   const entity = `${actor} commented on your post "${postTitle}"`
   await sendNotification(
     'commented',
     'comment',
-    postSlug,
     entity,
     actorId,
     notifierId,
-    commentId
+    postSlug,
+    postId,
+    commentId,
+    ''
   )
 }
 
@@ -72,17 +75,20 @@ export async function sendReplyNotification(
   notifierId: string,
   postTitle: string,
   postSlug: string,
-  commentId: string
+  postId: string,
+  replyId: string
 ) {
   const entity = `${actor} replied on your comment on "${postTitle}"`
   await sendNotification(
     'replied',
     'reply',
-    postSlug,
     entity,
     actorId,
     notifierId,
-    commentId
+    postSlug,
+    postId,
+    '',
+    replyId
   )
 }
 
@@ -91,8 +97,19 @@ export async function sendLikeNotification(
   actorId: string,
   notifierId: string,
   postTitle: string,
-  postSlug: string
+  postSlug: string,
+  postId: string
 ) {
   const entity = `${actor} Liked your post "${postTitle}"`
-  await sendNotification('liked', 'post', postSlug, entity, actorId, notifierId)
+  await sendNotification(
+    'liked',
+    'post',
+    entity,
+    actorId,
+    notifierId,
+    postSlug,
+    postId,
+    '',
+    ''
+  )
 }
