@@ -1,8 +1,7 @@
 @import '../../app/globals.scss';
 .commentSectionContainer {
-  border: 2px solid var(--color-back-1);
-  box-shadow: 0 0 10px var(--color-shadow-2);
   border-radius: 10px;
+  border: 1px solid var(--color-back-5);
   padding: 2em;
   width: 90%;
   margin-inline: auto;
@@ -10,6 +9,7 @@
   scroll-margin-top: 5em;
   body:global(.darkTheme) & {
     background-color: var(--color-back-01);
+    border: 1px solid var(--color-back-1);
   }
 
   @include devices(mobile) {
