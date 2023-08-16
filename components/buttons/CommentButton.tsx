@@ -4,12 +4,18 @@ import styles from './feedbackBtn.module.scss'
 import { getCommentsCount } from '@/services'
 import Link from 'next/link'
 
-type Props = { postId: string; slug?: string; canClick?: boolean }
+type Props = {
+  postId: string
+  slug?: string
+  canClick?: boolean
+  showCount?: boolean
+}
 
 export default function CommentButton({
   postId,
   slug = '',
   canClick = false,
+  showCount = true,
 }: Props) {
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
@@ -27,6 +33,7 @@ export default function CommentButton({
     comment,
     commentCountContainer,
     commentSpinner,
+    showCommentCount,
   } = styles
 
   function handleClick() {
@@ -65,7 +72,13 @@ export default function CommentButton({
         </div>
       )}
 
-      <span className={commentCountContainer}>{commentsCount}</span>
+      <span
+        className={`${commentCountContainer} ${
+          showCount ? showCommentCount : ''
+        }`}
+      >
+        {commentsCount}
+      </span>
     </button>
   )
 }

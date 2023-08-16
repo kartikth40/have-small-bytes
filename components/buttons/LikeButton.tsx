@@ -22,6 +22,7 @@ type Props = {
   postAuthor: string
   postTitle: string
   postSlug: string
+  showCount?: boolean
 }
 
 export default function LikeButton({
@@ -29,6 +30,7 @@ export default function LikeButton({
   postAuthor,
   postTitle,
   postSlug,
+  showCount = true,
 }: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
@@ -66,6 +68,7 @@ export default function LikeButton({
     particle,
     likeCountContainer,
     likeSpinner,
+    showLikeCount,
   } = styles
 
   async function handleLikeClick() {
@@ -174,7 +177,11 @@ export default function LikeButton({
           </div>
         </div>
       )}
-      <span className={likeCountContainer}>{likeCount}</span>
+      <span
+        className={`${likeCountContainer} ${showCount ? showLikeCount : ''}`}
+      >
+        {likeCount}
+      </span>
     </button>
   )
 }

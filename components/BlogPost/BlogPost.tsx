@@ -1,23 +1,27 @@
-import styles from '../../app/post/[slug]/page.module.scss'
+import postStyles from '@/app/post/[slug]/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
 import { postType } from '@/utils/types/types'
 import { myPortfolioURL } from '@/services'
 import Markdown from './Markdown'
+import LikeButton from '../buttons/LikeButton'
+import CommentButton from '../buttons/CommentButton'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
     blogPostContainer,
     postContent,
     postHeroImg,
-    authorInfoContainerStart,
+    postInfoInfoContainerStart,
     date,
     icon,
     authorInfo,
     authorName,
     authorImage,
-  } = styles
+    userFeedbackContainerOnTop,
+    feedbackBtnsContainer,
+  } = postStyles
 
   const authorWebsiteUrl = (await myPortfolioURL(post.author.id)) || '/'
   return (
@@ -32,7 +36,7 @@ export default async function BlogPost({ post }: { post: postType }) {
       </div>
       <div className={blogPostContainer}>
         <h1>{post.title}</h1>
-        <div className={authorInfoContainerStart}>
+        <div className={postInfoInfoContainerStart}>
           <Link
             href={`${authorWebsiteUrl}`}
             className={authorInfo}
@@ -64,6 +68,18 @@ export default async function BlogPost({ post }: { post: postType }) {
         </div>
         <div className={postContent}>
           <Markdown content={post.content} />
+        </div>
+        <div className={userFeedbackContainerOnTop}>
+          <div className={feedbackBtnsContainer}>
+            <LikeButton
+              postId={post.id}
+              postSlug={post.slug}
+              postAuthor={post.author.id}
+              postTitle={post.title}
+              showCount={false}
+            />
+            <CommentButton postId={post.id} canClick={true} showCount={false} />
+          </div>
         </div>
       </div>
     </>
