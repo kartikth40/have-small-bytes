@@ -147,6 +147,14 @@
     margin-block: 1rem;
   }
 
+  & blockquote {
+    font-size: 1.4em;
+    background: var(--color-back-05);
+    border-left: 10px solid var(--color-back-3);
+    margin: 1em 0;
+    padding: 0.1em 15px;
+  }
+
   pre {
     max-width: 70vw;
     overflow-x: auto;
