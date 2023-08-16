@@ -566,12 +566,13 @@ export const getPostLikes = cache(async (postId: string): Promise<number> => {
 })
 
 export const addPostLike = cache(
-  async (
-    postId: string,
-    readerId: string
-  ): Promise<postAddLikePublishType['publishPostLike'] | null> => {
+  async (postId: string, readerId: string): Promise<boolean> => {
     async function thisFunction() {
       const postPlusReaderId = postId + readerId
+
+      const isLiked = await checkPostLike(postId, readerId)
+      if (isLiked) return true
+
       const like: postAddLikeType = await request(
         graphqlAPI,
         addPostLikeQuery,
@@ -590,7 +591,7 @@ export const addPostLike = cache(
           likeId,
         }
       )
-      return result.publishPostLike
+      return result.publishPostLike ? true : false
     }
     try {
       const res = await retryAPICall(thisFunction, 'adding like to posts')
@@ -598,7 +599,7 @@ export const addPostLike = cache(
     } catch (err) {
       consoleLog(err, 'adding like to posts')
 
-      return null
+      return false
     }
   }
 )
@@ -631,6 +632,10 @@ export const deletePostLike = cache(
   async (postId: string, readerId: string): Promise<boolean> => {
     async function thisFunction() {
       const postPlusReaderId = postId + readerId
+
+      const isLiked = await checkPostLike(postId, readerId)
+      if (!isLiked) return true
+
       const result: postDeleteLikeType = await request(
         graphqlAPI,
         deletePostLikeQuery,
@@ -1011,7 +1016,6 @@ export const sendNotification = cache(
     }
   }
 )
-
 
 export const deleteAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {
