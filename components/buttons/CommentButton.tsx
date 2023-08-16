@@ -46,7 +46,7 @@ export default function CommentButton({
       ) : (
         <div className={Btn_wrapper}>
           {canClick ? (
-            <a href={`#comment-${postId}`}>
+            <a href={`#comment-section-${postId}`}>
               <svg
                 className={comment}
                 width="24"

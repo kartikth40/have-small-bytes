@@ -1,4 +1,8 @@
-import { sendNotification } from '@/services'
+import {
+  deleteAllCommentRepliesNotification,
+  deleteSpecificNotification,
+  sendNotification,
+} from '@/services'
 
 export function timeAgo(createdAt: string) {
   const date = new Date(createdAt)
@@ -112,4 +116,53 @@ export async function sendLikeNotification(
     '',
     ''
   )
+}
+
+export async function deleteCommentNotification(
+  actorId: string,
+  notifierId: string,
+  postId: string,
+  commentId: string
+) {
+  await deleteAllCommentRepliesNotification(
+    actorId,
+    notifierId,
+    'replied',
+    postId,
+    '',
+    commentId
+  )
+
+  await deleteSpecificNotification(
+    actorId,
+    notifierId,
+    'commented',
+    postId,
+    commentId,
+    ''
+  )
+}
+
+export async function deleteReplyNotification(
+  actorId: string,
+  notifierId: string,
+  postId: string,
+  replyId: string
+) {
+  await deleteSpecificNotification(
+    actorId,
+    notifierId,
+    'replied',
+    postId,
+    '',
+    replyId
+  )
+}
+
+export async function deleteLikeNotification(
+  actorId: string,
+  notifierId: string,
+  postId: string
+) {
+  await deleteSpecificNotification(actorId, notifierId, 'liked', postId, '', '')
 }

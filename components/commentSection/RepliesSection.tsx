@@ -12,7 +12,11 @@ import {
   updateComment,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { sendReplyNotification, timeAgo } from '@/utils/functions'
+import {
+  deleteReplyNotification,
+  sendReplyNotification,
+  timeAgo,
+} from '@/utils/functions'
 
 type Props = {
   commentId: string
@@ -136,6 +140,7 @@ export default function RepliesSection({
       toast.error('something went wrong! Please try again later.')
     } else {
       await initialize()
+      deleteReplyNotification(session?.user.id!, commenter, postId, id)
     }
   }
   async function handleDelete(id: string) {
@@ -162,7 +167,11 @@ export default function RepliesSection({
             replies.map(
               (comment, idx) =>
                 idx < (expand ? replies.length : 5) && (
-                  <div key={comment.id} className={commentContainer}>
+                  <div
+                    key={comment.id}
+                    id={`reply-${comment.id}`}
+                    className={commentContainer}
+                  >
                     <div className={aboveCommentContent}>
                       <div className={readerContainer}>
                         <div className={readerAvatar}>

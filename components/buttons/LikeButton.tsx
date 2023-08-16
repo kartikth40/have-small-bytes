@@ -10,7 +10,7 @@ import {
   getPostLikes,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { sendLikeNotification } from '@/utils/functions'
+import { deleteLikeNotification, sendLikeNotification } from '@/utils/functions'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
   '--i': number
@@ -96,8 +96,10 @@ export default function LikeButton({
       setLiked(false)
       setLikeCount((prev) => prev - 1)
       const deleteLike = await deletePostLike(postId, session?.user.id)
-
-      if (!deleteLike) {
+      if (deleteLike) {
+        const actorId = session?.user.id
+        deleteLikeNotification(actorId, postAuthor, postId)
+      } else {
         setLiked(true)
         toast.error('Something went wrong! Please try again later.')
       }

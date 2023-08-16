@@ -254,20 +254,28 @@ export interface notificationsCountType {
   }
 }
 
+export interface deleteSpecificNotificationType {
+  deleteManyNotificationsConnection: {
+    aggregate: {
+      count: number
+    }
+  }
+}
+
 export interface notificationType {
   id: string
-  createdAt: string
-  entity: {
+  post: {
     id: string
-    entity: string
-    entityType: string
-    postSlug: string
-    postId: string
-    commentId: string
-    replyId: string
+    slug: string
+    title: string
   }
   isRead: boolean
   notifyType: string
+  actor: {
+    id: string
+    name: string
+  }
+  createdAt: string
 }
 
 export interface notificationsType {

@@ -34,6 +34,7 @@ export default function ResetPassword({}: Props) {
     }
     async function getAllNotif() {
       setNotifications(await getNotifications(session?.user.id!))
+      console.log(await getNotifications(session?.user.id!))
       setLoadingNotifications(false)
     }
 
@@ -88,7 +89,7 @@ export default function ResetPassword({}: Props) {
 
   function handleNotificationClick(postSlug: string, postId: string) {
     if (postId) {
-      router.push(`/post/${postSlug}/#comment-${postId}`)
+      router.push(`/post/${postSlug}/#comment-section-${postId}`)
     } else {
       router.push(`/post/${postSlug}`)
     }
@@ -123,7 +124,7 @@ export default function ResetPassword({}: Props) {
                 handleNotificationClick(not.entity.postSlug, not.entity.postId)
               }
             >
-              {not.entity.entity}
+              {not.entity?.entity}
             </div>
           ))
         ) : loadingNotifications ? (
