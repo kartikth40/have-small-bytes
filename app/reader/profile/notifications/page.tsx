@@ -95,6 +95,20 @@ export default function ResetPassword({}: Props) {
     }
   }
 
+  function printNotification(
+    actor: string,
+    post: string,
+    notificationType: string
+  ) {
+    if (notificationType === 'liked') {
+      return `${actor} liked your post "${post}"`
+    } else if (notificationType === 'commented') {
+      return `${actor} commented on your post "${post}"`
+    } else if (notificationType === 'replied') {
+      return `${actor} replied on your comment on "${post}"`
+    } else return 'Ooops! Something went wrong.'
+  }
+
   return (
     <div className={notificationContainer}>
       <div className={headingsContainer}>
@@ -121,10 +135,14 @@ export default function ResetPassword({}: Props) {
               key={not.id}
               className={`${notification} ${!not.isRead ? unRead : ''}`}
               onClick={() =>
-                handleNotificationClick(not.entity.postSlug, not.entity.postId)
+                handleNotificationClick(not.post.slug, not.post.id)
               }
             >
-              {not.entity?.entity}
+              {printNotification(
+                not.actor.name,
+                not.post.title,
+                not.notifyType
+              )}
             </div>
           ))
         ) : loadingNotifications ? (

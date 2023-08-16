@@ -4,13 +4,14 @@ import { CSSProperties, useState, useEffect } from 'react'
 import styles from './feedbackBtn.module.scss'
 import { useSession } from 'next-auth/react'
 import {
+  DeleteLikeNotification,
   addPostLike,
   checkPostLike,
   deletePostLike,
   getPostLikes,
+  sendNotification,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { deleteLikeNotification, sendLikeNotification } from '@/utils/functions'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
   '--i': number
@@ -98,7 +99,7 @@ export default function LikeButton({
       const deleteLike = await deletePostLike(postId, session?.user.id)
       if (deleteLike) {
         const actorId = session?.user.id
-        deleteLikeNotification(actorId, postAuthor, postId)
+        DeleteLikeNotification(actorId, postAuthor, postId)
       } else {
         setLiked(true)
         toast.error('Something went wrong! Please try again later.')
@@ -111,15 +112,7 @@ export default function LikeButton({
       if (result) {
         // send notification
         const actorId = session?.user.id
-        const actor = session?.user.name
-        await sendLikeNotification(
-          actor,
-          actorId,
-          postAuthor,
-          postTitle,
-          postSlug,
-          postId
-        )
+        await sendNotification('liked', actorId, postAuthor, postId)
       } else {
         toast.error('Something went wrong! Please try again later.')
         setLiked(false)

@@ -754,7 +754,7 @@ export const addCommentReply = cache(
     postId: string,
     readerId: string,
     commentId: string
-  ): Promise<boolean> => {
+  ): Promise<string> => {
     async function thisFunction() {
       const reply: postAddCommentType = await request(
         graphqlAPI,
@@ -775,7 +775,7 @@ export const addCommentReply = cache(
           newCommentId,
         }
       )
-      return result.publishComment ? true : false
+      return result.publishComment.id
     }
     try {
       const res = await retryAPICall(
@@ -786,7 +786,7 @@ export const addCommentReply = cache(
     } catch (err) {
       consoleLog(err, 'adding post comment replies')
 
-      return false
+      return ''
     }
   }
 )
@@ -978,7 +978,7 @@ export const sendNotification = cache(
     actorId: string,
     notifierId: string,
     postId: string,
-    commentId: string
+    commentId: string = ''
   ): Promise<boolean> => {
     if (actorId === notifierId) return false
     async function thisFunction() {

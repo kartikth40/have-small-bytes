@@ -6,17 +6,15 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { getPostCommentType } from '@/utils/types/types'
 import {
+  DeleteReplyNotification,
   addCommentReply,
   deleteComment,
   getCommentReplies,
+  sendNotification,
   updateComment,
 } from '@/services'
 import { toast } from 'react-toastify'
-import {
-  deleteReplyNotification,
-  sendReplyNotification,
-  timeAgo,
-} from '@/utils/functions'
+import { timeAgo } from '@/utils/functions'
 
 type Props = {
   commentId: string
@@ -98,13 +96,13 @@ export default function RepliesSection({
     }
     if (currentReply.length > 0 && session) {
       setPosting(true)
-      const result = await addCommentReply(
+      const replyId = await addCommentReply(
         currentReply,
         postId,
         session.user.id,
         commentId
       )
-      if (!result) {
+      if (!replyId) {
         toast.error('something went wrong! Please try again later.')
         setPosting(false)
       } else {
@@ -113,16 +111,7 @@ export default function RepliesSection({
         setPosting(false)
 
         const actorId = session?.user.id
-        const actor = session?.user.name
-        await sendReplyNotification(
-          actor,
-          actorId,
-          commenter,
-          postTitle,
-          postSlug,
-          postId,
-          '' // replyId
-        )
+        await sendNotification('replied', actorId, commenter, postId, replyId)
       }
     }
   }
@@ -140,7 +129,7 @@ export default function RepliesSection({
       toast.error('something went wrong! Please try again later.')
     } else {
       await initialize()
-      deleteReplyNotification(session?.user.id!, commenter, postId, id)
+      DeleteReplyNotification(session?.user.id!, commenter, postId, id)
     }
   }
   async function handleDelete(id: string) {

@@ -549,8 +549,8 @@ export const sendNotificationQuery = gql`
     $notifyType: NotificationType!
     $actorId: ID!
     $notifierId: ID!
-    $postId: String!
-    $commentId: String!
+    $postId: ID!
+    $commentId: ID!
   ) {
     createNotification(
       data: {

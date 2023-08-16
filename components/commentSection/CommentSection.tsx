@@ -4,23 +4,21 @@ import { useState, useEffect } from 'react'
 import styles from './commentSection.module.scss'
 import { getPostCommentType } from '@/utils/types/types'
 import {
+  DeleteCommentNotification,
   addComment,
   deleteComment,
   deleteCommentReplies,
   getCommentRepliesCount,
   getComments,
   getCommentsCount,
+  sendNotification,
   updateComment,
 } from '@/services'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import RepliesSection from './RepliesSection'
-import {
-  deleteCommentNotification,
-  sendCommentNotification,
-  timeAgo,
-} from '@/utils/functions'
+import { timeAgo } from '@/utils/functions'
 
 type Props = {
   postId: string
@@ -147,15 +145,12 @@ export default function CommentSection({
         setPosting(false)
 
         const actorId = session?.user.id
-        const actor = session?.user.name
-        await sendCommentNotification(
-          actor,
+        await sendNotification(
+          'commented',
           actorId,
           postAuthor,
-          postTitle,
-          postSlug,
           postId,
-          '' // commentId
+          commentId
         )
       }
     }
@@ -197,7 +192,7 @@ export default function CommentSection({
       return
     }
     await initializeComments()
-    await deleteCommentNotification(session?.user.id!, postAuthor, postId, id)
+    await DeleteCommentNotification(session?.user.id!, postAuthor, postId, id)
   }
 
   async function handleReplyClick(commentId: string) {
