@@ -389,6 +389,13 @@ export const getPostCommentsRepliesCountQuery = gql`
   }
 `
 
+export const checkCommentExistsQuery = gql`
+  query CheckComment($commentId: ID!) {
+    comment(where: { id: $commentId }) {
+      id
+    }
+  }
+`
 export const getPostCommentsQuery = gql`
   query GetPostComments($postId: ID!) {
     comments(

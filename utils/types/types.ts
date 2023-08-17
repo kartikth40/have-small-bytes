@@ -197,6 +197,11 @@ export interface postCommentsCountType {
     }
   }
 }
+export interface commentExistsType {
+  comment: {
+    id: string
+  }
+}
 
 export interface postAddCommentType {
   createComment: {

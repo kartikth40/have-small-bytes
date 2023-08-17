@@ -367,14 +367,48 @@
     }
 
     & .notification {
+      position: relative;
       margin: 0 1em;
       padding: 1em 0.5em;
+      padding-top: 2em;
       border-left: 1px solid var(--local-border-color);
       border-right: 1px solid var(--local-border-color);
       border-top: 1px solid var(--local-border-color);
       cursor: pointer;
+      overflow: hidden;
 
-      & > span {
+      & > .infoContainer {
+        position: absolute;
+        padding: 0.2em 0.5em;
+        color: var(--color-back-6);
+        font-size: 0.7em;
+        right: 0;
+        top: 0.7em;
+
+        body:global(.darkTheme) & {
+          color: var(--color-back-3);
+        }
+        & > .time {
+          &.unReadIndicator {
+            position: relative;
+            margin-right: 2em;
+            &::after {
+              content: '';
+              position: absolute;
+              right: -1.5em;
+              top: 50%;
+              transform: translateY(-50%);
+              border-radius: 50%;
+              width: 0.7em;
+              height: 0.7em;
+              background-color: var(--color-incorrect-red);
+              opacity: 0.7;
+            }
+          }
+        }
+      }
+
+      & > .arrow {
         display: inline-block;
         opacity: 0;
         pointer-events: none;
@@ -407,7 +441,9 @@
           transform-origin: bottom right;
         }
       }
-
+      &.unRead {
+        background-color: var(--color-back-05);
+      }
       &:hover {
         background-color: var(--color-back-03) !important;
         text-decoration: underline;
@@ -415,7 +451,7 @@
           text-decoration: none;
         }
 
-        & > span {
+        & > .arrow {
           opacity: 1;
         }
       }
@@ -423,21 +459,6 @@
       &:nth-child(2) {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-      }
-
-      &.unRead {
-        background-color: var(--color-back-05);
-        position: relative;
-        overflow: hidden;
-        &::after {
-          content: '';
-          position: absolute;
-          right: 0;
-          top: 0;
-          width: 5px;
-          height: 100%;
-          background-color: var(--color-back-08);
-        }
       }
     }
   }

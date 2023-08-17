@@ -35,6 +35,8 @@ import {
   notificationsCountType,
   postDeleteCommentRepliesType,
   getSpecificNotificationType,
+  readNotificationType,
+  commentExistsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -54,6 +56,7 @@ import {
   addPostLikePublishQuery,
   addPostLikeQuery,
   authorUrlQuery,
+  checkCommentExistsQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
   deleteAllNotificationsQuery,
@@ -81,6 +84,7 @@ import {
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
+  readNotificationQuery,
   resetPasswordQuery,
   sendLikeNotificationQuery,
   sendNotificationQuery,
@@ -659,6 +663,29 @@ export const deletePostLike = cache(
   }
 )
 
+export const commentExists = cache(
+  async (commentId: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: commentExistsType = await request(
+        graphqlAPI,
+        checkCommentExistsQuery,
+        {
+          commentId,
+        }
+      )
+      return result.comment?.id ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'checking comment exists')
+      return res
+    } catch (err) {
+      consoleLog(err, 'checking comment exists')
+
+      return false
+    }
+  }
+)
+
 export const getCommentsCount = cache(
   async (postId: string): Promise<number> => {
     async function thisFunction() {
@@ -1217,6 +1244,26 @@ export const deleteReplyNotification = cache(
     }
   }
 )
+
+export const readNotification = cache(async (id: string): Promise<boolean> => {
+  async function thisFunction() {
+    const result: readNotificationType = await request(
+      graphqlAPI,
+      readNotificationQuery,
+      {
+        id,
+      }
+    )
+  }
+  try {
+    const res = await retryAPICall(thisFunction, 'reading all notifications')
+    return res
+  } catch (err) {
+    consoleLog(err, 'reading  notification')
+
+    return false
+  }
+})
 
 export const readAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {

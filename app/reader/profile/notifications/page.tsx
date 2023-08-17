@@ -9,9 +9,11 @@ import {
   deleteAllOlderNotifications,
   getNotifications,
   readAllNotifications,
+  readNotification,
 } from '@/services'
 import { notificationType } from '@/utils/types/types'
 import { NotificationContext } from '@/components/global/NotificationContext'
+import { timeAgo } from '@/utils/functions'
 
 type Props = {}
 
@@ -34,21 +36,20 @@ export default function ResetPassword({}: Props) {
     }
     async function getAllNotif() {
       setNotifications(await getNotifications(session?.user.id!))
+
+      console.log(await getNotifications(session?.user.id!))
+
       setLoadingNotifications(false)
     }
-
-    if (session?.user?.id) {
-      deleteOldNotif()
-      getAllNotif()
-    }
-  }, [session])
-
-  useEffect(() => {
     async function refetch() {
       await refetchUnread()
     }
-    refetch()
-  }, [])
+    if (session?.user?.id) {
+      deleteOldNotif()
+      getAllNotif()
+      refetch()
+    }
+  }, [session])
 
   const {
     loadingState,
@@ -59,7 +60,11 @@ export default function ResetPassword({}: Props) {
     actionsContainer,
     readAllBtn,
     deleteAllBtn,
+    infoContainer,
     unRead,
+    unReadIndicator,
+    arrow,
+    time,
   } = styles
 
   if (loading) {
@@ -93,7 +98,16 @@ export default function ResetPassword({}: Props) {
     button.blur()
   }
 
-  function handleNotificationClick(postSlug: string, postId: string) {
+  async function handleNotificationClick(
+    notificationId: string,
+    postSlug: string,
+    postId: string,
+    isRead: boolean
+  ) {
+    if (!isRead) {
+      await readNotification(notificationId)
+    }
+
     if (postId) {
       router.push(`/post/${postSlug}/#comment-section-${postId}`)
     } else {
@@ -140,8 +154,13 @@ export default function ResetPassword({}: Props) {
             <div
               key={not.id}
               className={`${notification} ${!not.isRead ? unRead : ''}`}
-              onClick={() =>
-                handleNotificationClick(not.post.slug, not.post.id)
+              onClick={async () =>
+                await handleNotificationClick(
+                  not.id,
+                  not.post.slug,
+                  not.post.id,
+                  not.isRead
+                )
               }
             >
               {printNotification(
@@ -149,7 +168,14 @@ export default function ResetPassword({}: Props) {
                 not.post.title,
                 not.notifyType
               )}
-              <span className="arrow"></span>
+              <span className={arrow}></span>
+              <div className={infoContainer}>
+                <div
+                  className={`${time} ${!not.isRead ? unReadIndicator : ''}`}
+                >
+                  {timeAgo(not.createdAt)} ago
+                </div>
+              </div>
             </div>
           ))
         ) : loadingNotifications ? (

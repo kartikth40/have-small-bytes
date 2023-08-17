@@ -5,6 +5,7 @@ import styles from './commentSection.module.scss'
 import { getPostCommentType } from '@/utils/types/types'
 import {
   addComment,
+  commentExists,
   deleteComment,
   deleteCommentNotification,
   deleteCommentReplies,
@@ -198,6 +199,18 @@ export default function CommentSection({
   }
 
   async function handleReplyClick(commentId: string) {
+    const isComment = await commentExists(commentId)
+    if (!isComment) {
+      toast.error(
+        'The comment you are attempting to respond to has been deleted.',
+        {
+          toastId: 'error_dlted_already',
+        }
+      )
+
+      return
+    }
+
     const repliesCountForThisComment: number = await getCommentRepliesCount(
       commentId
     )

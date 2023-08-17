@@ -37,7 +37,7 @@ export default function CommentButton({
   } = styles
 
   function handleClick() {
-    window.localStorage.setItem('scrollTo', `comment-${postId}`)
+    window.localStorage.setItem('scrollTo', `comment-section-${postId}`)
   }
   return (
     <button className={`${Btn_container} ${commentBtn}`}>
