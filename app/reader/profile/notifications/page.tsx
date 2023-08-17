@@ -2,28 +2,85 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import styles from '@/app/reader/profile/page.module.scss'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   deleteAllNotifications,
   deleteAllOlderNotifications,
   getNotifications,
+  getNotificationsCount,
   readAllNotifications,
+  readNotification,
 } from '@/services'
 import { notificationType } from '@/utils/types/types'
 import { NotificationContext } from '@/components/global/NotificationContext'
+import { timeAgo } from '@/utils/functions'
 
 type Props = {}
 
 export default function ResetPassword({}: Props) {
+  const NOTIFICATIONS_PER_PAGE = 10
   const { data: session, status } = useSession()
   const loading = status === 'loading'
   const [loadingNotifications, setLoadingNotifications] = useState(true)
+  const [disablePrev, setDisablePrev] = useState(false)
+  const [disableNext, setDisableNext] = useState(false)
+  const [pageNo, setPageNo] = useState(1)
+  const [count, setCount] = useState(0)
   const [notifications, setNotifications] = useState<notificationType[] | []>(
     []
   )
   const { unread, setUnread, refetchUnread } = useContext(NotificationContext)
   const router = useRouter()
+  const search = useSearchParams()
+  const page = parseInt(search.get('page')!)
+
+  function getSkip(pageno: number) {
+    return NOTIFICATIONS_PER_PAGE * (pageno - 1)
+  }
+
+  function isNext(pageno: number, ncount: number) {
+    return NOTIFICATIONS_PER_PAGE * pageno < ncount
+  }
+
+  useEffect(() => {
+    if (page) setPageNo(page)
+  }, [])
+
+  function handleButtonDisableStates() {
+    const disabled = { next: false, prev: false }
+    if (pageNo === 1) {
+      disabled.prev = true
+      setDisablePrev(true)
+    } else {
+      setDisablePrev(false)
+    }
+    if (isNext(pageNo, count)) {
+      setDisableNext(false)
+    } else {
+      disabled.next = true
+      setDisableNext(true)
+    }
+    return disabled
+  }
+
+  useEffect(() => {
+    async function getAllNotif() {
+      setNotifications(
+        await getNotifications(session?.user.id!, getSkip(pageNo))
+      )
+      setCount(await getNotificationsCount(session?.user.id!))
+      handleButtonDisableStates()
+      setLoadingNotifications(false)
+    }
+    async function refetch() {
+      await refetchUnread()
+    }
+    if (session?.user?.id) {
+      getAllNotif()
+      refetch()
+    }
+  }, [session, pageNo, count])
 
   useEffect(() => {
     async function deleteOldNotif() {
@@ -32,23 +89,10 @@ export default function ResetPassword({}: Props) {
       const olderDateString = olderDate.toISOString()
       await deleteAllOlderNotifications(session?.user.id!, olderDateString)
     }
-    async function getAllNotif() {
-      setNotifications(await getNotifications(session?.user.id!))
-      setLoadingNotifications(false)
-    }
-
-    if (session?.user?.id) {
+    if (session?.user) {
       deleteOldNotif()
-      getAllNotif()
     }
   }, [session])
-
-  useEffect(() => {
-    async function refetch() {
-      await refetchUnread()
-    }
-    refetch()
-  }, [])
 
   const {
     loadingState,
@@ -59,7 +103,14 @@ export default function ResetPassword({}: Props) {
     actionsContainer,
     readAllBtn,
     deleteAllBtn,
+    infoContainer,
     unRead,
+    unReadIndicator,
+    arrow,
+    time,
+    navigationButtons,
+    prev,
+    next,
   } = styles
 
   if (loading) {
@@ -74,7 +125,9 @@ export default function ResetPassword({}: Props) {
   ) {
     const readAll = await readAllNotifications(session?.user.id!)
     if (readAll) {
-      setNotifications(await getNotifications(session?.user.id!))
+      setNotifications(
+        await getNotifications(session?.user.id!, getSkip(pageNo))
+      )
       setUnread(false)
     }
     const button = e.target as HTMLElement
@@ -93,7 +146,16 @@ export default function ResetPassword({}: Props) {
     button.blur()
   }
 
-  function handleNotificationClick(postSlug: string, postId: string) {
+  async function handleNotificationClick(
+    notificationId: string,
+    postSlug: string,
+    postId: string,
+    isRead: boolean
+  ) {
+    if (!isRead) {
+      await readNotification(notificationId)
+    }
+
     if (postId) {
       router.push(`/post/${postSlug}/#comment-section-${postId}`)
     } else {
@@ -115,10 +177,40 @@ export default function ResetPassword({}: Props) {
     } else return 'Ooops! Something went wrong.'
   }
 
+  async function handlePrev() {
+    const disabled = handleButtonDisableStates()
+    if (disabled.prev) return
+    router.push(`/reader/profile/notifications?page=${pageNo - 1}`)
+    setPageNo((prev) => prev - 1)
+  }
+
+  async function handleNext() {
+    const disabled = handleButtonDisableStates()
+    if (disabled.next) return
+    router.push(`/reader/profile/notifications?page=${pageNo + 1}`)
+    setPageNo((prev) => prev + 1)
+  }
+
   return (
     <div className={notificationContainer}>
       <div className={headingsContainer}>
-        <h3>Notifications</h3>
+        <h3>Notifications{pageNo}</h3>
+        <div className={navigationButtons}>
+          <button
+            disabled={disablePrev || loadingNotifications}
+            onClick={async () => handlePrev()}
+            className={prev}
+          >
+            Prev
+          </button>
+          <button
+            disabled={disableNext || loadingNotifications}
+            onClick={async () => handleNext()}
+            className={next}
+          >
+            Next
+          </button>
+        </div>
       </div>
       <div className={container}>
         <div className={actionsContainer}>
@@ -140,8 +232,13 @@ export default function ResetPassword({}: Props) {
             <div
               key={not.id}
               className={`${notification} ${!not.isRead ? unRead : ''}`}
-              onClick={() =>
-                handleNotificationClick(not.post.slug, not.post.id)
+              onClick={async () =>
+                await handleNotificationClick(
+                  not.id,
+                  not.post.slug,
+                  not.post.id,
+                  not.isRead
+                )
               }
             >
               {printNotification(
@@ -149,7 +246,14 @@ export default function ResetPassword({}: Props) {
                 not.post.title,
                 not.notifyType
               )}
-              <span className="arrow"></span>
+              <span className={arrow}></span>
+              <div className={infoContainer}>
+                <div
+                  className={`${time} ${!not.isRead ? unReadIndicator : ''}`}
+                >
+                  {timeAgo(not.createdAt)} ago
+                </div>
+              </div>
             </div>
           ))
         ) : loadingNotifications ? (
@@ -158,6 +262,7 @@ export default function ResetPassword({}: Props) {
           <div className={notification}>No Notifications.</div>
         )}
       </div>
+
       {notifications.length > 0 ? (
         <p>*Notifications will be deleted automatically after 30 days.</p>
       ) : (

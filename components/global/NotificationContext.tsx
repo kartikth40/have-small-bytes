@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { getNotificationsCount } from '@/services'
+import { getUnreadNotificationsCount } from '@/services'
 type NotificationContext = {
   unread: boolean
   setUnread: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,7 +24,7 @@ export const NotificationProvider = ({
     await getNotif()
   }
   async function getNotif() {
-    const notif = await getNotificationsCount(session?.user.id!)
+    const notif = await getUnreadNotificationsCount(session?.user.id!)
     if (notif > 0) setUnread(true)
     else setUnread(false)
   }
