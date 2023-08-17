@@ -624,10 +624,9 @@ export const getLikeNotificationToDeleteQuery = gql`
 `
 
 export const deleteCommentNotificationQuery = gql`
-  query GetCommentNotification($commentId: ID!) {
-    comment: deleteManyNotificationsConnection(
-      first: 1
-      where: { comment: { id: $commentId } }
+  mutation DeleteNotification($commentId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { notifyType: commented, comment: { id: $commentId } }
     ) {
       edges {
         node {
@@ -635,8 +634,12 @@ export const deleteCommentNotificationQuery = gql`
         }
       }
     }
+  }
+`
 
-    replies: deleteManyNotificationsConnection(
+export const deleteRepliesNotificationQuery = gql`
+  mutation DeleteNotification($commentId: ID!) {
+    deleteManyNotificationsConnection(
       where: { comment: { replyToCommentId: { id: $commentId } } }
     ) {
       edges {
@@ -649,12 +652,9 @@ export const deleteCommentNotificationQuery = gql`
 `
 
 export const deleteReplyNotificationQuery = gql`
-  query DeleteReplyNotification(
-    $replyId: ID!
-  ) {
-    replies: deleteManyNotificationsConnection(
-      first: 1
-      where: { comment: { replyToCommentId: { id: $replyId } } }
+  mutation DeleteNotification($commentId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { notifyType: replied, comment: { id: $commentId } }
     ) {
       edges {
         node {
@@ -662,6 +662,7 @@ export const deleteReplyNotificationQuery = gql`
         }
       }
     }
+  }
 `
 
 export const deleteAllNotificationsQuery = gql`

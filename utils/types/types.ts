@@ -266,27 +266,6 @@ export interface getSpecificNotificationType {
   }
 }
 
-export interface deleteCommentNotificationType {
-  comment: {
-    edges: [
-      {
-        node?: {
-          id?: string
-        }
-      }
-    ]
-  }
-  replies: {
-    edges: [
-      {
-        node?: {
-          id?: string
-        }
-      }
-    ]
-  }
-}
-
 export interface notificationType {
   id: string
   post: {

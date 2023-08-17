@@ -12,6 +12,7 @@ import {
   getCommentReplies,
   sendNotification,
   updateComment,
+  deleteCommentNotification,
 } from '@/services'
 import { toast } from 'react-toastify'
 import { timeAgo } from '@/utils/functions'
@@ -129,13 +130,13 @@ export default function RepliesSection({
       toast.error('something went wrong! Please try again later.')
     } else {
       await initialize()
-      deleteReplyNotification(session?.user.id!, commenter, id)
     }
   }
   async function handleDelete(id: string) {
     SetShowId('')
     const sure = confirm('Are you sure you want to delete this reply ?')
     if (!sure) return
+    await deleteReplyNotification(session?.user.id!, commenter, id)
     const result = await deleteComment(id)
     if (!result) {
       toast.error('something went wrong! Please try again later.')

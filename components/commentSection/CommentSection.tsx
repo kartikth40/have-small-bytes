@@ -8,6 +8,7 @@ import {
   deleteComment,
   deleteCommentNotification,
   deleteCommentReplies,
+  deleteCommentRepliesNotification,
   getCommentRepliesCount,
   getComments,
   getCommentsCount,
@@ -177,6 +178,7 @@ export default function CommentSection({
     SetShowId('')
     const sure = confirm('Are you sure you want to delete this comment ?')
     if (!sure) return
+    await deleteCommentRepliesNotification(session?.user.id!, postAuthor, id)
     const repliesDeleted = await deleteCommentReplies(id)
     if (!repliesDeleted) {
       toast.error('something went wrong! Please try again later.', {
@@ -184,6 +186,7 @@ export default function CommentSection({
       })
       return
     }
+    await deleteCommentNotification(session?.user.id!, postAuthor, id)
     const commentDeleted = await deleteComment(id)
     if (!commentDeleted) {
       toast.error('something went wrong! Please try again later.', {
@@ -192,7 +195,6 @@ export default function CommentSection({
       return
     }
     await initializeComments()
-    await deleteCommentNotification(session?.user.id!, postAuthor, id)
   }
 
   async function handleReplyClick(commentId: string) {

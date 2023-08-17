@@ -34,7 +34,6 @@ import {
   notificationsType,
   notificationsCountType,
   postDeleteCommentRepliesType,
-  deleteCommentNotificationType,
   getSpecificNotificationType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
@@ -65,6 +64,7 @@ import {
   deletePostCommentRepliesQuery,
   deletePostLikeQuery,
   deleteReaderQuery,
+  deleteRepliesNotificationQuery,
   deleteReplyNotificationQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
@@ -1118,14 +1118,7 @@ export const deleteLikeNotification = cache(
       )
       const id = notifications.notificationsConnection.edges[0]?.node?.id
       if (!id) return false
-      const result: deleteNotificationType = await request(
-        graphqlAPI,
-        deleteNotificationQuery,
-        {
-          id,
-        }
-      )
-      return result.deleteNotification?.id ? true : false
+      return await deleteNotification(id)
     }
     try {
       const res = await retryAPICall(
@@ -1137,6 +1130,35 @@ export const deleteLikeNotification = cache(
       consoleLog(err, 'removing unwanted notifications')
 
       return false
+    }
+  }
+)
+
+export const deleteCommentRepliesNotification = cache(
+  async (
+    actorId: string,
+    notifierId: string,
+    commentId: string
+  ): Promise<undefined> => {
+    if (actorId === notifierId) return
+    async function thisFunction() {
+      const notifications: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteRepliesNotificationQuery,
+        {
+          commentId,
+        }
+      )
+      console.log(notifications.deleteManyNotificationsConnection.edges)
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'removing unwanted notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'removing unwanted notifications')
     }
   }
 )
@@ -1146,17 +1168,17 @@ export const deleteCommentNotification = cache(
     actorId: string,
     notifierId: string,
     commentId: string
-  ): Promise<boolean> => {
-    if (actorId === notifierId) return false
+  ): Promise<undefined> => {
+    if (actorId === notifierId) return
     async function thisFunction() {
-      const result: deleteCommentNotificationType = await request(
+      const notifications: DeleteAllNotificationsType = await request(
         graphqlAPI,
         deleteCommentNotificationQuery,
         {
           commentId,
         }
       )
-      return result.comment.edges.length > 0 ? true : false
+      console.log(notifications.deleteManyNotificationsConnection.edges)
     }
     try {
       const res = await retryAPICall(
@@ -1166,8 +1188,6 @@ export const deleteCommentNotification = cache(
       return res
     } catch (err) {
       consoleLog(err, 'removing unwanted notifications')
-
-      return false
     }
   }
 )
@@ -1176,20 +1196,18 @@ export const deleteReplyNotification = cache(
   async (
     actorId: string,
     notifierId: string,
-    replyId: string
-  ): Promise<boolean> => {
-    if (actorId === notifierId) return false
+    commentId: string
+  ): Promise<undefined> => {
+    if (actorId === notifierId) return
     async function thisFunction() {
-      const result: DeleteAllNotificationsType = await request(
+      const notifications: DeleteAllNotificationsType = await request(
         graphqlAPI,
         deleteReplyNotificationQuery,
         {
-          replyId,
+          commentId,
         }
       )
-      return result.deleteManyNotificationsConnection.edges.length > 0
-        ? true
-        : false
+      console.log(notifications.deleteManyNotificationsConnection.edges)
     }
     try {
       const res = await retryAPICall(
@@ -1199,8 +1217,6 @@ export const deleteReplyNotification = cache(
       return res
     } catch (err) {
       consoleLog(err, 'removing unwanted notifications')
-
-      return false
     }
   }
 )
