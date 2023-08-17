@@ -5,6 +5,7 @@ import { getNotificationsCount } from '@/services'
 type NotificationContext = {
   unread: boolean
   setUnread: React.Dispatch<React.SetStateAction<boolean>>
+  refetchUnread: () => Promise<void>
 }
 
 export const NotificationContext = React.createContext<NotificationContext>(
@@ -19,19 +20,22 @@ export const NotificationProvider = ({
   const { data: session } = useSession()
   const [unread, setUnread] = useState<boolean>(false)
 
+  const refetchUnread = async () => {
+    await getNotif()
+  }
+  async function getNotif() {
+    const notif = await getNotificationsCount(session?.user.id!)
+    if (notif > 0) setUnread(true)
+    else setUnread(false)
+  }
   useEffect(() => {
     if (session?.user) {
-      async function getNotif() {
-        const notif = await getNotificationsCount(session?.user.id!)
-        if (notif > 0) setUnread(true)
-        else setUnread(false)
-      }
       getNotif()
     }
   }, [session])
 
   return (
-    <NotificationContext.Provider value={{ unread, setUnread }}>
+    <NotificationContext.Provider value={{ unread, setUnread, refetchUnread }}>
       {children}
     </NotificationContext.Provider>
   )

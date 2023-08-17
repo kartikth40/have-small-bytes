@@ -22,7 +22,7 @@ export default function ResetPassword({}: Props) {
   const [notifications, setNotifications] = useState<notificationType[] | []>(
     []
   )
-  const { unread, setUnread } = useContext(NotificationContext)
+  const { unread, setUnread, refetchUnread } = useContext(NotificationContext)
   const router = useRouter()
 
   useEffect(() => {
@@ -34,7 +34,6 @@ export default function ResetPassword({}: Props) {
     }
     async function getAllNotif() {
       setNotifications(await getNotifications(session?.user.id!))
-      console.log(await getNotifications(session?.user.id!))
       setLoadingNotifications(false)
     }
 
@@ -43,6 +42,13 @@ export default function ResetPassword({}: Props) {
       getAllNotif()
     }
   }, [session])
+
+  useEffect(() => {
+    async function refetch() {
+      await refetchUnread()
+    }
+    refetch()
+  }, [])
 
   const {
     loadingState,
