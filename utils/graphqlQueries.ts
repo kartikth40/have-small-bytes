@@ -527,9 +527,21 @@ export const getUnreadNotificationsCountQuery = gql`
   }
 `
 
+export const getNotificationsCountQuery = gql`
+  query GetNotificationsCount($notifierId: ID!) {
+    notificationsConnection(where: { notifier: { id: $notifierId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
 export const getNotificationsQuery = gql`
-  query GetNotifications($notifierId: ID!) {
+  query GetNotifications($notifierId: ID!, $skip: Int!) {
     notifications(
+      first: 10
+      skip: $skip
       orderBy: createdAt_DESC
       where: { notifier: { id: $notifierId } }
     ) {

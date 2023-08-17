@@ -2,9 +2,9 @@
 .profilePageContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  height: 100%;
+  min-height: 100vh;
   & > h2 {
     font-size: 2em;
   }
@@ -173,13 +173,46 @@
   }
 }
 .headingsContainer {
-  & h3 {
+  display: flex;
+  justify-content: space-between;
+  & > h3 {
     font-weight: 1em;
     position: relative;
     & span {
       position: absolute;
       bottom: -150%;
       left: 0;
+    }
+  }
+  & > .navigationButtons {
+    & > .prev,
+    & > .next {
+      border: 2px solid var(--color-back-5);
+      border-radius: 2px;
+      font-size: 1rem;
+      padding: 0.2em 0.5em;
+      color: var(--color-foreground);
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-back-05);
+      }
+
+      &:disabled {
+        opacity: 0.3;
+        &:hover {
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    & > .prev {
+      margin-right: 0.2em;
+    }
+
+    @include devices(mobile) {
+      margin-right: 4em;
     }
   }
 }

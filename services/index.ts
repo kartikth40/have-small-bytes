@@ -72,6 +72,7 @@ import {
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
   getLikeNotificationToDeleteQuery,
+  getNotificationsCountQuery,
   getNotificationsQuery,
   getPostCommentsCountQuery,
   getPostCommentsQuery,
@@ -949,7 +950,7 @@ export const deleteCommentReplies = cache(
   }
 )
 
-export const getNotificationsCount = cache(
+export const getUnreadNotificationsCount = cache(
   async (notifierId: string): Promise<number> => {
     async function thisFunction() {
       const result: notificationsCountType = await request(
@@ -975,9 +976,36 @@ export const getNotificationsCount = cache(
   }
 )
 
+export const getNotificationsCount = cache(
+  async (notifierId: string): Promise<number> => {
+    async function thisFunction() {
+      const result: notificationsCountType = await request(
+        graphqlAPI,
+        getNotificationsCountQuery,
+        {
+          notifierId,
+        }
+      )
+      return result.notificationsConnection.aggregate.count
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'getting notifications count'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting notifications count')
+
+      return 0
+    }
+  }
+)
+
 export const getNotifications = cache(
   async (
-    notifierId: string
+    notifierId: string,
+    skip: number
   ): Promise<notificationsType['notifications'] | []> => {
     async function thisFunction() {
       const result: notificationsType = await request(
@@ -985,6 +1013,7 @@ export const getNotifications = cache(
         getNotificationsQuery,
         {
           notifierId,
+          skip,
         }
       )
       return result.notifications
@@ -1268,7 +1297,7 @@ export const readNotification = cache(async (id: string): Promise<boolean> => {
 export const readAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {
     async function thisFunction() {
-      const unread = await getNotificationsCount(notifierId)
+      const unread = await getUnreadNotificationsCount(notifierId)
       if (unread === 0) return false
 
       const result: readAllNotificationsType = await request(

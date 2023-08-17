@@ -64,7 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   } = styles
 
   return (
-    <main style={{ height: '100vh' }}>
+    <main>
       <div className={profilePageContainer}>
         <h2>Profile</h2>
 
