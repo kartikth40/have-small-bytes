@@ -149,6 +149,7 @@ export default function ResetPassword({}: Props) {
                 not.post.title,
                 not.notifyType
               )}
+              <span className="arrow"></span>
             </div>
           ))
         ) : loadingNotifications ? (

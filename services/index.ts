@@ -1149,7 +1149,6 @@ export const deleteCommentRepliesNotification = cache(
           commentId,
         }
       )
-      console.log(notifications.deleteManyNotificationsConnection.edges)
     }
     try {
       const res = await retryAPICall(
@@ -1178,7 +1177,6 @@ export const deleteCommentNotification = cache(
           commentId,
         }
       )
-      console.log(notifications.deleteManyNotificationsConnection.edges)
     }
     try {
       const res = await retryAPICall(
@@ -1207,7 +1205,6 @@ export const deleteReplyNotification = cache(
           commentId,
         }
       )
-      console.log(notifications.deleteManyNotificationsConnection.edges)
     }
     try {
       const res = await retryAPICall(

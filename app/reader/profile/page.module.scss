@@ -374,11 +374,49 @@
       border-top: 1px solid var(--local-border-color);
       cursor: pointer;
 
+      & > span {
+        display: inline-block;
+        opacity: 0;
+        pointer-events: none;
+        margin-left: 1em;
+        position: relative;
+        width: 0.7em;
+        height: 0.1em;
+        background-color: var(--color-foreground);
+        transform: rotate(-45deg);
+        margin-bottom: 0.4em;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0%;
+        }
+        &::before {
+          width: 50%;
+          height: 100%;
+          background-color: var(--color-foreground);
+          transform: rotate(45deg);
+          transform-origin: top right;
+        }
+        &::after {
+          width: 50%;
+          height: 100%;
+          background-color: var(--color-foreground);
+          transform: rotate(-45deg);
+          transform-origin: bottom right;
+        }
+      }
+
       &:hover {
         background-color: var(--color-back-03) !important;
         text-decoration: underline;
         body:global(.darkTheme) & {
           text-decoration: none;
+        }
+
+        & > span {
+          opacity: 1;
         }
       }
 
@@ -398,7 +436,7 @@
           top: 0;
           width: 5px;
           height: 100%;
-          background-color: var(--color-incorrect-red);
+          background-color: var(--color-back-08);
         }
       }
     }
