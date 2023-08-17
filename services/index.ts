@@ -22,20 +22,19 @@ import {
   getPostCommentsType,
   postDeleteCommentType,
   postUpdateCommentType,
-  postDeleteCommentRepliesType,
   postType,
   postsType,
   postsCountType,
   sendNotificationType,
   publishSendNotificationType,
   notifyType,
-  entityType,
   deleteNotificationType,
   DeleteAllNotificationsType,
-  readNotificationType,
   readAllNotificationsType,
   notificationsType,
   notificationsCountType,
+  postDeleteCommentRepliesType,
+  getSpecificNotificationType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -58,13 +57,18 @@ import {
   checkEmailQuery,
   checkIfPostLikeQuery,
   deleteAllNotificationsQuery,
+  deleteAllOlderNotificationsQuery,
+  deleteCommentNotificationQuery,
   deleteNotificationQuery,
   deletePostCommentQuery,
   deletePostCommentRepliesQuery,
   deletePostLikeQuery,
   deleteReaderQuery,
+  deleteRepliesNotificationQuery,
+  deleteReplyNotificationQuery,
   getAllProfileAvatarQuery,
   getAvatarByIdQuery,
+  getLikeNotificationToDeleteQuery,
   getNotificationsQuery,
   getPostCommentsCountQuery,
   getPostCommentsQuery,
@@ -77,8 +81,8 @@ import {
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
-  readNotificationQuery,
   resetPasswordQuery,
+  sendLikeNotificationQuery,
   sendNotificationQuery,
   updateCommentQuery,
   updateUserQuery,
@@ -565,12 +569,13 @@ export const getPostLikes = cache(async (postId: string): Promise<number> => {
 })
 
 export const addPostLike = cache(
-  async (
-    postId: string,
-    readerId: string
-  ): Promise<postAddLikePublishType['publishPostLike'] | null> => {
+  async (postId: string, readerId: string): Promise<boolean> => {
     async function thisFunction() {
       const postPlusReaderId = postId + readerId
+
+      const isLiked = await checkPostLike(postId, readerId)
+      if (isLiked) return true
+
       const like: postAddLikeType = await request(
         graphqlAPI,
         addPostLikeQuery,
@@ -589,7 +594,7 @@ export const addPostLike = cache(
           likeId,
         }
       )
-      return result.publishPostLike
+      return result.publishPostLike ? true : false
     }
     try {
       const res = await retryAPICall(thisFunction, 'adding like to posts')
@@ -597,7 +602,7 @@ export const addPostLike = cache(
     } catch (err) {
       consoleLog(err, 'adding like to posts')
 
-      return null
+      return false
     }
   }
 )
@@ -630,6 +635,10 @@ export const deletePostLike = cache(
   async (postId: string, readerId: string): Promise<boolean> => {
     async function thisFunction() {
       const postPlusReaderId = postId + readerId
+
+      const isLiked = await checkPostLike(postId, readerId)
+      if (!isLiked) return true
+
       const result: postDeleteLikeType = await request(
         graphqlAPI,
         deletePostLikeQuery,
@@ -707,7 +716,7 @@ export const addComment = cache(
     comment: string,
     postId: string,
     readerId: string
-  ): Promise<boolean> => {
+  ): Promise<string> => {
     async function thisFunction() {
       const com: postAddCommentType = await request(
         graphqlAPI,
@@ -727,7 +736,7 @@ export const addComment = cache(
           commentId,
         }
       )
-      return result.publishComment ? true : false
+      return result.publishComment.id
     }
     try {
       const res = await retryAPICall(thisFunction, 'adding post comment')
@@ -735,7 +744,7 @@ export const addComment = cache(
     } catch (err) {
       consoleLog(err, 'adding post comment')
 
-      return false
+      return ''
     }
   }
 )
@@ -746,7 +755,7 @@ export const addCommentReply = cache(
     postId: string,
     readerId: string,
     commentId: string
-  ): Promise<boolean> => {
+  ): Promise<string> => {
     async function thisFunction() {
       const reply: postAddCommentType = await request(
         graphqlAPI,
@@ -767,7 +776,7 @@ export const addCommentReply = cache(
           newCommentId,
         }
       )
-      return result.publishComment ? true : false
+      return result.publishComment.id
     }
     try {
       const res = await retryAPICall(
@@ -778,7 +787,7 @@ export const addCommentReply = cache(
     } catch (err) {
       consoleLog(err, 'adding post comment replies')
 
-      return false
+      return ''
     }
   }
 )
@@ -967,28 +976,31 @@ export const getNotifications = cache(
 export const sendNotification = cache(
   async (
     notifyType: notifyType,
-    entityType: entityType,
-    postSlug: string,
-    entity: string,
     actorId: string,
     notifierId: string,
+    postId: string,
     commentId: string = ''
   ): Promise<boolean> => {
     if (actorId === notifierId) return false
     async function thisFunction() {
-      const noti: sendNotificationType = await request(
-        graphqlAPI,
-        sendNotificationQuery,
-        {
+      let noti: sendNotificationType
+      if (commentId.length > 0) {
+        noti = await request(graphqlAPI, sendNotificationQuery, {
           notifyType,
-          entityType,
-          commentId,
-          postSlug,
-          entity,
           actorId,
           notifierId,
-        }
-      )
+          postId,
+          commentId,
+        })
+      } else {
+        noti = await request(graphqlAPI, sendLikeNotificationQuery, {
+          notifyType,
+          actorId,
+          notifierId,
+          postId,
+        })
+      }
+
       const id = noti.createNotification.id
 
       const result: publishSendNotificationType = await request(
@@ -1005,29 +1017,6 @@ export const sendNotification = cache(
       return res
     } catch (err) {
       consoleLog(err, 'sending notification')
-
-      return false
-    }
-  }
-)
-
-export const deleteNotification = cache(
-  async (id: string): Promise<boolean> => {
-    async function thisFunction() {
-      const result: deleteNotificationType = await request(
-        graphqlAPI,
-        deleteNotificationQuery,
-        {
-          id,
-        }
-      )
-      return result.deleteNotification ? true : false
-    }
-    try {
-      const res = await retryAPICall(thisFunction, 'deleting notification')
-      return res
-    } catch (err) {
-      consoleLog(err, 'deleting notification')
 
       return false
     }
@@ -1063,7 +1052,7 @@ export const deleteAllOlderNotifications = cache(
     async function thisFunction() {
       const result: DeleteAllNotificationsType = await request(
         graphqlAPI,
-        deleteAllNotificationsQuery,
+        deleteAllOlderNotificationsQuery,
         {
           notifierId,
           date,
@@ -1087,28 +1076,147 @@ export const deleteAllOlderNotifications = cache(
   }
 )
 
-export const readNotification = cache(async (id: string): Promise<boolean> => {
-  async function thisFunction() {
-    const result: readNotificationType = await request(
-      graphqlAPI,
-      readNotificationQuery,
-      {
-        id,
-      }
-    )
-    return result.updateNotification && result.publishNotification
-      ? true
-      : false
-  }
-  try {
-    const res = await retryAPICall(thisFunction, 'reading a notification')
-    return res
-  } catch (err) {
-    consoleLog(err, 'reading a notification')
+export const deleteNotification = cache(
+  async (id: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: deleteNotificationType = await request(
+        graphqlAPI,
+        deleteNotificationQuery,
+        {
+          id,
+        }
+      )
+      return result.deleteNotification ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting notification')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting notification')
 
-    return false
+      return false
+    }
   }
-})
+)
+
+export const deleteLikeNotification = cache(
+  async (
+    actorId: string,
+    notifierId: string,
+    postId: string
+  ): Promise<boolean> => {
+    if (actorId === notifierId) return false
+    async function thisFunction() {
+      const notifications: getSpecificNotificationType = await request(
+        graphqlAPI,
+        getLikeNotificationToDeleteQuery,
+        {
+          actorId,
+          notifierId,
+          postId,
+        }
+      )
+      const id = notifications.notificationsConnection.edges[0]?.node?.id
+      if (!id) return false
+      return await deleteNotification(id)
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'removing unwanted notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'removing unwanted notifications')
+
+      return false
+    }
+  }
+)
+
+export const deleteCommentRepliesNotification = cache(
+  async (
+    actorId: string,
+    notifierId: string,
+    commentId: string
+  ): Promise<undefined> => {
+    if (actorId === notifierId) return
+    async function thisFunction() {
+      const notifications: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteRepliesNotificationQuery,
+        {
+          commentId,
+        }
+      )
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'removing unwanted notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'removing unwanted notifications')
+    }
+  }
+)
+
+export const deleteCommentNotification = cache(
+  async (
+    actorId: string,
+    notifierId: string,
+    commentId: string
+  ): Promise<undefined> => {
+    if (actorId === notifierId) return
+    async function thisFunction() {
+      const notifications: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteCommentNotificationQuery,
+        {
+          commentId,
+        }
+      )
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'removing unwanted notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'removing unwanted notifications')
+    }
+  }
+)
+
+export const deleteReplyNotification = cache(
+  async (
+    actorId: string,
+    notifierId: string,
+    commentId: string
+  ): Promise<undefined> => {
+    if (actorId === notifierId) return
+    async function thisFunction() {
+      const notifications: DeleteAllNotificationsType = await request(
+        graphqlAPI,
+        deleteReplyNotificationQuery,
+        {
+          commentId,
+        }
+      )
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'removing unwanted notifications'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'removing unwanted notifications')
+    }
+  }
+)
 
 export const readAllNotifications = cache(
   async (notifierId: string): Promise<boolean> => {

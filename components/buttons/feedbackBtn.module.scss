@@ -1,3 +1,4 @@
+@import '../../app/globals.scss';
 .Btn_container {
   --color-heart: #ea442b;
   --color-comment: var(--color-primary-blue);
@@ -28,19 +29,25 @@
   align-items: center;
   & .likeCountContainer,
   & .commentCountContainer {
+    display: none;
     transition: 0.15s all;
     pointer-events: none;
     font-size: 0.5em;
     font-weight: 500;
     color: var(--color-foreground2);
-  }
-  & .commentCountContainer {
     padding-left: 0.3em;
+
+    &.showLikeCount {
+      display: inline-block;
+    }
+    &.showCommentCount {
+      display: inline-block;
+    }
   }
   & .likeSpinner + .likeCountContainer,
   & .commentSpinner + .commentCountContainer {
     opacity: 0;
-    padding-left: 0;
+    // padding-left: 0;
   }
 }
 
@@ -54,7 +61,7 @@
 }
 
 .commentSpinner {
-  width: 2em;
+  width: 0.7em;
   aspect-ratio: 1;
   border: 0.07em solid var(--color-back-1);
   border-left-color: var(--color-comment);
@@ -68,15 +75,22 @@
   }
 }
 
-.commentBtn {
-  padding-left: 0.2em;
-  &:has(.commentSpinner) {
-    padding-left: 0;
-  }
-}
+// .commentBtn {
+//   &:has(.commentSpinner),
+//   &:has(:not(.showCommentCount)) {
+//     padding-left: 0;
+//   }
+
+//   @include devices(tablet) {
+//     &:has(.commentSpinner):has(:not(.showCommentCount)) {
+//       padding-inline: 0.15em;
+//     }
+//   }
+// }
 
 .Btn_wrapper {
   display: grid;
+  position: relative;
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
@@ -226,12 +240,15 @@
 }
 .ripple {
   pointer-events: none;
-  height: 1em;
-  width: 1em;
   border-radius: 50%;
+  width: 1em;
+  height: 1em;
   overflow: hidden;
   z-index: 1;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .ripple:before {
   content: '';

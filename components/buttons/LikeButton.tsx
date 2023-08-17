@@ -6,11 +6,12 @@ import { useSession } from 'next-auth/react'
 import {
   addPostLike,
   checkPostLike,
+  deleteLikeNotification,
   deletePostLike,
   getPostLikes,
+  sendNotification,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { sendLikeNotification } from '@/utils/functions'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
   '--i': number
@@ -22,6 +23,7 @@ type Props = {
   postAuthor: string
   postTitle: string
   postSlug: string
+  showCount?: boolean
 }
 
 export default function LikeButton({
@@ -29,6 +31,7 @@ export default function LikeButton({
   postAuthor,
   postTitle,
   postSlug,
+  showCount = true,
 }: Props) {
   const { data: session, status } = useSession()
   const [liked, setLiked] = useState<boolean>(false)
@@ -66,6 +69,7 @@ export default function LikeButton({
     particle,
     likeCountContainer,
     likeSpinner,
+    showLikeCount,
   } = styles
 
   async function handleLikeClick() {
@@ -93,8 +97,10 @@ export default function LikeButton({
       setLiked(false)
       setLikeCount((prev) => prev - 1)
       const deleteLike = await deletePostLike(postId, session?.user.id)
-
-      if (!deleteLike) {
+      if (deleteLike) {
+        const actorId = session?.user.id
+        deleteLikeNotification(actorId, postAuthor, postId)
+      } else {
         setLiked(true)
         toast.error('Something went wrong! Please try again later.')
       }
@@ -106,14 +112,7 @@ export default function LikeButton({
       if (result) {
         // send notification
         const actorId = session?.user.id
-        const actor = session?.user.name
-        await sendLikeNotification(
-          actor,
-          actorId,
-          postAuthor,
-          postTitle,
-          postSlug
-        )
+        await sendNotification('liked', actorId, postAuthor, postId)
       } else {
         toast.error('Something went wrong! Please try again later.')
         setLiked(false)
@@ -122,6 +121,7 @@ export default function LikeButton({
     setLikeCount((await getPostLikes(postId)) || 0)
     setUpdating(false)
   }
+
   return (
     <button className={Btn_container}>
       {loading || !allowLiking ? (
@@ -174,7 +174,11 @@ export default function LikeButton({
           </div>
         </div>
       )}
-      <span className={likeCountContainer}>{likeCount}</span>
+      <span
+        className={`${likeCountContainer} ${showCount ? showLikeCount : ''}`}
+      >
+        {likeCount}
+      </span>
     </button>
   )
 }

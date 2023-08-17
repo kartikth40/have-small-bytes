@@ -527,16 +527,18 @@ export const getNotificationsQuery = gql`
       where: { notifier: { id: $notifierId } }
     ) {
       id
-      createdAt
-      entity {
+      post {
         id
-        commentId
-        entity
-        entityType
-        postSlug
+        slug
+        title
       }
       isRead
       notifyType
+      actor {
+        id
+        name
+      }
+      createdAt
     }
   }
 `
@@ -544,27 +546,40 @@ export const getNotificationsQuery = gql`
 export const sendNotificationQuery = gql`
   mutation SendNotification(
     $notifyType: NotificationType!
-    $entityType: EntityType!
-    $commentId: String!
-    $postSlug: String!
-    $entity: String!
     $actorId: ID!
     $notifierId: ID!
+    $postId: ID!
+    $commentId: ID!
   ) {
     createNotification(
       data: {
-        notifyType: $notifyType
-        entity: {
-          create: {
-            entityType: $entityType
-            commentId: $commentId
-            postSlug: $postSlug
-            entity: $entity
-          }
-        }
         isRead: false
+        notifyType: $notifyType
+        actor: { connect: { id: $actorId } }
+        comment: { connect: { id: $commentId } }
+        notifier: { connect: { id: $notifierId } }
+        post: { connect: { id: $postId } }
+      }
+    ) {
+      id
+    }
+  }
+`
+
+export const sendLikeNotificationQuery = gql`
+  mutation SendNotification(
+    $notifyType: NotificationType!
+    $actorId: ID!
+    $notifierId: ID!
+    $postId: ID!
+  ) {
+    createNotification(
+      data: {
+        isRead: false
+        notifyType: $notifyType
         actor: { connect: { id: $actorId } }
         notifier: { connect: { id: $notifierId } }
+        post: { connect: { id: $postId } }
       }
     ) {
       id
@@ -588,6 +603,68 @@ export const deleteNotificationQuery = gql`
   }
 `
 
+export const getLikeNotificationToDeleteQuery = gql`
+  query GetLikeNotification($actorId: ID!, $notifierId: ID!, $postId: ID!) {
+    notificationsConnection(
+      first: 1
+      where: {
+        notifyType: liked
+        actor: { id: $actorId }
+        notifier: { id: $notifierId }
+        post: { id: $postId }
+      }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const deleteCommentNotificationQuery = gql`
+  mutation DeleteNotification($commentId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { notifyType: commented, comment: { id: $commentId } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const deleteRepliesNotificationQuery = gql`
+  mutation DeleteNotification($commentId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { comment: { replyToCommentId: { id: $commentId } } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const deleteReplyNotificationQuery = gql`
+  mutation DeleteNotification($commentId: ID!) {
+    deleteManyNotificationsConnection(
+      where: { notifyType: replied, comment: { id: $commentId } }
+    ) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
 export const deleteAllNotificationsQuery = gql`
   mutation DeleteAllNotifications($notifierId: ID!) {
     deleteManyNotificationsConnection(
@@ -603,7 +680,7 @@ export const deleteAllNotificationsQuery = gql`
 `
 
 export const deleteAllOlderNotificationsQuery = gql`
-  mutation DeleteAllOlderNotifications($notifierId: ID!, $date: string!) {
+  mutation DeleteAllOlderNotifications($notifierId: ID!, $date: DateTime!) {
     deleteManyNotificationsConnection(
       where: { notifier: { id: $notifierId }, createdAt_lt: $date }
     ) {

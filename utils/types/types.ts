@@ -254,18 +254,32 @@ export interface notificationsCountType {
   }
 }
 
+export interface getSpecificNotificationType {
+  notificationsConnection: {
+    edges: [
+      {
+        node?: {
+          id?: string
+        }
+      }
+    ]
+  }
+}
+
 export interface notificationType {
   id: string
-  createdAt: string
-  entity: {
+  post: {
     id: string
-    commentId: string
-    entity: string
-    entityType: string
-    postSlug: string
+    slug: string
+    title: string
   }
   isRead: boolean
   notifyType: string
+  actor: {
+    id: string
+    name: string
+  }
+  createdAt: string
 }
 
 export interface notificationsType {

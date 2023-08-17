@@ -1,5 +1,3 @@
-import { sendNotification } from '@/services'
-
 export function timeAgo(createdAt: string) {
   const date = new Date(createdAt)
   const now = new Date()
@@ -44,55 +42,4 @@ export function handleMouseFeedback() {
     mouseMark.classList.add('click')
     setTimeout(() => mouseMark.classList.remove('click'), 250)
   })
-}
-
-export async function sendCommentNotification(
-  actor: string,
-  actorId: string,
-  notifierId: string,
-  postTitle: string,
-  postSlug: string,
-  commentId: string
-) {
-  const entity = `${actor} commented on your post "${postTitle}"`
-  await sendNotification(
-    'commented',
-    'comment',
-    postSlug,
-    entity,
-    actorId,
-    notifierId,
-    commentId
-  )
-}
-
-export async function sendReplyNotification(
-  actor: string,
-  actorId: string,
-  notifierId: string,
-  postTitle: string,
-  postSlug: string,
-  commentId: string
-) {
-  const entity = `${actor} replied on your comment on "${postTitle}"`
-  await sendNotification(
-    'replied',
-    'reply',
-    postSlug,
-    entity,
-    actorId,
-    notifierId,
-    commentId
-  )
-}
-
-export async function sendLikeNotification(
-  actor: string,
-  actorId: string,
-  notifierId: string,
-  postTitle: string,
-  postSlug: string
-) {
-  const entity = `${actor} Liked your post "${postTitle}"`
-  await sendNotification('liked', 'post', postSlug, entity, actorId, notifierId)
 }

@@ -6,17 +6,20 @@ import { getPostCommentType } from '@/utils/types/types'
 import {
   addComment,
   deleteComment,
+  deleteCommentNotification,
   deleteCommentReplies,
+  deleteCommentRepliesNotification,
   getCommentRepliesCount,
   getComments,
   getCommentsCount,
+  sendNotification,
   updateComment,
 } from '@/services'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import RepliesSection from './RepliesSection'
-import { sendCommentNotification, timeAgo } from '@/utils/functions'
+import { timeAgo } from '@/utils/functions'
 
 type Props = {
   postId: string
@@ -127,8 +130,12 @@ export default function CommentSection({
     }
     if (currentComment.length > 0 && session) {
       setPosting(true)
-      const result = await addComment(currentComment, postId, session?.user.id)
-      if (!result) {
+      const commentId = await addComment(
+        currentComment,
+        postId,
+        session?.user.id
+      )
+      if (!commentId) {
         toast.error('something went wrong! Please try again later.', {
           toastId: 'error_add_cmt',
         })
@@ -139,14 +146,11 @@ export default function CommentSection({
         setPosting(false)
 
         const actorId = session?.user.id
-        const actor = session?.user.name
-        const commentId = postId
-        await sendCommentNotification(
-          actor,
+        await sendNotification(
+          'commented',
           actorId,
           postAuthor,
-          postTitle,
-          postSlug,
+          postId,
           commentId
         )
       }
@@ -174,6 +178,7 @@ export default function CommentSection({
     SetShowId('')
     const sure = confirm('Are you sure you want to delete this comment ?')
     if (!sure) return
+    await deleteCommentRepliesNotification(session?.user.id!, postAuthor, id)
     const repliesDeleted = await deleteCommentReplies(id)
     if (!repliesDeleted) {
       toast.error('something went wrong! Please try again later.', {
@@ -181,6 +186,7 @@ export default function CommentSection({
       })
       return
     }
+    await deleteCommentNotification(session?.user.id!, postAuthor, id)
     const commentDeleted = await deleteComment(id)
     if (!commentDeleted) {
       toast.error('something went wrong! Please try again later.', {
@@ -207,7 +213,10 @@ export default function CommentSection({
   }
 
   return (
-    <section id={`comment-${postId}`} className={commentSectionContainer}>
+    <section
+      id={`comment-section-${postId}`}
+      className={commentSectionContainer}
+    >
       <h1 className={head}>
         <span>{`Comments ${commentsCount}`}</span>
         <span
@@ -245,7 +254,11 @@ export default function CommentSection({
         <div className={commentsContainer}>
           {comments &&
             comments.map((comment) => (
-              <div key={comment.id} className={commentContainer}>
+              <div
+                key={comment.id}
+                id={`comment-${comment.id}`}
+                className={commentContainer}
+              >
                 <div className={aboveCommentContent}>
                   <div className={readerContainer}>
                     <div className={readerAvatar}>

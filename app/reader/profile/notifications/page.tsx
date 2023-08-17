@@ -6,6 +6,7 @@ import { redirect, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   deleteAllNotifications,
+  deleteAllOlderNotifications,
   getNotifications,
   readAllNotifications,
 } from '@/services'
@@ -21,19 +22,33 @@ export default function ResetPassword({}: Props) {
   const [notifications, setNotifications] = useState<notificationType[] | []>(
     []
   )
-  const { unread, setUnread } = useContext(NotificationContext)
+  const { unread, setUnread, refetchUnread } = useContext(NotificationContext)
   const router = useRouter()
 
   useEffect(() => {
-    async function getAllNotif() {
-      if (session?.user?.id) {
-        setNotifications(await getNotifications(session?.user.id))
-        setLoadingNotifications(false)
-        console.log(await getNotifications(session?.user.id))
-      }
+    async function deleteOldNotif() {
+      const olderDate = new Date()
+      olderDate.setDate(olderDate.getDate() - 30)
+      const olderDateString = olderDate.toISOString()
+      await deleteAllOlderNotifications(session?.user.id!, olderDateString)
     }
-    getAllNotif()
+    async function getAllNotif() {
+      setNotifications(await getNotifications(session?.user.id!))
+      setLoadingNotifications(false)
+    }
+
+    if (session?.user?.id) {
+      deleteOldNotif()
+      getAllNotif()
+    }
   }, [session])
+
+  useEffect(() => {
+    async function refetch() {
+      await refetchUnread()
+    }
+    refetch()
+  }, [])
 
   const {
     loadingState,
@@ -78,13 +93,26 @@ export default function ResetPassword({}: Props) {
     button.blur()
   }
 
-  function handleNotificationClick(postSlug: string, commentId: string) {
-    console.log('CLICK')
-    if (commentId) {
-      router.push(`/post/${postSlug}/#comment-${commentId}`)
+  function handleNotificationClick(postSlug: string, postId: string) {
+    if (postId) {
+      router.push(`/post/${postSlug}/#comment-section-${postId}`)
     } else {
       router.push(`/post/${postSlug}`)
     }
+  }
+
+  function printNotification(
+    actor: string,
+    post: string,
+    notificationType: string
+  ) {
+    if (notificationType === 'liked') {
+      return `${actor} liked your post "${post}"`
+    } else if (notificationType === 'commented') {
+      return `${actor} commented on your post "${post}"`
+    } else if (notificationType === 'replied') {
+      return `${actor} replied on your comment on "${post}"`
+    } else return 'Ooops! Something went wrong.'
   }
 
   return (
@@ -113,13 +141,15 @@ export default function ResetPassword({}: Props) {
               key={not.id}
               className={`${notification} ${!not.isRead ? unRead : ''}`}
               onClick={() =>
-                handleNotificationClick(
-                  not.entity.postSlug,
-                  not.entity.commentId
-                )
+                handleNotificationClick(not.post.slug, not.post.id)
               }
             >
-              {not.entity.entity}
+              {printNotification(
+                not.actor.name,
+                not.post.title,
+                not.notifyType
+              )}
+              <span className="arrow"></span>
             </div>
           ))
         ) : loadingNotifications ? (
@@ -128,6 +158,11 @@ export default function ResetPassword({}: Props) {
           <div className={notification}>No Notifications.</div>
         )}
       </div>
+      {notifications.length > 0 ? (
+        <p>*Notifications will be deleted automatically after 30 days.</p>
+      ) : (
+        ''
+      )}
     </div>
   )
 }

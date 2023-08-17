@@ -6,13 +6,16 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { getPostCommentType } from '@/utils/types/types'
 import {
+  deleteReplyNotification,
   addCommentReply,
   deleteComment,
   getCommentReplies,
+  sendNotification,
   updateComment,
+  deleteCommentNotification,
 } from '@/services'
 import { toast } from 'react-toastify'
-import { sendReplyNotification, timeAgo } from '@/utils/functions'
+import { timeAgo } from '@/utils/functions'
 
 type Props = {
   commentId: string
@@ -94,13 +97,13 @@ export default function RepliesSection({
     }
     if (currentReply.length > 0 && session) {
       setPosting(true)
-      const result = await addCommentReply(
+      const replyId = await addCommentReply(
         currentReply,
         postId,
         session.user.id,
         commentId
       )
-      if (!result) {
+      if (!replyId) {
         toast.error('something went wrong! Please try again later.')
         setPosting(false)
       } else {
@@ -109,16 +112,7 @@ export default function RepliesSection({
         setPosting(false)
 
         const actorId = session?.user.id
-        const actor = session?.user.name
-        const cmntId = postId
-        await sendReplyNotification(
-          actor,
-          actorId,
-          commenter,
-          postTitle,
-          postSlug,
-          cmntId
-        )
+        await sendNotification('replied', actorId, commenter, postId, replyId)
       }
     }
   }
@@ -142,6 +136,7 @@ export default function RepliesSection({
     SetShowId('')
     const sure = confirm('Are you sure you want to delete this reply ?')
     if (!sure) return
+    await deleteReplyNotification(session?.user.id!, commenter, id)
     const result = await deleteComment(id)
     if (!result) {
       toast.error('something went wrong! Please try again later.')
@@ -162,7 +157,11 @@ export default function RepliesSection({
             replies.map(
               (comment, idx) =>
                 idx < (expand ? replies.length : 5) && (
-                  <div key={comment.id} className={commentContainer}>
+                  <div
+                    key={comment.id}
+                    id={`reply-${comment.id}`}
+                    className={commentContainer}
+                  >
                     <div className={aboveCommentContent}>
                       <div className={readerContainer}>
                         <div className={readerAvatar}>
