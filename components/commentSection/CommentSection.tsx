@@ -69,7 +69,9 @@ export default function CommentSection({
       setHideComments(false)
       return
     }
-    document.getElementById(`comment-${commentId}`)?.scrollIntoView()
+    document
+      .getElementById(`comment-${commentId}`)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
     if (replyId && commentId) {
       if (openReplies !== commentId) {
@@ -77,7 +79,9 @@ export default function CommentSection({
         return
       }
 
-      document.getElementById(`reply-${replyId}`)?.scrollIntoView()
+      document
+        .getElementById(`reply-${replyId}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
 
     window.localStorage.removeItem('commentId')

@@ -42,7 +42,6 @@ export default function RepliesSection({
   const [loading, setLoading] = useState(true)
   const [currentEditingReply, setCurrentEditingReply] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
-  const [expand, setExpand] = useState<boolean>(false)
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
 
@@ -72,7 +71,7 @@ export default function RepliesSection({
   const {
     replySectionContainer,
     replyInputContainer,
-    commentsContainer,
+    repliesContainer,
     commentContainer,
     readerContainer,
     commentContentContainer,
@@ -164,175 +163,168 @@ export default function RepliesSection({
             <div className={skeleton}></div>
           </div>
         ) : (
-          <div className={commentsContainer}>
+          <div className={repliesContainer}>
             {replies &&
-              replies.map(
-                (comment, idx) =>
-                  idx < (expand ? replies.length : 5) && (
-                    <div
-                      key={comment.id}
-                      id={`reply-${comment.id}`}
-                      className={commentContainer}
-                    >
-                      <div className={aboveCommentContent}>
-                        <div className={readerContainer}>
-                          <div className={readerAvatar}>
-                            <Image
-                              src={comment.reader.photo.url}
-                              width={24}
-                              height={24}
-                              alt={comment.reader.name}
-                              style={{ borderRadius: '50%' }}
-                            />
-                          </div>
+              replies.map((comment, idx) => (
+                <div
+                  key={comment.id}
+                  id={`reply-${comment.id}`}
+                  className={commentContainer}
+                >
+                  <div className={aboveCommentContent}>
+                    <div className={readerContainer}>
+                      <div className={readerAvatar}>
+                        <Image
+                          src={comment.reader.photo.url}
+                          width={24}
+                          height={24}
+                          alt={comment.reader.name}
+                          style={{ borderRadius: '50%' }}
+                        />
+                      </div>
+                      <div
+                        className={`${readerName} ${
+                          comment.reader.id === session?.user.id
+                            ? myComment
+                            : null
+                        }`}
+                      >
+                        {comment.reader.name}
+                      </div>
+                      {comment.reader.isAuthor && (
+                        <div className={isAuthor}>Author</div>
+                      )}
+                    </div>
+                    <div>
+                      {comment.reader.id === session?.user.id && (
+                        <div className={dropdown}>
+                          <button
+                            disabled={editing !== ''}
+                            onClick={() => handleDropdown(comment.id)}
+                          >
+                            <span className={menuDot}></span>
+                            <span className={menuDot}></span>
+                            <span className={menuDot}></span>
+                          </button>
                           <div
-                            className={`${readerName} ${
-                              comment.reader.id === session?.user.id
-                                ? myComment
-                                : null
+                            className={`${dropdownContent} ${
+                              showId && showId === comment.id && show
                             }`}
                           >
-                            {comment.reader.name}
-                          </div>
-                          {comment.reader.isAuthor && (
-                            <div className={isAuthor}>Author</div>
-                          )}
-                        </div>
-                        <div>
-                          {comment.reader.id === session?.user.id && (
-                            <div className={dropdown}>
-                              <button
-                                disabled={editing !== ''}
-                                onClick={() => handleDropdown(comment.id)}
-                              >
-                                <span className={menuDot}></span>
-                                <span className={menuDot}></span>
-                                <span className={menuDot}></span>
-                              </button>
-                              <div
-                                className={`${dropdownContent} ${
-                                  showId && showId === comment.id && show
-                                }`}
-                              >
-                                <div
-                                  onClick={() => {
-                                    if (comment.reader.id !== session?.user.id)
-                                      return
-                                    setEditing(comment.id)
-                                    setCurrentEditingReply(comment.comment)
-                                    SetShowId('')
-                                  }}
-                                >
-                                  Edit
-                                </div>
-                                <div onClick={() => handleDelete(comment.id)}>
-                                  Delete
-                                </div>
-                              </div>
+                            <div
+                              onClick={() => {
+                                if (comment.reader.id !== session?.user.id)
+                                  return
+                                setEditing(comment.id)
+                                setCurrentEditingReply(comment.comment)
+                                SetShowId('')
+                              }}
+                            >
+                              Edit
                             </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className={commentContentContainer}>
-                        {editing === comment.id ? (
-                          <div className={commentEditContainer}>
-                            <textarea
-                              rows={3}
-                              autoFocus
-                              value={currentEditingReply}
-                              onChange={(e) =>
-                                setCurrentEditingReply(e.target.value)
-                              }
-                            />
-                            <div>
-                              <button
-                                onClick={() => handleEditComment(comment.id)}
-                              >
-                                Save
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setEditing('')
-                                  SetShowId('')
-                                }}
-                              >
-                                Cancel
-                              </button>
+                            <div onClick={() => handleDelete(comment.id)}>
+                              Delete
                             </div>
                           </div>
-                        ) : (
-                          comment.comment
-                        )}
-                      </div>
-                      <div className={interact}>
-                        <span className={line}></span>
-                        {comment.createdAt !== comment.updatedAt && (
-                          <div className={edited}>Edited</div>
-                        )}
-                        <div className={age}>{timeAgo(comment.createdAt)}</div>
-                      </div>
+                        </div>
+                      )}
                     </div>
-                  )
-              )}
-            {replies && replies?.length > 5 && (
-              <div className={expansion}>
-                <span
-                  onClick={() => {
-                    setOpen('')
-                    setExpand((prev) => false)
-                  }}
-                >
-                  hide all
-                </span>
+                  </div>
 
-                <span
-                  onClick={() => {
-                    setExpand((prev) => !prev)
-                  }}
-                >
-                  {expand ? 'show less' : 'show all'}
-                </span>
-              </div>
-            )}
+                  <div className={commentContentContainer}>
+                    {editing === comment.id ? (
+                      <div className={commentEditContainer}>
+                        <textarea
+                          rows={3}
+                          autoFocus
+                          value={currentEditingReply}
+                          onChange={(e) =>
+                            setCurrentEditingReply(e.target.value)
+                          }
+                        />
+                        <div>
+                          <button onClick={() => handleEditComment(comment.id)}>
+                            Save
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditing('')
+                              SetShowId('')
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      comment.comment
+                    )}
+                  </div>
+                  <div className={interact}>
+                    <span className={line}></span>
+                    {comment.createdAt !== comment.updatedAt && (
+                      <div className={edited}>Edited</div>
+                    )}
+                    <div className={age}>{timeAgo(comment.createdAt)}</div>
+                  </div>
+                </div>
+              ))}
           </div>
         )}
-        {!loading ? (
-          <div className={replyInputContainer}>
-            <div className={letMEcomment}>
-              {session && (
-                <Image
-                  src={session?.user.photo?.url!}
-                  width={24}
-                  height={24}
-                  alt={session?.user.name!}
-                  style={{ borderRadius: '50%' }}
-                />
-              )}
-            </div>
-            <textarea
-              rows={1}
-              value={currentReply}
-              onChange={(e) => setCurrentReply(e.target.value)}
-            />
-            <div>
-              <button
-                disabled={status === 'loading' || posting}
-                onClick={handleSendReply}
-              >
-                {posting || status === 'loading' ? 'Wait' : 'reply'}
-              </button>
-              <button
-                style={{ marginLeft: '1em' }}
-                onClick={() => {
-                  setOpen('')
-                }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        ) : null}
+
+        {!loading
+          ? replies &&
+            replies?.length > 5 && (
+              <>
+                <div className={expansion}>
+                  <span
+                    onClick={() => {
+                      setOpen('')
+                    }}
+                  >
+                    hide all
+                  </span>
+
+                  <span onClick={() => {}}>'show all'</span>
+                </div>
+
+                <div className={replyInputContainer}>
+                  <div className={letMEcomment}>
+                    {session && (
+                      <Image
+                        src={session?.user.photo?.url!}
+                        width={24}
+                        height={24}
+                        alt={session?.user.name!}
+                        style={{ borderRadius: '50%' }}
+                      />
+                    )}
+                  </div>
+                  <textarea
+                    rows={1}
+                    value={currentReply}
+                    onChange={(e) => setCurrentReply(e.target.value)}
+                  />
+                  <div>
+                    <button
+                      disabled={status === 'loading' || posting}
+                      onClick={handleSendReply}
+                    >
+                      {posting || status === 'loading' ? 'Wait' : 'reply'}
+                    </button>
+                    <button
+                      style={{ marginLeft: '1em' }}
+                      onClick={() => {
+                        setOpen('')
+                      }}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </>
+            )
+          : null}
       </section>
     )
   )
