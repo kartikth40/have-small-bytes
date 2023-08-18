@@ -44,6 +44,7 @@ export default function CommentSection({
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(true)
   const [comments, setComments] = useState<getPostCommentType[] | []>([])
   const [replies, setReplies] = useState<getPostCommentType[] | []>([])
   const [repliesCounts, setRepliesCounts] = useState<Map<string, number>>(
@@ -52,12 +53,13 @@ export default function CommentSection({
   async function initializeComments() {
     setCommentsCount(await getCommentsCount(postId))
     setComments(await getComments(postId))
+    setLoading(false)
   }
 
   useEffect(() => {
     initializeComments()
   }, [])
-  
+
   useEffect(() => {
     const commentId = window.localStorage.getItem('commentId')
     const replyId = window.localStorage.getItem('replyId')
@@ -143,6 +145,7 @@ export default function CommentSection({
     replyContainer,
     isAuthor,
     aboveCommentContent,
+    countSpinner,
   } = styles
   async function handleSendComment() {
     if (!session) {
@@ -251,7 +254,14 @@ export default function CommentSection({
       className={commentSectionContainer}
     >
       <h1 className={head}>
-        <span>{`Comments ${commentsCount}`}</span>
+        <span>
+          Comments{' '}
+          {loading ? (
+            <span className={countSpinner}></span>
+          ) : (
+            <span>{commentsCount}</span>
+          )}
+        </span>
         <span
           onClick={() => setHideComments((prev) => !prev)}
           className={`${commentsDropDownBtn} ${!hideComments && showMe}`}

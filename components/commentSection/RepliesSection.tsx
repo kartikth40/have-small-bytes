@@ -297,41 +297,42 @@ export default function RepliesSection({
             )}
           </div>
         )}
-
-        <div className={replyInputContainer}>
-          <div className={letMEcomment}>
-            {session && (
-              <Image
-                src={session?.user.photo?.url!}
-                width={24}
-                height={24}
-                alt={session?.user.name!}
-                style={{ borderRadius: '50%' }}
-              />
-            )}
+        {!loading ? (
+          <div className={replyInputContainer}>
+            <div className={letMEcomment}>
+              {session && (
+                <Image
+                  src={session?.user.photo?.url!}
+                  width={24}
+                  height={24}
+                  alt={session?.user.name!}
+                  style={{ borderRadius: '50%' }}
+                />
+              )}
+            </div>
+            <textarea
+              rows={1}
+              value={currentReply}
+              onChange={(e) => setCurrentReply(e.target.value)}
+            />
+            <div>
+              <button
+                disabled={status === 'loading' || posting}
+                onClick={handleSendReply}
+              >
+                {posting || status === 'loading' ? 'Wait' : 'reply'}
+              </button>
+              <button
+                style={{ marginLeft: '1em' }}
+                onClick={() => {
+                  setOpen('')
+                }}
+              >
+                Close
+              </button>
+            </div>
           </div>
-          <textarea
-            rows={1}
-            value={currentReply}
-            onChange={(e) => setCurrentReply(e.target.value)}
-          />
-          <div>
-            <button
-              disabled={status === 'loading' || posting}
-              onClick={handleSendReply}
-            >
-              {posting || status === 'loading' ? 'Wait' : 'reply'}
-            </button>
-            <button
-              style={{ marginLeft: '1em' }}
-              onClick={() => {
-                setOpen('')
-              }}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        ) : null}
       </section>
     )
   )
