@@ -349,6 +349,9 @@
       }
       &:after {
         content: 'Loading...';
+        font-size: 0.7em;
+        font-weight: 500;
+        color: var(--color-back-5);
         position: absolute;
         z-index: 2;
         left: 50%;

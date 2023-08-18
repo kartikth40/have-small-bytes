@@ -48,7 +48,7 @@ export default function RepliesSection({
 
   async function initialize() {
     setReplies(await getCommentReplies(commentId))
-    // setLoading(false)
+    setLoading(false)
   }
   useEffect(() => {
     if (open === commentId) {
@@ -161,7 +161,6 @@ export default function RepliesSection({
       >
         {loading ? (
           <div className={loadingReplies}>
-            <div className={skeleton}></div>
             <div className={skeleton}></div>
           </div>
         ) : (
