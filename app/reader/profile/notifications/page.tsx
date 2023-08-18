@@ -164,13 +164,17 @@ export default function ResetPassword({}: Props) {
       window.localStorage.setItem('replyId', notification.comment.id)
     }
 
+    if (notification.notifyType === 'liked') {
+      router.push(`/post/${notification.post.slug}`)
+    } else {
+      router.push(
+        `/post/${notification.post.slug}#comment-section-${notification.post.id}`
+      )
+    }
+
     if (!notification.isRead) {
       await readNotification(notification.id)
     }
-
-    router.push(
-      `/post/${notification.post.slug}#comment-section-${notification.post.id}`
-    )
   }
 
   function printNotification(

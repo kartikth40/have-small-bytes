@@ -57,6 +57,7 @@ export default function CommentSection({
   useEffect(() => {
     initializeComments()
   }, [])
+  
   useEffect(() => {
     const commentId = window.localStorage.getItem('commentId')
     const replyId = window.localStorage.getItem('replyId')
