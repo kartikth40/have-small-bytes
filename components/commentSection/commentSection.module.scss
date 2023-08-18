@@ -153,10 +153,7 @@
     background-color: var(--color-back-08);
   }
 }
-.repliesContainer {
-  max-height: 70vh;
-  overflow-y: auto;
-}
+
 .commentEditContainer {
   margin-block: 1em;
   display: flex;
@@ -417,10 +414,10 @@
   padding: 0.5em 0;
   border-radius: 5px;
   display: flex;
-  & span {
+  & button {
     background-color: var(--color-back-05);
+    color: var(--color-foreground);
     width: 100%;
-    display: inline-block;
     border: var(--color-back-1) 1px solid;
     padding: 1em 0;
     cursor: pointer;
@@ -430,7 +427,7 @@
       text-decoration: underline;
     }
 
-    &:nth-child(1) {
+    &:first-child {
       border-top-left-radius: 0.75em;
       border-bottom-left-radius: 0.75em;
       border-right: none;
@@ -446,11 +443,23 @@
         border-radius: 2px;
         transform: translateY(-50%);
       }
+      &.disabledLoadBtn {
+        border-radius: 0.75em;
+        border: var(--color-back-1) 1px solid;
+
+        &::after {
+          content: none;
+        }
+      }
     }
-    &:nth-child(2) {
+    &.loadMoreBtn {
       border-top-right-radius: 0.75em;
       border-bottom-right-radius: 0.75em;
       border-left: none;
+
+      &.disabledLoadBtn {
+        display: none;
+      }
     }
   }
 }

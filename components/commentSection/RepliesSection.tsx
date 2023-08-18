@@ -44,15 +44,22 @@ export default function RepliesSection({
   const [posting, setPosting] = useState<boolean>(false)
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
+  const [loadNo, setLoadNo] = useState<number>(0)
+  const [loadMore, setLoadMore] = useState<boolean>(true)
 
   async function initialize() {
-    setReplies(await getCommentReplies(commentId))
+    setReplies(await getCommentReplies(commentId, 0))
     setLoading(false)
   }
   useEffect(() => {
     if (open === commentId) {
       initialize()
     } else setLoading(true)
+
+    if (open === '') {
+      setLoadNo(0)
+      setLoadMore(true)
+    }
   }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -67,6 +74,25 @@ export default function RepliesSection({
       document.body.removeEventListener('click', reset)
     }
   }, [showId])
+
+  useEffect(() => {
+    const repliesPerLoad = 5
+    async function load() {
+      const newReplies: getPostCommentType[] = await getCommentReplies(
+        commentId,
+        loadNo * repliesPerLoad
+      )
+
+      if (newReplies.length < repliesPerLoad) {
+        setLoadMore(false)
+      } else {
+        setLoadMore(true)
+      }
+      setReplies((prev) => [...prev, ...newReplies])
+    }
+    if (loadNo === 0 || !loadMore) return
+    load()
+  }, [loadNo])
 
   const {
     replySectionContainer,
@@ -89,11 +115,13 @@ export default function RepliesSection({
     letMEcomment,
     edited,
     expansion,
+    loadMoreBtn,
     isAuthor,
     readjustLeftThreadHeight,
     aboveCommentContent,
     loadingReplies,
     skeleton,
+    disabledLoadBtn,
   } = styles
   async function handleSendReply() {
     if (!session) {
@@ -165,7 +193,7 @@ export default function RepliesSection({
         ) : (
           <div className={repliesContainer}>
             {replies &&
-              replies.map((comment, idx) => (
+              replies.map((comment) => (
                 <div
                   key={comment.id}
                   id={`reply-${comment.id}`}
@@ -272,59 +300,64 @@ export default function RepliesSection({
           </div>
         )}
 
-        {!loading
-          ? replies &&
-            replies?.length > 5 && (
-              <>
-                <div className={expansion}>
-                  <span
-                    onClick={() => {
-                      setOpen('')
-                    }}
-                  >
-                    hide all
-                  </span>
+        {!loading ? (
+          <>
+            {replies && replies.length >= 5 && (
+              <div className={expansion}>
+                <button
+                  onClick={() => {
+                    setOpen('')
+                  }}
+                  className={`${!loadMore && disabledLoadBtn}`}
+                >
+                  hide all
+                </button>
 
-                  <span onClick={() => {}}>'show all'</span>
-                </div>
+                <button
+                  onClick={() => setLoadNo((prev) => prev + 1)}
+                  className={`${loadMoreBtn} ${!loadMore && disabledLoadBtn}`}
+                >
+                  load more
+                </button>
+              </div>
+            )}
 
-                <div className={replyInputContainer}>
-                  <div className={letMEcomment}>
-                    {session && (
-                      <Image
-                        src={session?.user.photo?.url!}
-                        width={24}
-                        height={24}
-                        alt={session?.user.name!}
-                        style={{ borderRadius: '50%' }}
-                      />
-                    )}
-                  </div>
-                  <textarea
-                    rows={1}
-                    value={currentReply}
-                    onChange={(e) => setCurrentReply(e.target.value)}
+            <div className={replyInputContainer}>
+              <div className={letMEcomment}>
+                {session && (
+                  <Image
+                    src={session?.user.photo?.url!}
+                    width={24}
+                    height={24}
+                    alt={session?.user.name!}
+                    style={{ borderRadius: '50%' }}
                   />
-                  <div>
-                    <button
-                      disabled={status === 'loading' || posting}
-                      onClick={handleSendReply}
-                    >
-                      {posting || status === 'loading' ? 'Wait' : 'reply'}
-                    </button>
-                    <button
-                      style={{ marginLeft: '1em' }}
-                      onClick={() => {
-                        setOpen('')
-                      }}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </>
-            )
-          : null}
+                )}
+              </div>
+              <textarea
+                rows={1}
+                value={currentReply}
+                onChange={(e) => setCurrentReply(e.target.value)}
+              />
+              <div>
+                <button
+                  disabled={status === 'loading' || posting}
+                  onClick={handleSendReply}
+                >
+                  {posting || status === 'loading' ? 'Wait' : 'reply'}
+                </button>
+                <button
+                  style={{ marginLeft: '1em' }}
+                  onClick={() => {
+                    setOpen('')
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </>
+        ) : null}
       </section>
     )
   )

@@ -844,13 +844,17 @@ export const getComments = cache(
 )
 
 export const getCommentReplies = cache(
-  async (commentId: string): Promise<getPostCommentsType['comments'] | []> => {
+  async (
+    commentId: string,
+    skip: number
+  ): Promise<getPostCommentsType['comments'] | []> => {
     async function thisFunction() {
       const result: getPostCommentsType = await request(
         graphqlAPI,
         getPostCommentsRepliesQuery,
         {
           commentId,
+          skip,
         }
       )
       return result.comments

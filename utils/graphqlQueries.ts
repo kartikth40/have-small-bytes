@@ -419,10 +419,12 @@ export const getPostCommentsQuery = gql`
   }
 `
 export const getPostCommentsRepliesQuery = gql`
-  query GetPostCommentsReply($commentId: ID!) {
+  query GetPostCommentsReply($commentId: ID!, $skip: Int!) {
     comments(
+      first: 5
+      skip: $skip
       where: { replyToCommentId: { id: $commentId } }
-      orderBy: createdAt_ASC
+      orderBy: createdAt_DESC
     ) {
       id
       reader {
