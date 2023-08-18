@@ -251,7 +251,7 @@ export default function RepliesSection({
                           </div>
                         </div>
                       ) : (
-                        `${comment.comment} - ${comment.id}`
+                        comment.comment
                       )}
                     </div>
                     <div className={interact}>

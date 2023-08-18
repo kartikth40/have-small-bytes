@@ -66,9 +66,6 @@ export default function CommentSection({
       setHideComments(false)
       return
     }
-    console.log(comments, !comments.length)
-    console.log('1-------> ', commentId, hideComments)
-    console.log(document.getElementById(`comment-${commentId}`))
     document.getElementById(`comment-${commentId}`)?.scrollIntoView()
 
     if (replyId && commentId) {
@@ -76,11 +73,10 @@ export default function CommentSection({
         setOpenReplies(commentId)
         return
       }
-      console.log('2-------> ', replyId, openReplies)
-      console.log(document.getElementById(`reply-${replyId}`))
+
       document.getElementById(`reply-${replyId}`)?.scrollIntoView()
     }
-    console.log('REMOVE')
+
     window.localStorage.removeItem('commentId')
     window.localStorage.removeItem('replyId')
   }, [comments, hideComments, openReplies]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -380,7 +376,7 @@ export default function CommentSection({
                       </div>
                     </div>
                   ) : (
-                    `${comment.comment} - ${comment.id}`
+                    comment.comment
                   )}
                 </div>
                 <div className={interact}>
