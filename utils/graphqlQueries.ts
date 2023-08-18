@@ -557,6 +557,13 @@ export const getNotificationsQuery = gql`
         id
         name
       }
+      comment {
+        id
+        comment
+        replyToCommentId {
+          id
+        }
+      }
       createdAt
     }
   }

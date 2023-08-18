@@ -44,7 +44,8 @@ export default function CommentSection({
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
-  const [comments, setComments] = useState<getPostCommentType[]>()
+  const [comments, setComments] = useState<getPostCommentType[] | []>([])
+  const [replies, setReplies] = useState<getPostCommentType[] | []>([])
   const [repliesCounts, setRepliesCounts] = useState<Map<string, number>>(
     new Map()
   )
@@ -52,14 +53,33 @@ export default function CommentSection({
     setCommentsCount(await getCommentsCount(postId))
     setComments(await getComments(postId))
   }
+
   useEffect(() => {
     initializeComments()
-    const scrollToId: string = window.localStorage.getItem('scrollTo') || ''
-    if (scrollToId) {
-      document.getElementById(scrollToId)?.scrollIntoView()
-      window.localStorage.removeItem('scrollTo')
+  }, [])
+  useEffect(() => {
+    const commentId = window.localStorage.getItem('commentId')
+    const replyId = window.localStorage.getItem('replyId')
+    if (!comments.length || !commentId) return
+
+    if (hideComments) {
+      setHideComments(false)
+      return
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    document.getElementById(`comment-${commentId}`)?.scrollIntoView()
+
+    if (replyId && commentId) {
+      if (openReplies !== commentId) {
+        setOpenReplies(commentId)
+        return
+      }
+
+      document.getElementById(`reply-${replyId}`)?.scrollIntoView()
+    }
+
+    window.localStorage.removeItem('commentId')
+    window.localStorage.removeItem('replyId')
+  }, [comments, hideComments, openReplies]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function initializeReplies() {
     if (!comments) return
@@ -207,7 +227,6 @@ export default function CommentSection({
           toastId: 'error_dlted_already',
         }
       )
-
       return
     }
 
@@ -369,7 +388,7 @@ export default function CommentSection({
                       handleReplyClick(comment.id)
                     }}
                   >
-                    Reply
+                    Replies
                     <span>{repliesCounts?.get(comment.id) || 0}</span>
                   </button>
                   <span className={line}></span>
@@ -386,6 +405,8 @@ export default function CommentSection({
                   postTitle={postTitle}
                   open={openReplies}
                   setOpen={setOpenReplies}
+                  replies={replies}
+                  setReplies={setReplies}
                 />
               </div>
             ))}

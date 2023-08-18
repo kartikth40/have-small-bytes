@@ -284,6 +284,13 @@ export interface notificationType {
     id: string
     name: string
   }
+  comment: {
+    id: string
+    comment: string
+    replyToCommentId: {
+      id: string
+    }
+  }
   createdAt: string
 }
 

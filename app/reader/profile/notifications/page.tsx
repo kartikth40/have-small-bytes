@@ -137,30 +137,40 @@ export default function ResetPassword({}: Props) {
   async function handleDeleteAll(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
+    const button = e.target as HTMLElement
+    const sure = confirm(
+      'Are you sure you want to delete all the notifications ?'
+    )
+    if (!sure) {
+      button.blur()
+      return
+    }
     const deleteAll = await deleteAllNotifications(session?.user.id!)
     if (deleteAll) {
       setNotifications([])
       setUnread(false)
     }
-    const button = e.target as HTMLElement
     button.blur()
   }
 
-  async function handleNotificationClick(
-    notificationId: string,
-    postSlug: string,
-    postId: string,
-    isRead: boolean
-  ) {
-    if (!isRead) {
-      await readNotification(notificationId)
+  async function handleNotificationClick(notification: notificationType) {
+    if (notification.notifyType === 'commented') {
+      window.localStorage.setItem('commentId', notification.comment.id)
+    } else if (notification.notifyType === 'replied') {
+      window.localStorage.setItem(
+        'commentId',
+        notification.comment.replyToCommentId.id
+      )
+      window.localStorage.setItem('replyId', notification.comment.id)
     }
 
-    if (postId) {
-      router.push(`/post/${postSlug}/#comment-section-${postId}`)
-    } else {
-      router.push(`/post/${postSlug}`)
+    if (!notification.isRead) {
+      await readNotification(notification.id)
     }
+
+    router.push(
+      `/post/${notification.post.slug}#comment-section-${notification.post.id}`
+    )
   }
 
   function printNotification(
@@ -194,7 +204,7 @@ export default function ResetPassword({}: Props) {
   return (
     <div className={notificationContainer}>
       <div className={headingsContainer}>
-        <h3>Notifications{pageNo}</h3>
+        <h3>Notifications</h3>
         <div className={navigationButtons}>
           <button
             disabled={disablePrev || loadingNotifications}
@@ -232,14 +242,7 @@ export default function ResetPassword({}: Props) {
             <div
               key={not.id}
               className={`${notification} ${!not.isRead ? unRead : ''}`}
-              onClick={async () =>
-                await handleNotificationClick(
-                  not.id,
-                  not.post.slug,
-                  not.post.id,
-                  not.isRead
-                )
-              }
+              onClick={async () => await handleNotificationClick(not)}
             >
               {printNotification(
                 not.actor.name,

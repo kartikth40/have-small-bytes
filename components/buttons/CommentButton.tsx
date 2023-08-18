@@ -7,14 +7,14 @@ import Link from 'next/link'
 type Props = {
   postId: string
   slug?: string
-  canClick?: boolean
+  onPage?: boolean
   showCount?: boolean
 }
 
 export default function CommentButton({
   postId,
   slug = '',
-  canClick = false,
+  onPage = false,
   showCount = true,
 }: Props) {
   const [commentsCount, setCommentsCount] = useState<number>(0)
@@ -36,16 +36,13 @@ export default function CommentButton({
     showCommentCount,
   } = styles
 
-  function handleClick() {
-    window.localStorage.setItem('scrollTo', `comment-section-${postId}`)
-  }
   return (
     <button className={`${Btn_container} ${commentBtn}`}>
       {loading ? (
         <div className={commentSpinner}></div>
       ) : (
         <div className={Btn_wrapper}>
-          {canClick ? (
+          {onPage ? (
             <a href={`#comment-section-${postId}`}>
               <svg
                 className={comment}
@@ -57,9 +54,8 @@ export default function CommentButton({
               </svg>
             </a>
           ) : (
-            <Link href={`/post/${slug}`} onClick={handleClick}>
+            <Link href={`/post/${slug}#comment-section-${postId}`}>
               <svg
-                onClick={handleClick}
                 className={comment}
                 width="24"
                 height="24"
