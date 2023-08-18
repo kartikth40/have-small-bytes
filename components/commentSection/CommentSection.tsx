@@ -388,7 +388,7 @@ export default function CommentSection({
                       handleReplyClick(comment.id)
                     }}
                   >
-                    Reply
+                    Replies
                     <span>{repliesCounts?.get(comment.id) || 0}</span>
                   </button>
                   <span className={line}></span>
