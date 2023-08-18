@@ -44,7 +44,8 @@ export default function CommentSection({
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
-  const [comments, setComments] = useState<getPostCommentType[]>()
+  const [comments, setComments] = useState<getPostCommentType[] | []>([])
+  const [replies, setReplies] = useState<getPostCommentType[] | []>([])
   const [repliesCounts, setRepliesCounts] = useState<Map<string, number>>(
     new Map()
   )
@@ -52,14 +53,37 @@ export default function CommentSection({
     setCommentsCount(await getCommentsCount(postId))
     setComments(await getComments(postId))
   }
+
   useEffect(() => {
     initializeComments()
-    const scrollToId: string = window.localStorage.getItem('scrollTo') || ''
-    if (scrollToId) {
-      document.getElementById(scrollToId)?.scrollIntoView()
-      window.localStorage.removeItem('scrollTo')
+  }, [])
+  useEffect(() => {
+    const commentId = window.localStorage.getItem('commentId')
+    const replyId = window.localStorage.getItem('replyId')
+    if (!comments.length || !commentId) return
+
+    if (hideComments) {
+      setHideComments(false)
+      return
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    console.log(comments, !comments.length)
+    console.log('1-------> ', commentId, hideComments)
+    console.log(document.getElementById(`comment-${commentId}`))
+    document.getElementById(`comment-${commentId}`)?.scrollIntoView()
+
+    if (replyId && commentId) {
+      if (openReplies !== commentId) {
+        setOpenReplies(commentId)
+        return
+      }
+      console.log('2-------> ', replyId, openReplies)
+      console.log(document.getElementById(`reply-${replyId}`))
+      document.getElementById(`reply-${replyId}`)?.scrollIntoView()
+    }
+    console.log('REMOVE')
+    window.localStorage.removeItem('commentId')
+    window.localStorage.removeItem('replyId')
+  }, [comments, hideComments, openReplies]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function initializeReplies() {
     if (!comments) return
@@ -207,7 +231,6 @@ export default function CommentSection({
           toastId: 'error_dlted_already',
         }
       )
-
       return
     }
 
@@ -357,7 +380,7 @@ export default function CommentSection({
                       </div>
                     </div>
                   ) : (
-                    comment.comment
+                    `${comment.comment} - ${comment.id}`
                   )}
                 </div>
                 <div className={interact}>
@@ -386,6 +409,8 @@ export default function CommentSection({
                   postTitle={postTitle}
                   open={openReplies}
                   setOpen={setOpenReplies}
+                  replies={replies}
+                  setReplies={setReplies}
                 />
               </div>
             ))}

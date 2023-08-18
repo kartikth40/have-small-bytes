@@ -23,7 +23,7 @@ async function Aside({ slug }: { slug: string }) {
           postAuthor={post.author.id}
           postTitle={post.title}
         />
-        <CommentButton postId={post.id} canClick={true} />
+        <CommentButton postId={post.id} />
       </div>
     </aside>
   )

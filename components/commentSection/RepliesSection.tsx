@@ -12,7 +12,6 @@ import {
   getCommentReplies,
   sendNotification,
   updateComment,
-  deleteCommentNotification,
 } from '@/services'
 import { toast } from 'react-toastify'
 import { timeAgo } from '@/utils/functions'
@@ -25,16 +24,18 @@ type Props = {
   postTitle: string
   open: string
   setOpen: Dispatch<SetStateAction<string>>
+  replies: getPostCommentType[] | []
+  setReplies: Dispatch<SetStateAction<getPostCommentType[]>>
 }
 
 export default function RepliesSection({
   commentId,
   postId,
-  postSlug,
   commenter,
-  postTitle,
   open,
   setOpen,
+  replies,
+  setReplies,
 }: Props) {
   const { data: session, status } = useSession()
   const [currentReply, setCurrentReply] = useState<string>('')
@@ -43,7 +44,7 @@ export default function RepliesSection({
   const [expand, setExpand] = useState<boolean>(false)
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
-  const [replies, setReplies] = useState<getPostCommentType[]>()
+
   async function initialize() {
     setReplies(await getCommentReplies(commentId))
   }
@@ -250,7 +251,7 @@ export default function RepliesSection({
                           </div>
                         </div>
                       ) : (
-                        comment.comment
+                        `${comment.comment} - ${comment.id}`
                       )}
                     </div>
                     <div className={interact}>
