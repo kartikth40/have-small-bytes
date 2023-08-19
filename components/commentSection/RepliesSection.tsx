@@ -43,7 +43,7 @@ export default function RepliesSection({
   const [showId, SetShowId] = useState<string>('')
   const [loadNo, setLoadNo] = useState<number>(0)
   const [loadMore, setLoadMore] = useState<boolean>(true)
-  const [lemmeReply, setLemmeReply] = useState<boolean>(false)
+  const [lemmeReply, setLemmeReply] = useState<string>('')
 
   async function initialize() {
     setReplies(await getCommentReplies(commentId, 0))
@@ -57,6 +57,7 @@ export default function RepliesSection({
     if (open === '') {
       setLoadNo(0)
       setLoadMore(true)
+      setLemmeReply('')
     }
   }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -290,7 +291,12 @@ export default function RepliesSection({
                     )}
                   </div>
                   <div className={replyBtnContainer}>
-                    {!lemmeReply && <button className={replyBtn}>Reply</button>}
+                    <button
+                      onClick={() => setLemmeReply(comment.id)}
+                      className={replyBtn}
+                    >
+                      Reply
+                    </button>
                   </div>
                 </div>
               ))}
@@ -341,7 +347,7 @@ export default function RepliesSection({
                   <button
                     style={{ marginLeft: '1em' }}
                     onClick={() => {
-                      setOpen('')
+                      setLemmeReply('')
                     }}
                   >
                     Cancel
