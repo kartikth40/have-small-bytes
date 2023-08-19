@@ -24,8 +24,6 @@ type Props = {
   postTitle: string
   open: string
   setOpen: Dispatch<SetStateAction<string>>
-  replies: getPostCommentType[] | []
-  setReplies: Dispatch<SetStateAction<getPostCommentType[]>>
 }
 
 export default function RepliesSection({
@@ -34,12 +32,11 @@ export default function RepliesSection({
   commenter,
   open,
   setOpen,
-  replies,
-  setReplies,
 }: Props) {
   const { data: session, status } = useSession()
   const [currentReply, setCurrentReply] = useState<string>('')
   const [loading, setLoading] = useState(true)
+  const [replies, setReplies] = useState<getPostCommentType[] | []>([])
   const [currentEditingReply, setCurrentEditingReply] = useState<string>('')
   const [posting, setPosting] = useState<boolean>(false)
   const [editing, setEditing] = useState<string>('')
@@ -61,19 +58,6 @@ export default function RepliesSection({
       setLoadMore(true)
     }
   }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    function reset() {
-      SetShowId('')
-    }
-    if (showId) {
-      document.body.addEventListener('click', reset)
-    }
-
-    return () => {
-      document.body.removeEventListener('click', reset)
-    }
-  }, [showId])
 
   useEffect(() => {
     const repliesPerLoad = 5
@@ -117,7 +101,6 @@ export default function RepliesSection({
     expansion,
     loadMoreBtn,
     isAuthor,
-    readjustLeftThreadHeight,
     aboveCommentContent,
     loadingReplies,
     skeleton,
@@ -150,12 +133,7 @@ export default function RepliesSection({
       }
     }
   }
-  function handleDropdown(id: string) {
-    SetShowId((prev) => {
-      if (prev) return ''
-      return id
-    })
-  }
+
   async function handleEditComment(id: string) {
     setEditing('')
     SetShowId('')
@@ -181,11 +159,7 @@ export default function RepliesSection({
 
   return (
     open === commentId && (
-      <section
-        className={`${replySectionContainer} ${
-          replies && replies?.length > 5 && readjustLeftThreadHeight
-        }`}
-      >
+      <section className={replySectionContainer}>
         {loading ? (
           <div className={loadingReplies}>
             <div className={skeleton}></div>
@@ -204,8 +178,8 @@ export default function RepliesSection({
                       <div className={readerAvatar}>
                         <Image
                           src={comment.reader.photo.url}
-                          width={24}
-                          height={24}
+                          width={32}
+                          height={32}
                           alt={comment.reader.name}
                           style={{ borderRadius: '50%' }}
                         />
@@ -222,13 +196,19 @@ export default function RepliesSection({
                       {comment.reader.isAuthor && (
                         <div className={isAuthor}>Author</div>
                       )}
+                      <div className={age}>{timeAgo(comment.createdAt)}</div>
+                      {comment.createdAt !== comment.updatedAt && (
+                        <div className={edited}>edited</div>
+                      )}
                     </div>
                     <div>
                       {comment.reader.id === session?.user.id && (
                         <div className={dropdown}>
                           <button
                             disabled={editing !== ''}
-                            onClick={() => handleDropdown(comment.id)}
+                            onClick={() => {
+                              showId ? SetShowId('') : SetShowId(comment.id)
+                            }}
                           >
                             <span className={menuDot}></span>
                             <span className={menuDot}></span>
@@ -289,11 +269,7 @@ export default function RepliesSection({
                     )}
                   </div>
                   <div className={interact}>
-                    <span className={line}></span>
-                    {comment.createdAt !== comment.updatedAt && (
-                      <div className={edited}>Edited</div>
-                    )}
-                    <div className={age}>{timeAgo(comment.createdAt)}</div>
+                    {/* <span className={line}></span> */}
                   </div>
                 </div>
               ))}

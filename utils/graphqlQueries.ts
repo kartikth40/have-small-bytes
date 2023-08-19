@@ -424,7 +424,7 @@ export const getPostCommentsRepliesQuery = gql`
       first: 5
       skip: $skip
       where: { replyToCommentId: { id: $commentId } }
-      orderBy: createdAt_DESC
+      orderBy: createdAt_ASC
     ) {
       id
       reader {

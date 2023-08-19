@@ -46,7 +46,6 @@ export default function CommentSection({
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [comments, setComments] = useState<getPostCommentType[] | []>([])
-  const [replies, setReplies] = useState<getPostCommentType[] | []>([])
   const [repliesCounts, setRepliesCounts] = useState<Map<string, number>>(
     new Map()
   )
@@ -106,19 +105,6 @@ export default function CommentSection({
   useEffect(() => {
     if (comments) initializeReplies()
   }, [comments]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    function reset() {
-      SetShowId('')
-    }
-    if (showId) {
-      document.body.addEventListener('click', reset)
-    }
-
-    return () => {
-      document.body.removeEventListener('click', reset)
-    }
-  }, [showId])
 
   const {
     commentSectionContainer,
@@ -184,12 +170,6 @@ export default function CommentSection({
         )
       }
     }
-  }
-  function handleDropdown(id: string) {
-    SetShowId((prev) => {
-      if (prev) return ''
-      return id
-    })
   }
   async function handleEditComment(id: string) {
     setEditing('')
@@ -311,8 +291,8 @@ export default function CommentSection({
                     <div className={readerAvatar}>
                       <Image
                         src={comment.reader.photo.url}
-                        width={24}
-                        height={24}
+                        width={32}
+                        height={32}
                         alt={comment.reader.name}
                         style={{ borderRadius: '50%' }}
                       />
@@ -322,12 +302,17 @@ export default function CommentSection({
                         comment.reader.id === session?.user.id
                           ? myComment
                           : null
-                      }`}
+                      }
+                      `}
                     >
                       {comment.reader.name}
                     </div>
                     {comment.reader.isAuthor && (
                       <div className={isAuthor}>Author</div>
+                    )}
+                    <div className={age}>{timeAgo(comment.createdAt)}</div>
+                    {comment.createdAt !== comment.updatedAt && (
+                      <div className={edited}>edited</div>
                     )}
                   </div>
                   <div>
@@ -335,7 +320,9 @@ export default function CommentSection({
                       <div className={dropdown}>
                         <button
                           disabled={editing !== ''}
-                          onClick={() => handleDropdown(comment.id)}
+                          onClick={() => {
+                            showId ? SetShowId('') : SetShowId(comment.id)
+                          }}
                         >
                           <span className={menuDot}></span>
                           <span className={menuDot}></span>
@@ -406,11 +393,7 @@ export default function CommentSection({
                     Replies
                     <span>{repliesCounts?.get(comment.id) || 0}</span>
                   </button>
-                  <span className={line}></span>
-                  {comment.createdAt !== comment.updatedAt && (
-                    <div className={edited}>Edited</div>
-                  )}
-                  <div className={age}>{timeAgo(comment.createdAt)}</div>
+                  {/* <span className={line}></span> */}
                 </div>
                 <RepliesSection
                   commentId={comment.id}
@@ -420,8 +403,6 @@ export default function CommentSection({
                   postTitle={postTitle}
                   open={openReplies}
                   setOpen={setOpenReplies}
-                  replies={replies}
-                  setReplies={setReplies}
                 />
               </div>
             ))}
