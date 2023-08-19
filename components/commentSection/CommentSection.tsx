@@ -55,6 +55,19 @@ export default function CommentSection({
     setLoading(false)
   }
 
+  function setObserver(id: string) {
+    const element = document.getElementById(id) as HTMLElement
+    if (!element) return
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      let [entry] = entries
+      if (entry.isIntersecting) {
+        intersectionObserver.disconnect()
+        element.classList.add(highlight)
+      }
+    })
+    intersectionObserver.observe(element)
+  }
+
   useEffect(() => {
     initializeComments()
   }, [])
@@ -68,6 +81,8 @@ export default function CommentSection({
       setHideComments(false)
       return
     }
+    if (!replyId) setObserver(`comment-${commentId}`)
+
     document
       .getElementById(`comment-${commentId}`)
       ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -84,7 +99,6 @@ export default function CommentSection({
     }
 
     window.localStorage.removeItem('commentId')
-    window.localStorage.removeItem('replyId')
   }, [comments, hideComments, openReplies]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function initializeReplies() {
@@ -122,7 +136,6 @@ export default function CommentSection({
     readerName,
     interact,
     age,
-    line,
     dropdown,
     dropdownContent,
     show,
@@ -136,6 +149,7 @@ export default function CommentSection({
     isAuthor,
     aboveCommentContent,
     countSpinner,
+    highlight,
   } = styles
   async function handleSendComment() {
     if (!session) {
