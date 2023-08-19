@@ -14,19 +14,35 @@
 
   @include devices(mobile) {
     width: 100%;
+    padding: 2em 1em;
   }
 }
 
 .head {
   display: flex;
   justify-content: space-between;
+
+  .countSpinner {
+    display: inline-block;
+    width: 0.7em;
+    aspect-ratio: 1;
+    border: 0.1em solid var(--color-back-1);
+    border-left-color: var(--color-heart);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .commentsDropDownBtn {
     cursor: pointer;
     user-select: none;
     width: 2em;
     position: relative;
     border: 1px solid var(--color-back-08);
-    background-color: var(--color-back-04);
     border-radius: 0.2em;
     box-shadow: 0 3px var(--color-back-08);
     transition: 0.15s all;
@@ -129,13 +145,15 @@
     background-color: var(--color-foreground);
   }
 }
-.commentsContainer {
+.commentsContainer,
+.repliesContainer {
   & .line {
     width: 100%;
     height: 2px;
     background-color: var(--color-back-08);
   }
 }
+
 .commentEditContainer {
   margin-block: 1em;
   display: flex;
@@ -184,35 +202,56 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      gap: 0.5em;
+      gap: 10px;
       margin-bottom: 0.3em;
       & .readerAvatar {
-        width: 24px;
-        height: 24px;
+        width: 32px;
+        height: 32px;
       }
       & .readerName {
         font-size: 0.9em;
-        font-weight: 600;
+        font-weight: 400;
         &.myComment {
-          color: rgb(44, 124, 50);
-          background-color: rgb(209, 252, 212);
-          font-size: 0.9em;
-          border-radius: 0.2em;
-          padding: 0.2em 0.3em;
+          font-weight: 500;
         }
       }
       & .isAuthor {
-        background-color: rgb(214, 223, 226);
+        background-color: rgb(196, 233, 245);
         color: rgb(92, 109, 240);
-        font-size: 0.8em;
-        font-weight: 600;
-        padding: 0.2em 0.3em;
+        font-size: 0.9em;
+        font-weight: 400;
+        padding: 0 0.3em;
         border-radius: 0.2em;
 
         body:global(.darkTheme) & {
           background-color: rgb(186, 234, 250);
           color: rgb(38, 62, 250);
           box-shadow: 0 0 2px rgb(186, 234, 250);
+        }
+      }
+      & .edited,
+      & .age {
+        color: var(--color-back-5);
+        font-weight: 300;
+        font-size: 0.9em;
+      }
+      & .age {
+        white-space: nowrap;
+      }
+      & .edited {
+        margin-left: 0em;
+      }
+
+      @include devices(mobile) {
+        & .readerName {
+          font-size: 0.8em;
+        }
+        & .isAuthor {
+          font-size: 0.8em;
+        }
+        & .edited,
+        & .age {
+          font-size: 0.8em;
         }
       }
     }
@@ -224,10 +263,9 @@
       & button {
         cursor: pointer;
         width: 1.5em;
-
         padding: 0;
         margin: 0;
-        background-color: var(--color-background);
+        background-color: transparent;
         border: none;
       }
 
@@ -274,59 +312,43 @@
   }
 
   & .commentContentContainer {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 300;
     white-space: pre-wrap;
-    @include devices(mobile) {
-      font-size: 0.8em;
-    }
+    margin-left: 42px;
+    margin-top: -0.7em;
 
     body:global(.darkTheme) & {
       color: var(--color-back-8);
     }
+    @include devices(mobile) {
+      font-size: 0.8rem;
+    }
   }
   & .interact {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin-top: 0.5em;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    margin-left: 42px;
 
     & .replyContainer {
-      display: flex;
-      gap: 0.5em;
       color: var(--color-foreground);
-      font-weight: 500;
-      font-size: 0.9em;
-      margin-right: 1em;
-      border: 1px solid var(--color-back-05);
-      background-color: var(--color-front-03);
-      padding: 0.5em 0.5em;
-      border-radius: 5px;
+      font-weight: 300;
+      font-size: 1em;
+      border: none;
+      background-color: transparent;
       cursor: pointer;
-      &.opened {
-        background-color: var(--color-foreground);
-        color: var(--color-background);
-        border: 1px solid var(--color-back-5);
+      & > span {
+        margin-left: 0.5em;
       }
-    }
-    & .age {
-      color: var(--color-back-5);
-      margin-left: 1em;
-      margin-right: 0.7em;
-      white-space: nowrap;
-    }
-    & .edited {
-      color: var(--color-back-5);
-      margin-left: 1em;
+      &.opened {
+        border-bottom: 1px solid var(--color-back-5);
+      }
     }
   }
 }
 
 .replySectionContainer {
-  margin-left: 2em;
-
+  margin-left: 42px;
   .loadingReplies {
     & > .skeleton {
       margin-block: 1em;
@@ -373,21 +395,6 @@
   }
 
   position: relative;
-  &:after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    height: calc(100% - 10em);
-    background-color: var(--color-back-1);
-    border-radius: 1px;
-    left: -1em;
-    top: 0;
-  }
-  &.readjustLeftThreadHeight {
-    &:after {
-      height: calc(100% - 14em);
-    }
-  }
 }
 .expansion {
   font-size: 0.8em;
@@ -396,9 +403,10 @@
   padding: 0.5em 0;
   border-radius: 5px;
   display: flex;
-  & span {
+  & button {
+    background-color: var(--color-back-05);
+    color: var(--color-foreground);
     width: 100%;
-    display: inline-block;
     border: var(--color-back-1) 1px solid;
     padding: 1em 0;
     cursor: pointer;
@@ -408,7 +416,7 @@
       text-decoration: underline;
     }
 
-    &:nth-child(1) {
+    &:first-child {
       border-top-left-radius: 0.75em;
       border-bottom-left-radius: 0.75em;
       border-right: none;
@@ -424,11 +432,23 @@
         border-radius: 2px;
         transform: translateY(-50%);
       }
+      &.disabledLoadBtn {
+        border-radius: 0.75em;
+        border: var(--color-back-1) 1px solid;
+
+        &::after {
+          content: none;
+        }
+      }
     }
-    &:nth-child(2) {
+    &.loadMoreBtn {
       border-top-right-radius: 0.75em;
       border-bottom-right-radius: 0.75em;
       border-left: none;
+
+      &.disabledLoadBtn {
+        display: none;
+      }
     }
   }
 }

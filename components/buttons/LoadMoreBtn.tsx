@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from '../../app/page.module.scss'
 import { getCategoryPosts, getPosts } from '@/services'
 import { postsType } from '@/utils/types/types'
