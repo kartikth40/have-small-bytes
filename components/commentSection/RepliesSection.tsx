@@ -59,6 +59,26 @@ export default function RepliesSection({
     }
   }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  function setObserver(id: string) {
+    const element = document.getElementById(id) as HTMLElement
+    if (!element) return
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      let [entry] = entries
+      if (entry.isIntersecting) {
+        intersectionObserver.disconnect()
+        element.classList.add(highlight)
+      }
+    })
+    intersectionObserver.observe(element)
+  }
+
+  useEffect(() => {
+    const replyId = window.localStorage.getItem('replyId')
+    if (!replies.length || !replyId) return
+    setObserver(`reply-${replyId}`)
+    window.localStorage.removeItem('replyId')
+  }, [replies])
+
   useEffect(() => {
     const repliesPerLoad = 5
     async function load() {
@@ -89,7 +109,6 @@ export default function RepliesSection({
     readerName,
     interact,
     age,
-    line,
     dropdown,
     dropdownContent,
     show,
@@ -105,6 +124,7 @@ export default function RepliesSection({
     loadingReplies,
     skeleton,
     disabledLoadBtn,
+    highlight,
   } = styles
   async function handleSendReply() {
     if (!session) {
