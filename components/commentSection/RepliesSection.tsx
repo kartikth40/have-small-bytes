@@ -43,6 +43,7 @@ export default function RepliesSection({
   const [showId, SetShowId] = useState<string>('')
   const [loadNo, setLoadNo] = useState<number>(0)
   const [loadMore, setLoadMore] = useState<boolean>(true)
+  const [lemmeReply, setLemmeReply] = useState<boolean>(false)
 
   async function initialize() {
     setReplies(await getCommentReplies(commentId, 0))
@@ -107,7 +108,7 @@ export default function RepliesSection({
     commentContentContainer,
     readerAvatar,
     readerName,
-    interact,
+    replyBtnContainer,
     age,
     dropdown,
     dropdownContent,
@@ -123,8 +124,8 @@ export default function RepliesSection({
     aboveCommentContent,
     loadingReplies,
     skeleton,
-    disabledLoadBtn,
     highlight,
+    replyBtn,
   } = styles
   async function handleSendReply() {
     if (!session) {
@@ -288,8 +289,8 @@ export default function RepliesSection({
                       comment.comment
                     )}
                   </div>
-                  <div className={interact}>
-                    {/* <span className={line}></span> */}
+                  <div className={replyBtnContainer}>
+                    {!lemmeReply && <button className={replyBtn}>Reply</button>}
                   </div>
                 </div>
               ))}
@@ -302,56 +303,52 @@ export default function RepliesSection({
               <div className={expansion}>
                 <button
                   onClick={() => {
-                    setOpen('')
+                    if (loadMore) setLoadNo((prev) => prev + 1)
+                    else setOpen('')
                   }}
-                  className={`${!loadMore && disabledLoadBtn}`}
+                  className={loadMoreBtn}
                 >
-                  hide all
-                </button>
-
-                <button
-                  onClick={() => setLoadNo((prev) => prev + 1)}
-                  className={`${loadMoreBtn} ${!loadMore && disabledLoadBtn}`}
-                >
-                  load more
+                  {loadMore ? 'View More' : 'Hide All'}
                 </button>
               </div>
             )}
 
-            <div className={replyInputContainer}>
-              <div className={letMEcomment}>
-                {session && (
-                  <Image
-                    src={session?.user.photo?.url!}
-                    width={24}
-                    height={24}
-                    alt={session?.user.name!}
-                    style={{ borderRadius: '50%' }}
-                  />
-                )}
+            {lemmeReply && (
+              <div className={replyInputContainer}>
+                <div className={letMEcomment}>
+                  {session && (
+                    <Image
+                      src={session?.user.photo?.url!}
+                      width={24}
+                      height={24}
+                      alt={session?.user.name!}
+                      style={{ borderRadius: '50%' }}
+                    />
+                  )}
+                </div>
+                <textarea
+                  rows={1}
+                  value={currentReply}
+                  onChange={(e) => setCurrentReply(e.target.value)}
+                />
+                <div>
+                  <button
+                    disabled={status === 'loading' || posting}
+                    onClick={handleSendReply}
+                  >
+                    {posting || status === 'loading' ? 'Wait' : 'reply'}
+                  </button>
+                  <button
+                    style={{ marginLeft: '1em' }}
+                    onClick={() => {
+                      setOpen('')
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-              <textarea
-                rows={1}
-                value={currentReply}
-                onChange={(e) => setCurrentReply(e.target.value)}
-              />
-              <div>
-                <button
-                  disabled={status === 'loading' || posting}
-                  onClick={handleSendReply}
-                >
-                  {posting || status === 'loading' ? 'Wait' : 'reply'}
-                </button>
-                <button
-                  style={{ marginLeft: '1em' }}
-                  onClick={() => {
-                    setOpen('')
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+            )}
           </>
         ) : null}
       </section>
