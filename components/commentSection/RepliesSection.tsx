@@ -292,7 +292,7 @@ export default function RepliesSection({
                   </div>
                   <div className={replyBtnContainer}>
                     <button
-                      onClick={() => setLemmeReply(comment.id)}
+                      onClick={() => lemmeReply ? setLemmeReply(""): setLemmeReply(comment.id)}
                       className={replyBtn}
                     >
                       Reply
