@@ -292,7 +292,11 @@ export default function RepliesSection({
                   </div>
                   <div className={replyBtnContainer}>
                     <button
-                      onClick={() => lemmeReply ? setLemmeReply(""): setLemmeReply(comment.id)}
+                      onClick={() =>
+                        lemmeReply
+                          ? setLemmeReply('')
+                          : setLemmeReply(comment.id)
+                      }
                       className={replyBtn}
                     >
                       Reply
@@ -336,6 +340,7 @@ export default function RepliesSection({
                   rows={1}
                   value={currentReply}
                   onChange={(e) => setCurrentReply(e.target.value)}
+                  autoFocus
                 />
                 <div>
                   <button

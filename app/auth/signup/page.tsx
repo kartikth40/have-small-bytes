@@ -6,7 +6,7 @@ import styles from './page.module.scss'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
-import { checkUserExists } from '@/services'
+import { checkEmailExists, checkUsernameExists } from '@/services'
 import { getRandomPhotoId } from '@/utils/constants/profilePicIds'
 import {
   emailValidate,
@@ -29,10 +29,10 @@ export default function SignUpPage() {
     }
   }, [router, shouldRedirect])
 
-  const [validName, setValidName] = useState(false)
+  const [validUsername, setValidUsername] = useState(false)
   const [validEmail, setValidEmail] = useState(false)
   const [validPassword, setValidPassword] = useState(false)
-  const [invalidNameMsg, setInvalidNameMsg] = useState('')
+  const [invalidUsernameMsg, setInvalidUsernameMsg] = useState('')
   const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
   const [invalidPasswordMsg, setInvalidPasswordMsg] = useState('')
 
@@ -41,29 +41,36 @@ export default function SignUpPage() {
   const password = useRef('')
   const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
 
-  function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleUsernameChange(e: ChangeEvent<HTMLInputElement>) {
     name.current = e.target.value
 
     const validate = nameValidate(e.target.value)
     if (e.target.value.length < (validate.minLength || 3)) {
-      setValidName(false)
-      setInvalidNameMsg('')
+      setValidUsername(false)
+      setInvalidUsernameMsg('')
       return
     }
 
     if (validate.pass) {
-      setValidName(true)
-      setInvalidNameMsg('')
+      setValidUsername(true)
+      setInvalidUsernameMsg('')
     } else {
-      setValidName(false)
+      setValidUsername(false)
       if (validate.error) {
-        setInvalidNameMsg(validate.error)
+        setInvalidUsernameMsg(validate.error)
       }
     }
   }
 
+  async function handleUsernameOnBlur(e: ChangeEvent<HTMLInputElement>) {
+    const usernameAlreadyExists = await checkUsernameExists(e.target.value)
+    if (usernameAlreadyExists) {
+      setInvalidUsernameMsg('Username already exists.')
+    }
+  }
+
   async function handleEmailOnBlur(e: ChangeEvent<HTMLInputElement>) {
-    const emailAlreadyExists = await checkUserExists(e.target.value)
+    const emailAlreadyExists = await checkEmailExists(e.target.value)
     if (emailAlreadyExists) {
       setInvalidEmailMsg('Email already exists.')
     }
@@ -149,7 +156,7 @@ export default function SignUpPage() {
     setSigningIn(true)
     // check for existing email
     const createId = toast.loading('Checking Email...')
-    const checkUser = await checkUserExists(email.current)
+    const checkUser = await checkEmailExists(email.current)
     if (checkUser) {
       toast.update(createId, {
         render: 'Email already exists!',
@@ -222,18 +229,19 @@ export default function SignUpPage() {
             <div className={inputContainer}>
               <input
                 type="text"
-                placeholder="Enter Name"
-                name="name"
+                placeholder="Enter Username"
+                name="username"
                 onChange={(e) => {
-                  handleNameChange(e)
+                  handleUsernameChange(e)
                 }}
+                onBlur={(e) => handleUsernameOnBlur(e)}
                 required
               />
               <span
-                data-tooltip={invalidNameMsg}
-                className={`${validationMark} ${validName ? validated : ''} ${
-                  invalidNameMsg !== '' ? invalidate : ''
-                }`}
+                data-tooltip={invalidUsernameMsg}
+                className={`${validationMark} ${
+                  validUsername ? validated : ''
+                } ${invalidUsernameMsg !== '' ? invalidate : ''}`}
               ></span>
             </div>
             {/* Email */}

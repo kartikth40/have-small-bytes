@@ -221,7 +221,7 @@ export const loginQuery = gql`
   query Login($email: String!) {
     reader(where: { email: $email }) {
       id
-      name
+      username
       email
       password
       photo {
@@ -242,19 +242,19 @@ export const newUserQuery = gql`
   ) {
     createReader(
       data: {
-        name: $name
+        username: $username
         email: $email
         password: $password
         photo: { connect: { id: $photoId } }
       }
     ) {
       id
-      name
+      username
       email
     }
     publishReader(where: { email: $email }) {
       id
-      name
+      username
       email
     }
   }
@@ -267,10 +267,19 @@ export const checkEmailQuery = gql`
     }
   }
 `
+
+export const checkUsernameQuery = gql`
+  query CheckUsername($username: String!) {
+    reader(where: { username: $username }) {
+      id
+    }
+  }
+`
+
 export const updateUserQuery = gql`
   mutation UpdateUser($userId: ID!, $name: String!, $photoId: ID!) {
     updateReader(
-      data: { photo: { connect: { id: $photoId } }, name: $name }
+      data: { photo: { connect: { id: $photoId } }, username: $username }
       where: { id: $userId }
     ) {
       id
@@ -405,7 +414,7 @@ export const getPostCommentsQuery = gql`
       id
       reader {
         id
-        name
+        username
         email
         photo {
           url
@@ -429,7 +438,7 @@ export const getPostCommentsRepliesQuery = gql`
       id
       reader {
         id
-        name
+        username
         email
         photo {
           url

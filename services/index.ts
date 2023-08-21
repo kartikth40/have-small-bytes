@@ -59,6 +59,7 @@ import {
   checkCommentExistsQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
+  checkUsernameQuery,
   deleteAllNotificationsQuery,
   deleteAllOlderNotificationsQuery,
   deleteCommentNotificationQuery,
@@ -380,14 +381,14 @@ export const checkLogin = cache(
 
 export const addUser = cache(
   async (
-    name: string,
+    username: string,
     email: string,
     password: string,
     photoId: string
   ): Promise<userAddedType | null> => {
     async function thisFunction() {
       const result: userAddedType = await request(graphqlAPI, newUserQuery, {
-        name,
+        username,
         email,
         password,
         photoId,
@@ -405,7 +406,7 @@ export const addUser = cache(
   }
 )
 
-export const checkUserExists = cache(
+export const checkEmailExists = cache(
   async (email: string): Promise<boolean> => {
     async function thisFunction() {
       const result: readerIdReturnType = await request(
@@ -421,7 +422,30 @@ export const checkUserExists = cache(
       const res = await retryAPICall(thisFunction, 'checking user exists')
       return res
     } catch (err) {
-      consoleLog(err, 'checking user exists')
+      consoleLog(err, 'checking user email exists')
+
+      return false
+    }
+  }
+)
+
+export const checkUsernameExists = cache(
+  async (username: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: readerIdReturnType = await request(
+        graphqlAPI,
+        checkUsernameQuery,
+        {
+          username,
+        }
+      )
+      return result.reader ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'checking user exists')
+      return res
+    } catch (err) {
+      consoleLog(err, 'checking username exists')
 
       return false
     }
