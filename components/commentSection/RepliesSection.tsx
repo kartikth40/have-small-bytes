@@ -331,7 +331,7 @@ export default function RepliesSection({
                       src={session?.user.photo?.url!}
                       width={24}
                       height={24}
-                      alt={session?.user.name!}
+                      alt={session?.user.username!}
                       style={{ borderRadius: '50%' }}
                     />
                   )}

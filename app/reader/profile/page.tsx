@@ -15,14 +15,14 @@ export default function ProfileUpdate({}: Props) {
   const loading = status === 'loading'
 
   const [newAvatarId, setNewAvatarId] = useState<string>('')
-  const [name, setName] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
   const email = useRef('')
   const [avatarUrl, setAvatarUrl] = useState<string>('')
 
   useEffect(() => {
     if (!loading) {
       const user = session?.user
-      setName(user ? user.name : '')
+      setUsername(user ? user.username : '')
       email.current = user ? user.email : ''
       setAvatarUrl(user && user.photo ? user.photo?.url : '')
     }
@@ -56,13 +56,13 @@ export default function ProfileUpdate({}: Props) {
     const updateId = toast.loading('updating profile...', {
       position: 'bottom-left',
     })
-    const result = await updateUser(session.user.id, name, newId!)
+    const result = await updateUser(session.user.id, username, newId!)
     if (result) {
       await update({
         ...session,
         user: {
           ...session.user,
-          name: name,
+          username: username,
           photo: {
             id: newId,
             url: newUrl,
@@ -88,8 +88,8 @@ export default function ProfileUpdate({}: Props) {
   }
 
   const handleReset = () => {
-    if (name !== session.user.name) {
-      setName(session.user.name)
+    if (username !== session.user.username) {
+      setUsername(session.user.username)
     }
     if (newAvatarId !== session.user.photo?.id && newAvatarId !== '') {
       setNewAvatarId('')
@@ -105,7 +105,7 @@ export default function ProfileUpdate({}: Props) {
         <h3>Update Profile</h3>
         <span
           className={`${formStatus} ${
-            name === session.user.name &&
+            username === session.user.username &&
             (newAvatarId === session.user.photo?.id || newAvatarId === '') &&
             disable
           }`}
@@ -121,7 +121,7 @@ export default function ProfileUpdate({}: Props) {
               setNewAvatarId={setNewAvatarId}
               loading={loading}
               src={avatarUrl}
-              alt={name}
+              alt={username}
             />
             <span
               className={`${formStatus} ${
@@ -140,9 +140,9 @@ export default function ProfileUpdate({}: Props) {
             type="text"
             placeholder="Enter Name"
             name="name"
-            value={name}
+            value={username}
             onChange={(e) => {
-              setName(e.target.value)
+              setUsername(e.target.value)
             }}
             required
           />
@@ -163,7 +163,7 @@ export default function ProfileUpdate({}: Props) {
           <button
             type="submit"
             disabled={
-              name === session.user.name &&
+              username === session.user.username &&
               (newAvatarId === session.user.photo?.id || newAvatarId === '')
             }
           >
@@ -172,7 +172,7 @@ export default function ProfileUpdate({}: Props) {
           <button
             type="reset"
             disabled={
-              name === session.user.name &&
+              username === session.user.username &&
               (newAvatarId === session.user.photo?.id || newAvatarId === '')
             }
           >
