@@ -202,7 +202,7 @@ export default function RepliesSection({
                           src={comment.reader.photo.url}
                           width={32}
                           height={32}
-                          alt={comment.reader.name}
+                          alt={comment.reader.username}
                           style={{ borderRadius: '50%' }}
                         />
                       </div>
@@ -213,7 +213,7 @@ export default function RepliesSection({
                             : null
                         }`}
                       >
-                        {comment.reader.name}
+                        {comment.reader.username}
                       </div>
                       {comment.reader.isAuthor && (
                         <div className={isAuthor}>Author</div>

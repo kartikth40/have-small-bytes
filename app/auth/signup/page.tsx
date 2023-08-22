@@ -36,13 +36,13 @@ export default function SignUpPage() {
   const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
   const [invalidPasswordMsg, setInvalidPasswordMsg] = useState('')
 
-  const name = useRef('')
+  const username = useRef('')
   const email = useRef('')
   const password = useRef('')
   const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
 
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>) {
-    name.current = e.target.value
+    username.current = e.target.value
 
     const validate = nameValidate(e.target.value)
     if (e.target.value.length < (validate.minLength || 3)) {
@@ -136,14 +136,14 @@ export default function SignUpPage() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const credentials = {
-      name: name.current,
+      username: username.current,
       email: email.current,
       password: password.current,
       photoId: getRandomPhotoId(),
     }
 
     const validateResponse = signupValidation(
-      credentials.name,
+      credentials.username,
       credentials.email,
       credentials.password
     )

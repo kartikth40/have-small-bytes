@@ -103,7 +103,7 @@ export interface categoriesType {
 export interface loginType {
   reader: {
     id: string
-    name: string
+    username: string
     email: string
     password: string
     photo: {
@@ -117,7 +117,7 @@ export interface loginType {
 export interface userAddedType {
   reader: {
     id: string
-    name: string
+    username: string
     email: string
   }
 }
@@ -218,7 +218,7 @@ export interface getPostCommentType {
   id: string
   reader: {
     id: string
-    name: string
+    username: string
     email: string
     photo: {
       url: string

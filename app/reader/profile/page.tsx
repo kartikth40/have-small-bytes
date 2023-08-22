@@ -47,6 +47,8 @@ export default function ProfileUpdate({}: Props) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
 
+  console.log(session)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const newId = newAvatarId !== '' ? newAvatarId : session.user.photo?.id
@@ -135,10 +137,10 @@ export default function ProfileUpdate({}: Props) {
           </div>
         </section>
         <section>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Username</label>
           <input
             type="text"
-            placeholder="Enter Name"
+            placeholder="Enter Username"
             name="name"
             value={username}
             onChange={(e) => {
