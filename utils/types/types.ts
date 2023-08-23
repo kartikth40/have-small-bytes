@@ -26,7 +26,7 @@ export interface postsType {
   author: {
     bio: string
     id: string
-    name: string
+    username: string
     photo: {
       url: string
     }
@@ -56,7 +56,8 @@ export interface postType {
   author: {
     bio: string
     id: string
-    name: string
+    name?: string
+    username: string
     photo: {
       url: string
     }
@@ -103,7 +104,7 @@ export interface categoriesType {
 export interface loginType {
   reader: {
     id: string
-    name: string
+    username: string
     email: string
     password: string
     photo: {
@@ -117,7 +118,7 @@ export interface loginType {
 export interface userAddedType {
   reader: {
     id: string
-    name: string
+    username: string
     email: string
   }
 }
@@ -218,7 +219,7 @@ export interface getPostCommentType {
   id: string
   reader: {
     id: string
-    name: string
+    username: string
     email: string
     photo: {
       url: string
@@ -282,7 +283,7 @@ export interface notificationType {
   notifyType: string
   actor: {
     id: string
-    name: string
+    username: string
   }
   comment: {
     id: string

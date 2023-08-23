@@ -202,7 +202,7 @@ export default function RepliesSection({
                           src={comment.reader.photo.url}
                           width={32}
                           height={32}
-                          alt={comment.reader.name}
+                          alt={comment.reader.username}
                           style={{ borderRadius: '50%' }}
                         />
                       </div>
@@ -213,7 +213,7 @@ export default function RepliesSection({
                             : null
                         }`}
                       >
-                        {comment.reader.name}
+                        {comment.reader.username}
                       </div>
                       {comment.reader.isAuthor && (
                         <div className={isAuthor}>Author</div>
@@ -292,7 +292,11 @@ export default function RepliesSection({
                   </div>
                   <div className={replyBtnContainer}>
                     <button
-                      onClick={() => setLemmeReply(comment.id)}
+                      onClick={() =>
+                        lemmeReply
+                          ? setLemmeReply('')
+                          : setLemmeReply(comment.id)
+                      }
                       className={replyBtn}
                     >
                       Reply
@@ -327,7 +331,7 @@ export default function RepliesSection({
                       src={session?.user.photo?.url!}
                       width={24}
                       height={24}
-                      alt={session?.user.name!}
+                      alt={session?.user.username!}
                       style={{ borderRadius: '50%' }}
                     />
                   )}
@@ -336,6 +340,7 @@ export default function RepliesSection({
                   rows={1}
                   value={currentReply}
                   onChange={(e) => setCurrentReply(e.target.value)}
+                  autoFocus
                 />
                 <div>
                   <button

@@ -53,6 +53,9 @@
         body:global(.darkTheme) & {
           border: 1px solid var(--color-back-2);
         }
+        @include devices(mobile) {
+          font-size: 1.2em;
+        }
       }
       & label {
         font-size: 1em;

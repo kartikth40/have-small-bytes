@@ -4,22 +4,35 @@ interface response {
   minLength?: number
 }
 
-export function nameValidate(
-  name: string,
-  minLength: number = 3,
-  maxLength: number = 15
+export interface sucessResponse {
+  pass: boolean
+  passType: 'email' | 'username' | 'none'
+  error: string
+}
+
+export function usernameValidate(
+  username: string,
+  minLength: number = 4,
+  maxLength: number = 10
 ): response {
-  const zeroLengthError = 'Name is required!'
-  const sizeError = `Name must be ${minLength} - ${maxLength} characters long!`
+  const validUsernameRegex = /^[a-z0-9_\-]+$/
+
+  const zeroLengthError = 'Username is required!'
+  const sizeError = `Username must be ${minLength} - ${maxLength} characters long!`
+  const invalidUsernameError =
+    'Username must only contain lower-case letters, numbers and only one symbol out of "-" or "_".'
 
   const response: response = { pass: true, error: '', minLength: minLength }
 
-  if (name.length === 0) {
+  if (username.length === 0) {
     response.pass = false
     response.error = zeroLengthError
-  } else if (name.length < minLength || name.length > maxLength) {
+  } else if (username.length < minLength || username.length > maxLength) {
     response.pass = false
     response.error = sizeError
+  } else if (!username.match(validUsernameRegex)) {
+    response.pass = false
+    response.error = invalidUsernameError
   }
 
   return response
@@ -81,7 +94,7 @@ export function signupValidation(
 ): response {
   const successResponse: response = { pass: true, error: '' }
 
-  const nameResponse = nameValidate(name)
+  const nameResponse = usernameValidate(name)
   if (!nameResponse.pass) return nameResponse
 
   const emailResponse = emailValidate(email)
@@ -93,14 +106,26 @@ export function signupValidation(
   return successResponse
 }
 
-export function signinValidation(email: string, password: string): response {
-  const successResponse: response = { pass: true, error: '' }
+// export function signinValidation(
+//   emailOrUsername: string,
+//   password: string
+// ): response {
+//   const successResponse: response = { pass: true, error: '' }
 
-  const emailResponse = emailValidate(email)
-  if (!emailResponse.pass) return emailResponse
+//   const emailResponse = emailValidate(emailOrUsername)
+//   if (!emailResponse.pass) {
+//     emailResponse.error = 'Credentials do not match!'
+//     return emailResponse
+//   }
 
-  const passwordResponse = passwordValidate(password)
-  if (!passwordResponse.pass) return passwordResponse
+//   const UsernameResponse = usernameValidate(emailOrUsername)
+//   if (!UsernameResponse.pass) {
+//     emailResponse.error = 'Credentials do not match!'
+//     return emailResponse
+//   }
 
-  return successResponse
-}
+//   const passwordResponse = passwordValidate(password)
+//   if (!passwordResponse.pass) return passwordResponse
+
+//   return successResponse
+// }

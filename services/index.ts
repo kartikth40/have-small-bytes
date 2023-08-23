@@ -59,6 +59,7 @@ import {
   checkCommentExistsQuery,
   checkEmailQuery,
   checkIfPostLikeQuery,
+  checkUsernameQuery,
   deleteAllNotificationsQuery,
   deleteAllOlderNotificationsQuery,
   deleteCommentNotificationQuery,
@@ -82,6 +83,7 @@ import {
   getPostsCountQuery,
   getUnreadNotificationsCountQuery,
   loginQuery,
+  loginQueryWithUsername,
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
@@ -368,7 +370,36 @@ export const checkLogin = cache(
       return result.reader
     }
     try {
-      const res = await retryAPICall(thisFunction, 'logging in the user')
+      const res = await retryAPICall(
+        thisFunction,
+        'logging in the user with email'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'logging in the user')
+
+      return null
+    }
+  }
+)
+
+export const checkLoginWithUsername = cache(
+  async (username: string): Promise<loginType['reader'] | null> => {
+    async function thisFunction() {
+      const result: loginType = await request(
+        graphqlAPI,
+        loginQueryWithUsername,
+        {
+          username,
+        }
+      )
+      return result.reader
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'logging in the user with username'
+      )
       return res
     } catch (err) {
       consoleLog(err, 'logging in the user')
@@ -380,14 +411,14 @@ export const checkLogin = cache(
 
 export const addUser = cache(
   async (
-    name: string,
+    username: string,
     email: string,
     password: string,
     photoId: string
   ): Promise<userAddedType | null> => {
     async function thisFunction() {
       const result: userAddedType = await request(graphqlAPI, newUserQuery, {
-        name,
+        username,
         email,
         password,
         photoId,
@@ -405,7 +436,7 @@ export const addUser = cache(
   }
 )
 
-export const checkUserExists = cache(
+export const checkEmailExists = cache(
   async (email: string): Promise<boolean> => {
     async function thisFunction() {
       const result: readerIdReturnType = await request(
@@ -421,7 +452,30 @@ export const checkUserExists = cache(
       const res = await retryAPICall(thisFunction, 'checking user exists')
       return res
     } catch (err) {
-      consoleLog(err, 'checking user exists')
+      consoleLog(err, 'checking user email exists')
+
+      return false
+    }
+  }
+)
+
+export const checkUsernameExists = cache(
+  async (username: string): Promise<boolean> => {
+    async function thisFunction() {
+      const result: readerIdReturnType = await request(
+        graphqlAPI,
+        checkUsernameQuery,
+        {
+          username,
+        }
+      )
+      return result.reader ? true : false
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'checking user exists')
+      return res
+    } catch (err) {
+      consoleLog(err, 'checking username exists')
 
       return false
     }
@@ -431,7 +485,7 @@ export const checkUserExists = cache(
 export const updateUser = cache(
   async (
     userId: string,
-    name: string,
+    username: string,
     photoId: string
   ): Promise<updateReaderType | null> => {
     async function thisFunction() {
@@ -440,7 +494,7 @@ export const updateUser = cache(
         updateUserQuery,
         {
           userId,
-          name,
+          username,
           photoId,
         }
       )

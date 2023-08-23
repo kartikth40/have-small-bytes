@@ -39,7 +39,7 @@ export default function ProfileButton({}: Props) {
           ) : (
             ''
           )}
-          {session.user.name}
+          {session.user.username}
         </Link>
       </button>
     )
