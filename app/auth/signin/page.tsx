@@ -103,8 +103,6 @@ export default function LoginPage() {
     const isEmail = emailValidate(emailOrUsername.current)
     const isUsername = usernameValidate(emailOrUsername.current)
 
-    console.log(isEmail, isUsername)
-
     if (!isEmail.pass && !isUsername.pass) {
       toast.error('Invalid Email or Username.', {
         autoClose: 5000,
@@ -121,14 +119,12 @@ export default function LoginPage() {
     // Match Credentials
     const loginId = toast.loading('Checking your credentials...')
     const result = await signIn('credentials', {
-      email: isEmail ? emailOrUsername.current : '',
-      username: isUsername ? emailOrUsername.current : '',
+      email: isEmail.pass ? emailOrUsername.current : '',
+      username: isUsername.pass ? emailOrUsername.current : '',
       password: password.current,
       redirect: false,
     })
-    console.log(result)
-    console.log(isEmail ? emailOrUsername.current : '')
-    console.log(isUsername ? emailOrUsername.current : '')
+
     // handle error
     if (result?.error) {
       setSigningIn(false)

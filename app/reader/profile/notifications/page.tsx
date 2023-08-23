@@ -69,6 +69,7 @@ export default function ResetPassword({}: Props) {
       setNotifications(
         await getNotifications(session?.user.id!, getSkip(pageNo))
       )
+      console.log(await getNotifications(session?.user.id!, getSkip(pageNo)))
       setCount(await getNotificationsCount(session?.user.id!))
       handleButtonDisableStates()
       setLoadingNotifications(false)
@@ -249,7 +250,7 @@ export default function ResetPassword({}: Props) {
               onClick={async () => await handleNotificationClick(not)}
             >
               {printNotification(
-                not.actor.name,
+                not.actor.username,
                 not.post.title,
                 not.notifyType
               )}

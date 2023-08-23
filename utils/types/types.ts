@@ -283,7 +283,7 @@ export interface notificationType {
   notifyType: string
   actor: {
     id: string
-    name: string
+    username: string
   }
   comment: {
     id: string

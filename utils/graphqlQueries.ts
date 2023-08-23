@@ -583,7 +583,7 @@ export const getNotificationsQuery = gql`
       notifyType
       actor {
         id
-        name
+        username
       }
       comment {
         id
