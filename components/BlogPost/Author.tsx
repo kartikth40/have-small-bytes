@@ -4,7 +4,13 @@ import Link from 'next/link'
 import { myPortfolioURL } from '@/services'
 
 type Props = {
-  author: { id: string; name: string; bio: string; photo: { url: string } }
+  author: {
+    id: string
+    username: string
+    name?: string
+    bio: string
+    photo: { url: string }
+  }
 }
 
 export default async function Author({ author }: Props) {
@@ -35,12 +41,14 @@ export default async function Author({ author }: Props) {
           }}
           width={80}
           height={80}
-          alt={author.name}
+          alt={author.name ?? author.username}
         />
       </div>
       <div className={authorInfoContainer}>
         <div className={authorText}>Author</div>
-        <div className={authorNameContainer}>{author.name}</div>
+        <div className={authorNameContainer}>
+          {author.name ?? author.username}
+        </div>
         <div className={authorBioContainer}>{author.bio}</div>
       </div>
     </Link>

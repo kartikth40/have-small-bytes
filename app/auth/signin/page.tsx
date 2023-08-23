@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import {
   emailValidate,
   passwordValidate,
-  signinValidation,
+  usernameValidate,
 } from '@/utils/constants/formValidation'
 
 export default function LoginPage() {
@@ -26,32 +26,11 @@ export default function LoginPage() {
     }
   }, [router, shouldRedirect])
 
-  const [validEmail, setValidEmail] = useState(false)
+  const [validEmailOrUsername, setValidEmailOrUsername] = useState(false)
   const [validPassword, setValidPassword] = useState(false)
-  const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
+  const [invalidEmailOrUsernameMsg, setInvalidEmailOrUsernameMsg] = useState('')
   const [invalidPasswordMsg, setInvalidPasswordMsg] = useState('')
 
-  function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
-    email.current = e.target.value
-
-    if (e.target.value.length < 3) {
-      setValidEmail(false)
-      setInvalidEmailMsg('')
-      return
-    }
-
-    const validate = emailValidate(e.target.value)
-    console.log(validate, e.target.value)
-    if (validate.pass) {
-      setValidEmail(true)
-      setInvalidEmailMsg('')
-    } else {
-      setValidEmail(false)
-      if (validate.error) {
-        setInvalidEmailMsg(validate.error)
-      }
-    }
-  }
   function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
     password.current = e.target.value
 
@@ -73,6 +52,28 @@ export default function LoginPage() {
     }
   }
 
+  function handleEmailOrUsernameChange(e: ChangeEvent<HTMLInputElement>) {
+    emailOrUsername.current = e.target.value
+
+    const isEmail = emailValidate(emailOrUsername.current)
+    const isUsername = usernameValidate(emailOrUsername.current)
+
+    if (e.target.value.length < (isUsername.minLength || 4)) {
+      setValidEmailOrUsername(false)
+      setInvalidEmailOrUsernameMsg('')
+      return
+    }
+    if (isEmail.pass || isUsername.pass) {
+      setValidEmailOrUsername(true)
+      setInvalidEmailOrUsernameMsg('')
+    } else {
+      setValidEmailOrUsername(false)
+      if (isUsername.error && isEmail.error) {
+        setInvalidEmailOrUsernameMsg('Invalid Username or Email.')
+      }
+    }
+  }
+
   const {
     headingsContainer,
     mainContainer,
@@ -87,7 +88,7 @@ export default function LoginPage() {
     invalidate,
   } = styles
 
-  const email = useRef('')
+  const emailOrUsername = useRef('')
   const password = useRef('')
   const callbackUrl = useSearchParams().get('callbackUrl') ?? '/'
 
@@ -99,10 +100,20 @@ export default function LoginPage() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    const validateResponse = signinValidation(email.current, password.current)
+    const isEmail = emailValidate(emailOrUsername.current)
+    const isUsername = usernameValidate(emailOrUsername.current)
 
-    if (!validateResponse.pass) {
-      toast.warning(validateResponse.error, { autoClose: 5000 })
+    console.log(isEmail, isUsername)
+
+    if (!isEmail.pass && !isUsername.pass) {
+      toast.error('Invalid Email or Username.', {
+        autoClose: 5000,
+        toastId: 'invalid-email-username',
+      })
+      toast.warning(isUsername.error, {
+        autoClose: 5000,
+        toastId: 'invalid-username',
+      })
       return
     }
 
@@ -110,10 +121,14 @@ export default function LoginPage() {
     // Match Credentials
     const loginId = toast.loading('Checking your credentials...')
     const result = await signIn('credentials', {
-      email: email.current,
+      email: isEmail ? emailOrUsername.current : '',
+      username: isUsername ? emailOrUsername.current : '',
       password: password.current,
       redirect: false,
     })
+    console.log(result)
+    console.log(isEmail ? emailOrUsername.current : '')
+    console.log(isUsername ? emailOrUsername.current : '')
     // handle error
     if (result?.error) {
       setSigningIn(false)
@@ -145,19 +160,19 @@ export default function LoginPage() {
         <div className={userInputsContainer}>
           <div className={inputContainer}>
             <input
-              type="email"
-              placeholder="Enter Email"
-              name="email"
+              type="text"
+              placeholder="Enter Email or Username"
+              name="emailOrUsername"
               onChange={(e) => {
-                handleEmailChange(e)
+                handleEmailOrUsernameChange(e)
               }}
               required
             />
             <span
-              data-tooltip={invalidEmailMsg}
-              className={`${validationMark} ${validEmail ? validated : ''} ${
-                invalidEmailMsg !== '' ? invalidate : ''
-              }`}
+              data-tooltip={invalidEmailOrUsernameMsg}
+              className={`${validationMark} ${
+                validEmailOrUsername ? validated : ''
+              } ${invalidEmailOrUsernameMsg !== '' ? invalidate : ''}`}
             ></span>
           </div>
           <div className={inputContainer}>

@@ -83,6 +83,7 @@ import {
   getPostsCountQuery,
   getUnreadNotificationsCountQuery,
   loginQuery,
+  loginQueryWithUsername,
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
@@ -369,7 +370,36 @@ export const checkLogin = cache(
       return result.reader
     }
     try {
-      const res = await retryAPICall(thisFunction, 'logging in the user')
+      const res = await retryAPICall(
+        thisFunction,
+        'logging in the user with email'
+      )
+      return res
+    } catch (err) {
+      consoleLog(err, 'logging in the user')
+
+      return null
+    }
+  }
+)
+
+export const checkLoginWithUsername = cache(
+  async (username: string): Promise<loginType['reader'] | null> => {
+    async function thisFunction() {
+      const result: loginType = await request(
+        graphqlAPI,
+        loginQueryWithUsername,
+        {
+          username,
+        }
+      )
+      return result.reader
+    }
+    try {
+      const res = await retryAPICall(
+        thisFunction,
+        'logging in the user with username'
+      )
       return res
     } catch (err) {
       consoleLog(err, 'logging in the user')
@@ -455,7 +485,7 @@ export const checkUsernameExists = cache(
 export const updateUser = cache(
   async (
     userId: string,
-    name: string,
+    username: string,
     photoId: string
   ): Promise<updateReaderType | null> => {
     async function thisFunction() {
@@ -464,7 +494,7 @@ export const updateUser = cache(
         updateUserQuery,
         {
           userId,
-          name,
+          username,
           photoId,
         }
       )

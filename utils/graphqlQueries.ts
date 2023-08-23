@@ -25,7 +25,7 @@ export const PostsQuery = gql`
       author {
         bio
         id
-        name
+        username
         photo {
           url
         }
@@ -53,7 +53,7 @@ export const FeaturedPostsQuery = gql`
       author {
         bio
         id
-        name
+        username
         photo {
           url
         }
@@ -87,7 +87,7 @@ export const FeaturedCategoryPostsQuery = gql`
       author {
         bio
         id
-        name
+        username
         photo {
           url
         }
@@ -125,7 +125,7 @@ export const CategoryPostsQuery = gql`
       author {
         bio
         id
-        name
+        username
         photo {
           url
         }
@@ -154,6 +154,7 @@ export const PostDetailsQuery = gql`
         bio
         id
         name
+        username
         photo {
           url
         }
@@ -233,9 +234,25 @@ export const loginQuery = gql`
   }
 `
 
+export const loginQueryWithUsername = gql`
+  query Login($username: String!) {
+    reader(where: { username: $username }) {
+      id
+      username
+      email
+      password
+      photo {
+        id
+        url
+      }
+      isAuthor
+    }
+  }
+`
+
 export const newUserQuery = gql`
   mutation NewUser(
-    $name: String!
+    $username: String!
     $email: String!
     $password: String!
     $photoId: ID!
@@ -277,7 +294,7 @@ export const checkUsernameQuery = gql`
 `
 
 export const updateUserQuery = gql`
-  mutation UpdateUser($userId: ID!, $name: String!, $photoId: ID!) {
+  mutation UpdateUser($userId: ID!, $username: String!, $photoId: ID!) {
     updateReader(
       data: { photo: { connect: { id: $photoId } }, username: $username }
       where: { id: $userId }

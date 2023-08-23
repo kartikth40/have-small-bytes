@@ -17,6 +17,8 @@ export async function POST(request: Request) {
     body.photoId
   )
 
+  console.log(user)
+
   if (user) {
     return new Response(JSON.stringify(user))
   }

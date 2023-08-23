@@ -10,7 +10,7 @@ import { checkEmailExists, checkUsernameExists } from '@/services'
 import { getRandomPhotoId } from '@/utils/constants/profilePicIds'
 import {
   emailValidate,
-  nameValidate,
+  usernameValidate,
   passwordValidate,
   signupValidation,
 } from '@/utils/constants/formValidation'
@@ -44,8 +44,8 @@ export default function SignUpPage() {
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>) {
     username.current = e.target.value
 
-    const validate = nameValidate(e.target.value)
-    if (e.target.value.length < (validate.minLength || 3)) {
+    const validate = usernameValidate(e.target.value)
+    if (e.target.value.length < (validate.minLength || 4)) {
       setValidUsername(false)
       setInvalidUsernameMsg('')
       return
@@ -65,14 +65,14 @@ export default function SignUpPage() {
   async function handleUsernameOnBlur(e: ChangeEvent<HTMLInputElement>) {
     const usernameAlreadyExists = await checkUsernameExists(e.target.value)
     if (usernameAlreadyExists) {
-      setInvalidUsernameMsg('Username already exists.')
+      setInvalidUsernameMsg('Username already exists!')
     }
   }
 
   async function handleEmailOnBlur(e: ChangeEvent<HTMLInputElement>) {
     const emailAlreadyExists = await checkEmailExists(e.target.value)
     if (emailAlreadyExists) {
-      setInvalidEmailMsg('Email already exists.')
+      setInvalidEmailMsg('Email already exists!')
     }
   }
   async function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {

@@ -26,7 +26,7 @@ export interface postsType {
   author: {
     bio: string
     id: string
-    name: string
+    username: string
     photo: {
       url: string
     }
@@ -56,7 +56,8 @@ export interface postType {
   author: {
     bio: string
     id: string
-    name: string
+    name?: string
+    username: string
     photo: {
       url: string
     }

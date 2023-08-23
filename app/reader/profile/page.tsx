@@ -47,8 +47,6 @@ export default function ProfileUpdate({}: Props) {
     redirect(`/api/auth/signin?callbackUrl=/reader/profile`)
   }
 
-  console.log(session)
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const newId = newAvatarId !== '' ? newAvatarId : session.user.photo?.id

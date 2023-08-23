@@ -49,10 +49,10 @@ export default async function BlogPost({ post }: { post: postType }) {
                 style={{ objectFit: 'cover', borderRadius: '50%' }}
                 sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
                 fill={true}
-                alt={post.author.name}
+                alt={post.author.username}
               />
             </div>
-            <p className={authorName}>{post.author.name}</p>
+            <p className={authorName}>{post.author.username}</p>
           </Link>
           <div className={date}>
             <div className={icon}>
