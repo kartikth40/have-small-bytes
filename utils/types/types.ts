@@ -128,6 +128,14 @@ export interface readerIdReturnType {
     id: string | null
   }
 }
+
+export interface readerOTPType {
+  reader: {
+    id: string | null
+    otp: string | null
+  }
+}
+
 export interface deletedReaderIdReturnType {
   deleteReader: {
     id: string | null

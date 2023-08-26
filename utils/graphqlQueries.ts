@@ -344,25 +344,22 @@ export const resetPasswordQuery = gql`
   }
 `
 
-export const addOTPQueryWithUsername = gql`
-  mutation addOTP($username: String!, $otp: Int!) {
-    updateReader(data: { otp: $otp }, where: { username: $username }) {
-      id
-    }
-    publishReader(where: { username: $username }) {
-      id
-    }
-  }
-`
-
-export const addOTPQueryWithEmail = gql`
-  mutation addOTP($email: String!, $otp: Int!) {
+export const addOTPQuery = gql`
+  mutation addOTP($email: String!, $otp: String!) {
     updateReader(data: { otp: $otp }, where: { email: $email }) {
       id
     }
     publishReader(where: { email: $email }) {
       id
     }
+  }
+`
+
+export const getOTPQuery = gql`
+  query GetOtp($email: String!) {
+    reader(where: { email:$email }) {
+      id
+      otp
   }
 `
 

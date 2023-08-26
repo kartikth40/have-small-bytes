@@ -1,6 +1,6 @@
 import { checkLogin, checkLoginWithUsername } from '@/services'
 import { signJwtAccessToken } from '@/services/jwt'
-import * as bcrypt from 'bcrypt'
+import { compare } from 'bcrypt'
 
 interface requestBody {
   email: string
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
   console.log(user)
 
-  if (user && (await bcrypt.compare(body.password, user.password))) {
+  if (user && (await compare(body.password, user.password))) {
     const { password, ...userWithoutPass } = user
     const accessToken = signJwtAccessToken(userWithoutPass)
     const result = {

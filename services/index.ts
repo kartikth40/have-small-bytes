@@ -37,6 +37,7 @@ import {
   getSpecificNotificationType,
   readNotificationType,
   commentExistsType,
+  readerOTPType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -53,8 +54,7 @@ import {
   addCommentPublisheQuery,
   addCommentReplyDraftQuery,
   addCommentReplyPublisheQuery,
-  addOTPQueryWithEmail,
-  addOTPQueryWithUsername,
+  addOTPQuery,
   addPostLikePublishQuery,
   addPostLikeQuery,
   authorUrlQuery,
@@ -86,6 +86,7 @@ import {
   getUnreadNotificationsCountQuery,
   loginQuery,
   loginQueryWithUsername,
+  getOTPQuery,
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
@@ -609,26 +610,12 @@ export const resetPassword = cache(
 )
 
 export const addOTP = cache(
-  async (
-    username: string,
-    email: string,
-    otp: number
-  ): Promise<updateReaderType | null> => {
+  async (email: string, otp: string): Promise<updateReaderType | null> => {
     async function thisFunction() {
-      if (username) {
-        const result: updateReaderType = await request(
-          graphqlAPI,
-          addOTPQueryWithUsername,
-          { username, otp }
-        )
-        return result
-      }
-
-      const result: updateReaderType = await request(
-        graphqlAPI,
-        addOTPQueryWithEmail,
-        { email, otp }
-      )
+      const result: updateReaderType = await request(graphqlAPI, addOTPQuery, {
+        email,
+        otp,
+      })
       return result
     }
     try {
@@ -636,6 +623,25 @@ export const addOTP = cache(
       return res
     } catch (err) {
       consoleLog(err, 'adding OTP to database')
+
+      return null
+    }
+  }
+)
+
+export const getOTP = cache(
+  async (email: string): Promise<readerOTPType['reader'] | null> => {
+    async function thisFunction() {
+      const result: readerOTPType = await request(graphqlAPI, getOTPQuery, {
+        email,
+      })
+      return result.reader
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'getting OTP')
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting OTP')
 
       return null
     }
