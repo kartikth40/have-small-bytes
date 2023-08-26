@@ -1,6 +1,6 @@
 var nodemailer = require('nodemailer')
 //-----------------------------------------------------------------------------
-export async function sendMail(subject, toEmail, text) {
+export async function sendMail(subject, toEmail, htmlBody) {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -13,7 +13,7 @@ export async function sendMail(subject, toEmail, text) {
     from: process.env.NODEMAILER_EMAIL,
     to: toEmail,
     subject: subject,
-    text: text,
+    html: htmlBody,
   }
 
   await new Promise((resolve, reject) => {

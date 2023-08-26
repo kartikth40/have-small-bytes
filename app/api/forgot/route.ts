@@ -1,4 +1,5 @@
 import { addOTP } from '@/services'
+import { sendMail } from '@/services/emailService'
 
 interface requestBody {
   username: string
@@ -10,10 +11,17 @@ export async function POST(request: Request) {
 
   let result
 
+  const subject = 'Have Small Bytes'
   const otp = Math.floor(100000 + Math.random() * 900000)
+  const mailbody = `
+    <h1>Your OTP</h1>
+    ---  ${otp}  ---
+  `
 
+  console.log(body)
   if (body.email) {
     result = await addOTP('', body.email, otp)
+    sendMail(subject, body.email, mailbody)
   } else {
     result = await addOTP(body.username, '', otp)
   }
