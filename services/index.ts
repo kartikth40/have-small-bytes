@@ -53,6 +53,8 @@ import {
   addCommentPublisheQuery,
   addCommentReplyDraftQuery,
   addCommentReplyPublisheQuery,
+  addOTPQueryWithEmail,
+  addOTPQueryWithUsername,
   addPostLikePublishQuery,
   addPostLikeQuery,
   authorUrlQuery,
@@ -600,6 +602,40 @@ export const resetPassword = cache(
       return res
     } catch (err) {
       consoleLog(err, 'resetting the user password')
+
+      return null
+    }
+  }
+)
+
+export const addOTP = cache(
+  async (
+    username: string,
+    email: string,
+    otp: number
+  ): Promise<updateReaderType | null> => {
+    async function thisFunction() {
+      if (username) {
+        const result: updateReaderType = await request(
+          graphqlAPI,
+          addOTPQueryWithUsername,
+          { username, otp }
+        )
+        return result
+      }
+
+      const result: updateReaderType = await request(
+        graphqlAPI,
+        addOTPQueryWithEmail,
+        { email, otp }
+      )
+      return result
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'adding OTP to database')
+      return res
+    } catch (err) {
+      consoleLog(err, 'adding OTP to database')
 
       return null
     }

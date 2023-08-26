@@ -344,6 +344,28 @@ export const resetPasswordQuery = gql`
   }
 `
 
+export const addOTPQueryWithUsername = gql`
+  mutation addOTP($username: String!, $otp: Int!) {
+    updateReader(data: { otp: $otp }, where: { username: $username }) {
+      id
+    }
+    publishReader(where: { username: $username }) {
+      id
+    }
+  }
+`
+
+export const addOTPQueryWithEmail = gql`
+  mutation addOTP($email: String!, $otp: Int!) {
+    updateReader(data: { otp: $otp }, where: { email: $email }) {
+      id
+    }
+    publishReader(where: { email: $email }) {
+      id
+    }
+  }
+`
+
 export const getPostLikesQuery = gql`
   query GetPostLikes($postId: ID!) {
     postLikesConnection(where: { post: { id: $postId } }) {
