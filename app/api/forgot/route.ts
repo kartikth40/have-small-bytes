@@ -11,15 +11,14 @@ export async function POST(request: Request) {
 
   let result
 
-  const username = body.email.split('@')
+  const username = body.email.split('@')[0]
 
   const subject = 'One Time Password (OTP) for your HSB account'
   const otp = Math.floor(100000 + Math.random() * 900000)
   const mailbody = `
-  <div style="width: 100%; display: flex; flex-direction:column; align-items: center; font-family: Roboto">
-  <h1 style="text-decoration: underline;">HSB</h1>
+  <div style="width: 100%; font-family: Roboto">
   <h3>Hi ${username},</h3>
-  <p>Use ${otp} as One Time Password (OTP) to log in to your HSB account.</p>
+  <p>Use <span style="text-decoration:underline">${otp}</span> as One Time Password (OTP) to log in to your HSB account.</p>
   <br>
   <p>Please do not share this OTP with anyone for security reasons.</p>
 </div>

@@ -32,7 +32,7 @@ function ForgotPasswordPage({}: Props) {
   const [otp, setOtp] = useState('')
 
   const [otpSent, setOtpSent] = useState(false)
-  const [resend, setResend] = useState(0)
+  const [sendingOTP, setSendingOTP] = useState(false)
 
   const [validEmail, setValidEmail] = useState(false)
   const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
@@ -77,13 +77,9 @@ function ForgotPasswordPage({}: Props) {
     }
   }
 
-  function checkIfNumber(n: string) {
-    return /^[0-9]*$/.test(n)
-  }
-
   function handleOtpChange(e: ChangeEvent<HTMLInputElement>) {
     const currentOtp = e.target.value
-    if (checkIfNumber(currentOtp)) setOtp(currentOtp)
+    setOtp(currentOtp)
 
     const isOtp = otpValidate(currentOtp)
 
@@ -164,7 +160,8 @@ function ForgotPasswordPage({}: Props) {
       return
     }
 
-    setResend(5)
+    setSendingOTP(true)
+
     const sendId = toast.loading('sending OTP...', {
       position: 'bottom-right',
     })
@@ -187,17 +184,7 @@ function ForgotPasswordPage({}: Props) {
         position: 'bottom-right',
       })
       setOtpSent(true)
-
-      let time = 5
-
-      const interval = setInterval(() => {
-        console.log('run')
-        time = time - 1
-        setResend(time)
-        if (time - 1 === 0) clearInterval(interval)
-      }, 1000 * 60)
     } else {
-      setResend(0)
       toast.update(sendId, {
         render: 'Error Ocurred! Please try again later...',
         type: 'error',
@@ -206,6 +193,7 @@ function ForgotPasswordPage({}: Props) {
         position: 'bottom-right',
       })
     }
+    setSendingOTP(false)
   }
 
   return (
@@ -261,8 +249,12 @@ function ForgotPasswordPage({}: Props) {
         </div>
 
         <div className={loginBtnContainer}>
-          <button disabled={resend !== 0} type="button" onClick={handleSendOtp}>
-            {resend === 0 ? 'Send OTP' : 'Resend OTP | ' + resend + ' min'}
+          <button
+            disabled={otpSent || sendingOTP}
+            type="button"
+            onClick={handleSendOtp}
+          >
+            Send OTP
           </button>
 
           <button disabled={!otpSent} type="submit">
