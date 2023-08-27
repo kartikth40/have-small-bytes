@@ -355,6 +355,17 @@ export const addOTPQuery = gql`
   }
 `
 
+export const deleteOTPQuery = gql`
+  mutation deleteOTP($email: String!) {
+    updateReader(data: { otp: null }, where: { email: $email }) {
+      id
+    }
+    publishReader(where: { email: $email }) {
+      id
+    }
+  }
+`
+
 export const getOTPQuery = gql`
   query GetOtp($email: String!) {
     reader(where: { email: $email }) {

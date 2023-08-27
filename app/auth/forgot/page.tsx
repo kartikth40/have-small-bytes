@@ -1,10 +1,12 @@
 'use client'
 
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import styles from './page.module.scss'
 import { toast } from 'react-toastify'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { emailValidate, otpValidate } from '@/utils/constants/formValidation'
+import { deleteOTP } from '@/services'
 
 type Props = {}
 
@@ -18,7 +20,7 @@ function ForgotPasswordPage({}: Props) {
   useEffect(() => {
     if (shouldRedirect) {
       router.push('/reader/profile/reset-password')
-      toast('🩹 Please Reset Your Password ASAP!', {
+      toast('🩹 Please Reset Your Password!', {
         position: 'top-center',
         autoClose: 5000,
         pauseOnHover: true,
@@ -29,8 +31,13 @@ function ForgotPasswordPage({}: Props) {
   const [email, setEmail] = useState('')
   const [otp, setOtp] = useState('')
 
+  const [otpSent, setOtpSent] = useState(false)
+  const [resend, setResend] = useState(0)
+
   const [validEmail, setValidEmail] = useState(false)
   const [invalidEmailMsg, setInvalidEmailMsg] = useState('')
+  const [validOtp, setValidOtp] = useState(false)
+  const [invalidOtpMsg, setInvalidOtpMsg] = useState('')
 
   const {
     headingsContainer,
@@ -53,20 +60,70 @@ function ForgotPasswordPage({}: Props) {
   if (sessionStatus === 'loading')
     return <div className={loadingState}>Loading ...</div>
 
+  function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
+    const currentEmail = e.target.value
+    setEmail(currentEmail)
+
+    const isEmail = emailValidate(currentEmail)
+
+    if (isEmail.pass) {
+      setValidEmail(true)
+      setInvalidEmailMsg('')
+    } else {
+      setValidEmail(false)
+      if (isEmail.error) {
+        setInvalidEmailMsg('Invalid Email.')
+      }
+    }
+  }
+
+  function checkIfNumber(n: string) {
+    return /^[0-9]*$/.test(n)
+  }
+
+  function handleOtpChange(e: ChangeEvent<HTMLInputElement>) {
+    const currentOtp = e.target.value
+    if (checkIfNumber(currentOtp)) setOtp(currentOtp)
+
+    const isOtp = otpValidate(currentOtp)
+
+    if (isOtp.pass) {
+      setValidOtp(true)
+      setInvalidOtpMsg('')
+    } else {
+      setValidOtp(false)
+      if (isOtp.error) {
+        setInvalidOtpMsg(isOtp.error)
+      } else {
+        setInvalidOtpMsg('Invalid OTP.')
+      }
+    }
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
+    const isEmail = emailValidate(email)
+    const isOTP = otpValidate(otp)
+
+    if (!isEmail.pass) {
+      toast.error('Invalid Email.', {
+        autoClose: 5000,
+        toastId: 'invalid-email',
+      })
+      return
+    }
+    if (!isOTP.pass) {
+      toast.error('Invalid OTP.', {
+        autoClose: 5000,
+        toastId: 'invalid-otp',
+      })
+      return
+    }
 
     const matchId = toast.loading('checking OTP...', {
       position: 'bottom-right',
     })
-    // const res = await fetch('/api/forgot/otp', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ email: email, otp: otp }),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     // authorization: `Bearer ${process.env.HYGRAPH_PERMANENTAUTH_TOKEN}`,
-    //   },
-    // })
     setSigningIn(true)
     const res = await signIn('credentials', {
       email: email,
@@ -74,20 +131,20 @@ function ForgotPasswordPage({}: Props) {
       redirect: false,
     })
 
-    if (res && res.ok) {
+    console.log(res)
+    if (!res?.error) {
       toast.update(matchId, {
-        render: '✅ OTP matched successfully!',
+        render: '✅ OTP matched. Signing you in!',
         type: 'default',
         isLoading: false,
         autoClose: 3000,
         position: 'bottom-right',
       })
       setSigningIn(false)
-      // setNewConfirmPass('')
-      // setNewPass('')
+      deleteOTP(email)
     } else {
       toast.update(matchId, {
-        render: 'Error Ocurred! Please try again later...',
+        render: 'Incorrect OTP...',
         type: 'error',
         isLoading: false,
         autoClose: 5000,
@@ -98,6 +155,16 @@ function ForgotPasswordPage({}: Props) {
   }
 
   async function handleSendOtp() {
+    const isEmail = emailValidate(email)
+    if (!isEmail.pass) {
+      toast.error('Invalid Email.', {
+        autoClose: 5000,
+        toastId: 'invalid-email',
+      })
+      return
+    }
+
+    setResend(5)
     const sendId = toast.loading('sending OTP...', {
       position: 'bottom-right',
     })
@@ -119,9 +186,18 @@ function ForgotPasswordPage({}: Props) {
         autoClose: 3000,
         position: 'bottom-right',
       })
-      // setNewConfirmPass('')
-      // setNewPass('')
+      setOtpSent(true)
+
+      let time = 5
+
+      const interval = setInterval(() => {
+        console.log('run')
+        time = time - 1
+        setResend(time)
+        if (time - 1 === 0) clearInterval(interval)
+      }, 1000 * 60)
     } else {
+      setResend(0)
       toast.update(sendId, {
         render: 'Error Ocurred! Please try again later...',
         type: 'error',
@@ -140,14 +216,16 @@ function ForgotPasswordPage({}: Props) {
         </div>
         {/* Email */}
         <div className={userInputsContainer}>
+          <label htmlFor="forgot-email">Enter Email</label>
           <div className={inputContainer}>
             <input
+              id="forgot-email"
               type="text"
               placeholder="Enter Email"
               name="email"
               value={email}
               onChange={(e) => {
-                setEmail(e.target.value)
+                handleEmailChange(e)
               }}
               required
             />
@@ -159,28 +237,37 @@ function ForgotPasswordPage({}: Props) {
             ></span>
           </div>
 
+          <label htmlFor="forgot-otp">Enter OTP</label>
           <div className={inputContainer}>
-            {' '}
-            {/* Password */}
             <input
+              id="forgot-otp"
               type="text"
               placeholder="Enter OTP"
               name="otp"
               value={otp}
               onChange={(e) => {
-                setOtp(e.target.value)
+                handleOtpChange(e)
               }}
+              readOnly={!otpSent}
               required
             />
+            <span
+              data-tooltip={invalidOtpMsg}
+              className={`${validationMark} ${validOtp ? validated : ''} ${
+                invalidOtpMsg !== '' ? invalidate : ''
+              }`}
+            ></span>
           </div>
         </div>
 
         <div className={loginBtnContainer}>
-          <button type="button" onClick={handleSendOtp}>
-            Send OTP
+          <button disabled={resend !== 0} type="button" onClick={handleSendOtp}>
+            {resend === 0 ? 'Send OTP' : 'Resend OTP | ' + resend + ' min'}
           </button>
 
-          <button type="submit">Submit</button>
+          <button disabled={!otpSent} type="submit">
+            Submit
+          </button>
         </div>
       </form>
     </div>

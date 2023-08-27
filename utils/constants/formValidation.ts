@@ -62,6 +62,19 @@ export function emailValidate(email: string, maxLength: number = 35): response {
   return response
 }
 
+export function otpValidate(otp: string, size: number = 6): response {
+  const OTPError = `OTP must be a ${size} digit number!`
+  const response: response = { pass: true, error: '' }
+
+  const validOTPRegex = /^[0-9]*$/
+
+  if (otp.length !== size || !otp.match(validOTPRegex)) {
+    response.pass = false
+    response.error = OTPError
+  }
+  return response
+}
+
 export function passwordValidate(
   password: string,
   minLength: number = 8,

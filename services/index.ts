@@ -96,6 +96,7 @@ import {
   sendNotificationQuery,
   updateCommentQuery,
   updateUserQuery,
+  deleteOTPQuery,
 } from '../utils/graphqlQueries'
 
 interface ErrorType {
@@ -623,6 +624,29 @@ export const addOTP = cache(
       return res
     } catch (err) {
       consoleLog(err, 'adding OTP to database')
+
+      return null
+    }
+  }
+)
+
+export const deleteOTP = cache(
+  async (email: string): Promise<updateReaderType | null> => {
+    async function thisFunction() {
+      const result: updateReaderType = await request(
+        graphqlAPI,
+        deleteOTPQuery,
+        {
+          email,
+        }
+      )
+      return result
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting OTP')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting OTP')
 
       return null
     }
