@@ -197,11 +197,11 @@ export default function LoginPage() {
             Login
           </button>
         </div>
-        {/* <div>
+        <div>
           <p className={forgetPass}>
-            <a href="#">Forgot Password?</a>
+            <a href="/auth/forgot">Forgot Password?</a>
           </p>
-        </div> */}
+        </div>
         <p className={register}>
           Not registered?{' '}
           <Link href={`/auth/signup?callbackUrl=${callbackUrl}`}>

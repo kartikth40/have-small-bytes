@@ -357,9 +357,10 @@ export const addOTPQuery = gql`
 
 export const getOTPQuery = gql`
   query GetOtp($email: String!) {
-    reader(where: { email:$email }) {
+    reader(where: { email: $email }) {
       id
       otp
+    }
   }
 `
 

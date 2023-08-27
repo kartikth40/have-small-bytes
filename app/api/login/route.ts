@@ -1,4 +1,4 @@
-import { checkLogin, checkLoginWithUsername } from '@/services'
+import { checkLogin, checkLoginWithUsername, getOTP } from '@/services'
 import { signJwtAccessToken } from '@/services/jwt'
 import { compare } from 'bcrypt'
 
@@ -6,6 +6,7 @@ interface requestBody {
   email: string
   username: string
   password: string
+  otp: string
 }
 
 export async function POST(request: Request) {
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
 
   console.log(user)
 
-  if (user && (await compare(body.password, user.password))) {
+  if (user && body.password && (await compare(body.password, user.password))) {
     const { password, ...userWithoutPass } = user
     const accessToken = signJwtAccessToken(userWithoutPass)
     const result = {
@@ -27,6 +28,24 @@ export async function POST(request: Request) {
       accessToken,
     }
     return new Response(JSON.stringify(result))
+  } else if (user && body.otp) {
+    const otpUser = await getOTP(body.email)
+
+    if (otpUser && (await compare(body.otp.toString(), otpUser.otp!))) {
+      const { password, ...userWithoutPass } = user
+      const accessToken = signJwtAccessToken(userWithoutPass)
+      const result = {
+        ...userWithoutPass,
+        accessToken,
+      }
+      return new Response(JSON.stringify(result))
+    } else {
+      const myOptions = {
+        status: 400,
+        statusText: 'Incorrect OTP!',
+      }
+      return new Response(JSON.stringify(null), myOptions)
+    }
   } else {
     const myOptions = {
       status: 400,

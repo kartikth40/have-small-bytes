@@ -1,13 +1,9 @@
-import { compare, hash } from 'bcrypt'
-import { addOTP, getOTP } from '@/services'
+import { hash } from 'bcrypt'
+import { addOTP } from '@/services'
 import { sendMail } from '@/services/emailService'
 
 interface requestBody {
   email: string
-}
-interface userRequestBody {
-  email: string
-  otp: number
 }
 
 export async function POST(request: Request) {
@@ -33,21 +29,4 @@ export async function POST(request: Request) {
     statusText: 'Error ocurred while sending OTP!',
   }
   return new Response(JSON.stringify(null), myOptions)
-}
-
-export async function GET(request: Request) {
-  const body: userRequestBody = await request.json()
-  const user = await getOTP(body.email)
-
-  console.log(user)
-
-  if (user && (await compare(body.otp.toString(), user.otp!))) {
-    return new Response(JSON.stringify(user.id))
-  } else {
-    const myOptions = {
-      status: 400,
-      statusText: 'Incorrect OTP!',
-    }
-    return new Response(JSON.stringify(null), myOptions)
-  }
 }

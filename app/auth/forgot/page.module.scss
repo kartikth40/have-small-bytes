@@ -151,16 +151,13 @@
     text-decoration: underline;
   }
 }
-.forgetPass {
-  font-size: 0.7em;
-}
 .register {
   margin-top: 1em;
 }
 
 .loginBtnContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   & button {
