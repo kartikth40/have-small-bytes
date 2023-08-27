@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   `
 
   result = await addOTP(body.email, await hash(otp.toString(), 10))
-  sendMail(subject, body.email, mailbody)
+  await sendMail(subject, body.email, mailbody)
 
   if (result) {
     return new Response(JSON.stringify(result))

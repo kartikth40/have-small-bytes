@@ -1,7 +1,7 @@
 var nodemailer = require('nodemailer')
 //-----------------------------------------------------------------------------
 export async function sendMail(subject, toEmail, htmlBody) {
-  var transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     port: 465,
     host: 'smtp.gmail.com',
     service: 'gmail',
@@ -12,23 +12,13 @@ export async function sendMail(subject, toEmail, htmlBody) {
     secure: true,
   })
 
-  var mailOptions = {
+  const mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: toEmail,
     subject: subject,
     html: htmlBody,
   }
 
-  await new Promise((resolve, reject) => {
-    // send mail
-    transporter.sendMail(mailOptions, (err, response) => {
-      if (err) {
-        console.log(err)
-        reject(err)
-      } else {
-        console.log(response)
-        resolve(response)
-      }
-    })
-  })
+  // send mail
+  await transporter.sendMail(mailOptions)
 }
