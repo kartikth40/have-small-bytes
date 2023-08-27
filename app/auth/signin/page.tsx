@@ -154,8 +154,10 @@ export default function LoginPage() {
         </div>
         {/* Email */}
         <div className={userInputsContainer}>
+          <label htmlFor="email-username">Email or Username</label>
           <div className={inputContainer}>
             <input
+              id="email-username"
               type="text"
               placeholder="Enter Email or Username"
               name="emailOrUsername"
@@ -171,10 +173,12 @@ export default function LoginPage() {
               } ${invalidEmailOrUsernameMsg !== '' ? invalidate : ''}`}
             ></span>
           </div>
+          <label htmlFor="password">Password</label>
           <div className={inputContainer}>
             {' '}
             {/* Password */}
             <input
+              id="password"
               type="password"
               placeholder="Enter Password"
               name="pswrd"
@@ -199,7 +203,7 @@ export default function LoginPage() {
         </div>
         <div>
           <p className={forgetPass}>
-            <a href="/auth/forgot">Forgot Password?</a>
+            <Link href="/auth/forgot">Forgot Password?</Link>
           </p>
         </div>
         <p className={register}>

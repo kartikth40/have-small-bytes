@@ -19,6 +19,9 @@
   & h3 {
     font-weight: 900;
     font-size: 2rem;
+    @include devices(mobile) {
+      font-size: 1.5rem;
+    }
   }
 }
 .mainContainer {
@@ -43,35 +46,23 @@
 
       --dim: rgba(255, 255, 255, 0.5);
 
-      &::after {
-        position: absolute;
-        content: '';
-        top: 50%;
-        transform: translateX(5px);
-        width: 1.5em;
-        height: 1em;
-        border: 0 solid transparent;
-        border-top: 1px solid var(--dim);
-        border-right: 1px solid var(--dim);
-        border-top-right-radius: 1em;
-      }
       &::before {
         position: absolute;
         content: '';
-        top: 50%;
+        top: 45%;
         left: -1.5em;
-        transform: translateX(-5px);
+        transform: translateX(-7px);
         width: 1.5em;
-        height: 1em;
+        height: 0.5em;
         border: 0 solid transparent;
-        border-top: 1px solid var(--dim);
-        border-left: 1px solid var(--dim);
-        border-top-left-radius: 1em;
+        border-top: 5px solid var(--dim);
+        border-left: 5px solid var(--dim);
+        border-top-left-radius: 0.5em;
       }
     }
 
     & .inputContainer {
-      margin-top: 0.5em;
+      margin-top: 0.3em;
       margin-bottom: 1.3em;
       position: relative;
       & input {

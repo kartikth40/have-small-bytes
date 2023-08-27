@@ -216,7 +216,7 @@ function ForgotPasswordPage({}: Props) {
         </div>
         {/* Email */}
         <div className={userInputsContainer}>
-          <label htmlFor="forgot-email">Enter Email</label>
+          <label htmlFor="forgot-email">Email</label>
           <div className={inputContainer}>
             <input
               id="forgot-email"
@@ -237,7 +237,7 @@ function ForgotPasswordPage({}: Props) {
             ></span>
           </div>
 
-          <label htmlFor="forgot-otp">Enter OTP</label>
+          <label htmlFor="forgot-otp">OTP</label>
           <div className={inputContainer}>
             <input
               id="forgot-otp"
