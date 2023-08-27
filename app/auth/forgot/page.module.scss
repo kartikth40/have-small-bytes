@@ -38,7 +38,6 @@
   }
   & .userInputsContainer {
     margin-bottom: 2em;
-
     & label {
       font-size: 1em;
       font-weight: 200;
@@ -168,10 +167,20 @@
     }
   }
 }
+.forgetPass,
+.register {
+  font-size: 1em;
+  & a {
+    text-decoration: underline;
+  }
+}
+.register {
+  margin-top: 1em;
+}
 
 .loginBtnContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   & button {
@@ -188,8 +197,12 @@
       opacity: 0.7;
     }
     &:disabled {
-      cursor: wait;
+      cursor: not-allowed;
       color: grey;
+    }
+
+    @include devices(mobile) {
+      font-size: 0.8em;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { addUser } from '@/services'
-import * as bcrypt from 'bcrypt'
+import { hash } from 'bcrypt'
 
 interface requestBody {
   username: string
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const user = await addUser(
     body.username,
     body.email,
-    await bcrypt.hash(body.password, 10),
+    await hash(body.password, 10),
     body.photoId
   )
 

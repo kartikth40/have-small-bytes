@@ -1,5 +1,5 @@
 import { resetPassword } from '@/services'
-import * as bcrypt from 'bcrypt'
+import { hash } from 'bcrypt'
 
 interface requestBody {
   userId: string
@@ -8,10 +8,7 @@ interface requestBody {
 
 export async function POST(request: Request) {
   const body: requestBody = await request.json()
-  const user = await resetPassword(
-    body.userId,
-    await bcrypt.hash(body.password, 10)
-  )
+  const user = await resetPassword(body.userId, await hash(body.password, 10))
 
   if (user) {
     return new Response(JSON.stringify(user))

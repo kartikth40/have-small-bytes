@@ -37,6 +37,7 @@ import {
   getSpecificNotificationType,
   readNotificationType,
   commentExistsType,
+  readerOTPType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -53,6 +54,7 @@ import {
   addCommentPublisheQuery,
   addCommentReplyDraftQuery,
   addCommentReplyPublisheQuery,
+  addOTPQuery,
   addPostLikePublishQuery,
   addPostLikeQuery,
   authorUrlQuery,
@@ -84,6 +86,7 @@ import {
   getUnreadNotificationsCountQuery,
   loginQuery,
   loginQueryWithUsername,
+  getOTPQuery,
   newUserQuery,
   publishSendNotificationQuery,
   readAllNotificationsQuery,
@@ -93,6 +96,7 @@ import {
   sendNotificationQuery,
   updateCommentQuery,
   updateUserQuery,
+  deleteOTPQuery,
 } from '../utils/graphqlQueries'
 
 interface ErrorType {
@@ -600,6 +604,68 @@ export const resetPassword = cache(
       return res
     } catch (err) {
       consoleLog(err, 'resetting the user password')
+
+      return null
+    }
+  }
+)
+
+export const addOTP = cache(
+  async (email: string, otp: string): Promise<updateReaderType | null> => {
+    async function thisFunction() {
+      const result: updateReaderType = await request(graphqlAPI, addOTPQuery, {
+        email,
+        otp,
+      })
+      return result
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'adding OTP to database')
+      return res
+    } catch (err) {
+      consoleLog(err, 'adding OTP to database')
+
+      return null
+    }
+  }
+)
+
+export const deleteOTP = cache(
+  async (email: string): Promise<updateReaderType | null> => {
+    async function thisFunction() {
+      const result: updateReaderType = await request(
+        graphqlAPI,
+        deleteOTPQuery,
+        {
+          email,
+        }
+      )
+      return result
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'deleting OTP')
+      return res
+    } catch (err) {
+      consoleLog(err, 'deleting OTP')
+
+      return null
+    }
+  }
+)
+
+export const getOTP = cache(
+  async (email: string): Promise<readerOTPType['reader'] | null> => {
+    async function thisFunction() {
+      const result: readerOTPType = await request(graphqlAPI, getOTPQuery, {
+        email,
+      })
+      return result.reader
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'getting OTP')
+      return res
+    } catch (err) {
+      consoleLog(err, 'getting OTP')
 
       return null
     }

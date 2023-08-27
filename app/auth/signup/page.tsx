@@ -226,8 +226,10 @@ export default function SignUpPage() {
           </div>
           <div className={userInputsContainer}>
             {/* Name */}
+            <label htmlFor="username">Username</label>
             <div className={inputContainer}>
               <input
+                id="username"
                 type="text"
                 placeholder="Enter Username"
                 name="username"
@@ -245,8 +247,10 @@ export default function SignUpPage() {
               ></span>
             </div>
             {/* Email */}
+            <label htmlFor="email">Email</label>
             <div className={inputContainer}>
               <input
+                id="email"
                 type="email"
                 placeholder="Enter Email"
                 name="email"
@@ -265,8 +269,10 @@ export default function SignUpPage() {
             </div>
 
             {/* Password */}
+            <label htmlFor="password">Password</label>
             <div className={inputContainer}>
               <input
+                id="password"
                 type="password"
                 placeholder="Enter Password"
                 name="pswrd"
