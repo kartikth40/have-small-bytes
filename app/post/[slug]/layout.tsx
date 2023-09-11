@@ -14,14 +14,14 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // fetch data
-  const post = (await getPostBySlug(params.slug)) ?? 'HSB'
-  console.log(post)
+  const post = await getPostBySlug(params.slug)
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || []
 
   return {
-    title: post,
+    title: post?.title ?? 'HSB',
+    description: post?.summary,
     openGraph: {
       images: ['/some-specific-page-image.jpg', ...previousImages],
     },

@@ -50,6 +50,7 @@ export const PostBySlugQuery = gql`
   query GetPosts($slug: String!) {
     posts(first: 1, where: { slug: $slug }) {
       title
+      summary
     }
   }
 `

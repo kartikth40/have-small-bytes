@@ -8,7 +8,10 @@ import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
 
 export const metadata = {
-  title: 'Have Small Bytes',
+  title: {
+    default: 'Have Small Bytes',
+    template: '%s | HSB',
+  },
   description: 'Byte size blogs',
 }
 

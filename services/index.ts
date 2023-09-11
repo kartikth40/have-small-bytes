@@ -194,19 +194,20 @@ export const getPosts = cache(
 )
 
 export const getPostBySlug = cache(
-  async (slug: string): Promise<string | null> => {
+  async (slug: string): Promise<{ title: string; summary: string } | null> => {
     async function thisFunction() {
       type postType = {
         posts: [
           {
             title: string
+            summary: string
           }
         ]
       }
       const result: postType = await request(graphqlAPI, PostBySlugQuery, {
         slug,
       })
-      return result.posts[0]?.title
+      return result.posts[0]
     }
     try {
       const res = await retryAPICall(thisFunction, 'extracting posts')
