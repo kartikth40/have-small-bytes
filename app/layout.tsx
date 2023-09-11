@@ -7,6 +7,11 @@ import Providers from '@/components/global/Providers'
 import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
 
+export const metadata = {
+  title: 'Have Small Bytes',
+  description: 'Byte size blogs',
+}
+
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -24,11 +29,6 @@ export const nabla = Nabla({
   display: 'swap',
   variable: '--font-nabla',
 })
-
-export const metadata = {
-  title: 'Have Small Bytes',
-  description: 'Byte size blogs',
-}
 
 export default function RootLayout({
   children,
