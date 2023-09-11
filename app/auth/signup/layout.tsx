@@ -1,7 +1,7 @@
 import styles from './page.module.scss'
 
 export const metadata = {
-  title: 'HSB | Signup',
+  title: 'Signup',
   description: 'signup page.',
 }
 
