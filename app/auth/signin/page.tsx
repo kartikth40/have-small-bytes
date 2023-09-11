@@ -150,7 +150,7 @@ export default function LoginPage() {
     <div className={mainContainer}>
       <form onSubmit={(e) => handleSubmit(e)} noValidate={true}>
         <div className={headingsContainer}>
-          <h3>Welcome Back</h3>
+          <h1>Welcome Back</h1>
         </div>
         {/* Email */}
         <div className={userInputsContainer}>

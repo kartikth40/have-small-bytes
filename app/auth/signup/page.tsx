@@ -222,7 +222,7 @@ export default function SignUpPage() {
       <div className={mainContainer}>
         <form onSubmit={(e) => handleSubmit(e)} noValidate={true}>
           <div className={headingsContainer}>
-            <h3>Sign Up</h3>
+            <h1>Sign Up</h1>
           </div>
           <div className={userInputsContainer}>
             {/* Name */}

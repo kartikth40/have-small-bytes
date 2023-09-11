@@ -200,7 +200,7 @@ function ForgotPasswordPage({}: Props) {
     <div className={mainContainer}>
       <form onSubmit={(e) => handleSubmit(e)} noValidate={true}>
         <div className={headingsContainer}>
-          <h3>Forgot Password</h3>
+          <h1>Forgot Password</h1>
         </div>
         {/* Email */}
         <div className={userInputsContainer}>

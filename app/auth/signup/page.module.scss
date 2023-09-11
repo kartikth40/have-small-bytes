@@ -16,7 +16,7 @@
 .headingsContainer {
   text-align: center;
   margin: 1rem;
-  & h3 {
+  & h1 {
     font-weight: 900;
     font-size: 2rem;
     @include devices(mobile) {
@@ -25,7 +25,7 @@
   }
 }
 .mainContainer {
-  margin-top: 10vh;
+  // margin-top: 7vh;
   border: 2px solid var(--color-back-3);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
   // width: 30vw;
