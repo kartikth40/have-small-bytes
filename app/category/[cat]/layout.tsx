@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: category?.name ?? 'HSB',
-    description:
-      'Category based blogs about web development, data structures and algorithms and personal development',
+    // description:
+    //   'Category based blogs about web development, data structures and algorithms and personal development',
     // openGraph: {
     //   images: ['/some-specific-page-image.jpg', ...previousImages],
     // },

@@ -21,7 +21,7 @@ export async function generateMetadata(
 
   return {
     title: post?.title ?? 'HSB',
-    description: post?.summary,
+    // description: post?.summary,
     openGraph: {
       images: ['/some-specific-page-image.jpg', ...previousImages],
     },
