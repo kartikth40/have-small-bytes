@@ -97,6 +97,7 @@ import {
   updateCommentQuery,
   updateUserQuery,
   deleteOTPQuery,
+  PostBySlugQuery,
 } from '../utils/graphqlQueries'
 
 interface ErrorType {
@@ -188,6 +189,32 @@ export const getPosts = cache(
       consoleLog(err, 'extracting posts')
 
       return []
+    }
+  }
+)
+
+export const getPostBySlug = cache(
+  async (slug: string): Promise<string | null> => {
+    async function thisFunction() {
+      type postType = {
+        posts: [
+          {
+            title: string
+          }
+        ]
+      }
+      const result: postType = await request(graphqlAPI, PostBySlugQuery, {
+        slug,
+      })
+      return result.posts[0]?.title
+    }
+    try {
+      const res = await retryAPICall(thisFunction, 'extracting posts')
+      return res
+    } catch (err) {
+      consoleLog(err, 'extracting posts')
+
+      return null
     }
   }
 )

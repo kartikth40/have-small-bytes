@@ -1,6 +1,6 @@
 import styles from './page.module.scss'
 import Aside from '@/components/AsidePost'
-import { getPosts } from '@/services'
+import { getPostBySlug, getPosts } from '@/services'
 
 import type { Metadata, ResolvingMetadata } from 'next'
 
@@ -14,16 +14,14 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // fetch data
-  const posts = await getPosts()
-  console.log(params)
-  console.log(posts)
-  const post = posts.find((post) => post.slug === params.slug)
+  const post = (await getPostBySlug(params.slug)) ?? 'HSB'
+  console.log(post)
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || []
 
   return {
-    title: post?.title,
+    title: post,
     openGraph: {
       images: ['/some-specific-page-image.jpg', ...previousImages],
     },

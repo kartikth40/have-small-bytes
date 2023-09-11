@@ -46,6 +46,14 @@ export const PostsQuery = gql`
   }
 `
 
+export const PostBySlugQuery = gql`
+  query GetPosts($slug: String!) {
+    posts(first: 1, where: { slug: $slug }) {
+      title
+    }
+  }
+`
+
 export const FeaturedPostsQuery = gql`
   query GetPosts {
     posts(orderBy: createdAt_DESC, first: 5, where: { featuredPost: true }) {
