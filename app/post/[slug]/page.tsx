@@ -26,6 +26,12 @@ export async function generateMetadata(
     openGraph: {
       images: ['/some-specific-page-image.jpg', ...previousImages],
     },
+    alternates: {
+      canonical: `/post/${params.slug}`,
+      languages: {
+        en: `/en/post/${params.slug}`,
+      },
+    },
   }
 }
 

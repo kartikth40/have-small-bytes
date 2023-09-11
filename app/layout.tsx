@@ -8,11 +8,44 @@ import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
 
 export const metadata = {
+  metadataBase: new URL('https://havesmallbytes.vercel.app'),
   title: {
     default: 'Have Small Bytes',
     template: '%s | HSB',
   },
   description: 'Byte size blogs',
+  generator: 'Next.js',
+  applicationName: 'Have Small Bytes',
+  referrer: 'origin-when-cross-origin',
+  keywords: [
+    'Next.js',
+    'React',
+    'JavaScript',
+    'Personal Development',
+    'Web Development',
+    'Data Structures and Algorithms',
+    'DSA',
+    'Graphql',
+    'cms',
+    'blogs',
+    'blogging',
+    'problem solving',
+  ],
+  authors: [{ name: 'Kartik Thakur', url: 'https://kartikthakur-me.web.app' }],
+  colorScheme: 'dark',
+  creator: 'Kartik Thakur',
+  publisher: 'Kartik Thakur',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+    languages: {
+      en: '/en',
+    },
+  },
 }
 
 const inter = Inter({
