@@ -26,14 +26,24 @@ export async function generateMetadata(
     title: category?.name ?? 'HSB',
     description:
       'Category based blogs about web development, data structures and algorithms and personal development',
-    openGraph: {
-      images: ['/some-specific-page-image.jpg', ...previousImages],
-    },
     alternates: {
       canonical: `/category/${params.cat}`,
       languages: {
         en: `/en/category/${params.cat}`,
       },
+    },
+    openGraph: {
+      title: category?.name ?? 'HSB',
+      description:
+        'Category based blogs about web development, data structures and algorithms and personal development',
+      images: [
+        {
+          url: '/icons/hsb-icon.png',
+          width: 400,
+          height: 400,
+        },
+        ...previousImages,
+      ],
     },
   }
 }

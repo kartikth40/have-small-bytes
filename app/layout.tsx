@@ -13,7 +13,8 @@ export const metadata = {
     default: 'Have Small Bytes',
     template: '%s | HSB',
   },
-  description: 'Byte size blogs',
+  description:
+    'Have Small Bytes: A Next.js based Blog site providing byte size blogs all about Web Development, DSA and Personal Development throughout my journey.',
   generator: 'Next.js',
   applicationName: 'Have Small Bytes',
   referrer: 'origin-when-cross-origin',
@@ -45,6 +46,21 @@ export const metadata = {
     languages: {
       en: '/en',
     },
+  },
+  openGraph: {
+    title: 'Have Small Bytes',
+    description:
+      'Have Small Bytes: A Next.js based Blog site providing byte size blogs all about Web Development, DSA and Personal Development throughout my journey.',
+    images: [
+      {
+        url: '/icons/hsb-icon.png',
+        width: 400,
+        height: 400,
+      },
+    ],
+  },
+  verification: {
+    google: 'c9uJ-D82Cxn_WbzqjgqwCLcI6Rom_xHZTkjfqC4hJ3g',
   },
 }
 
