@@ -31,6 +31,7 @@ export const PostsQuery = gql`
         }
       }
       createdAt
+      updatedAt
       slug
       title
       summary
