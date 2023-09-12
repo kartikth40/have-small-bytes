@@ -8,11 +8,60 @@ import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
 
 export const metadata = {
+  metadataBase: new URL('https://havesmallbytes.vercel.app'),
   title: {
     default: 'Have Small Bytes',
     template: '%s | HSB',
   },
-  description: 'Byte size blogs',
+  description:
+    'Have Small Bytes: A Next.js based Blog site providing byte size blogs all about Web Development, DSA and Personal Development throughout my journey.',
+  generator: 'Next.js',
+  applicationName: 'Have Small Bytes',
+  referrer: 'origin-when-cross-origin',
+  keywords: [
+    'Next.js',
+    'React',
+    'JavaScript',
+    'Personal Development',
+    'Web Development',
+    'Data Structures and Algorithms',
+    'DSA',
+    'Graphql',
+    'cms',
+    'blogs',
+    'blogging',
+    'problem solving',
+  ],
+  authors: [{ name: 'Kartik Thakur', url: 'https://kartikthakur-me.web.app' }],
+  colorScheme: 'dark',
+  creator: 'Kartik Thakur',
+  publisher: 'Kartik Thakur',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+    languages: {
+      en: '/en',
+    },
+  },
+  openGraph: {
+    title: 'Have Small Bytes',
+    description:
+      'Have Small Bytes: A Next.js based Blog site providing byte size blogs all about Web Development, DSA and Personal Development throughout my journey.',
+    images: [
+      {
+        url: '/icons/hsb-icon.png',
+        width: 400,
+        height: 400,
+      },
+    ],
+  },
+  verification: {
+    google: 'c9uJ-D82Cxn_WbzqjgqwCLcI6Rom_xHZTkjfqC4hJ3g',
+  },
 }
 
 const inter = Inter({

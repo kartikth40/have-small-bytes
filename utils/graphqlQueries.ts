@@ -31,6 +31,7 @@ export const PostsQuery = gql`
         }
       }
       createdAt
+      updatedAt
       slug
       title
       summary
@@ -51,6 +52,9 @@ export const PostBySlugQuery = gql`
     posts(first: 1, where: { slug: $slug }) {
       title
       summary
+      featuredImage {
+        url
+      }
     }
   }
 `

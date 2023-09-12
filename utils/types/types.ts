@@ -32,6 +32,7 @@ export interface postsType {
     }
   }
   createdAt: string
+  updatedAt: string
   slug: string
   title: string
   summary: string

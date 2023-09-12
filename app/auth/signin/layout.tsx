@@ -3,6 +3,12 @@ import styles from './page.module.scss'
 export const metadata = {
   title: 'Login',
   description: 'login page.',
+  alternates: {
+    canonical: '/auth/signin',
+    languages: {
+      en: '/en/auth/signin',
+    },
+  },
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
