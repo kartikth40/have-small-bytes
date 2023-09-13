@@ -3,10 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '@/app/reader/profile/page.module.scss'
 import ProfilePicModal from '@/components/modals/ProfilePicModal'
-import { getAvatarById, updateUser } from '@/services'
+import { checkUsernameExists, getAvatarById, updateUser } from '@/services'
 import { toast } from 'react-toastify'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import { usernameValidate } from '@/utils/constants/formValidation'
 
 type Props = {}
 
@@ -49,6 +50,25 @@ export default function ProfileUpdate({}: Props) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const isValidUsername = usernameValidate(username)
+    if (!isValidUsername.pass) {
+      toast.error('Invalid Username!', {
+        autoClose: 3000,
+        toastId: 'invalid-username',
+      })
+      return
+    }
+
+    const usernameAlreadyExists = await checkUsernameExists(username)
+    if (usernameAlreadyExists) {
+      toast.error('Username already exists!', {
+        autoClose: 3000,
+        toastId: 'already-username',
+      })
+      return
+    }
+
     const newId = newAvatarId !== '' ? newAvatarId : session.user.photo?.id
     const newUrl = await getAvatarById(newId!)
 
