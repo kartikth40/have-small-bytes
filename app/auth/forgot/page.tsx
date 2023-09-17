@@ -126,8 +126,6 @@ function ForgotPasswordPage({}: Props) {
       otp: otp,
       redirect: false,
     })
-
-    console.log(res)
     if (!res?.error) {
       toast.update(matchId, {
         render: '✅ OTP matched. Signing you in!',
