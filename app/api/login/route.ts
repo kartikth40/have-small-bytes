@@ -18,8 +18,6 @@ export async function POST(request: Request) {
     user = await checkLoginWithUsername(body.username)
   }
 
-  console.log(user)
-
   if (user && body.password && (await compare(body.password, user.password))) {
     const { password, ...userWithoutPass } = user
     const accessToken = signJwtAccessToken(userWithoutPass)

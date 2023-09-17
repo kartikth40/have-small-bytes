@@ -69,7 +69,6 @@ export default function NotificationsPage({}: Props) {
       setNotifications(
         await getNotifications(session?.user.id!, getSkip(pageNo))
       )
-      console.log(await getNotifications(session?.user.id!, getSkip(pageNo)))
       setCount(await getNotificationsCount(session?.user.id!))
       handleButtonDisableStates()
       setLoadingNotifications(false)
