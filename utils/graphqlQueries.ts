@@ -782,7 +782,7 @@ export const deleteAllOlderNotificationsQuery = gql`
     deleteManyNotificationsConnection(
       where: {
         notifier: { id: $notifierId }
-        createdAt_lt: $date
+        updatedAt_lt: $date
         isRead: true
       }
     ) {
