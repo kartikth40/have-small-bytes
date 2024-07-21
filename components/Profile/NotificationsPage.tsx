@@ -272,8 +272,7 @@ export default function NotificationsPage({}: Props) {
 
       {notifications.length > 0 ? (
         <p>
-          *Notifications will be deleted automatically after 30 days (after
-          being read).
+          *Notifications will be automatically deleted 30 days after being read.
         </p>
       ) : (
         ''
