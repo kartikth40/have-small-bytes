@@ -12,7 +12,6 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  width: 1em;
   height: 1em;
   padding: 0;
   margin: 0;
@@ -48,6 +47,10 @@
   & .commentSpinner + .commentCountContainer {
     opacity: 0;
     // padding-left: 0;
+  }
+
+  @include devices(tablet) {
+    padding: 7px;
   }
 }
 
