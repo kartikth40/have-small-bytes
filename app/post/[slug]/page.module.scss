@@ -38,7 +38,7 @@
     font-weight: 900;
   }
   @include devices(tablet) {
-    padding: 3rem 0;
+    padding-block: 3rem 2em;
     & > h1 {
       font-size: 2.5rem;
       width: 90vw;
@@ -49,22 +49,27 @@
   & .userFeedbackContainerOnTop {
     display: none;
     position: sticky;
-    bottom: 2em;
-    left: calc(100vw - 3em);
+    bottom: 1em;
+    left: 1em;
     width: max-content;
 
     & > .feedbackBtnsContainer {
       font-size: 2em;
-      // border-radius: 10px;
       border: 1px solid var(--color-back-5);
       box-shadow: 0 0 4px var(--color-shadow-2);
       padding: 0;
+      margin-top: 1em;
       display: flex;
-      flex-direction: column;
       width: max-content;
       align-items: center;
       background-color: var(--color-background);
       border-radius: 5px;
+      @include devices(tablet) {
+        font-size: 3em;
+      }
+      @include devices(mobile) {
+        font-size: 2em;
+      }
     }
 
     @include devices(tablet) {
@@ -339,6 +344,11 @@
   overflow: hidden;
   transition: 0.2s all;
 
+  @include devices(mobile) {
+    padding: 0.2em;
+    margin-bottom: 2em;
+  }
+
   &:hover {
     text-decoration: none;
     color: var(--color-background);
@@ -389,13 +399,25 @@
 .authorPhotoContainer {
   border-radius: 50%;
   margin-right: 2em;
+  @include devices(mobile) {
+    & > img {
+      width: 50px;
+      height: 50px;
+    }
+  }
 }
 .authorNameContainer {
   font-weight: 500;
   font-size: 1.5rem;
+  @include devices(mobile) {
+    font-size: 1rem;
+  }
 }
 .authorBioContainer {
   font-size: 1rem;
+  @include devices(mobile) {
+    font-size: 0.5rem;
+  }
 }
 .authorText {
   opacity: 0.5;

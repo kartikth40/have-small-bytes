@@ -36,8 +36,7 @@ export default async function Author({ author }: Props) {
           style={{
             objectFit: 'cover',
             borderRadius: '50%',
-            boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
-            border: '5px solid rgba(0, 0, 0, 0.1)',
+            boxShadow: 'inset 0 0 10px #000000'
           }}
           width={80}
           height={80}
