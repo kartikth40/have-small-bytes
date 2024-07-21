@@ -6,6 +6,7 @@ import Footer from '@/components/global/Footer'
 import Providers from '@/components/global/Providers'
 import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata = {
   metadataBase: new URL('https://havesmallbytes.vercel.app'),
@@ -118,6 +119,7 @@ export default function RootLayout({
           <ClientToastContainer />
           <Footer />
         </body>
+        <GoogleAnalytics gaId="G-NYXC0PTZ06" />
       </html>
     </Providers>
   )
