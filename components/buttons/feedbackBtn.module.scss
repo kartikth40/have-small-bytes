@@ -46,7 +46,6 @@
   & .likeSpinner + .likeCountContainer,
   & .commentSpinner + .commentCountContainer {
     opacity: 0;
-    // padding-left: 0;
   }
 
   @include devices(tablet) {
