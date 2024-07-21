@@ -547,7 +547,7 @@
 .userFeedbackContainerAside {
   font-size: 64px;
   border-radius: 10px;
-  padding-right: 0.5em;
+  padding-left: 0.4em;
 
   display: flex;
   flex-direction: column;
@@ -559,10 +559,10 @@
 @include devices(tablet) {
   .userFeedbackContainerAside {
     flex-direction: row;
-    border: 1px solid var(--color-back-5);
+    border: none;
     body:global(.darkTheme) & {
-      background-color: var(--color-back-01);
-      border: 1px solid var(--color-back-1);
+      background-color: transparent;
+      border: none;
     }
     width: 100%;
     & > :nth-child(2) {

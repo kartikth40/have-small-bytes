@@ -38,6 +38,7 @@
     font-weight: 900;
   }
   @include devices(tablet) {
+    padding: 0;
     padding-block: 3rem 2em;
     & > h1 {
       font-size: 2.5rem;
