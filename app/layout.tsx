@@ -110,7 +110,7 @@ export default function RootLayout({
   run()`
   return (
     <Providers>
-      <html lang="en" className={inter.className}>
+      <html lang="en" className={`${inter.className} ${inter.variable} ${nabla.variable} ${source_code_pro.variable}`}>
         <body suppressHydrationWarning={true}>
           <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
           <Header />
