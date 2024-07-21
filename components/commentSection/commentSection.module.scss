@@ -430,10 +430,6 @@
         margin-block: 0;
         margin-top: -0.5rem;
       }
-      &.noRepliesSkeleton::before {
-        // animation: none;
-        // opacity: 0;
-      }
       &.noRepliesSkeleton:after {
         content: 'No Replies :(';
       }
