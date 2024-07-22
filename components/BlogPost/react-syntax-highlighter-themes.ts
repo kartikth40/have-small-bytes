@@ -43,8 +43,6 @@ export const dracula_light: { [key: string]: CSSProperties } = {
     hyphens: 'none',
     padding: '1em',
     overflow: 'auto',
-    borderBottomLeftRadius: '0.3em',
-    borderBottomRightRadius: '0.3em',
   },
   ':not(pre) > code[class*="language-"]': {
     fontFamily:
@@ -195,7 +193,7 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
   },
   'pre[class*="language-"]': {
     color: 'rgb(220, 218, 218)',
-    background: '#0A0A0A',
+    background: '#050010',
     border: '1px solid var(--color-back-1)',
     fontFamily:
       "var(--font-source-code-pro) ,Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
@@ -214,8 +212,6 @@ export const dracula_dark: { [key: string]: CSSProperties } = {
     hyphens: 'none',
     padding: '1em',
     overflow: 'auto',
-    borderBottomLeftRadius: '0.3em',
-    borderBottomRightRadius: '0.3em',
   },
   ':not(pre) > code[class*="language-"]': {
     fontFamily:

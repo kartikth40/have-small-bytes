@@ -3,6 +3,8 @@ import Image from 'next/image'
 import styles from '../../app/post/[slug]/page.module.scss'
 import ReactSyntaxHighlighter from './ReactSyntaxHighlighter'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { toast } from 'react-toastify'
+
 
 export function ImageRenderer({ ...props }: any) {
   const { postImg, strict } = styles
@@ -95,6 +97,7 @@ export function CodeRenderer({ ...props }: any) {
 
   function handleCopied(e: React.MouseEvent<HTMLElement>) {
     const target = e.target as Element
+    toast.success('copied to your clipboard', { autoClose: 1000 })
     target.classList.add(copied)
     setTimeout(() => {
       target.classList.remove(copied)
