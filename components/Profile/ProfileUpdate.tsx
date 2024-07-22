@@ -60,13 +60,15 @@ export default function ProfileUpdate({}: Props) {
       return
     }
 
-    const usernameAlreadyExists = await checkUsernameExists(username)
-    if (usernameAlreadyExists) {
-      toast.error('Username already exists!', {
-        autoClose: 3000,
-        toastId: 'already-username',
-      })
-      return
+    if(session.user.username !== username) {
+      const usernameAlreadyExists = await checkUsernameExists(username)
+      if (usernameAlreadyExists) {
+        toast.error('Username already exists!', {
+          autoClose: 3000,
+          toastId: 'already-username',
+        })
+        return
+      }
     }
 
     const newId = newAvatarId !== '' ? newAvatarId : session.user.photo?.id
@@ -196,7 +198,7 @@ export default function ProfileUpdate({}: Props) {
               (newAvatarId === session.user.photo?.id || newAvatarId === '')
             }
           >
-            Cancel
+            Reset
           </button>
         </div>
       </div>
