@@ -15,7 +15,7 @@ export const metadata = {
     template: '%s | HSB',
   },
   description:
-    'Have Small Bytes: A Next.js based Blog site providing byte size blogs all about Web Development, DSA and Personal Development throughout my journey.',
+    'Have Small Bytes: A Blog site providing byte size insights all about Web Development, DSA and Personal Development throughout my journey.',
   generator: 'Next.js',
   applicationName: 'Have Small Bytes',
   referrer: 'origin-when-cross-origin',
@@ -51,7 +51,7 @@ export const metadata = {
   openGraph: {
     title: 'Have Small Bytes',
     description:
-      'Have Small Bytes: A Next.js based Blog site providing byte size blogs all about Web Development, DSA and Personal Development throughout my journey.',
+      'Have Small Bytes: A Blog site providing byte size insights all about Web Development, DSA and Personal Development throughout my journey.',
     images: [
       {
         url: '/icons/hsb-icon.png',
