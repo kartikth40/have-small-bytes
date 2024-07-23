@@ -55,9 +55,17 @@ export default async function Blog({ params }: Props) {
   if (!category) return notFound()
   const categoryName = category.name
   const categorySlug = category.slug
-
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Category',
+    name: category.name
+  }
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <HeroText categoryName={categoryName} />
       <FeaturedPosts categorySlug={categorySlug} />
       <PageContent categorySlug={categorySlug} />
