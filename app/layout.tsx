@@ -108,11 +108,22 @@ export default function RootLayout({
       }
   }
   run()`
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog Site',
+    name: 'Have Small Bytes'
+  }
+
   return (
     <Providers>
       <html lang="en" className={`${inter.className} ${inter.variable} ${nabla.variable} ${source_code_pro.variable}`}>
         <body suppressHydrationWarning={true}>
           <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
           <Header />
           {children}
           <Analytics />

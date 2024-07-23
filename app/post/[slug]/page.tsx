@@ -47,8 +47,19 @@ export async function generateMetadata(
 export default async function Blog({ params }: Props) {
   const post = await getPostDetails(params.slug)
   if (!post) return notFound()
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Post',
+    name: post.title,
+    image: post.featuredImage.url,
+    description: post.summary,
+  }
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <BlogPost post={post} />
       <Author author={post.author} />
       <CommentSection
