@@ -2,7 +2,7 @@
 
 Byte size blogs all about Web Development, DSA and Personal Development that I will be posting throughout my journey.
 
-## Demo
+## Live
 
 [havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
 
