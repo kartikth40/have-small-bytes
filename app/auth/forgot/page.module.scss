@@ -25,10 +25,10 @@
   }
 }
 .mainContainer {
+  position: relative;
   margin-top: 10vh;
   border: 2px solid var(--color-back-3);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-  // width: 30vw;
   padding: 1em;
   background-color: var(--color-primary-black);
   color: var(--color-primary-white);
@@ -212,5 +212,56 @@
   font-size: 1em;
   & a {
     text-decoration: underline;
+  }
+}
+
+.backButton {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-right: 2px solid var(--color-front-2);
+  border-bottom: 2px solid var(--color-front-2);
+  body:global(.darkTheme) & {
+    border-right: 2px solid var(--color-back-3);
+    border-bottom: 2px solid var(--color-back-3);
+  }
+
+  &::before,
+  &::after {
+    transition: 0.1s all;
+    position: absolute;
+    content: '';
+    background-color: var(--color-front-2);
+    border-right: 2px solid var(--color-front-2);
+    border-bottom: 2px solid var(--color-front-2);
+    body:global(.darkTheme) & {
+      background-color: var(--color-back-2);
+      border-right: 2px solid var(--color-front-2);
+      border-bottom: 2px solid var(--color-back-3);
+    }
+    width: 45%;
+    height: 5px;
+    border-radius: 2px;
+    top: 50%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+  }
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+    top: 65%;
+  }
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+    top: 40%;
+  }
+
+  &:hover::after,
+  &:hover::before {
+    background-color: white !important;
   }
 }
