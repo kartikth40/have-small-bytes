@@ -171,7 +171,7 @@ function ForgotPasswordPage({}: Props) {
     const checkUser = await checkEmailExists(email)
     if (!checkUser) {
       toast.update(sendId, {
-        render: '✅ If this email exists with us, an OTP has been sent.',
+        render: '✅ OTP has been sent.',
         type: 'default',
         isLoading: false,
         autoClose: 3000,
@@ -198,7 +198,7 @@ function ForgotPasswordPage({}: Props) {
     const user = await res.json()
     if (res.ok && user) {
       toast.update(sendId, {
-        render: '✅ If this email exists with us, an OTP has been sent.',
+        render: '✅ OTP has been sent.',
         type: 'default',
         isLoading: false,
         autoClose: 3000,
@@ -285,7 +285,7 @@ function ForgotPasswordPage({}: Props) {
           </button>
         </div>
         {
-          otpSent &&
+          sendingOTP &&
           <span className={ifOTPFails}> ⚠ If it fails to send the OTP, please try again with a different Wi-Fi network.</span>
         }
       </form>
