@@ -7,6 +7,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { emailValidate, otpValidate } from '@/utils/constants/formValidation'
 import { deleteOTP } from '@/services'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -49,6 +50,7 @@ function ForgotPasswordPage({}: Props) {
     validated,
     invalidate,
     loadingState,
+    backButton
   } = styles
 
   if (shouldRedirect)
@@ -197,6 +199,9 @@ function ForgotPasswordPage({}: Props) {
   return (
     <div className={mainContainer}>
       <form onSubmit={(e) => handleSubmit(e)} noValidate={true}>
+        <div>
+          <Link className={backButton} href="/auth/signin"></Link>
+        </div>
         <div className={headingsContainer}>
           <h1>Forgot Password</h1>
         </div>
