@@ -207,7 +207,7 @@
     }
 
     @include devices(tablet) {
-      max-width: 90vw;
+      max-width: 80vw;
       font-size: 0.9em;
     }
   }
@@ -393,7 +393,7 @@
   }
 
   @include devices(tablet) {
-    width: 90vw;
+    width: 80vw;
   }
 }
 .authorInfoContainer {
