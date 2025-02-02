@@ -147,7 +147,7 @@
   }
 
   p {
-    line-height: 1.6em;
+    line-height: 1.9em;
     padding: 0.5em 0;
   }
   & .postImg {
@@ -166,6 +166,7 @@
   }
   li {
     list-style-type: square;
+    line-height: 1.9em;
   }
   ol {
     & > li {
@@ -175,8 +176,8 @@
   a {
     opacity: 0.9;
   }
-  & > pre {
-    margin-block: 1rem;
+  & pre:not(pre pre) {
+    margin-block: 1rem !important;
   }
 
   & blockquote {
