@@ -6,6 +6,7 @@ import Footer from '@/components/global/Footer'
 import Providers from '@/components/global/Providers'
 import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata = {
@@ -127,6 +128,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Analytics />
+          <SpeedInsights/>
           <ClientToastContainer />
           <Footer />
         </body>
