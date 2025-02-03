@@ -19,6 +19,7 @@ export default function DeleteAccount({}: Props) {
     updateForm,
     mainForm,
     dltBtn,
+    dltNotAllowed
   } = styles
 
   if (loading) {
@@ -29,6 +30,16 @@ export default function DeleteAccount({}: Props) {
   }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if(session.user.isAuthor) {
+      toast.warn('Authors do not have the ability to delete their accounts directly.', {
+        toastId: 'do_not_allow_author_acc_deletion',
+      })
+      return
+    }
+
+    let confirmation = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    if (!confirmation) return
 
     // delete account
     const deleteId = toast.loading('deleting account...')
@@ -67,7 +78,7 @@ export default function DeleteAccount({}: Props) {
         <br />
 
         <div className={updateBtnContainer}>
-          <button type="submit" className={dltBtn}>
+          <button type="submit" className={`${dltBtn} ${session.user.isAuthor && dltNotAllowed}`}>
             Yes, Delete it.
           </button>
         </div>

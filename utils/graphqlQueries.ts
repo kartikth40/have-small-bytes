@@ -31,6 +31,7 @@ export const PostsQuery = gql`
         }
       }
       createdAt
+      updatedAt
       slug
       title
       summary
@@ -51,6 +52,9 @@ export const PostBySlugQuery = gql`
     posts(first: 1, where: { slug: $slug }) {
       title
       summary
+      featuredImage {
+        url
+      }
     }
   }
 `
@@ -776,7 +780,11 @@ export const deleteAllNotificationsQuery = gql`
 export const deleteAllOlderNotificationsQuery = gql`
   mutation DeleteAllOlderNotifications($notifierId: ID!, $date: DateTime!) {
     deleteManyNotificationsConnection(
-      where: { notifier: { id: $notifierId }, createdAt_lt: $date }
+      where: {
+        notifier: { id: $notifierId }
+        updatedAt_lt: $date
+        isRead: true
+      }
     ) {
       edges {
         node {

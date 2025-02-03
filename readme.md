@@ -2,7 +2,7 @@
 
 Byte size blogs all about Web Development, DSA and Personal Development that I will be posting throughout my journey.
 
-## Demo
+## Live
 
 [havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
 
@@ -28,22 +28,3 @@ Under Construction 🚧👷‍♂️
 </p>
 
 #### Posts, Comments and User Profile ☝🏻
-
-## Installation and Setup Instructions
-
-Clone down this repository. You will need `node` and `npm` installed globally on your machine.
-
-Installation:
-
-```javascript
-cd have-small-byte/
-npm i
-```
-
-To Start the dev server:
-
-```javascript
-npm run dev
-```
-
-To Visit App after its started in your local machine: `localhost:3000`

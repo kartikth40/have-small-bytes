@@ -6,13 +6,64 @@ import Footer from '@/components/global/Footer'
 import Providers from '@/components/global/Providers'
 import ClientToastContainer from '@/components/global/ClientToastContainer'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata = {
+  metadataBase: new URL('https://havesmallbytes.vercel.app'),
   title: {
     default: 'Have Small Bytes',
     template: '%s | HSB',
   },
-  description: 'Byte size blogs',
+  description:
+    'Have Small Bytes: A Blog site providing byte size insights all about Web Development, DSA and Personal Development throughout my journey.',
+  generator: 'Next.js',
+  applicationName: 'Have Small Bytes',
+  referrer: 'origin-when-cross-origin',
+  keywords: [
+    'Next.js',
+    'React',
+    'JavaScript',
+    'Personal Development',
+    'Web Development',
+    'Data Structures and Algorithms',
+    'DSA',
+    'Graphql',
+    'cms',
+    'blogs',
+    'blogging',
+    'problem solving',
+  ],
+  authors: [{ name: 'Kartik Thakur', url: 'https://kartikthakur-me.web.app' }],
+  colorScheme: 'dark',
+  creator: 'Kartik Thakur',
+  publisher: 'Kartik Thakur',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+    languages: {
+      en: '/en',
+    },
+  },
+  openGraph: {
+    title: 'Have Small Bytes',
+    description:
+      'Have Small Bytes: A Blog site providing byte size insights all about Web Development, DSA and Personal Development throughout my journey.',
+    images: [
+      {
+        url: '/icons/hsb-icon.png',
+        width: 400,
+        height: 400,
+      },
+    ],
+  },
+  verification: {
+    google: 'c9uJ-D82Cxn_WbzqjgqwCLcI6Rom_xHZTkjfqC4hJ3g',
+  },
 }
 
 const inter = Inter({
@@ -58,17 +109,30 @@ export default function RootLayout({
       }
   }
   run()`
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog Site',
+    name: 'Have Small Bytes'
+  }
+
   return (
     <Providers>
-      <html lang="en" className={inter.className}>
+      <html lang="en" className={`${inter.className} ${inter.variable} ${nabla.variable} ${source_code_pro.variable}`}>
         <body suppressHydrationWarning={true}>
           <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
           <Header />
           {children}
           <Analytics />
+          <SpeedInsights/>
           <ClientToastContainer />
           <Footer />
         </body>
+        <GoogleAnalytics gaId="G-NYXC0PTZ06" />
       </html>
     </Providers>
   )

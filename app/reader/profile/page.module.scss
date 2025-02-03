@@ -185,6 +185,7 @@
     }
   }
   & > .navigationButtons {
+    display: flex;
     & > .prev,
     & > .next {
       border: 2px solid var(--color-back-5);
@@ -212,7 +213,8 @@
     }
 
     @include devices(mobile) {
-      margin-right: 4em;
+      margin-right: 3em;
+      margin-top: 2em;
     }
   }
 }
@@ -309,6 +311,14 @@
       }
       &:hover {
         opacity: 0.7;
+      }
+      &.dltNotAllowed {
+        body:global(.darkTheme) & {
+          background-color: rgb(88, 28, 28);
+          color: rgba(255, 186, 186, 0.358);
+        }
+        background-color: rgb(145, 50, 50);
+        color: rgba(255, 202, 202, 0.564);
       }
     }
 

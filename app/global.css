@@ -4,10 +4,6 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-  --font-inter: '__Inter_0ec1f4', '__Inter_Fallback_0ec1f4';
-  --font-nabla: '__Nabla_f71275', '__Nabla_Fallback_f71275';
-  --font-source-code-pro: '__Source_Code_Pro_46b4a6',
-    '__Source_Code_Pro_Fallback_46b4a6';
 
   --color-primary-blue: #8c52ff;
   --color-primary-sky: #5ce1e6;
@@ -15,6 +11,7 @@
   --color-primary-black-2: rgb(28, 28, 28);
   --color-correct-green:rgb(61, 172, 61);
   --color-incorrect-red:rgb(219, 82, 82);
+  --color-warn-yellow:rgb(219, 182, 82);
   --color-primary-white: #fff;
   --color-foreground: #495464;
   --color-foreground-2: #919191;

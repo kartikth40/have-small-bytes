@@ -6,7 +6,8 @@ import { toast } from 'react-toastify'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { emailValidate, otpValidate } from '@/utils/constants/formValidation'
-import { deleteOTP } from '@/services'
+import { checkEmailExists, deleteOTP } from '@/services'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -49,6 +50,8 @@ function ForgotPasswordPage({}: Props) {
     validated,
     invalidate,
     loadingState,
+    backButton,
+    ifOTPFails
   } = styles
 
   if (shouldRedirect)
@@ -126,8 +129,6 @@ function ForgotPasswordPage({}: Props) {
       otp: otp,
       redirect: false,
     })
-
-    console.log(res)
     if (!res?.error) {
       toast.update(matchId, {
         render: '✅ OTP matched. Signing you in!',
@@ -151,19 +152,39 @@ function ForgotPasswordPage({}: Props) {
   }
 
   async function handleSendOtp() {
+    setSendingOTP(true)
+    const sendId = toast.loading('Checking Email...', {
+      position: 'bottom-right',
+    })
     const isEmail = emailValidate(email)
     if (!isEmail.pass) {
-      toast.error('Invalid Email.', {
+      toast.update(sendId, {
+        render: 'Invalid Email!',
+        type: 'error',
+        isLoading: false,
         autoClose: 5000,
-        toastId: 'invalid-email',
       })
+      setSendingOTP(false)
       return
     }
 
-    setSendingOTP(true)
+    const checkUser = await checkEmailExists(email)
+    if (!checkUser) {
+      toast.update(sendId, {
+        render: '✅ OTP has been sent.',
+        type: 'default',
+        isLoading: false,
+        autoClose: 3000,
+        position: 'bottom-right',
+      })
+      setOtpSent(true)
+      setSendingOTP(false)
+      return
+    }
 
-    const sendId = toast.loading('sending OTP...', {
-      position: 'bottom-right',
+    toast.update(sendId, {
+      render: 'sending OTP...',
+      isLoading: true,
     })
     const res = await fetch('/api/forgot', {
       method: 'POST',
@@ -177,7 +198,7 @@ function ForgotPasswordPage({}: Props) {
     const user = await res.json()
     if (res.ok && user) {
       toast.update(sendId, {
-        render: '✅ OTP sent successfully!',
+        render: '✅ OTP has been sent.',
         type: 'default',
         isLoading: false,
         autoClose: 3000,
@@ -199,6 +220,9 @@ function ForgotPasswordPage({}: Props) {
   return (
     <div className={mainContainer}>
       <form onSubmit={(e) => handleSubmit(e)} noValidate={true}>
+        <div>
+          <Link className={backButton} href="/auth/signin"></Link>
+        </div>
         <div className={headingsContainer}>
           <h1>Forgot Password</h1>
         </div>
@@ -247,7 +271,6 @@ function ForgotPasswordPage({}: Props) {
             ></span>
           </div>
         </div>
-
         <div className={loginBtnContainer}>
           <button
             disabled={otpSent || sendingOTP}
@@ -261,6 +284,10 @@ function ForgotPasswordPage({}: Props) {
             Submit
           </button>
         </div>
+        {
+          sendingOTP &&
+          <span className={ifOTPFails}> ⚠ If it fails to send the OTP, please try again with a different Wi-Fi network.</span>
+        }
       </form>
     </div>
   )

@@ -69,7 +69,6 @@ export default function NotificationsPage({}: Props) {
       setNotifications(
         await getNotifications(session?.user.id!, getSkip(pageNo))
       )
-      console.log(await getNotifications(session?.user.id!, getSkip(pageNo)))
       setCount(await getNotificationsCount(session?.user.id!))
       handleButtonDisableStates()
       setLoadingNotifications(false)
@@ -272,7 +271,9 @@ export default function NotificationsPage({}: Props) {
       </div>
 
       {notifications.length > 0 ? (
-        <p>*Notifications will be deleted automatically after 30 days.</p>
+        <p>
+          *Notifications will be automatically deleted 30 days after being read.
+        </p>
       ) : (
         ''
       )}

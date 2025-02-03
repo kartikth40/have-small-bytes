@@ -194,7 +194,15 @@ export const getPosts = cache(
 )
 
 export const getPostBySlug = cache(
-  async (slug: string): Promise<{ title: string; summary: string } | null> => {
+  async (
+    slug: string
+  ): Promise<{
+    title: string
+    summary: string
+    featuredImage: {
+      url: string
+    }
+  } | null> => {
     async function thisFunction() {
       type postType = {
         posts: [

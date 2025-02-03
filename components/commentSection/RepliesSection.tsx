@@ -125,8 +125,10 @@ export default function RepliesSection({
     aboveCommentContent,
     loadingReplies,
     skeleton,
+    noRepliesSkeleton,
     highlight,
     replyBtn,
+    noReplies
   } = styles
   async function handleSendReply() {
     if (!session) {
@@ -188,7 +190,7 @@ export default function RepliesSection({
           </div>
         ) : (
           <div className={repliesContainer}>
-            {replies &&
+            {replies && replies.length > 0 ?
               replies.map((comment) => (
                 <div
                   key={comment.id}
@@ -303,7 +305,26 @@ export default function RepliesSection({
                     </button>
                   </div>
                 </div>
-              ))}
+              )) 
+              : 
+              <div className={commentContainer}>
+                <div className={loadingReplies}>
+                  <div className={`${skeleton} ${noRepliesSkeleton}`}>
+                </div>
+                </div>
+                  <div className={replyBtnContainer}>
+                    <button
+                      onClick={() =>
+                        lemmeReply
+                          ? setLemmeReply('')
+                          : setLemmeReply(commentId)
+                      }
+                      className={`${replyBtn} ${noReplies}`}
+                    >
+                      Reply
+                    </button>
+                  </div>
+              </div>}
           </div>
         )}
 
