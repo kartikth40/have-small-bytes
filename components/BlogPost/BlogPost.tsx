@@ -76,9 +76,9 @@ export default async function BlogPost({ post }: { post: postType }) {
               postSlug={post.slug}
               postAuthor={post.author.id}
               postTitle={post.title}
-              showCount={false}
+              showCount={true}
             />
-            <CommentButton postId={post.id} showCount={false} onPage={true} />
+            <CommentButton postId={post.id} showCount={true} onPage={true} />
           </div>
         </div>
       </div>

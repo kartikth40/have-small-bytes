@@ -51,8 +51,10 @@
     display: none;
     position: sticky;
     bottom: 1em;
-    left: 1em;
-    width: max-content;
+    right: 1em;
+    width: 100%;
+    pointer-events: none;
+    z-index: 100;
 
     & > .feedbackBtnsContainer {
       font-size: 2em;
@@ -60,11 +62,13 @@
       box-shadow: 0 0 4px var(--color-shadow-2);
       padding: 0;
       margin-top: 1em;
+      margin-left: auto;
       display: flex;
       width: max-content;
       align-items: center;
       background-color: var(--color-background);
       border-radius: 5px;
+      pointer-events: all;
       @include devices(tablet) {
         font-size: 3em;
       }
@@ -189,6 +193,7 @@
   }
 
   pre {
+    font-size: 0.9em;
     max-width: 70vw;
     overflow-x: auto;
     border-bottom-right-radius: inherit;
@@ -331,23 +336,18 @@
 }
 
 .authorContainer {
-  width: 40vw;
+  width: max-content;
   margin-inline: auto;
   margin-bottom: 3em;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  padding: 1em;
-  border-radius: 5px;
+  padding: 0.7em 1em;
+  border-radius: 100px;
   border: 5px solid rgba(0, 0, 0, 0.1);
-  background: linear-gradient(
-    to right,
-    var(--color-primary-blue),
-    var(--color-primary-sky)
-  );
-  color: var(--color-background);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: var(--color-foreground);
+  box-shadow: 0 0 2px rgba(255, 255, 255, 255.5);
   overflow: hidden;
   transition: 0.2s all;
 
@@ -358,9 +358,8 @@
 
   &:hover {
     text-decoration: none;
-    color: var(--color-background);
-    transform: translate(-5px, -5px);
-    box-shadow: 5px 5px 10px var(--color-primary-blue);
+    color: var(--color-primary-blue);
+    box-shadow: 0 0 2px var(--color-primary-blue);
   }
 
   &::after {
@@ -372,8 +371,10 @@
     top: 0;
     // background-color: black;
     transform: skewX(-20deg);
-    background-color: rgba(255, 255, 255, 0.2);
-
+    background-color: rgba(0, 0, 0, 0.1);
+    body:global(.darkTheme) & {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
     animation: slide 5.5s ease-in-out infinite 2s;
 
     @keyframes slide {
@@ -390,10 +391,6 @@
         left: calc(100% + 50px);
       }
     }
-  }
-
-  @include devices(tablet) {
-    width: 80vw;
   }
 }
 .authorInfoContainer {

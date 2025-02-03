@@ -574,16 +574,7 @@
 }
 @include devices(tablet) {
   .userFeedbackContainerAside {
-    flex-direction: row;
-    border: none;
-    body:global(.darkTheme) & {
-      background-color: transparent;
-      border: none;
-    }
-    width: 100%;
-    & > :nth-child(2) {
-      display: none;
-    }
+    display: none;
   }
 }
 
