@@ -48,21 +48,6 @@ export default async function sitemap(): Promise<Sitemap> {
       lastModified: new Date(),
       priority: 0.8,
     },
-    {
-      url: `${baseURL}/auth/signin`,
-      lastModified: new Date(),
-      priority: 0.5,
-    },
-    {
-      url: `${baseURL}/auth/signup`,
-      lastModified: new Date(),
-      priority: 0.5,
-    },
-    {
-      url: `${baseURL}/reader/profile`,
-      lastModified: new Date(),
-      priority: 0.2,
-    },
     ...postUrls,
   ]
 }
