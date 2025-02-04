@@ -1,5 +1,5 @@
 User-Agent: *
-Allow: /
-Disallow: /private/
+Disallow: /auth/
+Disallow: /reader/profile
 
 Sitemap: https://havesmallbytes.vercel.app/sitemap.xml
