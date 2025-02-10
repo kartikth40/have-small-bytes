@@ -85,6 +85,7 @@ export interface recentPostsType {
     {
       title: string
       createdAt: string
+      updatedAt: string
       slug: string
       featuredImage: {
         url: string

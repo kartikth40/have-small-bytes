@@ -21,7 +21,7 @@ async function RecentWidget() {
             alt={post.title}
           />
           <div>
-            <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
+            <p>{moment(post.updatedAt).format('MMM DD, YYYY')}</p>
             <Link href={`/post/${post.slug}`}>{post.title}</Link>
           </div>
         </div>

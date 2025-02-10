@@ -59,7 +59,7 @@ function PostCard({ post }: Props) {
         </Link>
 
         <div className={date}>
-          <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
+          <p>{moment(post.updatedAt).format('MMM DD, YYYY')}</p>
         </div>
       </div>
       <Link href={`/post/${post.slug}`}>
