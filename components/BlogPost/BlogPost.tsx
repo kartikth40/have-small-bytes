@@ -7,6 +7,7 @@ import { myPortfolioURL } from '@/services'
 import Markdown from './Markdown'
 import LikeButton from '../buttons/LikeButton'
 import CommentButton from '../buttons/CommentButton'
+import BackToTopButton from '../backToTopButton/backToTopButton'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
@@ -15,14 +16,14 @@ export default async function BlogPost({ post }: { post: postType }) {
     postHeroImg,
     postInfoInfoContainerStart,
     date,
+    dateContent,
     icon,
     authorInfo,
     authorName,
     authorImage,
     userFeedbackContainerOnTop,
-    feedbackBtnsContainer,
+    feedbackBtnsContainer
   } = postStyles
-
   const authorWebsiteUrl = (await myPortfolioURL(post.author.id)) || '/'
   return (
     <>
@@ -63,7 +64,10 @@ export default async function BlogPost({ post }: { post: postType }) {
                 alt="cal"
               />
             </div>
-            <p>{moment(post.createdAt).format('MMM DD, YYYY')}</p>
+            <div className={dateContent}>
+              <p>updated on</p>
+              <p>{moment(post.updatedAt).format('MMM DD, YYYY')}</p>
+            </div>
           </div>
         </div>
         <div className={postContent}>
@@ -82,6 +86,7 @@ export default async function BlogPost({ post }: { post: postType }) {
           </div>
         </div>
       </div>
+      <BackToTopButton/>
     </>
   )
 }
