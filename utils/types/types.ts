@@ -64,6 +64,7 @@ export interface postType {
     }
   }
   createdAt: string
+  updatedAt: string
   slug: string
   title: string
   summary: string

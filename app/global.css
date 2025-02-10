@@ -15,7 +15,7 @@
   --color-primary-white: #fff;
   --color-foreground: #495464;
   --color-foreground-2: #919191;
-  --color-background: #fff;
+  --color-background: rgb(255, 255, 255);
 
   --color-front-00: rgba(255, 255, 255, 0);
   --color-front-01: rgba(255, 255, 255, 0.01);
