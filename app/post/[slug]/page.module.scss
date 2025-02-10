@@ -58,7 +58,7 @@
 
     & > .feedbackBtnsContainer {
       font-size: 2em;
-      border: 1px solid var(--color-back-5);
+      border: 1px solid var(--color-back-2);
       box-shadow: 0 0 4px var(--color-shadow-2);
       padding: 0;
       margin-top: 1em;
@@ -66,7 +66,8 @@
       display: flex;
       width: max-content;
       align-items: center;
-      background-color: var(--color-background);
+      background-color: var(--color-front-4);
+      backdrop-filter: blur(10px);
       border-radius: 5px;
       pointer-events: all;
       @include devices(tablet) {
@@ -449,11 +450,27 @@
   padding: 10px 20px;
   background-color: var(--color-front-4);
   color: var(--color-foreground);
-  border: 2px solid var(--color-back-2);
-  border-radius: 10px;
+  box-shadow: 0 0 4px var(--color-shadow-2);
+  border: 1px solid var(--color-back-2);
+  border-radius: 5px;
   backdrop-filter: blur(10px);
+  transition: 0.25s all;
   cursor: pointer;
   &.showBackToTopBtn {
     display: block;
+  }
+
+  &:hover {
+    transform: translateX(-50%) scale(1.1);
+  }
+
+  @include devices(tablet) {
+    padding: 10px 10px;
+    left: 20px;
+    bottom: 1.1em;
+    transform: none;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
