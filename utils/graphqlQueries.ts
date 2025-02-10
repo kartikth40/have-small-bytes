@@ -197,6 +197,7 @@ query GetPostDetails() {
       url
     }
     createdAt
+    updatedAt
     slug
   }
 }
