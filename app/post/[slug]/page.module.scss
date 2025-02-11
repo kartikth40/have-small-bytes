@@ -19,6 +19,7 @@
 }
 .postContainer {
   flex-basis: 70vw;
+  width: 70vw;
 }
 .postHeroImg {
   position: relative;
@@ -27,6 +28,7 @@
   overflow: hidden;
   box-shadow: 0 5px 10px var(--color-shadow-2);
   border: 2px solid var(--color-back-05);
+  border-radius: 5px;
 }
 .blogPostContainer {
   border-bottom-left-radius: 0.5rem;
@@ -295,19 +297,20 @@
           position: absolute;
           width: 12px;
           aspect-ratio: 1;
-          border: 1px solid var(--color-back-2);
+          border: 1px solid var(--color-back-5);
           border-radius: 2px;
+          background-color: var(--color-back-3);
         }
 
         &::before {
-          right: 5px;
-          bottom: 6px;
+          right: 6px;
+          bottom: 7px;
           z-index: 4;
           background-color: inherit;
         }
         &::after {
-          left: 5px;
-          top: 6px;
+          left: 7px;
+          top: 8px;
           z-index: 3;
         }
 

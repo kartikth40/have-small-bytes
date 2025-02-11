@@ -504,6 +504,7 @@
 }
 .aside {
   flex-basis: 20vw;
+  width: 20vw;
   position: sticky;
   top: 5rem;
   & > * {
@@ -523,6 +524,7 @@
       & img {
         margin-right: 1em;
         border: 1px solid var(--color-back-1);
+        border-radius: 5px;
       }
       & div p:first-child {
         color: var(--color-back-5);
@@ -561,10 +563,10 @@
   }
 }
 .userFeedbackContainerAside {
-  font-size: 64px;
+  margin-left: 5px;
+  font-size: 46px;
   border-radius: 10px;
   padding-left: 0.4em;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
