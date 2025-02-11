@@ -20,6 +20,9 @@
 .postContainer {
   flex-basis: 70vw;
   width: 70vw;
+  @include devices(tablet) {
+    width: 100%;
+  }
 }
 .postHeroImg {
   position: relative;
