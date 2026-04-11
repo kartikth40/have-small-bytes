@@ -1,26 +1,62 @@
 # Have Small Bytes
 
-Byte size blogs all about Web Development, DSA and Personal Development that I will be posting throughout my journey.
+A full-stack blog platform covering Web Development, DSA, and Personal Development - built with Next.js 13 App Router, Hygraph (GraphQL CMS), and NextAuth.js.
 
-## Live
+**Live:** [havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
 
-[havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
+---
 
-## Screenshots
+## Features
 
-#### Home Page Dark and Light modes 👇🏻
+- **Posts & Categories** - Browse posts by Web Dev, DSA, and Personal Development with featured post carousels and infinite scroll pagination
+- **Auth System** - Sign up / sign in via email or username, with an OTP-based passwordless password reset flow (bcrypt-hashed OTPs, auto-cleaned after use)
+- **Comments & Replies** - Nested comment threads with inline edit/delete, paginated reply loading (5 per page), and real-time reply counts
+- **Likes** - Optimistic UI like button with particle animation; rolls back on failure
+- **Notifications** - Per-user notification feed for likes, comments, and replies with deep-linking to the exact comment/reply on the post page; auto-deleted after 30 days
+- **Reader Profile** - Update username and avatar, reset password, delete account
+- **Dark / Light Theme** - System preference detection with manual override; persisted in `localStorage` with a blocking inline script to prevent flash-of-wrong-theme
+- **SEO** - Dynamic XML sitemap, per-post Open Graph tags, JSON-LD structured data, and Google Search Console verification
 
-<p align="center">
-  <img alt="home page dark" src="https://user-images.githubusercontent.com/53307443/255379949-1367826e-9af8-4914-ad55-ce09378dd6a6.png" width="48.5%">
-   &nbsp; &nbsp; 
-  <img alt="home page light" src="https://user-images.githubusercontent.com/53307443/255379959-1ad16c26-c14c-463c-97f6-295b64fa3b86.png" width="48.5%">
-</p>
-<p align="center">
-  <img alt="posts" src="https://user-images.githubusercontent.com/53307443/255380003-2151f6a2-bc02-4de5-80ea-768a979fa299.png" width="32%">
-&nbsp; 
-  <img alt="comments" src="https://user-images.githubusercontent.com/53307443/255380041-25330131-acf8-4b07-b065-2a26a04d1e2a.png" width="32%">
-  &nbsp; 
-  <img alt="user profile" src="https://user-images.githubusercontent.com/53307443/255380099-7394304e-de54-4908-a938-4eb2beceb967.png" width="32%">
-</p>
+---
 
-#### Posts, Comments and User Profile ☝🏻
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 13.4 (App Router) |
+| Language | TypeScript 5 |
+| CMS / Database | Hygraph (GraphQL) |
+| Auth | NextAuth.js v4 + custom JWT |
+| Styling | SCSS Modules |
+| Email | Nodemailer (Gmail SMTP) |
+| Deployment | Vercel |
+| Analytics | Vercel Analytics + Google Analytics |
+
+---
+
+## Architecture Highlights
+
+- **Resilient data layer** - All 50+ GraphQL service functions use React `cache()` for request deduplication and a `retryAPICall` utility that retries up to 5× with 1s backoff on HTTP 429 rate-limit errors
+- **ISR** - Post pages revalidate every 60 seconds, keeping content fresh without hitting the CMS on every request
+- **Cascading deletes** - Deleting a comment cleans up its replies, reply notifications, and comment notifications in the correct dependency order
+- **Deep-linked notifications** - Notification clicks store `commentId`/`replyId` in `localStorage`, navigate to the post, and use `IntersectionObserver` to scroll-to and highlight the target element
+
+---
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Create a `.env.local` with the following:
+
+```env
+NEXT_PUBLIC_HYGRAPH_ENDPOINT=
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+JWT_SECRET=
+NODEMAILER_EMAIL=
+NODEMAILER_PW=
+```
