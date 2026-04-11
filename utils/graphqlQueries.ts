@@ -59,6 +59,27 @@ export const PostBySlugQuery = gql`
   }
 `
 
+
+export const getPostViewsQuery = gql`
+  query GetPostViews($slug: String!) {
+    post(where: { slug: $slug }) {
+      views
+    }
+  }
+`
+
+export const incrementPostViewsQuery = gql`
+  mutation IncrementPostViews($slug: String!, $views: Int!) {
+    updatePost(where: { slug: $slug }, data: { views: $views }) {
+      views
+    }
+    publishPost(where: { slug: $slug }, to: PUBLISHED) {
+      views
+    }
+  }
+`
+
+
 export const FeaturedPostsQuery = gql`
   query GetPosts {
     posts(orderBy: createdAt_DESC, first: 5, where: { featuredPost: true }) {
@@ -185,6 +206,7 @@ export const PostDetailsQuery = gql`
         slug
       }
       content
+      readTime
     }
   }
 `

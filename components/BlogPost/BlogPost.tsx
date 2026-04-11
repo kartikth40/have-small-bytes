@@ -8,6 +8,7 @@ import Markdown from './Markdown'
 import LikeButton from '../buttons/LikeButton'
 import CommentButton from '../buttons/CommentButton'
 import BackToTopButton from '../backToTopButton/backToTopButton'
+import ViewCounter from './ViewCounter'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
@@ -69,6 +70,23 @@ export default async function BlogPost({ post }: { post: postType }) {
               <p>{moment(post.updatedAt).format('MMM DD, YYYY')}</p>
             </div>
           </div>
+          {post.readTime && (
+            <div className={date}>
+              <div className={icon}>
+                <Image
+                  width={48}
+                  height={48}
+                  src="https://img.icons8.com/fluency-systems-regular/48/clock--v1.png"
+                  alt="read time"
+                />
+              </div>
+              <div className={dateContent}>
+                <p>read time</p>
+                <p>{post.readTime} min</p>
+              </div>
+            </div>
+          )}
+          <ViewCounter slug={post.slug} />
         </div>
         <div className={postContent}>
           <Markdown content={post.content} />

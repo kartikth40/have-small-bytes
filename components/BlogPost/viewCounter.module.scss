@@ -1,0 +1,51 @@
+@import '../../app/globals.scss';
+
+.viewCounter {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.5em 1em;
+  font-size: 0.9em;
+  color: var(--color-foreground);
+  opacity: 1;
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: var(--color-foreground);
+    opacity: .8;
+
+    body:global(.darkTheme) & {
+      color: var(--color-foreground);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke: #2a2a2a;
+
+      body:global(.darkTheme) & {
+        stroke: currentColor;
+      }
+    }
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    .label {
+      font-size: 0.6em;
+      font-weight: 400;
+    }
+
+    .count {
+      font-weight: 500;
+    }
+  }
+}

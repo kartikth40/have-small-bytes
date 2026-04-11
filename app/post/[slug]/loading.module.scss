@@ -1,0 +1,88 @@
+@import '../../globals.scss';
+
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+%shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-back-05) 25%,
+    var(--color-back-1) 50%,
+    var(--color-back-05) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 4px;
+}
+
+.container {
+  width: 100%;
+}
+
+.hero {
+  @extend %shimmer;
+  width: 100%;
+  aspect-ratio: 4/1;
+  border-radius: 5px;
+  margin-bottom: 0;
+}
+
+.body {
+  padding: 3rem;
+
+  @include devices(tablet) {
+    padding: 1.5rem 0;
+  }
+}
+
+.title {
+  height: 2.8rem;
+  width: 75%;
+  margin-bottom: 1.5rem;
+
+  @include devices(tablet) {
+    height: 2rem;
+    width: 90%;
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.avatar {
+  @extend %shimmer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.metaText {
+  height: 0.85rem;
+  width: 80px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.line {
+  @extend %shimmer;
+  height: 1rem;
+  width: 100%;
+}
+
+.subheading {
+  height: 1.6rem;
+  width: 40%;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}

@@ -61,7 +61,9 @@ export default async function Blog({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <BlogPost post={post} />
-      <Author author={post.author} />
+      <div id="post-author">
+        <Author author={post.author} />
+      </div>
       <CommentSection
         postId={post.id}
         postSlug={post.slug}

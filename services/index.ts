@@ -38,6 +38,7 @@ import {
   readNotificationType,
   commentExistsType,
   readerOTPType,
+  postViewsType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -98,6 +99,8 @@ import {
   updateUserQuery,
   deleteOTPQuery,
   PostBySlugQuery,
+  getPostViewsQuery,
+  incrementPostViewsQuery,
 } from '../utils/graphqlQueries'
 
 interface ErrorType {
@@ -126,22 +129,29 @@ async function retryAPICall(apiCall: any, retryMessage: string = '') {
   for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
     try {
       const result = await apiCall()
-      return result // Return the result if the API call succeeds.
+      return result
     } catch (err) {
       const error = err as ErrorType
+      const status = error.response?.status
+      // only retry on rate limit errors
+      if (status !== 429) throw err
       if (retryCount !== maxRetries - 1) {
-        if (error.response?.status === 429)
-          console.log('(API limit exceeds) Retrying...', retryMessage)
-      } else console.log('Retrying...', retryMessage)
-      if (retryCount === maxRetries - 1) {
-        throw err // Throw last error if all retries are exhausted.
+        console.log('(API limit exceeds) Retrying...', retryMessage)
       }
+      if (retryCount === maxRetries - 1) throw err
       await sleep(retryInterval)
     }
   }
 }
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_HYGRAPH_ENDPOINT!
+
+if (!graphqlAPI) {
+  throw new Error(
+    '[services] Missing env var: NEXT_PUBLIC_HYGRAPH_ENDPOINT is not defined. ' +
+    'Add it to .env.local for local dev or to Vercel environment variables for production.'
+  )
+}
 
 export const myPortfolioURL = cache(
   async (authorId: string): Promise<string> => {
@@ -449,32 +459,29 @@ export const checkLoginWithUsername = cache(
   }
 )
 
-export const addUser = cache(
-  async (
-    username: string,
-    email: string,
-    password: string,
-    photoId: string
-  ): Promise<userAddedType | null> => {
-    async function thisFunction() {
-      const result: userAddedType = await request(graphqlAPI, newUserQuery, {
-        username,
-        email,
-        password,
-        photoId,
-      })
-      return result
-    }
-    try {
-      const res = await retryAPICall(thisFunction, 'registering new user')
-      return res
-    } catch (err) {
-      consoleLog(err, 'registering new user')
-
-      return null
-    }
+export const addUser = async (
+  username: string,
+  email: string,
+  password: string,
+  photoId: string
+): Promise<userAddedType | null> => {
+  async function thisFunction() {
+    const result: userAddedType = await request(graphqlAPI, newUserQuery, {
+      username,
+      email,
+      password,
+      photoId,
+    })
+    return result
   }
-)
+  try {
+    const res = await retryAPICall(thisFunction, 'registering new user')
+    return res
+  } catch (err) {
+    consoleLog(err, 'registering new user')
+    return null
+  }
+}
 
 export const checkEmailExists = cache(
   async (email: string): Promise<boolean> => {
@@ -1482,3 +1489,36 @@ export const readAllNotifications = cache(
     }
   }
 )
+
+export const getPostViews = async (slug: string): Promise<number> => {
+  async function thisFunction() {
+    const result: postViewsType = await request(graphqlAPI, getPostViewsQuery, { slug })
+    return result.post?.views ?? 0
+  }
+  try {
+    return await retryAPICall(thisFunction, 'getting post views')
+  } catch (err) {
+    consoleLog(err, 'getting post views')
+    return 0
+  }
+}
+
+export const incrementPostViews = async (slug: string): Promise<number> => {
+  async function thisFunction() {
+    const token = process.env.HYGRAPH_PERMANENTAUTH_TOKEN
+    const current = await getPostViews(slug)
+    const result: { updatePost: { views: number } } = await request(
+      graphqlAPI,
+      incrementPostViewsQuery,
+      { slug, views: current + 1 },
+      token ? { Authorization: `Bearer ${token}` } : undefined
+    )
+    return result.updatePost.views
+  }
+  try {
+    return await retryAPICall(thisFunction, 'incrementing post views')
+  } catch (err) {
+    consoleLog(err, 'incrementing post views')
+    return 0
+  }
+}

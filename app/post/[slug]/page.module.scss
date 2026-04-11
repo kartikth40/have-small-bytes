@@ -93,6 +93,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
+  gap: .3em;
   margin-top: 1em;
 
   & .dateContent {
@@ -110,6 +112,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: .3em;
+    @include devices(tablet) {
+      margin-left: 0;
+    }
     & .icon {
       margin-right: 0.1em;
       height: 30px;
@@ -133,7 +139,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0.5em 1.5em 0.5em 0;
+    padding: 0.5em 0.5em 0.5em 0;
+
+    @include devices(tablet) {
+      display: none;
+    }
 
     & > :first-child {
       margin-right: 0.5em;

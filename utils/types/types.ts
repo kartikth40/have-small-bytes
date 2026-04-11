@@ -78,6 +78,7 @@ export interface postType {
     }
   ]
   content: string
+  readTime: number
 }
 
 export interface recentPostsType {
@@ -362,4 +363,10 @@ export interface readAllNotificationsType {
       }
     ]
   }
+}
+
+export interface postViewsType {
+  post: {
+    views: number
+  } | null
 }

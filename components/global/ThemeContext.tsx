@@ -14,17 +14,24 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // on first load
   useEffect(() => {
     const currentSavedTheme = window.localStorage.getItem('theme') as Theme
+    let resolvedTheme: Theme
 
     if (!currentSavedTheme) {
-      if (
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
-        setTheme('system-dark')
-      } else {
-        setTheme('system-light')
-      }
-    } else setTheme(currentSavedTheme)
+      resolvedTheme = window.matchMedia?.('(prefers-color-scheme: dark)').matches
+        ? 'system-dark'
+        : 'system-light'
+    } else {
+      resolvedTheme = currentSavedTheme
+    }
+
+    setTheme(resolvedTheme)
+
+    // apply immediately on load — don't wait for theme change effect
+    if (resolvedTheme === 'dark' || resolvedTheme === 'system-dark') {
+      document.body.classList.add('darkTheme')
+    } else {
+      document.body.classList.remove('darkTheme')
+    }
   }, [])
 
   // on theme change
@@ -34,10 +41,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       return
     }
     window.localStorage.setItem('theme', theme)
-    if (document) {
-      if (theme === 'dark' || theme === 'system-dark')
-        document.body.classList.add('darkTheme')
-      else document.body.classList.remove('darkTheme')
+    if (theme === 'dark' || theme === 'system-dark') {
+      document.body.classList.add('darkTheme')
+    } else {
+      document.body.classList.remove('darkTheme')
     }
   }, [theme])
 
