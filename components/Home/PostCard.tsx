@@ -1,42 +1,35 @@
+'use client'
+
 import { postsType } from '@/utils/types/types'
 import styles from '../../app/page.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
-import { myPortfolioURL } from '@/services'
 import LikeButton from '../buttons/LikeButton'
 import CommentButton from '../buttons/CommentButton'
+import ShareButton from '../buttons/ShareButton'
+import PostCardSkeleton from './PostCardSkeleton'
+import ViewCounter from '../BlogPost/ViewCounter'
+import { useEffect, useState } from 'react'
 
-type Props = { post: postsType }
+type Props = { post: postsType; authorUrl: string }
 
-async function PostCard({ post }: Props) {
-  const authorUrl = (await myPortfolioURL(post.author.id)) || '/'
+export default function PostCard({ post, authorUrl }: Props) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return <PostCardSkeleton />
 
   const {
-    postCard,
-    postImage,
-    title,
-    summary,
-    authorName,
-    authorInfo,
-    authorInfoContainer,
-    authorImage,
-    date,
-    userFeedbackContainer,
-    leftAlign,
-    rightAlign,
-    readTimeContainer,
-    postReactionSection,
+    postCard, postImage, title, summary, authorName, authorInfo,
+    authorInfoContainer, authorImage, date, userFeedbackContainer,
+    leftAlign, rightAlign, readTimeContainer, postReactionSection,
   } = styles
+
   return (
     <div className={postCard}>
       <div className={authorInfoContainer}>
-        <Link
-          href={authorUrl}
-          className={authorInfo}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <Link href={authorUrl} className={authorInfo} rel="noopener noreferrer" target="_blank">
           <div className={authorImage}>
             <Image
               src={post.author.photo.url}
@@ -48,7 +41,6 @@ async function PostCard({ post }: Props) {
           </div>
           <p className={authorName}>{post.author.username}</p>
         </Link>
-
         <div className={date}>
           <p>{moment(post.updatedAt).format('MMM DD, YYYY')}</p>
         </div>
@@ -63,31 +55,23 @@ async function PostCard({ post }: Props) {
           />
         </div>
       </Link>
-
       <h1>
-        <Link href={`/post/${post.slug}`} className={title}>
-          {post.title}
-        </Link>
+        <Link href={`/post/${post.slug}`} className={title}>{post.title}</Link>
       </h1>
       <div className={summary}>{post.summary}</div>
       <div className={postReactionSection}>
         <div className={leftAlign}>
           <div className={userFeedbackContainer}>
-            <LikeButton
-              postId={post.id}
-              postSlug={post.slug}
-              postAuthor={post.author.id}
-              postTitle={post.title}
-            />
+            <LikeButton postId={post.id} postSlug={post.slug} postAuthor={post.author.id} postTitle={post.title} />
             <CommentButton postId={post.id} slug={post.slug} />
+            <ShareButton slug={post.slug} title={post.title} />
           </div>
         </div>
         <div className={rightAlign}>
           <div className={readTimeContainer}>{post.readTime} min read</div>
+          <ViewCounter slug={post.slug} readOnly />
         </div>
       </div>
     </div>
   )
 }
-
-export default PostCard

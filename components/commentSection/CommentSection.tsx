@@ -21,6 +21,7 @@ import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import RepliesSection from './RepliesSection'
 import { timeAgo } from '@/utils/functions'
+import { showAuthToast, restoreAuthRedirectState, clearAuthRedirectState } from '@/utils/functions/authToast'
 
 type Props = {
   postId: string
@@ -73,6 +74,22 @@ export default function CommentSection({
 
   useEffect(() => {
     initializeComments()
+
+    // restore pending comment after signin redirect
+    if (session) {
+      const { pendingComment, scrollToSection } = restoreAuthRedirectState()
+      if (pendingComment) {
+        setCurrentComment(pendingComment)
+        setHideComments(false)
+        clearAuthRedirectState()
+      }
+      if (scrollToSection) {
+        setTimeout(() => {
+          document.getElementById(scrollToSection)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }, 500)
+        clearAuthRedirectState()
+      }
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -166,9 +183,14 @@ export default function CommentSection({
   } = styles
   async function handleSendComment() {
     if (!session) {
-      toast.warn('please login to add your comment.', {
-        toastId: 'do_not_allow_duplicate_comment',
-      })
+      showAuthToast(
+        typeof window !== 'undefined' ? window.location.pathname : undefined,
+        {
+          pendingComment: currentComment || undefined,
+          scrollToSection: `comment-section-${postId}`,
+        }
+      )
+      return
     }
     if (currentComment.length > 0 && session) {
       setPosting(true)

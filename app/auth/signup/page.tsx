@@ -63,15 +63,19 @@ export default function SignUpPage() {
   }
 
   async function handleUsernameOnBlur(e: ChangeEvent<HTMLInputElement>) {
+    if (!validUsername) return
     const usernameAlreadyExists = await checkUsernameExists(e.target.value)
     if (usernameAlreadyExists) {
+      setValidUsername(false)
       setInvalidUsernameMsg('Username already exists!')
     }
   }
 
   async function handleEmailOnBlur(e: ChangeEvent<HTMLInputElement>) {
+    if (!validEmail) return
     const emailAlreadyExists = await checkEmailExists(e.target.value)
     if (emailAlreadyExists) {
+      setValidEmail(false)
       setInvalidEmailMsg('Email already exists!')
     }
   }
@@ -135,6 +139,7 @@ export default function SignUpPage() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
     const credentials = {
       username: username.current,
       email: email.current,
@@ -147,9 +152,8 @@ export default function SignUpPage() {
       credentials.email,
       credentials.password
     )
-
     if (!validateResponse.pass) {
-      toast.warning(validateResponse.error, { autoClose: 5000 })
+      toast.error(validateResponse.error, { toastId: 'invalid-signup', autoClose: 4000 })
       return
     }
 

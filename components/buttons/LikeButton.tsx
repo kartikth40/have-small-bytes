@@ -12,6 +12,7 @@ import {
   sendNotification,
 } from '@/services'
 import { toast } from 'react-toastify'
+import { showAuthToast } from '@/utils/functions/authToast'
 export interface myCustomCSS extends CSSProperties {
   '--total-particles': number
   '--i': number
@@ -82,9 +83,10 @@ export default function LikeButton({
         setLiked(false)
         clearTimeout(timeoutId)
       }, 1000)
-      toast.warn('please login to give your feedback.', {
-        toastId: 'do_not_allow_duplicate',
-      })
+      showAuthToast(
+        typeof window !== 'undefined' ? window.location.pathname : undefined,
+        { scrollToSection: undefined }
+      )
       return
     }
 

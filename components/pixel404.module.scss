@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.digit {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.cell {
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
+}
+
+.filled {
+  background-color: rgba(140, 82, 255, 0.88);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(0, 0, 0, 0.12) 4px,
+      rgba(0, 0, 0, 0.12) 5px
+    ),
+    radial-gradient(
+      circle at 35% 35%,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 55%
+    );
+  box-shadow: 0 0 6px rgba(140, 82, 255, 0.4);
+}
+
+.empty {
+  background: transparent;
+}

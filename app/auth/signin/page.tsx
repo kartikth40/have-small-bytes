@@ -10,6 +10,7 @@ import {
   emailValidate,
   passwordValidate,
   usernameValidate,
+  signinValidation,
 } from '@/utils/constants/formValidation'
 
 export default function LoginPage() {
@@ -58,7 +59,7 @@ export default function LoginPage() {
     const isEmail = emailValidate(emailOrUsername.current)
     const isUsername = usernameValidate(emailOrUsername.current)
 
-    if (e.target.value.length < (isUsername.minLength || 4)) {
+    if (e.target.value.length < (isUsername.minLength || 5)) {
       setValidEmailOrUsername(false)
       setInvalidEmailOrUsernameMsg('')
       return
@@ -100,20 +101,14 @@ export default function LoginPage() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    const isEmail = emailValidate(emailOrUsername.current)
-    const isUsername = usernameValidate(emailOrUsername.current)
-
-    if (!isEmail.pass && !isUsername.pass) {
-      toast.error('Invalid Email or Username.', {
-        autoClose: 5000,
-        toastId: 'invalid-email-username',
-      })
-      toast.warning(isUsername.error, {
-        autoClose: 5000,
-        toastId: 'invalid-username',
-      })
+    const validateResponse = signinValidation(emailOrUsername.current, password.current)
+    if (!validateResponse.pass) {
+      toast.error(validateResponse.error, { toastId: 'invalid-signin', autoClose: 4000 })
       return
     }
+
+    const isEmail = emailValidate(emailOrUsername.current)
+    const isUsername = usernameValidate(emailOrUsername.current)
 
     setSigningIn(true)
     // Match Credentials

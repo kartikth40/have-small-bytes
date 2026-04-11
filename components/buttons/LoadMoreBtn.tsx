@@ -7,9 +7,10 @@ import PostCard from '../Home/PostCard'
 
 type Props = {
   categorySlug: string
+  authorUrl: string
 }
 
-export default function LoadMoreBtn({ categorySlug }: Props) {
+export default function LoadMoreBtn({ categorySlug, authorUrl }: Props) {
   const postsPerLoad = 3
   const [morePosts, setMorePosts] = useState<postsType[] | []>([])
   const [loadMore, setLoadMore] = useState<boolean>(true)
@@ -46,7 +47,7 @@ export default function LoadMoreBtn({ categorySlug }: Props) {
   return (
     <>
       {morePosts?.map((post) => (
-        <PostCard post={post} key={post.title}></PostCard>
+        <PostCard post={post} authorUrl={authorUrl} key={post.title} />
       ))}
       <div className={loadMoreContainer}>
         <div className={`${!loadMore && noMore}`} onClick={handleLoadMore}>

@@ -88,6 +88,9 @@ body {
   overflow-x: hidden;
   background: var(--color-background);
   color: var(--color-foreground);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 ::-webkit-scrollbar {
@@ -110,6 +113,8 @@ body {
 main {
   margin: 5rem 1rem 0.7rem;
   min-height: calc(100vh - 10rem);
+  display: flex;
+  flex-direction: column;
 }
 
 .mousemark {

@@ -15,6 +15,7 @@ import {
 } from '@/services'
 import { toast } from 'react-toastify'
 import { timeAgo } from '@/utils/functions'
+import { showAuthToast, restoreAuthRedirectState, clearAuthRedirectState } from '@/utils/functions/authToast'
 
 type Props = {
   commentId: string
@@ -55,6 +56,16 @@ export default function RepliesSection({
   useEffect(() => {
     if (open === commentId) {
       initialize()
+
+      // restore pending reply after signin
+      if (session) {
+        const { pendingComment } = restoreAuthRedirectState()
+        if (pendingComment) {
+          setCurrentReply(pendingComment)
+          setLemmeReply(commentId)
+          clearAuthRedirectState()
+        }
+      }
     } else setLoading(true)
 
     if (open === '') {
@@ -145,9 +156,14 @@ export default function RepliesSection({
   } = styles
   async function handleSendReply() {
     if (!session) {
-      toast.warn('please login to add your reply.', {
-        toastId: 'do_not_allow_duplicate_reply',
-      })
+      showAuthToast(
+        typeof window !== 'undefined' ? window.location.pathname : undefined,
+        {
+          pendingComment: currentReply || undefined,
+          scrollToSection: `comment-section-${postId}`,
+        }
+      )
+      return
     }
     if (currentReply.length > 0 && session) {
       setPosting(true)

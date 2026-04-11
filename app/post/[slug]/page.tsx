@@ -34,21 +34,21 @@ export async function generateMetadata(
       description: post?.summary,
       type: 'article',
       url: `/post/${params.slug}`,
-      images: [
+      images: post?.featuredImage?.url ? [
         {
-          url: post?.featuredImage.url!,
+          url: post.featuredImage.url,
           width: 1200,
           height: 630,
-          alt: post?.title,
+          alt: post.title,
         },
         ...previousImages,
-      ],
+      ] : previousImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: post?.title ?? 'HSB',
       description: post?.summary,
-      images: [post?.featuredImage.url!],
+      images: post?.featuredImage?.url ? [post.featuredImage.url] : [],
     },
   }
 }

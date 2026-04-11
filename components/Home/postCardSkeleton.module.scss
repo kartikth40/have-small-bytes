@@ -1,0 +1,120 @@
+@import '../../app/globals.scss';
+
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+%shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-back-05) 25%,
+    var(--color-back-1) 50%,
+    var(--color-back-05) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 4px;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.authorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.avatar {
+  @extend %shimmer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.authorName {
+  @extend %shimmer;
+  height: 0.8em;
+  width: 80px;
+}
+
+.date {
+  @extend %shimmer;
+  height: 0.8em;
+  width: 70px;
+  margin-left: auto;
+}
+
+.image {
+  @extend %shimmer;
+  width: 100%;
+  aspect-ratio: 16/5;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5em;
+}
+
+.title {
+  @extend %shimmer;
+  height: 2rem;
+  width: 85%;
+  margin-block: 0.3em;
+}
+
+.titleShort {
+  @extend %shimmer;
+  height: 2rem;
+  width: 55%;
+  margin-bottom: 0.6em;
+}
+
+.summaryLine {
+  @extend %shimmer;
+  height: 0.85em;
+  width: 100%;
+  margin-bottom: 0.4em;
+}
+
+.summaryShort {
+  @extend %shimmer;
+  height: 0.85em;
+  width: 65%;
+  margin-bottom: 0.4em;
+}
+
+.reactions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.btnGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 32px;
+}
+
+.btn {
+  @extend %shimmer;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+}
+
+.dot {
+  font-size: 0.5em;
+  opacity: 0.3;
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.readTime {
+  @extend %shimmer;
+  height: 0.8em;
+  width: 60px;
+}

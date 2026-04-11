@@ -38,59 +38,90 @@
   font-size: 2rem;
   width: 100%;
   text-align: center;
-  padding-block: 1rem 6rem;
-  position: relative;
+  padding: 2rem 1rem;
   margin-bottom: 1rem;
   background-color: var(--color-back-07);
-  border-radius: 10px;
-  & .randomHeroDiv {
-    position: absolute;
-    text-align: center;
-    left: 0;
+  border-radius: 5px;
+
+  & h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
+  }
+
+  & .heroWordWrapper {
+    overflow: hidden;
+    height: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    bottom: 0.5em;
+  }
+
+  & .randomHeroDiv {
     letter-spacing: -5px;
     background: -webkit-linear-gradient(45deg, #f31559, #ff52a2);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
+    &.slideIn {
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    }
+    &.slideVisible {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    }
+    &.slideOut {
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.55, 0, 0.78, 0), opacity 0.4s ease;
+    }
+
     &.first {
       background: -webkit-linear-gradient(45deg, #f31559, #ff52a2);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 12px rgba(243, 21, 89, 0.3));
     }
     &.second {
       background: -webkit-linear-gradient(45deg, #7f43c8, #c394fb);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 12px rgba(127, 67, 200, 0.3));
     }
     &.third {
       background: -webkit-linear-gradient(45deg, #2f8886, #84c69b);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 12px rgba(47, 136, 134, 0.3));
     }
   }
+
   @include devices(tablet) {
+    margin-top: 1em;
     font-size: calc(1rem + (((100vw - 425px) / 100) * 3));
-    padding-block: 1rem 6.5rem;
+    padding: 1.5rem 1rem;
     & .randomHeroDiv {
       padding-inline: 0.5em;
-      display: grid;
-      align-content: center;
-      min-height: 2.5em;
       font-size: calc(2rem + (((100vw - 425px) / 100) * 4));
       letter-spacing: -3px;
-      bottom: unset;
-      top: 1.3em;
     }
   }
 
   @include devices(mobile) {
     font-size: 0.7rem;
+    & .heroWordWrapper {
+      height: 3em;
+    }
   }
 }
 
@@ -590,10 +621,12 @@
   justify-content: center;
   align-items: center;
   height: 150px;
-  background: var(--color-primary-black);
-  color: var(--color-primary-white);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  border-top: 1px solid var(--color-back-1);
   position: relative;
   z-index: 1000;
+  margin-top: auto;
 }
 .footer {
   display: flex;
@@ -611,7 +644,7 @@
 }
 .copyrights {
   font-size: 0.7rem;
-  font-weight: 100;
+  font-weight: 300;
 }
 // .modalContainer {
 // }

@@ -483,7 +483,7 @@ export const deletePostLikeQuery = gql`
 export const getPostCommentsCountQuery = gql`
   query GetPostCommentsCount($postId: ID!) {
     commentsConnection(
-      where: { post: { id: $postId }, replyToCommentId: null }
+      where: { post: { id: $postId } }
     ) {
       aggregate {
         count

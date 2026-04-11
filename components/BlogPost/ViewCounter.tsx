@@ -21,11 +21,19 @@ function markViewed(slug: string) {
   } catch {}
 }
 
-export default function ViewCounter({ slug }: { slug: string }) {
+export default function ViewCounter({ slug, readOnly = false }: { slug: string; readOnly?: boolean }) {
   const [views, setViews] = useState<number | null>(null)
   const [error, setError] = useState(false)
 
   useEffect(() => {
+    if (readOnly) {
+      fetch(`/api/views?slug=${slug}`)
+        .then((res) => res.json())
+        .then((data) => setViews(data.views))
+        .catch(() => setError(true))
+      return
+    }
+
     const alreadyViewed = hasViewedRecently(slug)
 
     if (alreadyViewed) {

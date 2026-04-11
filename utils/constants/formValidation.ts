@@ -12,7 +12,7 @@ export interface sucessResponse {
 
 export function usernameValidate(
   username: string,
-  minLength: number = 4,
+  minLength: number = 5,
   maxLength: number = 10
 ): response {
   const validUsernameRegex = /^[a-z0-9_\-]+$/
@@ -119,26 +119,21 @@ export function signupValidation(
   return successResponse
 }
 
-// export function signinValidation(
-//   emailOrUsername: string,
-//   password: string
-// ): response {
-//   const successResponse: response = { pass: true, error: '' }
+export function signinValidation(
+  emailOrUsername: string,
+  password: string
+): response {
+  const successResponse: response = { pass: true, error: '' }
 
-//   const emailResponse = emailValidate(emailOrUsername)
-//   if (!emailResponse.pass) {
-//     emailResponse.error = 'Credentials do not match!'
-//     return emailResponse
-//   }
+  const emailResponse = emailValidate(emailOrUsername)
+  const usernameResponse = usernameValidate(emailOrUsername)
 
-//   const UsernameResponse = usernameValidate(emailOrUsername)
-//   if (!UsernameResponse.pass) {
-//     emailResponse.error = 'Credentials do not match!'
-//     return emailResponse
-//   }
+  if (!emailResponse.pass && !usernameResponse.pass) {
+    return { pass: false, error: 'Please enter a valid email or username.' }
+  }
 
-//   const passwordResponse = passwordValidate(password)
-//   if (!passwordResponse.pass) return passwordResponse
+  const passwordResponse = passwordValidate(password)
+  if (!passwordResponse.pass) return passwordResponse
 
-//   return successResponse
-// }
+  return successResponse
+}
