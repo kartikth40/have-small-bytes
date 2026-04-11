@@ -2,6 +2,9 @@
 
 A full-stack blog platform covering Web Development, DSA, and Personal Development - built with Next.js 13 App Router, Hygraph (GraphQL CMS), and NextAuth.js.
 
+<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/310f7515-ca73-477d-9316-7a8264bf9016" />
+
+
 **Live:** [havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
 
 ---
@@ -69,8 +72,8 @@ NODEMAILER_PW=
 <summary>Home Page (Dark & Light)</summary>
 <br>
 
-<!-- paste dark mode home screenshot here -->
-<!-- paste light mode home screenshot here -->
+<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/ec40f1bf-fa10-4449-a3fc-fb8299ca885f" />
+<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/b60e7d1d-0666-458c-ad84-7f573ac108d3" />
 
 </details>
 
@@ -78,7 +81,8 @@ NODEMAILER_PW=
 <summary>Post Page</summary>
 <br>
 
-<!-- paste post page screenshot here (markdown rendering + syntax highlighted code block + like button) -->
+<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/92fc7038-b9c8-4a14-bb4b-5dfb100da032" />
+<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/dcfa0fe4-58a9-4c8a-8f2f-bfd588a14a28" />
 
 </details>
 
@@ -86,7 +90,7 @@ NODEMAILER_PW=
 <summary>Comments & Replies</summary>
 <br>
 
-<!-- paste comment section screenshot here (nested replies open, edit/delete dropdown visible) -->
+<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/a02887b4-9cbc-4f5f-9511-5e96153cb4c6" />
 
 </details>
 
@@ -94,14 +98,16 @@ NODEMAILER_PW=
 <summary>Notifications</summary>
 <br>
 
-<!-- paste notifications page screenshot here (unread indicators visible) -->
+<img width="1859" height="416" alt="image" src="https://github.com/user-attachments/assets/01f2b85f-0d22-4c5d-af2b-98de078748aa" />
 
 </details>
 
 <details>
-<summary>Sign Up - Inline Validation</summary>
+<summary>Sign Up/Log In - Inline Validation</summary>
 <br>
 
-<!-- paste sign up page screenshot here (real-time validation checkmarks visible) -->
+<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/6e3bf84e-d1eb-4049-8c35-19e728efab53" />
+<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/8fdc1c85-2294-40a3-b05b-5bb5fc5a46e7" />
+<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/ba037dda-978a-4c34-a8cb-f3b694dd7c4e" />
 
 </details>
