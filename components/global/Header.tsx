@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import styles from '@/app/page.module.scss'
-import { getCategories } from '@/services'
 import Image from 'next/image'
 import SignInButton from '../buttons/SignInButton'
 import ThemeToggleButton from '../buttons/ThemeToggleButton'
@@ -14,13 +13,9 @@ import { handleMouseFeedback } from '@/utils/functions'
 import useNetwork from '@/utils/constants/useNetwork'
 import { Id, toast } from 'react-toastify'
 
-type Props = {}
+type Props = { categories: categoriesType['categories'] | [] }
 
-function Header({}: Props) {
-  const [categories, setCategories] = useState<
-    categoriesType['categories'] | []
-  >([])
-  const [loading, setLoading] = useState<boolean>(true)
+function Header({ categories }: Props) {
   const [mobile, setMobile] = useState<boolean>(false)
 
   const windowSize = useWindowSize()
@@ -42,21 +37,8 @@ function Header({}: Props) {
   }, [isOnline])
 
   useEffect(() => {
-    async function setCat() {
-      setCategories(await getCategories())
-    }
-
     handleMouseFeedback()
-    setCat()
   }, [])
-
-  useEffect(() => {
-    if (categories.length === 0) {
-      setLoading(true)
-    } else {
-      setLoading(false)
-    }
-  }, [categories])
 
   useEffect(() => {
     if (windowSize && windowSize <= screenSize.tablet) {
@@ -66,8 +48,7 @@ function Header({}: Props) {
     }
   }, [windowSize])
 
-  const { header, nav, logo, navLink, loadingBtn, firstHeaderRow, hideMe } =
-    styles
+  const { header, nav, logo, navLink, firstHeaderRow, hideMe } = styles
 
   return (
     <header className={header}>
@@ -91,23 +72,15 @@ function Header({}: Props) {
       </div>
 
       <nav className={nav}>
-        {loading
-          ? ['Web Development', 'DSA', 'Personal Development'].map(
-              (cat, idx) => (
-                <span key={idx} className={`${loadingBtn} ${navLink}`}>
-                  {cat}
-                </span>
-              )
-            )
-          : categories.map((category) => (
-              <Link
-                key={category.slug}
-                href={`category/${category.slug}`}
-                className={navLink}
-              >
-                {category.name}
-              </Link>
-            ))}
+        {categories.map((category) => (
+          <Link
+            key={category.slug}
+            href={`category/${category.slug}`}
+            className={navLink}
+          >
+            {category.name}
+          </Link>
+        ))}
         <span className={`${nav} ${mobile && hideMe}`}>
           <ThemeToggleButton />
           <SignInButton />

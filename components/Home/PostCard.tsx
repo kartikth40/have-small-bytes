@@ -1,5 +1,3 @@
-'use client'
-
 import { postsType } from '@/utils/types/types'
 import styles from '../../app/page.module.scss'
 import moment from 'moment'
@@ -8,18 +6,11 @@ import Image from 'next/image'
 import { myPortfolioURL } from '@/services'
 import LikeButton from '../buttons/LikeButton'
 import CommentButton from '../buttons/CommentButton'
-import { useEffect, useState } from 'react'
 
 type Props = { post: postsType }
 
-function PostCard({ post }: Props) {
-  const [authorId, setAuthorId] = useState<string>('/')
-  useEffect(() => {
-    async function setAuthor() {
-      setAuthorId((await myPortfolioURL(post.author.id)) || '/')
-    }
-    setAuthor()
-  }, [])
+async function PostCard({ post }: Props) {
+  const authorUrl = (await myPortfolioURL(post.author.id)) || '/'
 
   const {
     postCard,
@@ -41,7 +32,7 @@ function PostCard({ post }: Props) {
     <div className={postCard}>
       <div className={authorInfoContainer}>
         <Link
-          href={authorId!}
+          href={authorUrl}
           className={authorInfo}
           rel="noopener noreferrer"
           target="_blank"

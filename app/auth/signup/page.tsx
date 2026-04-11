@@ -291,7 +291,7 @@ export default function SignUpPage() {
           </div>
 
           <div className={loginBtnContainer}>
-            <button type="submit" disabled={signingIn}>
+            <button type="submit" disabled={signingIn || !validUsername || !validEmail || !validPassword}>
               Create Account
             </button>
           </div>

@@ -6,6 +6,8 @@ import Footer from '@/components/global/Footer'
 import Providers from '@/components/global/Providers'
 import ClientToastContainer from '@/components/global/ClientToastContainer'
 import ReadingProgressBar from '@/components/global/ReadingProgressBar'
+import HeaderServer from '@/components/global/HeaderServer'
+import ScrollToTop from '@/components/global/ScrollToTop'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -127,7 +129,8 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
           <ReadingProgressBar />
-          <Header />
+          <ScrollToTop />
+          <HeaderServer />
           {children}
           <Analytics />
           <SpeedInsights/>

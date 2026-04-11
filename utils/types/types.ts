@@ -370,3 +370,9 @@ export interface postViewsType {
     views: number
   } | null
 }
+
+export interface postSharesType {
+  post: {
+    shares: number
+  } | null
+}

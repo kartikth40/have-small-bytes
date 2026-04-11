@@ -39,6 +39,7 @@ import {
   commentExistsType,
   readerOTPType,
   postViewsType,
+  postSharesType,
 } from '@/utils/types/types'
 import { request } from 'graphql-request'
 import { cache } from 'react'
@@ -101,6 +102,8 @@ import {
   PostBySlugQuery,
   getPostViewsQuery,
   incrementPostViewsQuery,
+  getPostSharesQuery,
+  incrementPostSharesQuery,
 } from '../utils/graphqlQueries'
 
 interface ErrorType {
@@ -1519,6 +1522,39 @@ export const incrementPostViews = async (slug: string): Promise<number> => {
     return await retryAPICall(thisFunction, 'incrementing post views')
   } catch (err) {
     consoleLog(err, 'incrementing post views')
+    return 0
+  }
+}
+
+export const getPostShares = async (slug: string): Promise<number> => {
+  async function thisFunction() {
+    const result: postSharesType = await request(graphqlAPI, getPostSharesQuery, { slug })
+    return result.post?.shares ?? 0
+  }
+  try {
+    return await retryAPICall(thisFunction, 'getting post shares')
+  } catch (err) {
+    consoleLog(err, 'getting post shares')
+    return 0
+  }
+}
+
+export const incrementPostShares = async (slug: string): Promise<number> => {
+  async function thisFunction() {
+    const token = process.env.HYGRAPH_PERMANENTAUTH_TOKEN
+    const current = await getPostShares(slug)
+    const result: { updatePost: { shares: number } } = await request(
+      graphqlAPI,
+      incrementPostSharesQuery,
+      { slug, shares: current + 1 },
+      token ? { Authorization: `Bearer ${token}` } : undefined
+    )
+    return result.updatePost.shares
+  }
+  try {
+    return await retryAPICall(thisFunction, 'incrementing post shares')
+  } catch (err) {
+    consoleLog(err, 'incrementing post shares')
     return 0
   }
 }

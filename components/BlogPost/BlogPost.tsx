@@ -9,6 +9,7 @@ import LikeButton from '../buttons/LikeButton'
 import CommentButton from '../buttons/CommentButton'
 import BackToTopButton from '../backToTopButton/backToTopButton'
 import ViewCounter from './ViewCounter'
+import ShareButton from '../buttons/ShareButton'
 
 export default async function BlogPost({ post }: { post: postType }) {
   const {
@@ -101,6 +102,7 @@ export default async function BlogPost({ post }: { post: postType }) {
               showCount={true}
             />
             <CommentButton postId={post.id} showCount={true} onPage={true} />
+            <ShareButton slug={post.slug} title={post.title} />
           </div>
         </div>
       </div>

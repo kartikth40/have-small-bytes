@@ -39,14 +39,14 @@
   padding: 3rem;
 
   & > h1 {
-    font-size: 4rem;
+    font-size: 2.5rem;
     font-weight: 900;
   }
   @include devices(tablet) {
     padding: 0;
-    padding-block: 3rem 2em;
+    padding-block: 1rem 2em;
     & > h1 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       width: 90vw;
       word-wrap: break-word;
     }
@@ -94,7 +94,7 @@
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
-  gap: .3em;
+  gap: 0.3em;
   margin-top: 1em;
 
   & .dateContent {
@@ -112,7 +112,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: .3em;
+    margin-left: 0.3em;
     @include devices(tablet) {
       margin-left: 0;
     }
@@ -223,8 +223,8 @@
     font-size: 0.9em;
     max-width: 70vw;
     overflow-x: auto;
-    border-bottom-right-radius: inherit;
-    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
 
     ::-webkit-scrollbar {
       width: 5px;
@@ -239,8 +239,60 @@
     }
 
     @include devices(tablet) {
-      max-width: 80vw;
-      font-size: 0.9em;
+      max-width: 90vw;
+      font-size: 0.72em;
+    }
+
+    @include devices(mobile) {
+      font-size: 0.65em;
+    }
+  }
+
+  .codeScrollWrapper {
+    position: relative;
+    border-bottom-right-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    overflow: hidden;
+
+    // solid block to cleanly hide right edge pixels
+    &::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      right: 0.9px;
+      width: 3px;
+      bottom: 8px;
+      background: #efefef;
+      pointer-events: none;
+      z-index: 3;
+      transition: opacity 0.3s;
+
+      body:global(.darkTheme) & {
+        background: #1e2127;
+      }
+    }
+
+    // gradient fade, inset from the right edge
+    &::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      right: 2px;
+      width: 15%;
+      bottom: 8px;
+      background: linear-gradient(to right, transparent, #efefef 75%);
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 2;
+
+      body:global(.darkTheme) & {
+        background: linear-gradient(to right, transparent, #1e2127 75%);
+      }
+    }
+
+    &[data-at-end='true']::before,
+    &[data-at-end='true']::after {
+      opacity: 0;
     }
   }
 
@@ -256,7 +308,8 @@
     margin-block: 0.1em;
     border-radius: 0.15em;
     body:global(.darkTheme) & {
-      background-color: #171717;
+      background-color: #1e2127;
+      color: #abb2bf;
     }
   }
   .codeBlockContainer {
@@ -264,18 +317,20 @@
     border-radius: 0.5em;
     overflow: hidden;
     body:global(.darkTheme) & {
-      background-color: #000000;
+      background-color: #1e2127;
     }
     & .codeBlockTopBar {
       display: flex;
       justify-content: space-between;
-      border: 1px solid var(--color-back-1);
+      border: 1px solid #d0d0d0;
       border-bottom: none;
       border-top-right-radius: inherit;
       border-top-left-radius: inherit;
+      body:global(.darkTheme) & {
+        border-color: #2e3138;
+      }
       & .codeType {
-        font-family: var(--font-source-code-pro), Consolas, Monaco,
-          'Andale Mono', 'Ubuntu Mono', monospace;
+        font-family: var(--font-source-code-pro), Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
         width: 100%;
         display: flex;
         padding-left: 0.5rem;
@@ -289,12 +344,13 @@
         height: 32px;
         z-index: 2;
         border: none;
-        border-left: 1px solid var(--color-back-1);
+        border-left: 1px solid #d0d0d0;
         border-top-right-radius: inherit;
         cursor: pointer;
         background-color: #efefef;
         body:global(.darkTheme) & {
-          background-color: #050010;
+          background-color: #1e2127;
+          border-left-color: #2e3138;
         }
 
         &:hover {
@@ -357,7 +413,7 @@
       border-bottom-left-radius: inherit;
       border-bottom-right-radius: inherit;
       body:global(.darkTheme) & {
-        background-color: #050010;
+        background-color: #1e2127;
       }
     }
   }

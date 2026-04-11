@@ -197,7 +197,7 @@ export default function LoginPage() {
         </div>
 
         <div className={loginBtnContainer}>
-          <button type="submit" disabled={signingIn}>
+          <button type="submit" disabled={signingIn || !validEmailOrUsername || !validPassword}>
             Login
           </button>
         </div>

@@ -1,0 +1,58 @@
+@import '../app/globals.scss';
+
+@keyframes shimmer {
+  0% { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
+
+%shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-back-05) 25%,
+    var(--color-back-1) 50%,
+    var(--color-back-05) 75%
+  );
+  background-size: 300px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 4px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 1em;
+}
+
+.image {
+  @extend %shimmer;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 5px;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.date {
+  @extend %shimmer;
+  height: 0.6em;
+  width: 60px;
+}
+
+.title {
+  @extend %shimmer;
+  height: 0.75em;
+  width: 100%;
+}
+
+.titleShort {
+  @extend %shimmer;
+  height: 0.75em;
+  width: 70%;
+}

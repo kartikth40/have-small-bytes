@@ -1,0 +1,76 @@
+@import '../../app/globals.scss';
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.shareBtn {
+  color: var(--color-foreground);
+  opacity: 0.9;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 1; }
+
+  svg { stroke: var(--color-foreground); }
+}
+
+.dropdown {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-back-1);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px var(--color-shadow-2);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 160px;
+  font-size: 16px;
+
+  body:global(.darkTheme) & {
+    background-color: #1a1d24;
+    border-color: var(--color-back-2);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  width: 100%;
+  padding: 0.55em 0.9em;
+  border: none;
+  background: transparent;
+  color: var(--color-foreground);
+  font-family: var(--font-inter);
+  font-size: 0.82em;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+  transition: background 0.1s;
+
+  &:hover {
+    background-color: var(--color-back-05);
+  }
+
+  & + & {
+    border-top: 1px solid var(--color-back-05);
+  }
+}
+
+.iconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -116,10 +116,9 @@ export function CodeRenderer({ ...props }: any) {
             ></button>
           </CopyToClipboard>
         </div>
-
         <ReactSyntaxHighlighter language={language || 'cmd'}>
-          {String(children)}
-        </ReactSyntaxHighlighter>
+            {String(children)}
+          </ReactSyntaxHighlighter>
       </div>
     )
   return <code className={className}>{children}</code>

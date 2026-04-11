@@ -79,6 +79,25 @@ export const incrementPostViewsQuery = gql`
   }
 `
 
+export const getPostSharesQuery = gql`
+  query GetPostShares($slug: String!) {
+    post(where: { slug: $slug }) {
+      shares
+    }
+  }
+`
+
+export const incrementPostSharesQuery = gql`
+  mutation IncrementPostShares($slug: String!, $shares: Int!) {
+    updatePost(where: { slug: $slug }, data: { shares: $shares }) {
+      shares
+    }
+    publishPost(where: { slug: $slug }, to: PUBLISHED) {
+      shares
+    }
+  }
+`
+
 
 export const FeaturedPostsQuery = gql`
   query GetPosts {

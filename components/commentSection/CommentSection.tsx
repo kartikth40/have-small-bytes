@@ -29,6 +29,8 @@ type Props = {
   postTitle: string
 }
 
+const MAX_COMMENT_LENGTH = 500
+
 export default function CommentSection({
   postId,
   postSlug,
@@ -43,6 +45,7 @@ export default function CommentSection({
   const [openReplies, setOpenReplies] = useState<string>('')
   const [editing, setEditing] = useState<string>('')
   const [showId, SetShowId] = useState<string>('')
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string>('')
   const [commentsCount, setCommentsCount] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [comments, setComments] = useState<getPostCommentType[] | []>([])
@@ -70,7 +73,17 @@ export default function CommentSection({
 
   useEffect(() => {
     initializeComments()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (showId && !(e.target as Element).closest('[data-dropdown]')) {
+        SetShowId('')
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showId])
 
   useEffect(() => {
     const commentId = window.localStorage.getItem('commentId')
@@ -199,22 +212,21 @@ export default function CommentSection({
   }
   async function handleDelete(id: string) {
     SetShowId('')
-    const sure = confirm('Are you sure you want to delete this comment ?')
-    if (!sure) return
+    setConfirmDeleteId(id)
+  }
+
+  async function confirmDelete(id: string) {
+    setConfirmDeleteId('')
     await deleteCommentRepliesNotification(session?.user.id!, postAuthor, id)
     const repliesDeleted = await deleteCommentReplies(id)
     if (!repliesDeleted) {
-      toast.error('something went wrong! Please try again later.', {
-        toastId: 'error_dlt',
-      })
+      toast.error('something went wrong! Please try again later.', { toastId: 'error_dlt' })
       return
     }
     await deleteCommentNotification(session?.user.id!, postAuthor, id)
     const commentDeleted = await deleteComment(id)
     if (!commentDeleted) {
-      toast.error('something went wrong! Please try again later.', {
-        toastId: 'error_dlt',
-      })
+      toast.error('something went wrong! Please try again later.', { toastId: 'error_dlt' })
       return
     }
     await initializeComments()
@@ -280,11 +292,19 @@ export default function CommentSection({
               />
             )}
           </div>
-          <textarea
-            rows={3}
-            value={currentComment}
-            onChange={(e) => setCurrentComment(e.target.value)}
-          />
+          <div style={{ position: 'relative', width: '100%' }}>
+            <textarea
+              rows={3}
+              value={currentComment}
+              maxLength={MAX_COMMENT_LENGTH}
+              onChange={(e) => setCurrentComment(e.target.value)}
+              placeholder="Write a comment..."
+              style={{ width: '100%', paddingBottom: '1.5em' }}
+            />
+            <span style={{ position: 'absolute', bottom: '1.5em', right: '0.6em', fontSize: '0.7em', opacity: 0.4, pointerEvents: 'none' }}>
+              {currentComment.length}/{MAX_COMMENT_LENGTH}
+            </span>
+          </div>
           <button
             disabled={status === 'loading' || posting}
             onClick={handleSendComment}
@@ -293,6 +313,11 @@ export default function CommentSection({
           </button>
         </div>
         <div className={commentsContainer}>
+          {!loading && comments.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '2em', opacity: 0.5, fontSize: '0.9em' }}>
+              No comments yet. Be the first to share your thoughts!
+            </div>
+          )}
           {comments &&
             comments.map((comment) => (
               <div
@@ -300,6 +325,13 @@ export default function CommentSection({
                 id={`comment-${comment.id}`}
                 className={commentContainer}
               >
+                {confirmDeleteId === comment.id && (
+                  <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center', padding: '0.5em', marginBottom: '0.5em', background: 'var(--color-back-05)', borderRadius: '5px', fontSize: '0.85em' }}>
+                    <span style={{ flex: 1 }}>Delete this comment?</span>
+                    <button onClick={() => confirmDelete(comment.id)} style={{ cursor: 'pointer', border: 'none', borderRadius: '4px', padding: '0.3em 0.8em', background: 'var(--color-incorrect-red)', color: '#fff' }}>Delete</button>
+                    <button onClick={() => setConfirmDeleteId('')} style={{ cursor: 'pointer', border: '1px solid var(--color-back-2)', borderRadius: '4px', padding: '0.3em 0.8em', background: 'transparent', color: 'var(--color-foreground)' }}>Cancel</button>
+                  </div>
+                )}
                 <div className={aboveCommentContent}>
                   <div className={readerContainer}>
                     <div className={readerAvatar}>
@@ -331,7 +363,7 @@ export default function CommentSection({
                   </div>
                   <div>
                     {comment.reader.id === session?.user.id && (
-                      <div className={dropdown}>
+                      <div className={dropdown} data-dropdown>
                         <button
                           disabled={editing !== ''}
                           onClick={() => {
@@ -369,14 +401,19 @@ export default function CommentSection({
                 <div className={commentContentContainer}>
                   {editing === comment.id ? (
                     <div className={commentEditContainer}>
-                      <textarea
-                        rows={3}
-                        value={currentEditingComment}
-                        autoFocus
-                        onChange={(e) =>
-                          setCurrentEditingComment(e.target.value)
-                        }
-                      />
+                      <div style={{ position: 'relative', width: '100%' }}>
+                        <textarea
+                          rows={3}
+                          value={currentEditingComment}
+                          maxLength={MAX_COMMENT_LENGTH}
+                          autoFocus
+                          onChange={(e) => setCurrentEditingComment(e.target.value)}
+                          style={{ width: '100%', paddingBottom: '1.5em' }}
+                        />
+                        <span style={{ position: 'absolute', bottom: '1em', right: '0.6em', fontSize: '0.7em', opacity: 0.4, pointerEvents: 'none' }}>
+                          {currentEditingComment.length}/{MAX_COMMENT_LENGTH}
+                        </span>
+                      </div>
                       <div>
                         <button onClick={() => handleEditComment(comment.id)}>
                           Save

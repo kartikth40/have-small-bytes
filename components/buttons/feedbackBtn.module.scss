@@ -295,3 +295,34 @@
 .Btn_container > input:checked {
   cursor: normal;
 }
+
+.countSkeleton {
+  display: inline-block;
+  width: 1.2em;
+  height: 1em;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-back-1) 25%,
+    var(--color-back-2) 50%,
+    var(--color-back-1) 75%
+  );
+  background-size: 200% 100%;
+  animation: countShimmer 1.4s infinite linear;
+  vertical-align: middle;
+}
+
+@keyframes countShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loadingDot {
+  display: inline-block;
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}

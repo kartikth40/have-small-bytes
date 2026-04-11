@@ -188,7 +188,7 @@
       opacity: 0.7;
     }
     &:disabled {
-      cursor: wait;
+      cursor: not-allowed;
       color: grey;
     }
   }

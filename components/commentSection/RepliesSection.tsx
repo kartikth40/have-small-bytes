@@ -26,6 +26,8 @@ type Props = {
   setOpen: Dispatch<SetStateAction<string>>
 }
 
+const MAX_REPLY_LENGTH = 500
+
 export default function RepliesSection({
   commentId,
   postId,
@@ -43,6 +45,7 @@ export default function RepliesSection({
   const [showId, SetShowId] = useState<string>('')
   const [loadNo, setLoadNo] = useState<number>(0)
   const [loadMore, setLoadMore] = useState<boolean>(true)
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string>('')
   const [lemmeReply, setLemmeReply] = useState<string>('')
 
   async function initialize() {
@@ -60,6 +63,16 @@ export default function RepliesSection({
       setLemmeReply('')
     }
   }, [open, commentId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (showId && !(e.target as Element).closest('[data-dropdown]')) {
+        SetShowId('')
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showId])
 
   function setObserver(id: string) {
     const element = document.getElementById(id) as HTMLElement
@@ -170,8 +183,11 @@ export default function RepliesSection({
   }
   async function handleDelete(id: string) {
     SetShowId('')
-    const sure = confirm('Are you sure you want to delete this reply ?')
-    if (!sure) return
+    setConfirmDeleteId(id)
+  }
+
+  async function confirmDelete(id: string) {
+    setConfirmDeleteId('')
     await deleteReplyNotification(session?.user.id!, commenter, id)
     const result = await deleteComment(id)
     if (!result) {
@@ -197,6 +213,13 @@ export default function RepliesSection({
                   id={`reply-${comment.id}`}
                   className={commentContainer}
                 >
+                  {confirmDeleteId === comment.id && (
+                    <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center', padding: '0.5em', marginBottom: '0.5em', background: 'var(--color-back-05)', borderRadius: '5px', fontSize: '0.85em' }}>
+                      <span style={{ flex: 1 }}>Delete this reply?</span>
+                      <button onClick={() => confirmDelete(comment.id)} style={{ cursor: 'pointer', border: 'none', borderRadius: '4px', padding: '0.3em 0.8em', background: 'var(--color-incorrect-red)', color: '#fff' }}>Delete</button>
+                      <button onClick={() => setConfirmDeleteId('')} style={{ cursor: 'pointer', border: '1px solid var(--color-back-2)', borderRadius: '4px', padding: '0.3em 0.8em', background: 'transparent', color: 'var(--color-foreground)' }}>Cancel</button>
+                    </div>
+                  )}
                   <div className={aboveCommentContent}>
                     <div className={readerContainer}>
                       <div className={readerAvatar}>
@@ -227,7 +250,7 @@ export default function RepliesSection({
                     </div>
                     <div>
                       {comment.reader.id === session?.user.id && (
-                        <div className={dropdown}>
+                        <div className={dropdown} data-dropdown>
                           <button
                             disabled={editing !== ''}
                             onClick={() => {
@@ -266,14 +289,19 @@ export default function RepliesSection({
                   <div className={commentContentContainer}>
                     {editing === comment.id ? (
                       <div className={commentEditContainer}>
-                        <textarea
-                          rows={3}
-                          autoFocus
-                          value={currentEditingReply}
-                          onChange={(e) =>
-                            setCurrentEditingReply(e.target.value)
-                          }
-                        />
+                        <div style={{ position: 'relative', width: '100%' }}>
+                          <textarea
+                            rows={3}
+                            autoFocus
+                            value={currentEditingReply}
+                            maxLength={MAX_REPLY_LENGTH}
+                            onChange={(e) => setCurrentEditingReply(e.target.value)}
+                            style={{ paddingBottom: '1.5em' }}
+                          />
+                          <span style={{ position: 'absolute', bottom: '0.6em', right: '0.6em', fontSize: '0.7em', opacity: 0.4, pointerEvents: 'none' }}>
+                            {currentEditingReply.length}/{MAX_REPLY_LENGTH}
+                          </span>
+                        </div>
                         <div>
                           <button onClick={() => handleEditComment(comment.id)}>
                             Save
@@ -357,12 +385,19 @@ export default function RepliesSection({
                     />
                   )}
                 </div>
-                <textarea
-                  rows={1}
-                  value={currentReply}
-                  onChange={(e) => setCurrentReply(e.target.value)}
-                  autoFocus
-                />
+                <div style={{ position: 'relative', width: '100%' }}>
+                  <textarea
+                    rows={1}
+                    value={currentReply}
+                    maxLength={MAX_REPLY_LENGTH}
+                    onChange={(e) => setCurrentReply(e.target.value)}
+                    autoFocus
+                    style={{ paddingBottom: '1.5em' }}
+                  />
+                  <span style={{ position: 'absolute', bottom: '1.5em', right: '0.6em', fontSize: '0.7em', opacity: 0.4, pointerEvents: 'none' }}>
+                    {currentReply.length}/{MAX_REPLY_LENGTH}
+                  </span>
+                </div>
                 <div>
                   <button
                     disabled={status === 'loading' || posting}

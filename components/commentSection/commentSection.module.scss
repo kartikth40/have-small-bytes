@@ -40,45 +40,36 @@
   .commentsDropDownBtn {
     cursor: pointer;
     user-select: none;
-    width: 2em;
+    width: 1.8em;
+    height: 1.8em;
     position: relative;
-    border: 1px solid var(--color-back-08);
-    border-radius: 0.2em;
-    box-shadow: 0 3px var(--color-back-08);
-    transition: 0.15s all;
+    border: 1px solid var(--color-back-2);
+    border-radius: 50%;
+    transition: 0.2s all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     &:hover {
-      transform: translateY(3px);
-      box-shadow: 0 0 var(--color-back-08);
-      background-color: var(--color-back-01);
+      background-color: var(--color-back-05);
+      border-color: var(--color-back-4);
     }
-    &::before,
+
     &::after {
       content: '';
-      top: 50%;
-      translate: 0 -50%;
       position: absolute;
-      width: 0.8em;
-      height: 0.15em;
-      background-color: var(--color-foreground);
-      transition: 0.15s transform;
-    }
-    &::before {
+      width: 0.5em;
+      height: 0.5em;
+      border-right: 2px solid var(--color-foreground);
+      border-bottom: 2px solid var(--color-foreground);
       transform: rotate(45deg);
-      left: 0.3em;
-    }
-    &::after {
-      transform: rotate(-45deg);
-      right: 0.3em;
+      top: 25%;
+      transition: 0.2s all;
     }
 
-    &.showMe {
-      &::before {
-        transform: rotate(-45deg);
-      }
-
-      &::after {
-        transform: rotate(45deg);
-      }
+    &.showMe::after {
+      transform: rotate(-135deg);
+      top: 38%;
     }
   }
 }
@@ -118,8 +109,18 @@
     padding-top: 2.3em;
     resize: none;
     margin-bottom: 0.5em;
+    border: 1px solid var(--color-back-2);
+    outline: none;
+    transition: border-color 0.15s;
+    &:focus {
+      border-color: var(--color-back-4);
+    }
     body:global(.darkTheme) & {
       background-color: var(--color-back-02);
+      border-color: var(--color-back-1);
+      &:focus {
+        border-color: var(--color-back-3);
+      }
     }
   }
   & button {
@@ -162,6 +163,18 @@
     font-size: 1rem;
     padding: 1em;
     resize: none;
+    border: 1px solid var(--color-back-2);
+    outline: none;
+    transition: border-color 0.15s;
+    &:focus {
+      border-color: var(--color-back-4);
+    }
+    body:global(.darkTheme) & {
+      border-color: var(--color-back-1);
+      &:focus {
+        border-color: var(--color-back-3);
+      }
+    }
   }
   & div:nth-child(2) {
     display: flex;
@@ -271,7 +284,6 @@
 
     & .dropdown {
       position: relative;
-      // height: 1.5em;
       cursor: pointer;
       & button {
         cursor: pointer;
@@ -296,28 +308,41 @@
 
       & .dropdownContent {
         position: absolute;
-        width: 100px;
-        top: 0;
-        right: -110px;
+        min-width: 120px;
+        top: 100%;
+        right: 0;
         background-color: var(--color-background);
-        border: 1px solid var(--color-back-08);
-        box-shadow: 0px 0 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--color-back-1);
+        border-radius: 8px;
+        box-shadow: 0 4px 16px var(--color-shadow-2);
+        overflow: hidden;
         transform: scale(0);
-        transform-origin: left top;
+        transform-origin: top right;
         transition: 0.15s all;
-        z-index: 1;
+        z-index: 10;
+        font-size: 0.85em;
 
-        @include devices(tablet) {
-          transform-origin: right top;
-          right: unset;
-          left: -110px;
+        body:global(.darkTheme) & {
+          background-color: #1a1d24;
+          border-color: var(--color-back-2);
         }
+
         & div {
-          margin: 1em;
+          padding: 0.55em 0.9em;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: background 0.1s;
+
+          &:hover {
+            background-color: var(--color-back-05);
+          }
+
+          & + div {
+            border-top: 1px solid var(--color-back-05);
+          }
         }
 
         &.show {
-          display: block;
           transform: scale(1);
         }
       }
