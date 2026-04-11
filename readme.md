@@ -60,3 +60,48 @@ JWT_SECRET=
 NODEMAILER_EMAIL=
 NODEMAILER_PW=
 ```
+
+---
+
+## Screenshots
+
+<details>
+<summary>Home Page (Dark & Light)</summary>
+<br>
+
+<!-- paste dark mode home screenshot here -->
+<!-- paste light mode home screenshot here -->
+
+</details>
+
+<details>
+<summary>Post Page</summary>
+<br>
+
+<!-- paste post page screenshot here (markdown rendering + syntax highlighted code block + like button) -->
+
+</details>
+
+<details>
+<summary>Comments & Replies</summary>
+<br>
+
+<!-- paste comment section screenshot here (nested replies open, edit/delete dropdown visible) -->
+
+</details>
+
+<details>
+<summary>Notifications</summary>
+<br>
+
+<!-- paste notifications page screenshot here (unread indicators visible) -->
+
+</details>
+
+<details>
+<summary>Sign Up - Inline Validation</summary>
+<br>
+
+<!-- paste sign up page screenshot here (real-time validation checkmarks visible) -->
+
+</details>
