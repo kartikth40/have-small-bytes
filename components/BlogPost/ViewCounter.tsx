@@ -21,7 +21,7 @@ function markViewed(slug: string) {
   } catch {}
 }
 
-export default function ViewCounter({ slug, readOnly = false }: { slug: string; readOnly?: boolean }) {
+export default function ViewCounter({ slug, readOnly = false, badge = false }: { slug: string; readOnly?: boolean; badge?: boolean }) {
   const [views, setViews] = useState<number | null>(null)
   const [error, setError] = useState(false)
 
@@ -57,6 +57,18 @@ export default function ViewCounter({ slug, readOnly = false }: { slug: string; 
         .catch(() => setError(true))
     }
   }, [slug])
+
+  if (badge) {
+    return (
+      <div className={styles.viewBadge}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+        <span>{error ? '✕' : views === null ? '…' : views.toLocaleString()}</span>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.viewCounter}>

@@ -53,6 +53,7 @@ export default function PostCard({ post, authorUrl }: Props) {
             fill={true}
             alt={post.title}
           />
+          <ViewCounter slug={post.slug} readOnly badge />
         </div>
       </Link>
       <h1>
@@ -69,7 +70,6 @@ export default function PostCard({ post, authorUrl }: Props) {
         </div>
         <div className={rightAlign}>
           <div className={readTimeContainer}>{post.readTime} min read</div>
-          <ViewCounter slug={post.slug} readOnly />
         </div>
       </div>
     </div>
