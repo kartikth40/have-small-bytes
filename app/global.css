@@ -132,6 +132,15 @@ main {
   flex-direction: column;
 }
 
+@media screen and (max-width: 768px) {
+  main {
+    margin-top: 7rem;
+    & main {
+      margin-top: 0;
+    }
+  }
+}
+
 .mousemark {
   --left: 0;
   --top:0;

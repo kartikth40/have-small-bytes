@@ -117,7 +117,7 @@
 
   & .heroWordWrapper {
     overflow: hidden;
-    height: 1.3em;
+    height: 1.5em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -180,6 +180,9 @@
     margin-top: 1em;
     font-size: calc(1rem + (((100vw - 425px) / 100) * 3));
     padding: 1.5rem 1rem;
+    & .heroWordWrapper {
+      height: 2em;
+    }
     & .randomHeroDiv {
       padding-inline: 0.5em;
       font-size: calc(2rem + (((100vw - 425px) / 100) * 4));
@@ -191,7 +194,7 @@
     margin-top: 2em;
     font-size: 0.7rem;
     & .heroWordWrapper {
-      height: 3em;
+      height: 3.5em;
     }
   }
 }
