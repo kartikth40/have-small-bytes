@@ -5,6 +5,25 @@ import styles from '@/app/page.module.scss'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
+function HalfMoonSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      aria-hidden="true"
+    >
+      {/* circle outline */}
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      {/* left half — filled white */}
+      <path d="M12 2 A10 10 0 0 0 12 22 Z" fill="currentColor" />
+      {/* vertical divider */}
+      <line x1="12" y1="2" x2="12" y2="22" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
 type Props = {}
 
 export default function ThemeToggleButton({}: Props) {
@@ -24,21 +43,19 @@ export default function ThemeToggleButton({}: Props) {
           : 'Light Mode'
       }
     >
-      <Image
-        src={`/icons/${
-          theme === 'light' ? 'sun' : theme === 'dark' ? 'moon' : 'half-moon'
-        }.png`}
-        style={{
-          objectFit: 'cover',
-          filter: `${
-            theme === 'system-dark' ? 'invert(1) brightness(0.9)' : 'invert(0)'
-          }`,
-        }}
-        // sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 40px"
-        fill
-        sizes="24px"
-        alt={'theme logo'}
-      />
+      {theme.startsWith('system') ? (
+        <HalfMoonSvg />
+      ) : (
+        <Image
+          src={`/icons/${theme === 'light' ? 'sun' : 'moon'}.png`}
+          style={{
+            objectFit: 'cover',
+          }}
+          fill
+          sizes="24px"
+          alt={'theme logo'}
+        />
+      )}
     </button>
   )
 }

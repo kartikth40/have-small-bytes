@@ -122,6 +122,7 @@ export const FeaturedPostsQuery = gql`
         name
         slug
       }
+      readTime
     }
   }
 `

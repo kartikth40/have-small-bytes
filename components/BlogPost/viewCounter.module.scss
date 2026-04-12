@@ -68,3 +68,14 @@
   pointer-events: none;
   z-index: 1;
 }
+
+// inline variant — used in meta rows (not on image)
+.viewBadgeInline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: inherit;
+  font-weight: 500;
+  color: inherit;
+  opacity: 0.85;
+}

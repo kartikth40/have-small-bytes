@@ -91,6 +91,21 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  /* ambient glow — light mode */
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 5%, rgba(140, 82, 255, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 90% 15%, rgba(92, 225, 230, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 50% 95%, rgba(243, 21, 89, 0.04) 0%, transparent 70%);
+  background-attachment: fixed;
+
+  &:global(.darkTheme) {
+    background-image:
+      radial-gradient(ellipse 80% 60% at 10% 5%, rgba(140, 82, 255, 0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 50% at 90% 15%, rgba(92, 225, 230, 0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 50% 95%, rgba(243, 21, 89, 0.03) 0%, transparent 70%);
+    background-attachment: fixed;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -111,7 +126,7 @@ body {
   background: var(--color-primary-blue);
 }
 main {
-  margin: 5rem 1rem 0.7rem;
+  margin: 6rem 1rem 0.7rem;
   min-height: calc(100vh - 10rem);
   display: flex;
   flex-direction: column;

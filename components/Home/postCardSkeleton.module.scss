@@ -27,6 +27,7 @@
   align-items: center;
   gap: 0.5em;
   margin-bottom: 1em;
+  width: 100%;
 }
 
 .avatar {
@@ -117,4 +118,9 @@
   @extend %shimmer;
   height: 0.8em;
   width: 60px;
+}
+
+.skeletonCard {
+  width: 100% !important;
+  box-sizing: border-box;
 }

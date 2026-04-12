@@ -2,11 +2,10 @@ import styles from './postCardSkeleton.module.scss'
 import pageStyles from '../../app/page.module.scss'
 
 export default function PostCardSkeleton() {
-  const { postCard } = pageStyles
   const s = styles
 
   return (
-    <div className={postCard}>
+    <div className={`${pageStyles.postCard} ${s.skeletonCard}`}>
       {/* author row */}
       <div className={s.authorRow}>
         <div className={s.avatar} />
