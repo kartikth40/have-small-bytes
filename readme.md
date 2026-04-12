@@ -2,10 +2,57 @@
 
 A full-stack blog platform covering Web Development, DSA, and Personal Development - built with Next.js 13 App Router, Hygraph (GraphQL CMS), and NextAuth.js.
 
-<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/310f7515-ca73-477d-9316-7a8264bf9016" />
-
+<img width="1556" height="755" alt="image" src="https://github.com/user-attachments/assets/3b3dd683-4889-47bb-8107-08c4d3b04cb2" />
 
 **Live:** [havesmallbytes.vercel.app](https://havesmallbytes.vercel.app/)
+
+## Screenshots
+
+<details>
+<summary>Home Page (Dark & Light)</summary>
+<br>
+
+<img width="1556" height="755" alt="image" src="https://github.com/user-attachments/assets/3b3dd683-4889-47bb-8107-08c4d3b04cb2" />
+<img width="1556" height="783" alt="image" src="https://github.com/user-attachments/assets/92a73f97-d4b4-45ad-9f9c-fbcf97b12497" />
+<img width="1556" height="693" alt="image" src="https://github.com/user-attachments/assets/f775f902-47df-4626-971f-a04efd47b99b" />
+
+</details>
+
+<details>
+<summary>Post Page</summary>
+<br>
+
+<img width="1556" height="782" alt="image" src="https://github.com/user-attachments/assets/6e6a6dec-3fda-47fc-bb7b-af9e804693ae" />
+<img width="1556" height="783" alt="image" src="https://github.com/user-attachments/assets/3700482e-8939-4f1d-8893-1b71626342c6" />
+
+</details>
+
+<details>
+<summary>Comments & Replies</summary>
+<br>
+
+<img width="1556" height="779" alt="image" src="https://github.com/user-attachments/assets/68535db2-04e3-46eb-a471-f7636dd3f405" />
+
+</details>
+
+<details>
+<summary>Notifications</summary>
+<br>
+
+<img width="1556" height="357" alt="image" src="https://github.com/user-attachments/assets/274edc2d-1c52-4fde-aa55-572762c3894b" />
+
+</details>
+
+<details>
+<summary>Sign Up/Log In - Inline Validation & 404 page</summary>
+<br>
+
+<img width="1556" height="722" alt="image" src="https://github.com/user-attachments/assets/85d0f38e-58b9-4d0a-8e98-7b71cc2335c7" />
+<img width="1556" height="731" alt="image" src="https://github.com/user-attachments/assets/b1897c81-7fd5-4586-8773-67691e98eec0" />
+<img width="1556" height="731" alt="image" src="https://github.com/user-attachments/assets/3683a138-f5e3-4ec3-b07f-6485e012ebc6" />
+<img width="1556" height="732" alt="image" src="https://github.com/user-attachments/assets/d9ff66a2-0df7-46d1-8d13-08062b0426ff" />
+
+</details>
 
 ---
 
@@ -63,51 +110,3 @@ JWT_SECRET=
 NODEMAILER_EMAIL=
 NODEMAILER_PW=
 ```
-
----
-
-## Screenshots
-
-<details>
-<summary>Home Page (Dark & Light)</summary>
-<br>
-
-<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/ec40f1bf-fa10-4449-a3fc-fb8299ca885f" />
-<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/b60e7d1d-0666-458c-ad84-7f573ac108d3" />
-
-</details>
-
-<details>
-<summary>Post Page</summary>
-<br>
-
-<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/92fc7038-b9c8-4a14-bb4b-5dfb100da032" />
-<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/dcfa0fe4-58a9-4c8a-8f2f-bfd588a14a28" />
-
-</details>
-
-<details>
-<summary>Comments & Replies</summary>
-<br>
-
-<img width="1869" height="991" alt="image" src="https://github.com/user-attachments/assets/a02887b4-9cbc-4f5f-9511-5e96153cb4c6" />
-
-</details>
-
-<details>
-<summary>Notifications</summary>
-<br>
-
-<img width="1859" height="416" alt="image" src="https://github.com/user-attachments/assets/01f2b85f-0d22-4c5d-af2b-98de078748aa" />
-
-</details>
-
-<details>
-<summary>Sign Up/Log In - Inline Validation</summary>
-<br>
-
-<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/6e3bf84e-d1eb-4049-8c35-19e728efab53" />
-<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/8fdc1c85-2294-40a3-b05b-5bb5fc5a46e7" />
-<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/ba037dda-978a-4c34-a8cb-f3b694dd7c4e" />
-
-</details>
